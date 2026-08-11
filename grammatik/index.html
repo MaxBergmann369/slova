@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ГРАММА́ТИКА · Russisch-Grammatik-Trainer</title>
+<meta name="theme-color" content="#1E7A63">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231E7A63'/%3E%3Ctext x='50' y='72' font-size='62' text-anchor='middle' fill='white' font-family='Georgia'%3EГ%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mala:#1E7A63;         /* Malachit-Grün: Primärfarbe der Grammatik-App */
+  --mala-deep:#135845;
+  --mala-soft:#E2F1EC;
+  --ink:#14181F;
+  --ink-soft:#4A5261;
+  --ink-faint:#8A93A5;
+  --paper:#F4F7F6;
+  --card:#FFFFFF;
+  --frost:#DCE7E3;
+  --kalina:#C0392B;       /* falsch */
+  --kalina-soft:#F9E9E6;
+  --amber:#B9790F;
+  --amber-soft:#F8EFDC;
+  --gzhel:#2B4C9B;        /* Schwester-App-Blau für Akzente */
+  --gzhel-soft:#E7EDF9;
+  --radius:16px;
+  --serif:"Playfair Display",Georgia,"Times New Roman",serif;
+  --sans:"Inter",-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height:100vh;line-height:1.5}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;touch-action:manipulation}
+input{font-family:inherit;font-size:1rem;color:var(--ink)}
+.wrap{max-width:600px;margin:0 auto;padding:0 16px 96px}
+header{padding:22px 0 6px;display:flex;align-items:flex-end;justify-content:space-between}
+.brand h1{font-family:var(--serif);font-weight:800;font-size:1.7rem;letter-spacing:.5px;line-height:1}
+.brand h1 .acc{color:var(--mala)}
+.brand p{font-size:.78rem;color:var(--ink-faint);font-weight:500;margin-top:4px}
+.streak{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--frost);border-radius:999px;padding:7px 14px;font-weight:700;font-size:.9rem}
+.notice{background:var(--amber-soft);border:1px solid #E8D9B4;color:#6B4A08;border-radius:12px;padding:10px 14px;font-size:.82rem;margin:10px 0;display:none}
+nav{position:sticky;top:0;z-index:20;background:var(--paper);padding:12px 0 14px}
+.tabs{display:flex;background:var(--card);border:1px solid var(--frost);border-radius:14px;padding:4px;gap:4px}
+.tabs button{flex:1;padding:9px 4px;border-radius:10px;font-weight:600;font-size:.86rem;color:var(--ink-soft)}
+.tabs button.on{background:var(--mala);color:#fff}
+@media (max-width:430px){.tabs button{font-size:.74rem;padding:8px 1px}.wrap{padding:0 10px 96px}.card{padding:20px 14px}}
+.view{display:none}
+.view.on{display:block;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.hero{background:var(--card);border:1px solid var(--frost);border-radius:var(--radius);padding:24px 20px;text-align:center;margin-top:6px}
+.hero .due-line{font-family:var(--serif);font-size:1.4rem;font-weight:700;line-height:1.3}
+.hero .due-line b{color:var(--mala)}
+.hero .sub{color:var(--ink-soft);font-size:.9rem;margin-top:8px}
+.btn{display:inline-block;border-radius:12px;padding:14px 26px;font-weight:700;font-size:1rem}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--mala);color:#fff;margin-top:16px}
+.btn-primary:hover{background:var(--mala-deep)}
+.btn-ghost{background:none;color:var(--mala);font-size:.88rem;margin-top:10px;padding:8px 14px;border-radius:10px}
+.btn-ghost:hover{background:var(--mala-soft)}
+.done-mark{font-size:2.4rem;margin-bottom:8px}
+.topic{background:var(--card);border:1px solid var(--frost);border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;gap:14px;align-items:center;width:100%;text-align:left}
+.topic:active{transform:scale(.99)}
+.topic .ic{font-size:1.6rem;flex-shrink:0}
+.topic .m{flex:1;min-width:0}
+.topic .t{font-weight:700;font-size:1rem}
+.topic .s{font-size:.78rem;color:var(--ink-soft);margin-top:1px}
+.topic .pbar{height:6px;background:var(--frost);border-radius:99px;overflow:hidden;margin-top:8px}
+.topic .pbar i{display:block;height:100%;background:var(--mala);border-radius:99px}
+.topic .pct{font-size:.75rem;font-weight:700;color:var(--mala);flex-shrink:0;font-variant-numeric:tabular-nums}
+.sess-top{display:flex;align-items:center;gap:12px;margin:4px 0 14px}
+.sess-top .cnt{font-size:.8rem;font-weight:700;color:var(--ink-faint);white-space:nowrap;font-variant-numeric:tabular-nums}
+.bar{flex:1;height:6px;background:var(--frost);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--mala);border-radius:99px;transition:width .25s ease}
+.quit{color:var(--ink-faint);font-size:.8rem;font-weight:600;padding:4px 8px}
+.card{background:var(--card);border:1px solid var(--frost);border-radius:var(--radius);padding:24px 20px;box-shadow:0 1px 2px rgba(20,24,31,.04)}
+.badges{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;min-height:22px}
+.chip{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:99px;background:var(--mala-soft);color:var(--mala)}
+.chip.k2{background:#EEF1F6;color:var(--ink-soft)}
+.sent{font-family:var(--serif);font-weight:700;font-size:clamp(1.35rem,5.5vw,1.7rem);text-align:center;margin:18px 0 4px;line-height:1.5;overflow-wrap:anywhere}
+.sent .acc{color:var(--mala)}
+.sent .gapx{background:var(--mala-soft);color:var(--mala);border-radius:8px;padding:0 10px}
+.baseword{text-align:center;font-size:1rem;color:var(--ink-soft);margin-top:4px}
+.baseword b{color:var(--ink);font-family:var(--serif)}
+.qlabel{text-align:center;font-size:.85rem;color:var(--ink-soft);font-weight:600;margin-top:12px}
+.opts{display:grid;gap:8px;margin-top:12px}
+.opt{background:var(--paper);border:1.5px solid var(--frost);border-radius:12px;padding:13px 14px;font-weight:600;font-size:1.05rem;text-align:center;font-family:var(--serif)}
+.opt:hover{border-color:var(--mala)}
+.opt.right{background:var(--mala-soft);border-color:var(--mala);color:var(--mala)}
+.opt.wrong{background:var(--kalina-soft);border-color:var(--kalina);color:var(--kalina)}
+.opt:disabled{cursor:default}
+.fb{border-radius:10px;padding:10px 14px;font-weight:700;margin-top:14px;text-align:center}
+.fb-ok{background:var(--mala-soft);color:var(--mala)}
+.fb-no{background:var(--kalina-soft);color:var(--kalina)}
+.answer{border-top:1px dashed var(--frost);margin-top:14px;padding-top:14px;text-align:center}
+.full{font-family:var(--serif);font-weight:700;font-size:1.25rem;line-height:1.5}
+.full .acc{color:var(--mala)}
+.full .hl{background:var(--mala-soft);border-radius:6px;padding:0 5px}
+.de{font-size:.88rem;color:var(--ink-soft);margin-top:6px}
+.expl{margin-top:10px;font-size:.84rem;background:var(--gzhel-soft);color:var(--gzhel);display:inline-block;padding:7px 12px;border-radius:8px;font-weight:600;text-align:left;line-height:1.5}
+.speak{color:var(--mala);font-size:1.2rem;padding:4px 10px;border-radius:99px}
+.speak:hover{background:var(--mala-soft)}
+.grade{display:grid;grid-template-columns:1fr;gap:8px;margin-top:14px}
+.grade button{border-radius:12px;padding:13px 4px;font-weight:700;font-size:.95rem;color:#fff}
+.grade .g-ok{background:var(--mala)}
+.grade .g-no{background:var(--kalina)}
+.grade small{display:block;font-weight:500;font-size:.66rem;opacity:.85;margin-top:2px}
+.type-row{display:flex;gap:8px;margin-top:12px}
+#typeInp{flex:1;min-width:0;border:1.5px solid var(--frost);border-radius:12px;padding:12px 14px;font-size:1.15rem;background:var(--card)}
+#typeInp:focus{outline:2px solid var(--mala);border-color:transparent}
+#typeInp.inp-ok{border-color:var(--mala);background:var(--mala-soft)}
+#typeInp.inp-no{border-color:var(--kalina);background:var(--kalina-soft)}
+.check-btn{background:var(--mala);color:#fff;border-radius:12px;padding:0 18px;font-weight:700}
+.kb{margin-top:10px}
+.kb-row{display:flex;gap:3px;margin-top:3px}
+.kb-k{flex:1;background:var(--card);border:1px solid var(--frost);border-radius:7px;padding:9px 0;font-size:1rem;text-align:center;min-width:0}
+.kb-k:active{background:var(--mala-soft)}
+.kb-bs{flex:1.6;color:var(--kalina)}
+.tiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px;min-height:50px}
+.tile{background:var(--card);border:1.5px solid var(--frost);border-radius:10px;padding:10px 14px;font-weight:700;font-size:1.05rem;font-family:var(--serif)}
+.tile:active{transform:scale(.95)}
+.tile.used{opacity:.25;pointer-events:none}
+.built{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px;min-height:52px;background:var(--paper);border-radius:12px;padding:10px}
+.built .tile{border-color:var(--mala);background:var(--mala-soft);color:var(--mala)}
+.sumgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.sumbox{background:var(--paper);border-radius:12px;padding:14px}
+.sumbox b{font-size:1.5rem;font-family:var(--serif);display:block}
+.sumbox span{font-size:.76rem;color:var(--ink-soft);font-weight:600}
+.sect{font-family:var(--serif);font-weight:700;font-size:1.15rem;margin:22px 0 10px}
+.panel{background:var(--card);border:1px solid var(--frost);border-radius:var(--radius);padding:18px;margin-top:12px}
+.panel h3{font-family:var(--serif);font-size:1.05rem;margin-bottom:10px}
+.panel h4{font-size:.9rem;margin:14px 0 6px;color:var(--mala)}
+.rt{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:8px}
+.rt th{text-align:left;padding:6px 8px;background:var(--paper);font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft)}
+.rt td{padding:6px 8px;border-top:1px solid var(--frost);vertical-align:top}
+.rt td b{font-family:var(--serif)}
+.rt .acc{color:var(--mala)}
+.rtwrap{overflow-x:auto}
+.hint{font-size:.78rem;color:var(--ink-faint);margin-top:8px;line-height:1.6}
+.legend{font-size:.84rem;color:var(--ink-soft);line-height:1.75}
+textarea#bakBox{width:100%;min-height:110px;border:1px solid var(--frost);border-radius:10px;padding:10px;font-family:var(--mono);font-size:.78rem;background:var(--paper);resize:vertical}
+.btn-sm{background:var(--mala);color:#fff;border-radius:10px;padding:10px 18px;font-weight:700;font-size:.86rem;margin-top:10px}
+.btn-sm.gray{background:#EEF1F6;color:var(--ink-soft)}
+.btn-sm.danger{background:var(--kalina-soft);color:var(--kalina)}
+.msg{font-size:.8rem;font-weight:600;margin-top:8px;min-height:1em}
+.msg.ok{color:var(--mala)}.msg.err{color:var(--kalina)}
+.statgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.stat{background:var(--card);border:1px solid var(--frost);border-radius:var(--radius);padding:16px}
+.stat b{font-family:var(--serif);font-size:1.9rem;display:block;line-height:1.1}
+.stat b.green{color:var(--mala)}
+.stat b.red{color:var(--kalina)}
+.stat span{font-size:.75rem;color:var(--ink-soft);font-weight:600}
+.trow{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--frost);border-radius:12px;padding:11px 14px;margin-bottom:8px}
+.trow .ic{font-size:1.2rem}
+.trow .n{flex:1;font-weight:600;font-size:.9rem}
+.trow .pb{width:90px;height:6px;background:var(--frost);border-radius:99px;overflow:hidden}
+.trow .pb i{display:block;height:100%;background:var(--mala)}
+.trow .pc{font-size:.78rem;font-weight:700;color:var(--mala);width:40px;text-align:right;font-variant-numeric:tabular-nums}
+.foot{text-align:center;color:var(--ink-faint);font-size:.72rem;margin-top:26px;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="brand">
+    <h1 id="brandTitle">ГРАММА́ТИКА</h1>
+    <p>Dein Russisch-Grammatik-Trainer · Fälle, Verben, Aspekt, Satzbau</p>
+  </div>
+  <div class="streak"><span>🔥</span><span id="streakN">0</span></div>
+</header>
+
+<div class="notice" id="storeNotice"></div>
+
+<nav><div class="tabs">
+  <button data-tab="lernen" class="on">Üben</button>
+  <button data-tab="regeln">Regeln</button>
+  <button data-tab="statistik">Statistik</button>
+  <button data-tab="mehr">Mehr</button>
+</div></nav>
+
+<section class="view on" id="view-lernen"></section>
+
+<section class="view" id="view-regeln">
+  <div class="panel">
+    <h3>Die Fälle: Endungen (Singular)</h3>
+    <div class="rtwrap"><table class="rt">
+      <tr><th>Fall</th><th>maskulin</th><th>feminin</th><th>neutrum</th></tr>
+      <tr><td><b>Nominativ</b><br>wer? was?</td><td>стол, учи́тель</td><td>маши́н<b>а</b>, дверь</td><td>окн<b>о́</b>, мо́р<b>е</b></td></tr>
+      <tr><td><b>Akkusativ</b><br>wen? was?</td><td>unbelebt = Nom.<br>belebt: -а/-я (бра́т<b>а</b>)</td><td>-а→<b>-у</b>, -я→<b>-ю</b><br>(маши́н<b>у</b>; дверь bleibt)</td><td>= Nominativ</td></tr>
+      <tr><td><b>Genitiv</b><br>wessen? нет/у/из</td><td><b>-а/-я</b> (стол<b>а́</b>)</td><td><b>-ы/-и</b> (маши́н<b>ы</b>)</td><td><b>-а/-я</b> (окн<b>а́</b>)</td></tr>
+      <tr><td><b>Dativ</b><br>wem? к/по</td><td><b>-у/-ю</b> (бра́т<b>у</b>)</td><td><b>-е</b> (ма́м<b>е</b>; дверь→две́р<b>и</b>)</td><td><b>-у/-ю</b> (окн<b>у́</b>)</td></tr>
+      <tr><td><b>Instrumental</b><br>mit wem/womit? с</td><td><b>-ом/-ем</b> (стол<b>о́м</b>)</td><td><b>-ой/-ей</b> (ма́м<b>ой</b>; дверь→две́р<b>ью</b>)</td><td><b>-ом/-ем</b> (окн<b>о́м</b>)</td></tr>
+      <tr><td><b>Präpositiv</b><br>wo? worüber? в/на/о</td><td><b>-е</b> (в го́род<b>е</b>)</td><td><b>-е</b> (-ия→<b>-ии</b>: в Росси́<b>и</b>; дверь→в две́р<b>и</b>)</td><td><b>-е</b> (в окн<b>е́</b>)</td></tr>
+    </table></div>
+    <p class="hint">Merkhilfe: Der Akkusativ ist der „faule“ Fall – nur feminine Wörter auf -а/-я ändern sich wirklich (-у/-ю), maskulin Unbelebtes und Neutrum bleiben stehen. Belebte maskuline Wörter (Personen, Tiere) leihen sich die Genitiv-Endung.</p>
+  </div>
+
+  <div class="panel">
+    <h3>Verben: Präsens</h3>
+    <h4>е-Konjugation · рабо́тать (arbeiten)</h4>
+    <div class="legend">я рабо́та<b>ю</b> · ты рабо́та<b>ешь</b> · он рабо́та<b>ет</b> · мы рабо́та<b>ем</b> · вы рабо́та<b>ете</b> · они́ рабо́та<b>ют</b></div>
+    <h4>и-Konjugation · говори́ть (sprechen)</h4>
+    <div class="legend">я говор<b>ю́</b> · ты говор<b>и́шь</b> · он говор<b>и́т</b> · мы говор<b>и́м</b> · вы говор<b>и́те</b> · они́ говор<b>я́т</b></div>
+    <h4>Wichtige Unregelmäßige</h4>
+    <div class="legend">
+      <b>хоте́ть</b> (wollen): хочу́, хо́чешь, хо́чет, хоти́м, хоти́те, хотя́т<br>
+      <b>мочь</b> (können): могу́, мо́жешь, мо́жет, мо́жем, мо́жете, мо́гут<br>
+      <b>есть</b> (essen): ем, ешь, ест, еди́м, еди́те, едя́т<br>
+      <b>жить</b> (wohnen): живу́, живёшь … живу́т &nbsp;·&nbsp; <b>писа́ть</b>: пишу́, пи́шешь … пи́шут<br>
+      <b>люби́ть</b>: я любл<b>ю́</b> (л wird eingeschoben!), ты лю́бишь &nbsp;·&nbsp; <b>ви́деть</b>: я ви́<b>ж</b>у, ты ви́дишь
+    </div>
+    <h4>Vergangenheit</h4>
+    <div class="legend">Infinitiv-Stamm + <b>-л / -ла / -ло / -ли</b> — richtet sich nach dem Geschlecht des Subjekts, nicht nach der Person:<br>он чита́<b>л</b> · она́ чита́<b>ла</b> · оно́ бы́<b>ло</b> · мы/вы/они́ чита́<b>ли</b></div>
+  </div>
+
+  <div class="panel">
+    <h3>Aspekt: unvollendet vs. vollendet</h3>
+    <div class="legend">
+      <b>Unvollendet</b> (чита́ть, де́лать): Prozess, Dauer, Wiederholung, Gewohnheit.<br>
+      <i>Signalwörter: ка́ждый день, до́лго, весь ве́чер, ча́сто, обы́чно</i><br><br>
+      <b>Vollendet</b> (прочита́ть, сде́лать): einmalig, abgeschlossen, mit Ergebnis.<br>
+      <i>Signalwörter: уже́, наконе́ц, вдруг — „fertig!“</i><br><br>
+      Im Präsens gibt es nur den unvollendeten Aspekt. Die vollendete Präsensform bedeutet automatisch <b>Zukunft</b>: я прочита́ю = „ich werde (fertig) lesen“.
+    </div>
+  </div>
+
+  <p class="foot">Schwester-App von СЛОВА́ · Betonung ist überall markiert, weil sie die Aussprache steuert.</p>
+</section>
+
+<section class="view" id="view-statistik"></section>
+
+<section class="view" id="view-mehr">
+  <div class="panel">
+    <h3>Backup deines Fortschritts</h3>
+    <p class="hint">Kopiere den Text und bewahre ihn auf – oder füge ein Backup ein, um es wiederherzustellen (z.B. beim Wechsel zwischen PC und Handy).</p>
+    <textarea id="bakBox" placeholder="Hier erscheint dein Backup."></textarea>
+    <button class="btn-sm" id="bakMake">Backup erstellen &amp; kopieren</button>
+    <button class="btn-sm gray" id="bakLoad">Backup wiederherstellen</button>
+    <div class="msg" id="bakMsg"></div>
+  </div>
+  <div class="panel">
+    <h3>Daten</h3>
+    <button class="btn-sm danger" id="resetBtn">Fortschritt zurücksetzen</button>
+    <div class="msg" id="dataMsg"></div>
+  </div>
+  <p class="foot">ГРАММА́ТИКА · lokale Einzeldatei, dein Fortschritt bleibt auf diesem Gerät.</p>
+</section>
+
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const KEY='russisch-grammatik-v1';
+const pad=n=>String(n).padStart(2,'0');
+const dstr=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const todayStr=()=>dstr(new Date());
+const yesterStr=()=>{const d=new Date();d.setDate(d.getDate()-1);return dstr(d)};
+const day2Str=()=>{const d=new Date();d.setDate(d.getDate()-2);return dstr(d)};
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const acc=s=>s.replace(/([А-Яа-яЁё]́)/g,'<span class="acc">$1</span>');
+const normRu=s=>String(s).toLowerCase().replace(/́/g,'').replace(/ё/g,'е').replace(/[^а-я\- ]/g,'').replace(/\s+/g,' ').trim();
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a}
+
+/* ---------- Sprachausgabe ---------- */
+let RU_VOICE=null,VOICES_LOADED=false;
+function pickRuVoice(){
+  try{
+    const vs=speechSynthesis.getVoices()||[];
+    if(vs.length)VOICES_LOADED=true;
+    RU_VOICE=vs.find(v=>v.lang&&v.lang.toLowerCase().replace('_','-').indexOf('ru')===0)||vs.find(v=>/russian|русск/i.test(v.name||''))||null;
+  }catch(e){}
+}
+function speak(txt){
+  try{
+    if(!('speechSynthesis' in window))return;
+    if(!RU_VOICE)pickRuVoice();
+    if(VOICES_LOADED&&!RU_VOICE)return;
+    const u=new SpeechSynthesisUtterance(String(txt).replace(/́/g,''));
+    u.lang='ru-RU';u.rate=.85;
+    if(RU_VOICE)u.voice=RU_VOICE;
+    speechSynthesis.cancel();speechSynthesis.resume();speechSynthesis.speak(u);
+  }catch(e){}
+}
+try{pickRuVoice();speechSynthesis.onvoiceschanged=pickRuVoice}catch(e){}
+
+/* ================= Aufgaben-Daten ================= */
+/* gap:  {q,b,a,x:[3 falsche Formen],de}          — Lücke: MC, später Tippen
+   mc2:  {q,o:[2 Optionen],a:Index,de,e:Erklärung} — Aspekt-Entscheidung
+   puz:  {de,w:[Wörter in Reihenfolge],alt:[[..]]} — Satz-Puzzle */
+const TOPICS=[
+{id:'akk',icon:'🎯',t:'Akkusativ',s:'Wen? Was? – das direkte Objekt',type:'gap',
+ intro:'Nach Verben wie ви́деть, чита́ть, люби́ть, купи́ть – und nach в/на bei Richtungen (Wohin?). Feminin -а→-у / -я→-ю. Maskulin belebt bekommt -а/-я. Maskulin unbelebt und Neutrum bleiben unverändert.',
+ items:[
+{q:'Я ви́жу ___.',b:'соба́ка',a:'соба́ку',x:['соба́ка','соба́ки','соба́кой'],de:'Ich sehe den Hund.'},
+{q:'Он чита́ет ___.',b:'кни́га',a:'кни́гу',x:['кни́га','кни́ги','кни́ге'],de:'Er liest ein Buch.'},
+{q:'Мы слу́шаем ___.',b:'му́зыка',a:'му́зыку',x:['му́зыка','му́зыки','му́зыкой'],de:'Wir hören Musik.'},
+{q:'Она́ лю́бит ___.',b:'брат',a:'бра́та',x:['брат','бра́ту','бра́том'],de:'Sie liebt ihren Bruder.'},
+{q:'Я зна́ю э́то ___.',b:'сло́во',a:'сло́во',x:['сло́ва','сло́ву','сло́вом'],de:'Ich kenne dieses Wort.'},
+{q:'Ты пьёшь ___?',b:'вода́',a:'во́ду',x:['вода́','воды́','водо́й'],de:'Trinkst du Wasser?'},
+{q:'Он купи́л ___.',b:'маши́на',a:'маши́ну',x:['маши́на','маши́ны','маши́ной'],de:'Er hat ein Auto gekauft.'},
+{q:'Я жду ___.',b:'сестра́',a:'сестру́',x:['сестра́','сестры́','сестре́'],de:'Ich warte auf meine Schwester.'},
+{q:'Мы смо́трим ___.',b:'фильм',a:'фильм',x:['фи́льма','фи́льму','фи́льмом'],de:'Wir schauen einen Film.'},
+{q:'Она́ встре́тила ___.',b:'друг',a:'дру́га',x:['друг','дру́гу','дру́гом'],de:'Sie hat einen Freund getroffen.'},
+{q:'Он откры́л ___.',b:'дверь',a:'дверь',x:['две́ри','две́рью','двере́й'],de:'Er hat die Tür geöffnet.'},
+{q:'Я ем ___.',b:'ка́ша',a:'ка́шу',x:['ка́ша','ка́ши','ка́шей'],de:'Ich esse Brei.'},
+{q:'Де́ти иду́т в ___.',b:'шко́ла',a:'шко́лу',x:['шко́ла','шко́лы','шко́ле'],de:'Die Kinder gehen in die Schule. (Richtung!)'},
+{q:'Мы е́дем в ___.',b:'Москва́',a:'Москву́',x:['Москва́','Москвы́','Москве́'],de:'Wir fahren nach Moskau. (Richtung!)'},
+{q:'Я ви́жу ___.',b:'учи́тель',a:'учи́теля',x:['учи́тель','учи́телю','учи́телем'],de:'Ich sehe den Lehrer.'},
+{q:'Она́ гото́вит ___.',b:'суп',a:'суп',x:['су́па','су́пу','су́пом'],de:'Sie kocht Suppe.'}
+]},
+{id:'prep',icon:'📍',t:'Präpositiv',s:'Wo? Worüber? – nach в, на, о',type:'gap',
+ intro:'Immer mit Präposition: в/на (Wo?) und о (worüber?). Fast alle Wörter enden auf -е. Ausnahmen: -ия → -ии (в Росси́и), feminine Wörter auf -ь → -и (в тетра́ди).',
+ items:[
+{q:'Я живу́ в ___.',b:'Берли́н',a:'Берли́не',x:['Берли́н','Берли́на','Берли́ну'],de:'Ich wohne in Berlin.'},
+{q:'Кни́га на ___.',b:'стол',a:'столе́',x:['стол','стола́','столо́м'],de:'Das Buch liegt auf dem Tisch.'},
+{q:'Мы говори́м о ___.',b:'рабо́та',a:'рабо́те',x:['рабо́та','рабо́ту','рабо́ты'],de:'Wir sprechen über die Arbeit.'},
+{q:'Она́ живёт в ___.',b:'Москва́',a:'Москве́',x:['Москва́','Москву́','Москвы́'],de:'Sie wohnt in Moskau.'},
+{q:'Де́ти в ___.',b:'шко́ла',a:'шко́ле',x:['шко́ла','шко́лу','шко́лы'],de:'Die Kinder sind in der Schule.'},
+{q:'Я ду́маю о ___.',b:'ма́ма',a:'ма́ме',x:['ма́ма','ма́му','ма́мой'],de:'Ich denke an Mama.'},
+{q:'Мы гуля́ем в ___.',b:'го́род',a:'го́роде',x:['го́род','го́рода','го́родом'],de:'Wir spazieren in der Stadt.'},
+{q:'Он говори́т о ___.',b:'фильм',a:'фи́льме',x:['фильм','фи́льма','фи́льмом'],de:'Er spricht über den Film.'},
+{q:'Ключ в ___.',b:'су́мка',a:'су́мке',x:['су́мка','су́мку','су́мкой'],de:'Der Schlüssel ist in der Tasche.'},
+{q:'Я живу́ в ___.',b:'Росси́я',a:'Росси́и',x:['Росси́я','Росси́ю','Росси́ей'],de:'Ich wohne in Russland. (-ия → -ии!)'},
+{q:'Кот на ___.',b:'дива́н',a:'дива́не',x:['дива́н','дива́на','дива́ном'],de:'Die Katze ist auf dem Sofa.'},
+{q:'Молоко́ в ___.',b:'холоди́льник',a:'холоди́льнике',x:['холоди́льник','холоди́льника','холоди́льником'],de:'Die Milch ist im Kühlschrank.'},
+{q:'Слова́ в ___.',b:'тетра́дь',a:'тетра́ди',x:['тетра́дь','тетра́дью','тетра́дей'],de:'Die Wörter stehen im Heft. (-ь → -и)'},
+{q:'Он живёт в ___.',b:'дере́вня',a:'дере́вне',x:['дере́вня','дере́вню','дере́вней'],de:'Er wohnt auf dem Dorf.'}
+]},
+{id:'gen',icon:'🔗',t:'Genitiv',s:'Wessen? – Besitz, нет, у, из',type:'gap',
+ intro:'Besitz (маши́на бра́та), Verneinung mit нет, und nach у, из, от, по́сле, без. Maskulin/Neutrum: -а/-я. Feminin: -ы/-и.',
+ items:[
+{q:'Э́то маши́на ___.',b:'брат',a:'бра́та',x:['брат','бра́ту','бра́том'],de:'Das ist das Auto des Bruders.'},
+{q:'Здесь нет ___.',b:'магази́н',a:'магази́на',x:['магази́н','магази́ну','магази́не'],de:'Hier gibt es keinen Laden.'},
+{q:'Э́то дом ___.',b:'сестра́',a:'сестры́',x:['сестра́','сестру́','сестре́'],de:'Das ist das Haus der Schwester.'},
+{q:'У ___ есть соба́ка.',b:'друг',a:'дру́га',x:['друг','дру́гу','дру́гом'],de:'Der Freund hat einen Hund.'},
+{q:'Ча́шка ___.',b:'чай',a:'ча́я',x:['чай','ча́ю','ча́ем'],de:'Eine Tasse Tee.'},
+{q:'До́ма нет ___.',b:'молоко́',a:'молока́',x:['молоко́','молоку́','молоко́м'],de:'Zu Hause gibt es keine Milch.'},
+{q:'Э́то фо́то ___.',b:'семья́',a:'семьи́',x:['семья́','семью́','семьёй'],de:'Das ist ein Foto der Familie.'},
+{q:'Он из ___.',b:'Герма́ния',a:'Герма́нии',x:['Герма́ния','Герма́нию','Герма́нией'],de:'Er kommt aus Deutschland.'},
+{q:'Она́ из ___.',b:'Росси́я',a:'Росси́и',x:['Росси́я','Росси́ю','Росси́ей'],de:'Sie kommt aus Russland.'},
+{q:'Стака́н ___.',b:'вода́',a:'воды́',x:['вода́','во́ду','водо́й'],de:'Ein Glas Wasser.'},
+{q:'Э́то центр ___.',b:'го́род',a:'го́рода',x:['го́род','го́роду','го́роде'],de:'Das ist das Stadtzentrum.'},
+{q:'Сего́дня нет ___.',b:'хлеб',a:'хле́ба',x:['хлеб','хле́бу','хле́бом'],de:'Heute gibt es kein Brot.'},
+{q:'Ключ от ___.',b:'кварти́ра',a:'кварти́ры',x:['кварти́ра','кварти́ру','кварти́ре'],de:'Der Schlüssel zur Wohnung.'},
+{q:'По́сле ___ мы гуля́ем.',b:'рабо́та',a:'рабо́ты',x:['рабо́та','рабо́ту','рабо́те'],de:'Nach der Arbeit spazieren wir.'},
+{q:'Ко́фе без ___, пожа́луйста.',b:'са́хар',a:'са́хара',x:['са́хар','са́хару','са́харом'],de:'Kaffee ohne Zucker, bitte.'}
+]},
+{id:'dat',icon:'🎁',t:'Dativ',s:'Wem? – geben, helfen, к, по',type:'gap',
+ intro:'Der Empfänger: nach дать, помога́ть, звони́ть, писа́ть – und nach к (zu jemandem) und по. Maskulin/Neutrum: -у/-ю. Feminin: -е.',
+ items:[
+{q:'Я звоню́ ___.',b:'ма́ма',a:'ма́ме',x:['ма́ма','ма́му','ма́мой'],de:'Ich rufe Mama an.'},
+{q:'Он помога́ет ___.',b:'брат',a:'бра́ту',x:['брат','бра́та','бра́том'],de:'Er hilft dem Bruder.'},
+{q:'Мы идём к ___.',b:'врач',a:'врачу́',x:['врач','врача́','врачо́м'],de:'Wir gehen zum Arzt.'},
+{q:'Она́ пи́шет ___.',b:'друг',a:'дру́гу',x:['друг','дру́га','дру́гом'],de:'Sie schreibt dem Freund.'},
+{q:'Я даю́ кни́гу ___.',b:'сестра́',a:'сестре́',x:['сестра́','сестру́','сестры́'],de:'Ich gebe der Schwester das Buch.'},
+{q:'___ во́семьдесят лет.',b:'ба́бушка',a:'Ба́бушке',x:['Ба́бушка','Ба́бушку','Ба́бушкой'],de:'Oma ist 80 Jahre alt. (Alter steht im Dativ!)'},
+{q:'Он расска́зывает ска́зку ___.',b:'сын',a:'сы́ну',x:['сын','сы́на','сы́ном'],de:'Er erzählt dem Sohn ein Märchen.'},
+{q:'Мы е́дем к ___.',b:'дя́дя',a:'дя́де',x:['дя́дя','дя́дю','дя́дей'],de:'Wir fahren zum Onkel.'},
+{q:'Я покупа́ю пода́рок ___.',b:'па́па',a:'па́пе',x:['па́па','па́пу','па́пой'],de:'Ich kaufe Papa ein Geschenk.'},
+{q:'Мы гуля́ем по ___.',b:'го́род',a:'го́роду',x:['го́род','го́рода','го́роде'],de:'Wir spazieren durch die Stadt.'},
+{q:'___ нра́вится чай.',b:'А́нна',a:'А́нне',x:['А́нна','А́нну','А́нной'],de:'Anna gefällt Tee. (нра́вится + Dativ!)'},
+{q:'Я даю́ ___ молоко́.',b:'ко́шка',a:'ко́шке',x:['ко́шка','ко́шку','ко́шкой'],de:'Ich gebe der Katze Milch.'}
+]},
+{id:'ins',icon:'🤝',t:'Instrumental',s:'Mit wem? Womit? – с, Berufe',type:'gap',
+ intro:'Nach с (mit), für das Werkzeug (ло́жкой – mit dem Löffel) und für Berufe nach рабо́тать/стать. Maskulin/Neutrum: -ом/-ем. Feminin: -ой/-ей.',
+ items:[
+{q:'Я пью чай с ___.',b:'са́хар',a:'са́харом',x:['са́хар','са́хара','са́хару'],de:'Ich trinke Tee mit Zucker.'},
+{q:'Он рабо́тает ___.',b:'учи́тель',a:'учи́телем',x:['учи́тель','учи́теля','учи́телю'],de:'Er arbeitet als Lehrer.'},
+{q:'Мы идём в кино́ с ___.',b:'друг',a:'дру́гом',x:['друг','дру́га','дру́гу'],de:'Wir gehen mit dem Freund ins Kino.'},
+{q:'Она́ говори́т с ___.',b:'ма́ма',a:'ма́мой',x:['ма́ма','ма́му','ма́ме'],de:'Sie spricht mit Mama.'},
+{q:'Я ем суп ___.',b:'ло́жка',a:'ло́жкой',x:['ло́жка','ло́жку','ло́жке'],de:'Ich esse die Suppe mit dem Löffel.'},
+{q:'Он пи́шет ___.',b:'ру́чка',a:'ру́чкой',x:['ру́чка','ру́чку','ру́чке'],de:'Er schreibt mit dem Kuli.'},
+{q:'Ко́фе с ___, пожа́луйста.',b:'молоко́',a:'молоко́м',x:['молоко́','молока́','молоку́'],de:'Kaffee mit Milch, bitte.'},
+{q:'Она́ ста́ла ___.',b:'врач',a:'врачо́м',x:['врач','врача́','врачу́'],de:'Sie ist Ärztin geworden.'},
+{q:'Хлеб с ___.',b:'ма́сло',a:'ма́слом',x:['ма́сло','ма́сла','ма́слу'],de:'Brot mit Butter.'},
+{q:'Он разгова́ривает с ___.',b:'сосе́д',a:'сосе́дом',x:['сосе́д','сосе́да','сосе́ду'],de:'Er unterhält sich mit dem Nachbarn.'},
+{q:'Пи́цца с ___.',b:'сыр',a:'сы́ром',x:['сыр','сы́ра','сы́ру'],de:'Pizza mit Käse.'},
+{q:'Я иду́ гуля́ть с ___.',b:'сестра́',a:'сестро́й',x:['сестра́','сестру́','сестре́'],de:'Ich gehe mit meiner Schwester spazieren.'}
+]},
+{id:'vpr',icon:'⚙️',t:'Verben: Präsens',s:'ich arbeite, du sprichst …',type:'gap',
+ intro:'е-Konjugation (рабо́тать → рабо́таю, -ешь, -ет …) und и-Konjugation (говори́ть → говорю́, -ишь, -ит …). Achtung bei люби́ть (люблю́!), ви́деть (ви́жу!) und den Unregelmäßigen хоте́ть, мочь, есть.',
+ items:[
+{q:'Я ___ в ба́нке.',b:'рабо́тать',a:'рабо́таю',x:['рабо́таешь','рабо́тает','рабо́тают'],de:'Ich arbeite in einer Bank.'},
+{q:'Ты ___ по-ру́сски?',b:'говори́ть',a:'говори́шь',x:['говорю́','говори́т','говоря́т'],de:'Sprichst du Russisch?'},
+{q:'Он ___ кни́гу.',b:'чита́ть',a:'чита́ет',x:['чита́ю','чита́ешь','чита́ют'],de:'Er liest ein Buch.'},
+{q:'Мы ___ в Ве́не.',b:'жить',a:'живём',x:['живу́','живёшь','живу́т'],de:'Wir wohnen in Wien.'},
+{q:'Вы ___ телеви́зор?',b:'смотре́ть',a:'смо́трите',x:['смотрю́','смо́трит','смо́трят'],de:'Schaut ihr fern?'},
+{q:'Они́ ___ в па́рке.',b:'гуля́ть',a:'гуля́ют',x:['гуля́ю','гуля́ет','гуля́ем'],de:'Sie spazieren im Park.'},
+{q:'Я ___ борщ.',b:'люби́ть',a:'люблю́',x:['лю́бишь','лю́бит','лю́бят'],de:'Ich liebe Borschtsch. (л wird eingeschoben!)'},
+{q:'Она́ ___ письмо́.',b:'писа́ть',a:'пи́шет',x:['пишу́','пи́шешь','пи́шут'],de:'Sie schreibt einen Brief.'},
+{q:'Ты меня́ ___?',b:'понима́ть',a:'понима́ешь',x:['понима́ю','понима́ет','понима́ют'],de:'Verstehst du mich?'},
+{q:'Я ___ спать.',b:'хоте́ть',a:'хочу́',x:['хо́чешь','хо́чет','хотя́т'],de:'Ich will schlafen.'},
+{q:'Он ___ помо́чь.',b:'мочь',a:'мо́жет',x:['могу́','мо́жешь','мо́гут'],de:'Er kann helfen.'},
+{q:'Мы ___ му́зыку.',b:'слу́шать',a:'слу́шаем',x:['слу́шаю','слу́шает','слу́шают'],de:'Wir hören Musik.'},
+{q:'Я тебя́ ___.',b:'ви́деть',a:'ви́жу',x:['ви́дишь','ви́дит','ви́дят'],de:'Ich sehe dich. (д wird zu ж!)'},
+{q:'Они́ ___ ру́сский язы́к.',b:'учи́ть',a:'у́чат',x:['учу́','у́чишь','у́чит'],de:'Sie lernen Russisch.'},
+{q:'Вы ___ ко́фе?',b:'пить',a:'пьёте',x:['пью','пьёшь','пьют'],de:'Trinkt ihr Kaffee?'},
+{q:'Я ___ в Москву́.',b:'е́хать',a:'е́ду',x:['е́дешь','е́дет','е́дут'],de:'Ich fahre nach Moskau.'},
+{q:'Она́ ___ на дива́не.',b:'спать',a:'спит',x:['сплю','спишь','спят'],de:'Sie schläft auf dem Sofa.'},
+{q:'Мы ___ вку́сный суп.',b:'есть',a:'еди́м',x:['ем','ест','едя́т'],de:'Wir essen leckere Suppe.'},
+{q:'Где ты ___?',b:'стоя́ть',a:'стои́шь',x:['стою́','стои́т','стоя́т'],de:'Wo stehst du?'},
+{q:'Я ___ отве́т.',b:'знать',a:'зна́ю',x:['зна́ешь','зна́ет','зна́ют'],de:'Ich weiß die Antwort.'}
+]},
+{id:'vpa',icon:'⏪',t:'Verben: Vergangenheit',s:'-л, -ла, -ло, -ли',type:'gap',
+ intro:'Infinitiv-Stamm + -л (er), -ла (sie), -ло (es), -ли (Mehrzahl). Die Endung richtet sich nach dem Geschlecht des Subjekts – auch bei „ich“ und „du“!',
+ items:[
+{q:'Ма́ма ___ суп.',b:'гото́вить',a:'гото́вила',x:['гото́вил','гото́вило','гото́вили'],de:'Mama kochte Suppe.'},
+{q:'Па́па ___ на рабо́те.',b:'быть',a:'был',x:['была́','бы́ло','бы́ли'],de:'Papa war auf der Arbeit.'},
+{q:'Де́ти ___ в па́рке.',b:'игра́ть',a:'игра́ли',x:['игра́л','игра́ла','игра́ло'],de:'Die Kinder spielten im Park.'},
+{q:'А́нна ___ кни́гу.',b:'чита́ть',a:'чита́ла',x:['чита́л','чита́ло','чита́ли'],de:'Anna las ein Buch.'},
+{q:'Мы ___ фильм.',b:'смотре́ть',a:'смотре́ли',x:['смотре́л','смотре́ла','смотре́ло'],de:'Wir schauten einen Film.'},
+{q:'Брат ___ письмо́.',b:'писа́ть',a:'писа́л',x:['писа́ла','писа́ло','писа́ли'],de:'Der Bruder schrieb einen Brief.'},
+{q:'Соба́ка ___ до́ма.',b:'спать',a:'спала́',x:['спал','спа́ло','спа́ли'],de:'Der Hund schlief zu Hause.'},
+{q:'Я (♂) ___ в Москве́.',b:'жить',a:'жил',x:['жила́','жи́ло','жи́ли'],de:'Ich (m) wohnte in Moskau.'},
+{q:'Сестра́ ___ сок.',b:'пить',a:'пила́',x:['пил','пи́ло','пи́ли'],de:'Die Schwester trank Saft.'},
+{q:'Они́ ___ ру́сский.',b:'учи́ть',a:'учи́ли',x:['учи́л','учи́ла','учи́ло'],de:'Sie lernten Russisch.'},
+{q:'Молоко́ ___ в холоди́льнике.',b:'быть',a:'бы́ло',x:['был','была́','бы́ли'],de:'Die Milch war im Kühlschrank.'},
+{q:'Ба́бушка ___ нам ска́зку.',b:'расска́зывать',a:'расска́зывала',x:['расска́зывал','расска́зывало','расска́зывали'],de:'Oma erzählte uns ein Märchen.'}
+]},
+{id:'asp',icon:'⚖️',t:'Aspekt',s:'Prozess oder Ergebnis?',type:'mc2',
+ intro:'Unvollendet = Prozess, Dauer, Gewohnheit (чита́л). Vollendet = einmalig, abgeschlossen, Ergebnis (прочита́л). Lies das Signalwort im Satz!',
+ items:[
+{q:'Вчера́ я весь ве́чер ___ кни́гу.',o:['чита́л','прочита́л'],a:0,de:'Gestern las ich den ganzen Abend ein Buch.',e:'„весь ве́чер“ = Dauer/Prozess → unvollendet.'},
+{q:'Наконе́ц я ___ э́ту кни́гу!',o:['чита́л','прочита́л'],a:1,de:'Endlich habe ich dieses Buch fertig gelesen!',e:'„наконе́ц“ + Ergebnis → vollendet.'},
+{q:'Ка́ждый день она́ ___ за́втрак.',o:['гото́вит','пригото́вит'],a:0,de:'Jeden Tag macht sie Frühstück.',e:'„ка́ждый день“ = Gewohnheit → unvollendet.'},
+{q:'За́втра я тебе́ ___.',o:['бу́ду звони́ть','позвоню́'],a:1,de:'Morgen rufe ich dich an.',e:'Einmaliger, abgeschlossener Anruf → vollendet (позвоню́).'},
+{q:'Он два часа́ ___ уро́ки.',o:['де́лал','сде́лал'],a:0,de:'Er machte zwei Stunden lang Hausaufgaben.',e:'„два часа́“ = Dauer → unvollendet.'},
+{q:'Он уже́ ___ уро́ки и отдыха́ет.',o:['де́лал','сде́лал'],a:1,de:'Er hat die Hausaufgaben schon fertig und ruht sich aus.',e:'„уже́“ + fertig → vollendet.'},
+{q:'Ра́ньше мы ча́сто ___ в э́том кафе́.',o:['обе́дали','пообе́дали'],a:0,de:'Früher aßen wir oft in diesem Café zu Mittag.',e:'„ча́сто“ = Wiederholung → unvollendet.'},
+{q:'Я ___ письмо́ и отпра́вил его́.',o:['писа́л','написа́л'],a:1,de:'Ich schrieb den Brief (fertig) und schickte ihn ab.',e:'Abgeschlossen, danach ging es weiter → vollendet.'},
+{q:'Когда́ я ___ у́жин, пришёл брат.',o:['гото́вила','пригото́вила'],a:0,de:'Während ich das Abendessen kochte, kam mein Bruder.',e:'Hintergrund-Prozess, der unterbrochen wird → unvollendet.'},
+{q:'Мо́жно я ___ окно́?',o:['открыва́л','откро́ю'],a:1,de:'Darf ich das Fenster öffnen?',e:'Einmalige, kurze Handlung mit Ergebnis → vollendet.'},
+{q:'Она́ ка́ждое у́тро ___ ко́фе.',o:['пьёт','вы́пьет'],a:0,de:'Sie trinkt jeden Morgen Kaffee.',e:'Gewohnheit im Präsens → unvollendet (Präsens gibt es nur unvollendet!).'},
+{q:'Он ___ стака́н воды́ и ушёл.',o:['пил','вы́пил'],a:1,de:'Er trank ein Glas Wasser (aus) und ging.',e:'Komplett ausgetrunken, abgeschlossen → vollendet.'},
+{q:'Мы до́лго ___ такси́.',o:['жда́ли','подожда́ли'],a:0,de:'Wir warteten lange auf das Taxi.',e:'„до́лго“ = Dauer → unvollendet.'},
+{q:'___ мину́тку, пожа́луйста!',o:['Жди́те','Подожди́те'],a:1,de:'Warten Sie bitte einen Moment!',e:'Kurze, begrenzte Handlung → vollendet (подожда́ть).'}
+]},
+{id:'puz',icon:'🧩',t:'Satz-Puzzle',s:'Baue russische Sätze',type:'puz',
+ intro:'Tippe die Wörter in der richtigen Reihenfolge an. So lernst du den russischen Satzbau – und wiederholst nebenbei alle Fälle.',
+ items:[
+{de:'Ich heiße Max.',w:['Меня́','зову́т','Макс']},
+{de:'Ich wohne in Österreich.',w:['Я','живу́','в','А́встрии']},
+{de:'Das ist mein Haus.',w:['Э́то','мой','дом']},
+{de:'Ich lerne Russisch.',w:['Я','учу́','ру́сский','язы́к']},
+{de:'Wie geht es dir?',w:['Как','у','тебя́','дела́']},
+{de:'Er liest ein interessantes Buch.',w:['Он','чита́ет','интере́сную','кни́гу']},
+{de:'Wir gehen ins Kino.',w:['Мы','идём','в','кино́']},
+{de:'Ich trinke Tee mit Zucker.',w:['Я','пью','чай','с','са́харом']},
+{de:'Meine Schwester arbeitet als Ärztin.',w:['Моя́','сестра́','рабо́тает','врачо́м']},
+{de:'Ich habe einen Hund.',w:['У','меня́','есть','соба́ка']},
+{de:'Er spricht gut Russisch.',w:['Он','хорошо́','говори́т','по-ру́сски']},
+{de:'Was machst du morgen?',w:['Что','ты','де́лаешь','за́втра'],alt:[['Что','ты','за́втра','де́лаешь']]},
+{de:'Ich verstehe dich nicht.',w:['Я','тебя́','не','понима́ю'],alt:[['Я','не','понима́ю','тебя́']]},
+{de:'Wo ist die Toilette?',w:['Где','туале́т']},
+{de:'Ich möchte Kaffee bestellen.',w:['Я','хочу́','заказа́ть','ко́фе']},
+{de:'Am Abend schauen wir einen Film.',w:['Ве́чером','мы','смо́трим','фильм'],alt:[['Мы','смо́трим','фильм','ве́чером']]},
+{de:'Meine Mama kocht sehr gut.',w:['Моя́','ма́ма','о́чень','хорошо́','гото́вит']},
+{de:'Morgen fahre ich nach Moskau.',w:['За́втра','я','е́ду','в','Москву́'],alt:[['Я','за́втра','е́ду','в','Москву́'],['Я','е́ду','в','Москву́','за́втра']]}
+]}
+];
+
+/* ================= Zustand ================= */
+let S={it:{},streak:0,lastDay:null,frzDay:null,days:{},tot:{r:0,w:0}};
+let storeMode='none';
+function initStore(){
+  try{const t='__gram_test';localStorage.setItem(t,'1');localStorage.removeItem(t);storeMode='local'}
+  catch(e){storeMode='none';const n=$('#storeNotice');n.textContent='Hinweis: In dieser Umgebung kann nichts gespeichert werden – dein Fortschritt gilt nur für diese Sitzung.';n.style.display='block'}
+}
+function load(){
+  if(storeMode!=='local')return;
+  try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);S={...S,...d,it:d.it||{},days:d.days||{},tot:d.tot||{r:0,w:0}}}}catch(e){}
+}
+let saveT=null;
+function save(now){
+  if(storeMode!=='local')return;
+  clearTimeout(saveT);
+  const doIt=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+  if(now)doIt();else saveT=setTimeout(doIt,800);
+}
+function freezeAvail(){
+  if(!S.frzDay)return true;
+  const d=new Date();d.setDate(d.getDate()-7);
+  return S.frzDay<=dstr(d);
+}
+function dispStreak(){return (S.lastDay===todayStr()||S.lastDay===yesterStr()||(S.lastDay===day2Str()&&freezeAvail()))?S.streak:0}
+
+/* ================= Fortschritt ================= */
+const itemId=(tid,k)=>tid+':'+k;
+function itemStat(tid,k){return S.it[itemId(tid,k)]}
+function topicProgress(tp){
+  let m=0;
+  tp.items.forEach((it,k)=>{const st=itemStat(tp.id,k);if(st&&st.c>=2&&st.l===1)m++});
+  return Math.round(100*m/tp.items.length);
+}
+
+/* ================= Session ================= */
+let sess=null,cur=null;
+function pickItems(tp,n){
+  const arr=tp.items.map((it,k)=>{
+    const st=itemStat(tp.id,k);
+    const w=st?(st.l===0?0:(st.c>=2?2:1)):0.5; /* falsch zuletzt → zuerst, gemeistert → zuletzt */
+    return{tid:tp.id,k,w:w+Math.random()*0.9};
+  });
+  arr.sort((a,b)=>a.w-b.w);
+  return arr.slice(0,n).map(e=>({tid:e.tid,k:e.k}));
+}
+function startTopic(tid){
+  const tp=TOPICS.find(t=>t.id===tid);
+  const n=tp.type==='puz'?6:10;
+  sess={q:shuffle(pickItems(tp,n)),i:0,right:0,wrong:0,done:0,tid};
+  renderItem();
+}
+function startMix(){
+  let pool=[];
+  TOPICS.forEach(tp=>{pool=pool.concat(pickItems(tp,2))});
+  sess={q:shuffle(pool).slice(0,12),i:0,right:0,wrong:0,done:0,tid:null};
+  renderItem();
+}
+function quitSession(){save(true);sess=null;renderHome()}
+function topicOf(ref){return TOPICS.find(t=>t.id===ref.tid)}
+
+function renderItem(){
+  const ref=sess.q[sess.i],tp=topicOf(ref),it=tp.items[ref.k];
+  const st=itemStat(ref.tid,ref.k);
+  cur={ref,tp,it,st,answered:false,opts:null,goodIdx:-1,puz:null};
+  let front='';
+  const chips='<div class="badges"><span class="chip">'+tp.icon+' '+esc(tp.t)+'</span>'+(st&&st.l===0?'<span class="chip k2">nochmal üben</span>':'')+'</div>';
+  if(tp.type==='gap'){
+    const typing=st&&st.c>=2; /* gemeisterte Aufgaben werden getippt statt geklickt */
+    front='<div class="sent">'+acc(esc(it.q)).replace('___','<span class="gapx">___</span>')+'</div>'+
+      '<div class="baseword">(<b>'+acc(esc(it.b))+'</b>)</div>';
+    if(typing){
+      front+='<div class="qlabel">Schreib die richtige Form:</div>'+typeHtml();
+    }else{
+      cur.opts=shuffle(it.x.concat([it.a]));
+      cur.goodIdx=cur.opts.indexOf(it.a);
+      front+='<div class="qlabel">Welche Form passt?</div>'+
+        '<div class="opts">'+cur.opts.map((o,k)=>'<button class="opt" data-k="'+k+'">'+acc(esc(o))+'</button>').join('')+'</div>';
+    }
+  }else if(tp.type==='mc2'){
+    cur.opts=it.o.slice();
+    cur.goodIdx=it.a;
+    front='<div class="sent">'+acc(esc(it.q)).replace('___','<span class="gapx">___</span>')+'</div>'+
+      '<div class="qlabel">Prozess oder Ergebnis? Achte auf das Signalwort!</div>'+
+      '<div class="opts">'+cur.opts.map((o,k)=>'<button class="opt" data-k="'+k+'">'+acc(esc(o))+'</button>').join('')+'</div>';
+  }else{ /* puzzle */
+    cur.puz={picked:[],order:shuffle(it.w.map((w,k)=>k))};
+    front='<div class="qlabel" style="margin-top:4px">Baue den Satz:</div>'+
+      '<div class="sent" style="font-size:1.15rem;font-family:var(--sans);font-weight:600">'+esc(it.de)+'</div>'+
+      '<div class="built" id="builtRow"></div>'+
+      '<div class="tiles" id="tileRow">'+cur.puz.order.map(k=>'<button class="tile" data-k="'+k+'">'+acc(esc(it.w[k]))+'</button>').join('')+'</div>'+
+      '<div class="grade"><button class="g-ok" id="puzCheck" style="background:var(--mala)">Prüfen</button></div>';
+  }
+  $('#view-lernen').innerHTML=
+    '<div class="sess-top"><span class="cnt">'+(sess.i+1)+' / '+sess.q.length+'</span>'+
+    '<div class="bar"><i style="width:'+Math.round(100*sess.i/sess.q.length)+'%"></i></div>'+
+    '<button class="quit" onclick="quitSession()">Beenden</button></div>'+
+    '<div class="card">'+chips+front+'<div id="fbZone"></div></div>';
+  if(cur.opts){
+    document.querySelectorAll('#view-lernen .opt').forEach(b=>b.onclick=()=>{
+      if(cur.answered)return;
+      const k=+b.dataset.k,ok=k===cur.goodIdx;
+      document.querySelectorAll('#view-lernen .opt').forEach(x=>{x.disabled=true;if(+x.dataset.k===cur.goodIdx)x.classList.add('right')});
+      if(!ok)b.classList.add('wrong');
+      resolveItem(ok);
+    });
+  }
+  if(tp.type==='gap'&&st&&st.c>=2){
+    kbWire();
+    $('#checkBtn').onclick=checkTyped;
+    $('#typeInp').addEventListener('keydown',e=>{if(e.key==='Enter')checkTyped()});
+  }
+  if(tp.type==='puz'){
+    wirePuzzle();
+  }
+}
+
+/* ---- Tippen ---- */
+const KB_ROWS=['йцукенгшщзхъ','фывапролджэ','ячсмитьбюё'];
+function typeHtml(){
+  return '<div class="type-row"><input id="typeInp" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="по-русски …"><button class="check-btn" id="checkBtn">Prüfen</button></div>'+
+    '<div class="kb" id="kb">'+KB_ROWS.map((row,ri)=>'<div class="kb-row">'+row.split('').map(ch=>'<button type="button" class="kb-k" data-ch="'+ch+'">'+ch+'</button>').join('')+(ri===2?'<button type="button" class="kb-k kb-bs" data-bs="1">⌫</button>':'')+'</div>').join('')+'</div>';
+}
+function kbWire(){
+  document.querySelectorAll('.kb-k').forEach(b=>b.onclick=()=>{
+    const inp=$('#typeInp');
+    if(!inp||inp.disabled)return;
+    if(b.dataset.bs)inp.value=inp.value.slice(0,-1);
+    else inp.value+=b.dataset.ch;
+  });
+}
+function checkTyped(){
+  const inp=$('#typeInp');
+  if(!inp||cur.answered)return;
+  const v=normRu(inp.value);
+  if(!v)return;
+  const ok=v===normRu(cur.it.a);
+  inp.disabled=true;
+  inp.classList.add(ok?'inp-ok':'inp-no');
+  const kb=$('#kb');if(kb)kb.style.display='none';
+  const cb=$('#checkBtn');if(cb)cb.style.display='none';
+  resolveItem(ok);
+}
+
+/* ---- Puzzle ---- */
+function wirePuzzle(){
+  const upd=()=>{
+    $('#builtRow').innerHTML=cur.puz.picked.map((k,pi)=>'<button class="tile" data-pi="'+pi+'">'+acc(esc(cur.it.w[k]))+'</button>').join('')||'<span style="color:var(--ink-faint);font-size:.85rem;align-self:center">Tippe unten die Wörter an …</span>';
+    document.querySelectorAll('#builtRow .tile').forEach(b=>b.onclick=()=>{
+      if(cur.answered)return;
+      const pi=+b.dataset.pi;
+      const k=cur.puz.picked.splice(pi,1)[0];
+      const t=document.querySelector('#tileRow .tile[data-k="'+k+'"]');
+      if(t)t.classList.remove('used');
+      upd();
+    });
+  };
+  document.querySelectorAll('#tileRow .tile').forEach(b=>b.onclick=()=>{
+    if(cur.answered||b.classList.contains('used'))return;
+    b.classList.add('used');
+    cur.puz.picked.push(+b.dataset.k);
+    upd();
+  });
+  $('#puzCheck').onclick=()=>{
+    if(cur.answered)return;
+    if(cur.puz.picked.length<cur.it.w.length)return;
+    const seq=cur.puz.picked.map(k=>cur.it.w[k]).join(' ');
+    const good=[cur.it.w.join(' ')].concat((cur.it.alt||[]).map(a=>a.join(' ')));
+    resolveItem(good.indexOf(seq)>=0);
+  };
+  upd();
+}
+
+/* ---- Auswertung ---- */
+function speakCur(){
+  const it=cur.it,tp=cur.tp;
+  if(tp.type==='gap')speak(it.q.replace('___',it.a));
+  else if(tp.type==='mc2')speak(it.q.replace('___',it.o[it.a]));
+  else speak(it.w.join(' '));
+}
+function resolveItem(ok){
+  if(!cur||cur.answered)return;
+  cur.answered=true;
+  const id=itemId(cur.ref.tid,cur.ref.k);
+  const st=S.it[id]||(S.it[id]={c:0,w:0,l:1});
+  if(ok){st.c++;st.l=1;sess.right++;S.tot.r++}
+  else{st.w++;st.l=0;sess.wrong++;S.tot.w++;
+    sess.q.splice(Math.min(sess.i+2+Math.floor(Math.random()*3),sess.q.length),0,cur.ref); /* kommt gleich nochmal */
+  }
+  const t=todayStr();S.days[t]=(S.days[t]||0)+1;
+  sess.done++;
+  save();
+  $('#fbZone').innerHTML=
+    '<div class="fb '+(ok?'fb-ok':'fb-no')+'">'+(ok?'✓ Richtig!':'✗ Nicht ganz.')+'</div>'+
+    '<div class="answer">'+
+    '<div class="full">'+fullHtml()+' <button class="speak" onclick="speakCur()" title="Anhören">🔊</button></div>'+
+    '<div class="de">'+esc(cur.it.de)+'</div>'+
+    (cur.it.e?'<div class="expl">💡 '+esc(cur.it.e)+'</div>':'')+
+    '</div>'+
+    '<div class="grade"><button class="'+(ok?'g-ok':'g-no')+'" onclick="nextItem()">Weiter'+(ok?'':'<small>kommt gleich nochmal</small>')+'</button></div>';
+  speakCur();
+}
+function fullHtml(){
+  const it=cur.it,tp=cur.tp;
+  let s;
+  if(tp.type==='gap')s=esc(it.q).replace('___','<span class="hl">'+esc(it.a)+'</span>');
+  else if(tp.type==='mc2')s=esc(it.q).replace('___','<span class="hl">'+esc(it.o[it.a])+'</span>');
+  else s=esc(it.w.join(' '));
+  return acc(s);
+}
+function nextItem(){
+  sess.i++;
+  if(sess.i>=sess.q.length)finishSession();else renderItem();
+}
+function finishSession(){
+  const t=todayStr();
+  if(S.lastDay!==t){
+    if(S.lastDay===yesterStr())S.streak++;
+    else if(S.lastDay===day2Str()&&freezeAvail()){S.streak++;S.frzDay=t}
+    else S.streak=1;
+    S.lastDay=t;
+  }
+  save(true);
+  $('#streakN').textContent=dispStreak();
+  const tot=sess.right+sess.wrong,accy=tot?Math.round(100*sess.right/tot):100;
+  $('#view-lernen').innerHTML=
+    '<div class="hero"><div class="done-mark">🎉</div>'+
+    '<div class="due-line">Runde geschafft!</div>'+
+    '<div class="sumgrid">'+
+    '<div class="sumbox"><b>'+sess.done+'</b><span>Aufgaben</span></div>'+
+    '<div class="sumbox"><b>'+accy+' %</b><span>richtig</span></div>'+
+    '<div class="sumbox"><b style="color:var(--mala)">'+sess.right+'</b><span>gelöst</span></div>'+
+    '<div class="sumbox"><b style="color:var(--kalina)">'+sess.wrong+'</b><span>zum Üben</span></div>'+
+    '</div>'+
+    (sess.tid?'<button class="btn btn-primary" onclick="startTopic(\''+sess.tid+'\')">Gleiches Thema nochmal</button><br>':'<button class="btn btn-primary" onclick="startMix()">Noch ein Mix</button><br>')+
+    '<button class="btn-ghost" onclick="renderHome()">Zur Übersicht</button></div>';
+  sess=null;
+}
+
+/* ================= Ansichten ================= */
+function renderHome(){
+  const total=TOPICS.reduce((n,tp)=>n+tp.items.length,0);
+  const dT=S.days[todayStr()]||0;
+  let html='<div class="hero"><div class="due-line">Was übst du <b>heute</b>?</div>'+
+    '<div class="sub">'+total+' Aufgaben in '+TOPICS.length+' Themen · heute schon '+dT+' gelöst</div>'+
+    '<button class="btn btn-primary" onclick="startMix()">🎲 Mix-Training (12 Aufgaben)</button></div>'+
+    '<div class="sect">Themen</div>';
+  TOPICS.forEach(tp=>{
+    const p=topicProgress(tp);
+    html+='<button class="topic" onclick="showTopic(\''+tp.id+'\')">'+
+      '<span class="ic">'+tp.icon+'</span>'+
+      '<span class="m"><span class="t">'+esc(tp.t)+'</span><span class="s" style="display:block">'+esc(tp.s)+'</span>'+
+      '<span class="pbar"><i style="width:'+p+'%"></i></span></span>'+
+      '<span class="pct">'+p+' %</span></button>';
+  });
+  $('#view-lernen').innerHTML=html;
+}
+function showTopic(tid){
+  const tp=TOPICS.find(t=>t.id===tid);
+  const p=topicProgress(tp);
+  $('#view-lernen').innerHTML=
+    '<div class="hero"><div class="done-mark">'+tp.icon+'</div>'+
+    '<div class="due-line">'+esc(tp.t)+'</div>'+
+    '<div class="sub" style="text-align:left;margin-top:12px;line-height:1.6">'+esc(tp.intro)+'</div>'+
+    '<div class="sub" style="margin-top:10px">'+tp.items.length+' Aufgaben · '+p+' % gemeistert</div>'+
+    '<button class="btn btn-primary" onclick="startTopic(\''+tid+'\')">Üben ('+(tp.type==='puz'?6:10)+' Aufgaben)</button><br>'+
+    '<button class="btn-ghost" onclick="renderHome()">Zurück</button></div>';
+}
+function renderStats(){
+  const t=todayStr(),dT=S.days[t]||0;
+  const tot=S.tot.r+S.tot.w,accy=tot?Math.round(100*S.tot.r/tot):0;
+  let html='<div class="statgrid">'+
+    '<div class="stat"><b class="green">'+dT+'</b><span>Aufgaben heute</span></div>'+
+    '<div class="stat"><b>'+accy+' %</b><span>Trefferquote gesamt</span></div>'+
+    '<div class="stat"><b>🔥 '+dispStreak()+'</b><span>Tage in Folge · 🛡️ '+(freezeAvail()?'Schutz bereit':'Schutz verbraucht')+'</span></div>'+
+    '<div class="stat"><b>'+tot+'</b><span>Aufgaben gesamt</span></div>'+
+    '</div><div class="sect">Deine Themen</div>';
+  TOPICS.forEach(tp=>{
+    const p=topicProgress(tp);
+    html+='<div class="trow"><span class="ic">'+tp.icon+'</span><span class="n">'+esc(tp.t)+'</span>'+
+      '<span class="pb"><i style="width:'+p+'%"></i></span><span class="pc">'+p+' %</span></div>';
+  });
+  html+='<p class="hint">„Gemeistert“ heißt: mindestens 2× richtig gelöst und beim letzten Mal richtig. Gemeisterte Lücken-Aufgaben musst du tippen statt klicken – so bleibt es fordernd.</p>';
+  $('#view-statistik').innerHTML=html;
+}
+
+/* ================= Tabs & Mehr ================= */
+function tab(name){
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='view-'+name));
+  if(name==='lernen'&&!sess)renderHome();
+  if(name==='statistik')renderStats();
+}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>tab(b.dataset.tab));
+
+$('#bakMake').onclick=async()=>{
+  const data=JSON.stringify({v:1,...S});
+  $('#bakBox').value=data;
+  let copied=false;
+  try{await navigator.clipboard.writeText(data);copied=true}catch(e){$('#bakBox').select()}
+  $('#bakMsg').textContent=copied?'Backup erstellt und kopiert ✓':'Backup erstellt – bitte manuell kopieren.';
+  $('#bakMsg').className='msg ok';
+};
+$('#bakLoad').onclick=()=>{
+  const msg=$('#bakMsg');msg.className='msg';
+  try{
+    const d=JSON.parse($('#bakBox').value);
+    if(!d||typeof d!=='object'||!d.it)throw new Error('kein Backup');
+    S={it:d.it||{},streak:d.streak||0,lastDay:d.lastDay||null,frzDay:d.frzDay||null,days:d.days||{},tot:d.tot||{r:0,w:0}};
+    save(true);
+    $('#streakN').textContent=dispStreak();
+    msg.textContent='Backup wiederhergestellt ✓';msg.classList.add('ok');
+    tab('lernen');
+  }catch(e){msg.textContent='Das sieht nicht wie ein Backup aus.';msg.classList.add('err')}
+};
+$('#resetBtn').onclick=()=>{
+  if(!confirm('Wirklich den gesamten Grammatik-Fortschritt löschen?'))return;
+  S={it:{},streak:0,lastDay:null,frzDay:null,days:{},tot:{r:0,w:0}};
+  save(true);
+  $('#streakN').textContent=0;
+  $('#dataMsg').textContent='Fortschritt zurückgesetzt.';$('#dataMsg').className='msg ok';
+  tab('lernen');
+};
+
+/* ================= Start ================= */
+(function init(){
+  $('#brandTitle').innerHTML=acc('ГРАММА́ТИКА');
+  initStore();
+  load();
+  $('#streakN').textContent=dispStreak();
+  renderHome();
+})();
+</script>
+</body>
+</html>
