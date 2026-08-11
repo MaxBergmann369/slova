@@ -46,6 +46,10 @@ header{padding:22px 0 6px;display:flex;align-items:flex-end;justify-content:spac
 .brand p{font-size:.78rem;color:var(--ink-faint);font-weight:500;margin-top:4px;letter-spacing:.02em}
 .streak{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--frost);border-radius:999px;padding:7px 14px;font-weight:700;font-size:.9rem}
 .streak .fl{font-size:1rem}
+.appnav{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.appnav a{font-size:.72rem;font-weight:700;padding:4px 11px;border-radius:99px;text-decoration:none;color:var(--ink-faint);background:var(--card);border:1px solid var(--frost)}
+.appnav a.cur{background:var(--gzhel);color:#fff;border-color:transparent}
+.appnav a .acc{color:inherit}
 
 .notice{background:var(--amber-soft);border:1px solid #E8D9B4;color:#6B4A08;border-radius:12px;padding:10px 14px;font-size:.82rem;margin:10px 0;display:none}
 
@@ -262,6 +266,7 @@ textarea#impBox,textarea#bakBox{width:100%;min-height:110px;border:1px solid var
   </div>
   <div class="streak" id="streakBox"><span class="fl">🔥</span><span id="streakN">0</span></div>
 </header>
+<div class="appnav" id="appnav"></div>
 
 <div class="notice" id="storeNotice">Hinweis: Der Speicher ist hier nicht verfügbar. Dein Fortschritt gilt nur für diese Sitzung. Öffne den Trainer im Claude-Chat, damit alles dauerhaft gespeichert wird.</div>
 
@@ -3519,9 +3524,22 @@ $('#bakLoad').onclick=()=>{
   }
 };
 
+/* ================= App-Navigation (СЛОВА́ · ГРАММАТИКА · СКАЗКИ) ================= */
+function buildAppNav(cur){
+  const isWeb=location.protocol!=='file:';
+  const APPS=[
+    ['СЛОВА́','/slova/','russisch-vokabeltrainer.html','slova'],
+    ['ГРАММА́ТИКА','/slova/grammatik/','grammatik-trainer.html','gram'],
+    ['СКА́ЗКИ','/slova/skazki/','skazki-lese-app.html','skazki']];
+  document.getElementById('appnav').innerHTML=APPS.map(a=>a[3]===cur
+    ?'<a class="cur">'+acc(a[0])+'</a>'
+    :'<a href="'+(isWeb?a[1]:a[2])+'">'+acc(a[0])+'</a>').join('');
+}
+
 /* ================= Start ================= */
 (async function init(){
   $('#brandTitle').innerHTML=acc('СЛОВА́');
+  buildAppNav('slova');
   try{speechSynthesis.getVoices()}catch(e){}
   await load();
   $('#streakN').textContent=dispStreak();

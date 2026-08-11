@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>СКА́ЗКИ · Russisch-Lese-App</title>
+<meta name="theme-color" content="#6D4B9E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%236D4B9E'/%3E%3Ctext x='50' y='72' font-size='62' text-anchor='middle' fill='white' font-family='Georgia'%3EС%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sliva:#6D4B9E;        /* Pflaumen-Violett: Märchen-Primärfarbe */
+  --sliva-deep:#503677;
+  --sliva-soft:#EEE8F7;
+  --ink:#14181F;
+  --ink-soft:#4A5261;
+  --ink-faint:#8A93A5;
+  --paper:#F6F5F9;
+  --card:#FFFFFF;
+  --frost:#E2DEEC;
+  --birch:#2F7D5B;
+  --birch-soft:#E3F1EA;
+  --kalina:#C0392B;
+  --kalina-soft:#F9E9E6;
+  --amber:#B9790F;
+  --amber-soft:#F8EFDC;
+  --radius:16px;
+  --serif:"Playfair Display",Georgia,"Times New Roman",serif;
+  --sans:"Inter",-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height:100vh;line-height:1.5}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;touch-action:manipulation}
+.wrap{max-width:600px;margin:0 auto;padding:0 16px 96px}
+header{padding:22px 0 6px;display:flex;align-items:flex-end;justify-content:space-between}
+.brand h1{font-family:var(--serif);font-weight:800;font-size:1.9rem;letter-spacing:.5px;line-height:1}
+.brand h1 .acc{color:var(--sliva)}
+.brand p{font-size:.78rem;color:var(--ink-faint);font-weight:500;margin-top:4px}
+.streak{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--frost);border-radius:999px;padding:7px 14px;font-weight:700;font-size:.9rem}
+.appnav{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.appnav a{font-size:.72rem;font-weight:700;padding:4px 11px;border-radius:99px;text-decoration:none;color:var(--ink-faint);background:var(--card);border:1px solid var(--frost)}
+.appnav a.cur{background:var(--sliva);color:#fff;border-color:transparent}
+.appnav a .acc{color:inherit}
+.notice{background:var(--amber-soft);border:1px solid #E8D9B4;color:#6B4A08;border-radius:12px;padding:10px 14px;font-size:.82rem;margin:10px 0;display:none}
+nav.tabsbar{position:sticky;top:0;z-index:20;background:var(--paper);padding:12px 0 14px}
+.tabs{display:flex;background:var(--card);border:1px solid var(--frost);border-radius:14px;padding:4px;gap:4px}
+.tabs button{flex:1;padding:9px 4px;border-radius:10px;font-weight:600;font-size:.86rem;color:var(--ink-soft)}
+.tabs button.on{background:var(--sliva);color:#fff}
+@media (max-width:430px){.tabs button{font-size:.76rem;padding:8px 1px}.wrap{padding:0 10px 96px}.card{padding:20px 14px}}
+.view{display:none}
+.view.on{display:block;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.hero{background:var(--card);border:1px solid var(--frost);border-radius:var(--radius);padding:24px 20px;text-align:center;margin-top:6px}
+.hero .due-line{font-family:var(--serif);font-size:1.4rem;font-weight:700;line-height:1.3}
+.hero .due-line b{color:var(--sliva)}
+.hero .sub{color:var(--ink-soft);font-size:.9rem;margin-top:8px}
+.btn{display:inline-block;border-radius:12px;padding:14px 26px;font-weight:700;font-size:1rem}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--sliva);color:#fff;margin-top:16px}
+.btn-primary:hover{background:var(--sliva-deep)}
+.btn-ghost{background:none;color:var(--sliva);font-size:.88rem;margin-top:10px;padding:8px 14px;border-radius:10px}
+.btn-ghost:hover{background:var(--sliva-soft)}
+.done-mark{font-size:2.4rem;margin-bottom:8px}
+.sect{font-family:var(--serif);font-weight:700;font-size:1.15rem;margin:22px 0 10px}
+.sect small{font-family:var(--sans);font-weight:600;font-size:.75rem;color:var(--ink-faint)}
+.story{background:var(--card);border:1px solid var(--frost);border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;gap:14px;align-items:center;width:100%;text-align:left}
+.story:active{transform:scale(.99)}
+.story .ic{font-size:1.5rem;flex-shrink:0}
+.story .m{flex:1;min-width:0}
+.story .t{font-family:var(--serif);font-weight:700;font-size:1.05rem}
+.story .t .acc{color:var(--sliva)}
+.story .s{font-size:.78rem;color:var(--ink-soft);margin-top:1px}
+.story .st{font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:99px;flex-shrink:0}
+.st-new{background:var(--sliva-soft);color:var(--sliva)}
+.st-done{background:var(--birch-soft);color:var(--birch)}
+.sess-top{display:flex;align-items:center;gap:12px;margin:4px 0 14px}
+.sess-top .cnt{font-size:.8rem;font-weight:700;color:var(--ink-faint);white-space:nowrap}
+.bar{flex:1;height:6px;background:var(--frost);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--sliva);border-radius:99px;transition:width .25s ease}
+.quit{color:var(--ink-faint);font-size:.8rem;font-weight:600;padding:4px 8px}
+.card{background:var(--card);border:1px solid var(--frost);border-radius:var(--radius);padding:24px 20px;box-shadow:0 1px 2px rgba(20,24,31,.04)}
+.stitle{font-family:var(--serif);font-weight:800;font-size:1.5rem;text-align:center}
+.stitle .acc{color:var(--sliva)}
+.stitle-de{text-align:center;color:var(--ink-faint);font-size:.85rem;margin-top:2px}
+.controls{display:flex;gap:8px;justify-content:center;margin:14px 0 6px;flex-wrap:wrap}
+.ctl{background:var(--sliva-soft);color:var(--sliva);border-radius:99px;padding:8px 16px;font-weight:700;font-size:.85rem}
+.ctl.on{background:var(--sliva);color:#fff}
+.stext{font-family:var(--serif);font-size:1.28rem;line-height:2;margin-top:10px}
+.stext .acc{color:var(--sliva)}
+.sent{cursor:pointer}
+.sent.reading{background:var(--sliva-soft);border-radius:6px}
+.sent .w:hover{background:var(--sliva-soft);border-radius:4px}
+.sent .w.sel{background:var(--sliva);color:#fff;border-radius:4px}
+.strans{display:none;font-family:var(--sans);font-size:.85rem;color:var(--ink-soft);line-height:1.5;margin:-6px 0 8px}
+.showtr .strans{display:block}
+.sp-sent{color:var(--sliva);font-size:.95rem;padding:0 4px;vertical-align:middle}
+.wordbox{position:sticky;bottom:12px;background:var(--ink);color:#fff;border-radius:12px;padding:12px 16px;margin-top:16px;font-size:.95rem;box-shadow:0 4px 14px rgba(20,24,31,.25)}
+.wordbox b{font-family:var(--serif);font-size:1.1rem}
+.wordbox .acc{color:#C9B8E8}
+.wordbox .spk{float:right;font-size:1.1rem;padding:0 6px}
+.wordbox.empty{background:var(--card);color:var(--ink-faint);border:1px dashed var(--frost);box-shadow:none}
+.opts{display:grid;gap:8px;margin-top:12px}
+.opt{background:var(--paper);border:1.5px solid var(--frost);border-radius:12px;padding:13px 14px;font-weight:600;font-size:1.02rem;text-align:center;font-family:var(--serif)}
+.opt:hover{border-color:var(--sliva)}
+.opt.right{background:var(--birch-soft);border-color:var(--birch);color:var(--birch)}
+.opt.wrong{background:var(--kalina-soft);border-color:var(--kalina);color:var(--kalina)}
+.opt:disabled{cursor:default}
+.q-ru{font-family:var(--serif);font-weight:700;font-size:1.3rem;text-align:center;margin-top:14px}
+.q-ru .acc{color:var(--sliva)}
+.q-de{text-align:center;font-size:.82rem;color:var(--ink-faint);margin-top:2px}
+.fb{border-radius:10px;padding:10px 14px;font-weight:700;margin-top:14px;text-align:center}
+.fb-ok{background:var(--birch-soft);color:var(--birch)}
+.fb-no{background:var(--kalina-soft);color:var(--kalina)}
+.grade{display:grid;grid-template-columns:1fr;gap:8px;margin-top:14px}
+.grade button{border-radius:12px;padding:13px 4px;font-weight:700;font-size:.95rem;color:#fff;background:var(--sliva)}
+.sumgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.sumbox{background:var(--paper);border-radius:12px;padding:14px}
+.sumbox b{font-size:1.5rem;font-family:var(--serif);display:block}
+.sumbox span{font-size:.76rem;color:var(--ink-soft);font-weight:600}
+.statgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.stat{background:var(--card);border:1px solid var(--frost);border-radius:var(--radius);padding:16px}
+.stat b{font-family:var(--serif);font-size:1.9rem;display:block;line-height:1.1}
+.stat b.pl{color:var(--sliva)}
+.stat span{font-size:.75rem;color:var(--ink-soft);font-weight:600}
+.panel{background:var(--card);border:1px solid var(--frost);border-radius:var(--radius);padding:18px;margin-top:12px}
+.panel h3{font-family:var(--serif);font-size:1.05rem;margin-bottom:10px}
+.hint{font-size:.78rem;color:var(--ink-faint);margin-top:8px;line-height:1.6}
+textarea#bakBox{width:100%;min-height:110px;border:1px solid var(--frost);border-radius:10px;padding:10px;font-family:ui-monospace,Consolas,monospace;font-size:.78rem;background:var(--paper);resize:vertical}
+.btn-sm{background:var(--sliva);color:#fff;border-radius:10px;padding:10px 18px;font-weight:700;font-size:.86rem;margin-top:10px}
+.btn-sm.gray{background:#EEF1F6;color:var(--ink-soft)}
+.btn-sm.danger{background:var(--kalina-soft);color:var(--kalina)}
+.msg{font-size:.8rem;font-weight:600;margin-top:8px;min-height:1em}
+.msg.ok{color:var(--birch)}.msg.err{color:var(--kalina)}
+.foot{text-align:center;color:var(--ink-faint);font-size:.72rem;margin-top:26px;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="brand">
+    <h1 id="brandTitle">СКА́ЗКИ</h1>
+    <p>Deine Russisch-Lese-App · Geschichten von A1 bis B1</p>
+  </div>
+  <div class="streak"><span>📚</span><span id="readN">0</span></div>
+</header>
+<div class="appnav" id="appnav"></div>
+
+<div class="notice" id="storeNotice"></div>
+
+<nav class="tabsbar"><div class="tabs">
+  <button data-tab="lesen" class="on">Lesen</button>
+  <button data-tab="statistik">Statistik</button>
+  <button data-tab="mehr">Mehr</button>
+</div></nav>
+
+<section class="view on" id="view-lesen"></section>
+<section class="view" id="view-statistik"></section>
+<section class="view" id="view-mehr">
+  <div class="panel">
+    <h3>So liest du am besten</h3>
+    <p class="hint" style="font-size:.85rem;color:var(--ink-soft)">
+      1. Lies die Geschichte erst einmal ganz, ohne jedes Wort zu verstehen.<br>
+      2. Tippe nur die Wörter an, ohne die du den Satz wirklich nicht verstehst.<br>
+      3. Hör dir die Geschichte mit ▶ an und lies leise mit.<br>
+      4. Beantworte die Fragen – und lies die Geschichte morgen noch einmal: Beim zweiten Mal verstehst du doppelt so viel.</p>
+  </div>
+  <div class="panel">
+    <h3>Backup deines Fortschritts</h3>
+    <textarea id="bakBox" placeholder="Hier erscheint dein Backup."></textarea>
+    <button class="btn-sm" id="bakMake">Backup erstellen &amp; kopieren</button>
+    <button class="btn-sm gray" id="bakLoad">Backup wiederherstellen</button>
+    <div class="msg" id="bakMsg"></div>
+  </div>
+  <div class="panel">
+    <h3>Daten</h3>
+    <button class="btn-sm danger" id="resetBtn">Fortschritt zurücksetzen</button>
+    <div class="msg" id="dataMsg"></div>
+  </div>
+  <p class="foot">Schwester-App von СЛОВА́ und ГРАММА́ТИКА · Alle Geschichten mit markierter Betonung.</p>
+</section>
+
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const KEY='russisch-skazki-v1';
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const acc=s=>s.replace(/([А-Яа-яЁё]́)/g,'<span class="acc">$1</span>');
+const normRu=s=>String(s).toLowerCase().replace(/́/g,'').replace(/ё/g,'е').trim();
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a}
+
+/* ---------- Sprachausgabe ---------- */
+let RU_VOICE=null,VOICES_LOADED=false;
+function pickRuVoice(){
+  try{
+    const vs=speechSynthesis.getVoices()||[];
+    if(vs.length)VOICES_LOADED=true;
+    RU_VOICE=vs.find(v=>v.lang&&v.lang.toLowerCase().replace('_','-').indexOf('ru')===0)||vs.find(v=>/russian|русск/i.test(v.name||''))||null;
+  }catch(e){}
+}
+function utter(txt){
+  const u=new SpeechSynthesisUtterance(String(txt).replace(/́/g,''));
+  u.lang='ru-RU';u.rate=.82;
+  if(RU_VOICE)u.voice=RU_VOICE;
+  return u;
+}
+function speak(txt){
+  try{
+    if(!('speechSynthesis' in window))return;
+    if(!RU_VOICE)pickRuVoice();
+    speechSynthesis.cancel();speechSynthesis.resume();
+    speechSynthesis.speak(utter(txt));
+  }catch(e){}
+}
+try{pickRuVoice();speechSynthesis.onvoiceschanged=pickRuVoice}catch(e){}
+
+/* ================= Wörterbuch (angetippte Wörter) ================= */
+const DICT={
+'это':'das (ist)','кот':'Kater','его':'sein / ihn','зовут':'(man) nennt – его зовут = er heißt','барсик':'Barsik (Katername)','живет':'wohnt, lebt (жить)','дома':'zu Hause / des Hauses','он':'er','большой':'groß','и':'und','очень':'sehr','красивый':'schön','утром':'morgens','пьет':'trinkt (пить)','молоко':'Milch','днем':'tagsüber, mittags','спит':'schläft (спать)','на':'auf, an, in','диване':'Sofa (auf dem ~)','вечером':'abends','играет':'spielt (играть)','с':'mit','мячом':'Ball (mit dem ~)','любит':'liebt, mag (любить)','рыбу':'Fisch (Akk.)','а':'und, aber','ты':'du','любишь':'(du) liebst, magst','кошек':'Katzen (Akk.)',
+'меня':'mich – меня зовут = ich heiße','анна':'Anna (Name)','мне':'mir – мне 20 лет = ich bin 20','двадцать':'zwanzig','лет':'Jahre','моя':'meine','семья':'Familie','в':'in, nach','граце':'Graz (in ~)','мой':'mein','папа':'Papa','врач':'Arzt','мама':'Mama','она':'sie','учительница':'Lehrerin','у':'bei – у меня есть = ich habe','есть':'es gibt, haben; essen','брат':'Bruder','макс':'Max (Name)','ему':'ihm – ему 16 лет = er ist 16','шестнадцать':'sechzehn','мы':'wir','часто':'oft','гуляем':'(wir) spazieren','парке':'Park (im ~)','вместе':'zusammen','я':'ich','люблю':'(ich) liebe','мою':'meine (Akk.)','семью':'Familie (Akk.)',
+'мое':'mein (n)','утро':'Morgen','встаю':'(ich) stehe auf','семь':'sieben','часов':'Uhr – в семь часов = um 7 Uhr','сначала':'zuerst','кофе':'Kaffee','потом':'dann, danach','ем':'(ich) esse','хлеб':'Brot','сыром':'Käse (mit ~)','слушаю':'(ich) höre','музыку':'Musik (Akk.)','смотрю':'(ich) schaue','окно':'Fenster','улице':'Straße – на улице = draußen','солнце':'Sonne','восемь':'acht','иду':'(ich) gehe','работу':'Arbeit (Akk.)','работаю':'(ich) arbeite','офисе':'Büro (im ~)','работа':'Arbeit','нравится':'gefällt – мне нравится = mir gefällt',
+'идет':'geht','кафе':'Café','добрый':'guter – добрый день = Guten Tag','день':'Tag','говорит':'sagt, spricht','здравствуйте':'Guten Tag! (höflich)','что':'was; dass','вы':'Sie, ihr','хотите':'(Sie) möchten','спрашивает':'fragt','официант':'Kellner','молоком':'Milch (mit ~)','суп':'Suppe','пожалуйста':'bitte','хорошо':'gut','еще':'noch','воду':'Wasser (Akk.)','без':'ohne','газа':'Kohlensäure (ohne ~)','ест':'isst','вкусный':'lecker','спасибо':'danke','до':'bis – до свидания = auf Wiedersehen','свидания':'Wiedersehen',
+'вчера':'gestern','была':'war (sie)','суббота':'Samstag','долго':'lange','спала':'schlief (sie)','пила':'trank (sie)','чай':'Tee','читала':'las (sie)','книгу':'Buch (Akk.)','гуляла':'spazierte (sie)','подругой':'Freundin (mit der ~)','погода':'Wetter','хорошая':'gut, schön (f)','готовила':'kochte (sie)','ужин':'Abendessen','приготовила':'kochte fertig (sie)','борщ':'Borschtsch','был':'war (er)','хороший':'gut (m)','какой':'welcher, was für ein',
+'мяч':'Ball','лайка':'Lajka (Hundename)','собака':'Hund','играть':'spielen','были':'waren','взял':'nahm (er)','красный':'rot','бросил':'warf (er)','далеко':'weit','быстро':'schnell','побежала':'lief los (sie)','нашла':'fand (sie)','но':'aber','увидела':'erblickte (sie)','кошку':'Katze (Akk.)','забыла':'vergaß (sie)','про':'über, von','за':'hinter, hinterher','кошкой':'Katze (hinter der ~)','искал':'suchte (er)','теперь':'jetzt','лежит':'liegt',
+'сегодня':'heute','получил':'bekam (er)','письмо':'Brief','от':'von','бабушки':'Oma (von der ~)','из':'aus','деревни':'Dorf (aus dem ~)','бабушка':'Oma','написала':'schrieb (sie)','дорогой':'lieber','твои':'deine','дела':'Dinge – как дела = wie geht’s','нас':'uns – у нас = bei uns','все':'alles, alle','дедушка':'Opa','сделал':'machte (er)','новый':'neu','стол':'Tisch','саду':'Garten (im ~)','уже':'schon','яблоки':'Äpfel','приезжай':'komm her! (mit Fahrzeug)','к':'zu','нам':'(zu) uns','летом':'im Sommer','улыбнулся':'lächelte (er)','начал':'begann (er)','писать':'schreiben','ответ':'Antwort',
+'сентябре':'September (im ~)','игорь':'Igor (Name)','переехал':'zog um (er)','город':'Stadt','было':'war (es)','трудно':'schwer, schwierig','никого':'niemanden','не':'nicht, kein','знал':'kannte, wusste (er)','думал':'dachte (er)','о':'über, von','доме':'Haus (über das ~)','каждый':'jeder','ходил':'ging (regelmäßig, er)','пешком':'zu Fuß','однажды':'eines Tages','увидел':'erblickte (er)','молодого':'jungen (Akk.)','человека':'Menschen (Akk.)','книгой':'Buch (mit dem ~)','извините':'Entschuldigen Sie','интересная':'interessant (f)','спросил':'fragte (er)','ее':'sie / ihr (Akk.)','второй':'zweite(r)','раз':'Mal','ответил':'antwortete (er)','они':'sie (Mehrzahl)','говорили':'sprachen','два':'zwei','часа':'Stunden – два часа = zwei Stunden','книгах':'Bücher (über ~)','музыке':'Musik (über die ~)','жизни':'Leben (über das ~)','игоря':'Igor (Gen.)','друг':'Freund','любимое':'Lieblings-','стал':'wurde (er)','для':'für','него':'ihn – для него = für ihn','домом':'Zuhause (wurde zum ~)',
+'завтра':'morgen','мамы':'Mama (von der ~)','рождения':'день рождения = Geburtstag','думали':'dachten','подарке':'Geschenk (über das ~)','может':'может быть = vielleicht','быть':'sein','сказал':'sagte (er)','нет':'nein; es gibt kein','много':'viele','книг':'Bücher (Gen.)','ответила':'antwortete (sie)','пошли':'gingen los','магазин':'Laden, Geschäft','там':'dort','красивую':'schöne (Akk.)','чашку':'Tasse (Akk.)','белую':'weiße (Akk.)','синими':'blauen','цветами':'Blumen (mit ~)','каждое':'jeden (n)','подарок':'Geschenk','подарили':'schenkten','маме':'Mama (der ~)','какие':'was für (welche)','хорошие':'gute (Mehrzahl)','улыбнулась':'lächelte (sie)',
+'зимой':'im Winter','поехал':'fuhr los (er)','деревню':'Dorf (Akk.)','красиво':'schön (es ist ~)','везде':'überall','лежал':'lag (er)','белый':'weiß','снег':'Schnee','лес':'Wald','лесу':'Wald (im ~)','тихо':'still, leise','только':'nur','падал':'fiel (er)','неба':'Himmel (vom ~)','вся':'die ganze','сидела':'saß (sie)','горячий':'heiß','медом':'Honig (mit ~)','рассказывал':'erzählte (er)','старые':'alte','истории':'Geschichten','слушал':'hörte zu (er)','смотрел':'schaute (er)','огонь':'Feuer','как':'wie','здесь':'hier',
+'ивана':'Ivan (Gen.)','иван':'Ivan (Name)','старый':'alt','велосипед':'Fahrrad','который':'der, welcher','этом':'diesem','году':'Jahr – в этом году = dieses Jahr','купил':'kaufte (er)','со':'mit','старым':'alten (mit dem ~)','делать':'machen, tun','мальчика':'Jungen (Akk./Gen.)','мальчик':'Junge','десяти':'лет десяти = etwa zehn Jahre alt','велосипеды':'Fahrräder','около':'neben, bei','магазина':'Laden (beim ~)','тебе':'dir','денег':'Geld – нет денег = kein Geld','минуту':'Minute (eine ~ lang)','подожди':'warte!','через':'nach (zeitlich); durch','полчаса':'halbe Stunde','вернулся':'kehrte zurück (er)','своим':'seinem (eigenen)','твой':'dein','обещай':'versprich!','будешь':'(du) wirst','ездить':'fahren (regelmäßig)','осторожно':'vorsichtig','мог':'konnte (er)','ни':'ни слова = kein einziges Wort','слова':'Wortes / Wörter','просто':'einfach','улыбался':'lächelte (immerzu, er)','шел':'ging (er)','домой':'nach Hause','чувствовал':'fühlte (er)','себя':'sich','прекрасно':'wunderbar',
+'нашем':'unserem (in ~)','странный':'seltsam, merkwürdig','сосед':'Nachbar','николай':'Nikolaj (Name)','петрович':'Petrowitsch (Vatersname)','ровно':'genau, pünktlich','выходит':'geht hinaus','квартиры':'Wohnung (aus der ~)','большая':'groß (f)','сумкой':'Tasche (mit der ~)','возвращается':'kehrt zurück','ночью':'nachts','сумка':'Tasche','всегда':'immer','пустая':'leer','делает':'macht, tut','думала':'dachte (sie)','выдержала':'не выдержала = hielt es nicht mehr aus (sie)','пошла':'ging los (sie)','ним':'за ним = ihm hinterher','мимо':'vorbei an','старой':'alten (an der ~)','школы':'Schule (Gen.)','наконец':'endlich','остановился':'blieb stehen (er)','маленького':'kleinen (Gen.)','ждали':'warteten','собаки':'Hunde','собак':'Hunde (Gen.)','сумке':'Tasche (in der ~)','еда':'Essen','кормит':'füttert','бездомных':'heimatlose, streunende','ходим':'(wir) gehen (regelmäßig)','туда':'dorthin','наш':'unser','маленький':'klein','секрет':'Geheimnis',
+'пью':'(ich) trinke','макса':'Max (Gen. – у Макса = Max hat)','книга':'Buch','читаю':'(ich) lese','приготовили':'machten, bereiteten zu','завтрак':'Frühstück','сказала':'sagte (sie)','бабушке':'Oma (zur ~)','ходили':'gingen (regelmäßig)','любил':'liebte (er)','сказать':'sagen','вечер':'Abend – каждый вечер = jeden Abend','парк':'Park','деревне':'Dorf (im ~)','велосипедом':'Fahrrad (mit dem ~)'
+};
+
+/* ================= Geschichten ================= */
+/* s: [russischer Satz, deutsche Übersetzung] · q: Verständnisfragen */
+const STORIES=[
+{id:'kot',lvl:1,t:'Кот Барси́к',tde:'Der Kater Barsik',
+ s:[
+ ['Э́то кот.','Das ist ein Kater.'],
+ ['Его́ зову́т Барси́к.','Er heißt Barsik.'],
+ ['Барси́к живёт до́ма.','Barsik lebt zu Hause.'],
+ ['Он большо́й и о́чень краси́вый.','Er ist groß und sehr schön.'],
+ ['У́тром Барси́к пьёт молоко́.','Morgens trinkt Barsik Milch.'],
+ ['Днём он спит на дива́не.','Tagsüber schläft er auf dem Sofa.'],
+ ['Ве́чером он игра́ет с мячо́м.','Abends spielt er mit dem Ball.'],
+ ['Барси́к лю́бит ры́бу и молоко́.','Barsik liebt Fisch und Milch.'],
+ ['А ты лю́бишь ко́шек?','Und du – magst du Katzen?']],
+ q:[
+ {q:'Как зову́т кота́?',qde:'Wie heißt der Kater?',o:['Барси́к','Му́рзик','Пушо́к'],a:0},
+ {q:'Что Барси́к пьёт у́тром?',qde:'Was trinkt Barsik morgens?',o:['молоко́','во́ду','чай'],a:0},
+ {q:'Где он спит днём?',qde:'Wo schläft er tagsüber?',o:['на дива́не','в па́рке','в шко́ле'],a:0}]},
+{id:'sem',lvl:1,t:'Моя́ семья́',tde:'Meine Familie',
+ s:[
+ ['Меня́ зову́т А́нна.','Ich heiße Anna.'],
+ ['Мне два́дцать лет.','Ich bin zwanzig Jahre alt.'],
+ ['Моя́ семья́ живёт в Гра́це.','Meine Familie lebt in Graz.'],
+ ['Э́то мой па́па.','Das ist mein Papa.'],
+ ['Он врач.','Er ist Arzt.'],
+ ['Э́то моя́ ма́ма.','Das ist meine Mama.'],
+ ['Она́ учи́тельница.','Sie ist Lehrerin.'],
+ ['У меня́ есть брат.','Ich habe einen Bruder.'],
+ ['Его́ зову́т Макс, ему́ шестна́дцать лет.','Er heißt Max, er ist sechzehn.'],
+ ['Мы ча́сто гуля́ем в па́рке вме́сте.','Wir spazieren oft zusammen im Park.'],
+ ['Я о́чень люблю́ мою́ семью́.','Ich liebe meine Familie sehr.']],
+ q:[
+ {q:'Кто па́па А́нны?',qde:'Was ist Annas Papa von Beruf?',o:['врач','учи́тель','официа́нт'],a:0},
+ {q:'Ско́лько лет бра́ту?',qde:'Wie alt ist der Bruder?',o:['шестна́дцать','два́дцать','де́сять'],a:0},
+ {q:'Где живёт семья́?',qde:'Wo lebt die Familie?',o:['в Гра́це','в Москве́','в Берли́не'],a:0}]},
+{id:'utro',lvl:1,t:'Моё у́тро',tde:'Mein Morgen',
+ s:[
+ ['У́тром я встаю́ в семь часо́в.','Morgens stehe ich um sieben Uhr auf.'],
+ ['Снача́ла я пью ко́фе.','Zuerst trinke ich Kaffee.'],
+ ['Пото́м я ем хлеб с сы́ром.','Dann esse ich Brot mit Käse.'],
+ ['Я слу́шаю му́зыку и смотрю́ в окно́.','Ich höre Musik und schaue aus dem Fenster.'],
+ ['На у́лице со́лнце.','Draußen scheint die Sonne.'],
+ ['В во́семь часо́в я иду́ на рабо́ту.','Um acht Uhr gehe ich zur Arbeit.'],
+ ['Я рабо́таю в о́фисе.','Ich arbeite in einem Büro.'],
+ ['Моя́ рабо́та мне нра́вится.','Meine Arbeit gefällt mir.']],
+ q:[
+ {q:'Когда́ я встаю́?',qde:'Wann stehe ich auf?',o:['в семь часо́в','в во́семь часо́в','в де́вять часо́в'],a:0},
+ {q:'Что я пью у́тром?',qde:'Was trinke ich morgens?',o:['ко́фе','чай','молоко́'],a:0},
+ {q:'Где я рабо́таю?',qde:'Wo arbeite ich?',o:['в о́фисе','в шко́ле','в кафе́'],a:0}]},
+{id:'kafe',lvl:1,t:'В кафе́',tde:'Im Café',
+ s:[
+ ['Днём Макс идёт в кафе́.','Mittags geht Max ins Café.'],
+ ['— До́брый день! — говори́т Макс.','„Guten Tag!", sagt Max.'],
+ ['— Здра́вствуйте! Что вы хоти́те? — спра́шивает официа́нт.','„Guten Tag! Was möchten Sie?", fragt der Kellner.'],
+ ['— Ко́фе с молоко́м и суп, пожа́луйста.','„Kaffee mit Milch und eine Suppe, bitte."'],
+ ['— Хорошо́. Что ещё?','„Gut. Was noch?"'],
+ ['— Ещё хлеб и во́ду без га́за.','„Noch Brot und stilles Wasser."'],
+ ['Макс ест суп.','Max isst die Suppe.'],
+ ['Он о́чень вку́сный.','Sie ist sehr lecker.'],
+ ['— Спаси́бо! До свида́ния!','„Danke! Auf Wiedersehen!"']],
+ q:[
+ {q:'Что пьёт Макс?',qde:'Was trinkt Max?',o:['ко́фе с молоко́м','чай с мёдом','сок'],a:0},
+ {q:'Како́й суп?',qde:'Wie ist die Suppe?',o:['о́чень вку́сный','плохо́й','холо́дный'],a:0},
+ {q:'Куда́ идёт Макс?',qde:'Wohin geht Max?',o:['в кафе́','в шко́лу','домо́й'],a:0}]},
+{id:'den',lvl:2,t:'Оди́н день',tde:'Ein Tag',
+ s:[
+ ['Вчера́ была́ суббо́та.','Gestern war Samstag.'],
+ ['А́нна до́лго спала́.','Anna schlief lange.'],
+ ['Пото́м она́ пила́ чай и чита́ла кни́гу.','Dann trank sie Tee und las ein Buch.'],
+ ['Днём она́ гуля́ла в па́рке с подру́гой.','Mittags spazierte sie mit ihrer Freundin im Park.'],
+ ['Пого́да была́ хоро́шая.','Das Wetter war schön.'],
+ ['Ве́чером А́нна гото́вила у́жин.','Abends kochte Anna das Abendessen.'],
+ ['Она́ пригото́вила борщ.','Sie kochte Borschtsch.'],
+ ['Борщ был о́чень вку́сный.','Der Borschtsch war sehr lecker.'],
+ ['Э́то был хоро́ший день.','Das war ein guter Tag.']],
+ q:[
+ {q:'Како́й день был вчера́?',qde:'Welcher Tag war gestern?',o:['суббо́та','понеде́льник','среда́'],a:0},
+ {q:'С кем гуля́ла А́нна?',qde:'Mit wem spazierte Anna?',o:['с подру́гой','с бра́том','с соба́кой'],a:0},
+ {q:'Что она́ пригото́вила?',qde:'Was kochte sie?',o:['борщ','суп','ка́шу'],a:0}]},
+{id:'myach',lvl:2,t:'Соба́ка и мяч',tde:'Der Hund und der Ball',
+ s:[
+ ['У Ма́кса есть соба́ка Ла́йка.','Max hat eine Hündin namens Lajka.'],
+ ['Ла́йка о́чень лю́бит игра́ть.','Lajka spielt sehr gern.'],
+ ['Вчера́ Макс и Ла́йка бы́ли в па́рке.','Gestern waren Max und Lajka im Park.'],
+ ['Макс взял кра́сный мяч.','Max nahm einen roten Ball.'],
+ ['Он бро́сил мяч далеко́.','Er warf den Ball weit weg.'],
+ ['Ла́йка бы́стро побежа́ла и нашла́ мяч.','Lajka rannte schnell los und fand den Ball.'],
+ ['Но пото́м она́ уви́дела ко́шку.','Aber dann erblickte sie eine Katze.'],
+ ['Ла́йка забы́ла про мяч и побежа́ла за ко́шкой!','Lajka vergaß den Ball und rannte der Katze hinterher!'],
+ ['Макс до́лго иска́л мяч в па́рке.','Max suchte den Ball lange im Park.'],
+ ['Тепе́рь мяч лежи́т до́ма, а Ла́йка спит.','Jetzt liegt der Ball zu Hause, und Lajka schläft.']],
+ q:[
+ {q:'Как зову́т соба́ку?',qde:'Wie heißt die Hündin?',o:['Ла́йка','Ша́рик','Рекс'],a:0},
+ {q:'Како́й был мяч?',qde:'Welche Farbe hatte der Ball?',o:['кра́сный','си́ний','бе́лый'],a:0},
+ {q:'Кого́ уви́дела Ла́йка?',qde:'Wen erblickte Lajka?',o:['ко́шку','соба́ку','ма́льчика'],a:0}]},
+{id:'pismo',lvl:2,t:'Письмо́ от ба́бушки',tde:'Der Brief von Oma',
+ s:[
+ ['Сего́дня Макс получи́л письмо́.','Heute bekam Max einen Brief.'],
+ ['Э́то письмо́ от ба́бушки из дере́вни.','Der Brief ist von Oma aus dem Dorf.'],
+ ['Ба́бушка написа́ла: «Дорого́й Макс!','Oma schrieb: „Lieber Max!'],
+ ['Как твои́ дела́?','Wie geht es dir?'],
+ ['У нас всё хорошо́.','Bei uns ist alles gut.'],
+ ['Де́душка сде́лал но́вый стол.','Opa hat einen neuen Tisch gebaut.'],
+ ['В саду́ уже́ есть я́блоки.','Im Garten gibt es schon Äpfel.'],
+ ['Приезжа́й к нам ле́том!»','Komm uns im Sommer besuchen!"'],
+ ['Макс улыбну́лся и на́чал писа́ть отве́т.','Max lächelte und begann, eine Antwort zu schreiben.']],
+ q:[
+ {q:'От кого́ письмо́?',qde:'Von wem ist der Brief?',o:['от ба́бушки','от дру́га','от ма́мы'],a:0},
+ {q:'Что сде́лал де́душка?',qde:'Was hat Opa gemacht?',o:['но́вый стол','но́вый дом','но́вое окно́'],a:0},
+ {q:'Что есть в саду́?',qde:'Was gibt es im Garten?',o:['я́блоки','цветы́','грибы́'],a:0}]},
+{id:'gorod',lvl:3,t:'Но́вый го́род',tde:'Die neue Stadt',
+ s:[
+ ['В сентябре́ И́горь перее́хал в но́вый го́род.','Im September zog Igor in eine neue Stadt.'],
+ ['Снача́ла ему́ бы́ло тру́дно.','Anfangs war es schwer für ihn.'],
+ ['Он никого́ не знал и ча́сто ду́мал о до́ме.','Er kannte niemanden und dachte oft an zu Hause.'],
+ ['Ка́ждый день он ходи́л на рабо́ту пешко́м.','Jeden Tag ging er zu Fuß zur Arbeit.'],
+ ['Одна́жды в кафе́ он уви́дел молодо́го челове́ка с кни́гой.','Eines Tages sah er im Café einen jungen Mann mit einem Buch.'],
+ ['— Извини́те, э́то интере́сная кни́га? — спроси́л И́горь.','„Entschuldigung, ist das ein interessantes Buch?", fragte Igor.'],
+ ['— О́чень! Я чита́ю её уже́ второ́й раз, — отве́тил он.','„Sehr! Ich lese es schon zum zweiten Mal", antwortete er.'],
+ ['Они́ говори́ли два часа́ — о кни́гах, о му́зыке и о жи́зни.','Sie sprachen zwei Stunden – über Bücher, Musik und das Leben.'],
+ ['Тепе́рь у И́горя есть друг и люби́мое кафе́.','Jetzt hat Igor einen Freund und ein Lieblingscafé.'],
+ ['Но́вый го́род стал для него́ до́мом.','Die neue Stadt ist für ihn ein Zuhause geworden.']],
+ q:[
+ {q:'Когда́ И́горь перее́хал?',qde:'Wann ist Igor umgezogen?',o:['в сентябре́','ле́том','зимо́й'],a:0},
+ {q:'Кого́ он уви́дел в кафе́?',qde:'Wen sah er im Café?',o:['челове́ка с кни́гой','ста́рого дру́га','свою́ ба́бушку'],a:0},
+ {q:'Ско́лько вре́мени они́ говори́ли?',qde:'Wie lange sprachen sie?',o:['два часа́','час','весь день'],a:0}]},
+{id:'dr',lvl:3,t:'День рожде́ния',tde:'Der Geburtstag',
+ s:[
+ ['За́втра у ма́мы день рожде́ния.','Morgen hat Mama Geburtstag.'],
+ ['А́нна и Макс до́лго ду́мали о пода́рке.','Anna und Max dachten lange über ein Geschenk nach.'],
+ ['— Мо́жет быть, кни́гу? — сказа́л Макс.','„Vielleicht ein Buch?", sagte Max.'],
+ ['— Нет, у ма́мы уже́ мно́го книг, — отве́тила А́нна.','„Nein, Mama hat schon viele Bücher", antwortete Anna.'],
+ ['Ве́чером они́ пошли́ в магази́н.','Abends gingen sie in ein Geschäft.'],
+ ['Там А́нна уви́дела краси́вую ча́шку — бе́лую с си́ними цвета́ми.','Dort entdeckte Anna eine schöne Tasse – weiß mit blauen Blumen.'],
+ ['— Ма́ма ка́ждое у́тро пьёт чай.','„Mama trinkt jeden Morgen Tee.'],
+ ['Э́то хоро́ший пода́рок!','Das ist ein gutes Geschenk!"'],
+ ['У́тром они́ пригото́вили за́втрак и подари́ли ма́ме ча́шку.','Am Morgen machten sie Frühstück und schenkten Mama die Tasse.'],
+ ['— Каки́е вы у меня́ хоро́шие! — сказа́ла ма́ма и улыбну́лась.','„Was habe ich nur für liebe Kinder!", sagte Mama und lächelte.']],
+ q:[
+ {q:'У кого́ день рожде́ния?',qde:'Wer hat Geburtstag?',o:['у ма́мы','у А́нны','у Ма́кса'],a:0},
+ {q:'Что купи́ли де́ти?',qde:'Was kauften die Kinder?',o:['ча́шку','кни́гу','цветы́'],a:0},
+ {q:'Что ма́ма пьёт ка́ждое у́тро?',qde:'Was trinkt Mama jeden Morgen?',o:['чай','ко́фе','молоко́'],a:0}]},
+{id:'zima',lvl:3,t:'Зима́ в дере́вне',tde:'Winter im Dorf',
+ s:[
+ ['Зимо́й Макс пое́хал к ба́бушке в дере́вню.','Im Winter fuhr Max zu Oma ins Dorf.'],
+ ['Там бы́ло о́чень краси́во: везде́ лежа́л бе́лый снег.','Dort war es wunderschön: Überall lag weißer Schnee.'],
+ ['У́тром Макс и де́душка ходи́ли в лес.','Morgens gingen Max und Opa in den Wald.'],
+ ['В лесу́ бы́ло ти́хо, то́лько снег па́дал с не́ба.','Im Wald war es still, nur der Schnee fiel vom Himmel.'],
+ ['Ве́чером вся семья́ сиде́ла до́ма.','Abends saß die ganze Familie zu Hause.'],
+ ['Ба́бушка гото́вила горя́чий чай с мёдом.','Oma machte heißen Tee mit Honig.'],
+ ['Де́душка расска́зывал ста́рые исто́рии.','Opa erzählte alte Geschichten.'],
+ ['Макс слу́шал и смотре́л на ого́нь.','Max hörte zu und schaute ins Feuer.'],
+ ['«Как хорошо́ здесь, в дере́вне», — ду́мал он.','„Wie schön es hier im Dorf ist", dachte er.']],
+ q:[
+ {q:'Куда́ пое́хал Макс зимо́й?',qde:'Wohin fuhr Max im Winter?',o:['в дере́вню','в го́род','на мо́ре'],a:0},
+ {q:'Что де́лал де́душка ве́чером?',qde:'Was machte Opa abends?',o:['расска́зывал исто́рии','спал','рабо́тал'],a:0},
+ {q:'Како́й чай гото́вила ба́бушка?',qde:'Welchen Tee machte Oma?',o:['с мёдом','с молоко́м','с лимо́ном'],a:0}]},
+{id:'velo',lvl:4,t:'Пода́рок',tde:'Das Geschenk',
+ s:[
+ ['У Ива́на был ста́рый велосипе́д, кото́рый он о́чень люби́л.','Ivan hatte ein altes Fahrrad, das er sehr liebte.'],
+ ['Но в э́том году́ он купи́л но́вый и не знал, что де́лать со ста́рым.','Aber dieses Jahr kaufte er ein neues und wusste nicht, was er mit dem alten tun sollte.'],
+ ['Одна́жды он уви́дел на у́лице ма́льчика лет десяти́.','Eines Tages sah er auf der Straße einen Jungen von etwa zehn Jahren.'],
+ ['Ма́льчик до́лго смотре́л на велосипе́ды о́коло магази́на.','Der Junge schaute lange auf die Fahrräder vor dem Laden.'],
+ ['— Тебе́ нра́вится? — спроси́л Ива́н.','„Gefällt es dir?", fragte Ivan.'],
+ ['— О́чень. Но у нас нет де́нег на велосипе́д, — ти́хо отве́тил ма́льчик.','„Sehr. Aber wir haben kein Geld für ein Fahrrad", antwortete der Junge leise.'],
+ ['Ива́н мину́ту ду́мал, а пото́м сказа́л: «Подожди́ здесь».','Ivan überlegte eine Minute und sagte dann: „Warte hier."'],
+ ['Че́рез полчаса́ он верну́лся со свои́м ста́рым велосипе́дом.','Nach einer halben Stunde kam er mit seinem alten Fahrrad zurück.'],
+ ['— Он твой. То́лько обеща́й, что бу́дешь е́здить осторо́жно.','„Es gehört dir. Versprich nur, dass du vorsichtig fährst."'],
+ ['Ма́льчик не мог сказа́ть ни сло́ва — он про́сто улыба́лся.','Der Junge brachte kein Wort heraus – er lächelte nur.'],
+ ['Ива́н шёл домо́й пешко́м и чу́вствовал себя́ прекра́сно.','Ivan ging zu Fuß nach Hause und fühlte sich wunderbar.']],
+ q:[
+ {q:'Что купи́л Ива́н в э́том году́?',qde:'Was kaufte Ivan dieses Jahr?',o:['но́вый велосипе́д','но́вую маши́ну','но́вый стол'],a:0},
+ {q:'Почему́ ма́льчик не купи́л велосипе́д?',qde:'Warum kaufte der Junge kein Fahrrad?',o:['нет де́нег','нет вре́мени','не хоте́л'],a:0},
+ {q:'Что сде́лал Ива́н?',qde:'Was machte Ivan?',o:['подари́л ста́рый велосипе́д','купи́л но́вый дом','ничего́'],a:0}]},
+{id:'sosed',lvl:4,t:'Стра́нный сосе́д',tde:'Der seltsame Nachbar',
+ s:[
+ ['В на́шем до́ме живёт стра́нный сосе́д — Никола́й Петро́вич.','In unserem Haus wohnt ein seltsamer Nachbar – Nikolaj Petrowitsch.'],
+ ['Ка́ждый ве́чер, ро́вно в семь часо́в, он выхо́дит из кварти́ры с большо́й су́мкой.','Jeden Abend, Punkt sieben Uhr, verlässt er die Wohnung mit einer großen Tasche.'],
+ ['Возвраща́ется он то́лько но́чью, и су́мка всегда́ пуста́я.','Er kommt erst nachts zurück, und die Tasche ist immer leer.'],
+ ['«Что он де́лает?» — ду́мала я ка́ждый день.','„Was macht er da?", dachte ich jeden Tag.'],
+ ['Одна́жды я не вы́держала и пошла́ за ним.','Eines Tages hielt ich es nicht mehr aus und folgte ihm.'],
+ ['Он шёл до́лго — че́рез парк, ми́мо ста́рой шко́лы.','Er ging lange – durch den Park, an der alten Schule vorbei.'],
+ ['Наконе́ц он останови́лся о́коло ма́ленького до́ма.','Endlich blieb er bei einem kleinen Haus stehen.'],
+ ['Там его́ жда́ли соба́ки — мно́го соба́к!','Dort warteten Hunde auf ihn – viele Hunde!'],
+ ['В су́мке была́ еда́: Никола́й Петро́вич ка́ждый ве́чер ко́рмит бездо́мных соба́к.','In der Tasche war Futter: Nikolaj Petrowitsch füttert jeden Abend die streunenden Hunde.'],
+ ['Тепе́рь мы хо́дим туда́ вме́сте, и э́то наш ма́ленький секре́т.','Jetzt gehen wir zusammen dorthin, und das ist unser kleines Geheimnis.']],
+ q:[
+ {q:'Когда́ сосе́д выхо́дит из до́ма?',qde:'Wann verlässt der Nachbar das Haus?',o:['в семь часо́в ве́чера','у́тром','в час дня'],a:0},
+ {q:'Что бы́ло в су́мке?',qde:'Was war in der Tasche?',o:['еда́ для соба́к','кни́ги','пода́рки'],a:0},
+ {q:'Кто ждал его́ о́коло до́ма?',qde:'Wer wartete bei dem Haus auf ihn?',o:['соба́ки','де́ти','сосе́ди'],a:0}]}
+];
+const LEVELS={1:'Stufe 1 · Ganz leicht (A1)',2:'Stufe 2 · Leicht (A1+)',3:'Stufe 3 · Mittel (A2)',4:'Stufe 4 · Fortgeschritten (A2+/B1)'};
+
+/* ================= Zustand ================= */
+let S={read:{},days:{},tot:{r:0,w:0}};
+let storeMode='none';
+function initStore(){
+  try{const t='__sk_test';localStorage.setItem(t,'1');localStorage.removeItem(t);storeMode='local'}
+  catch(e){storeMode='none';const n=$('#storeNotice');n.textContent='Hinweis: In dieser Umgebung kann nichts gespeichert werden – dein Fortschritt gilt nur für diese Sitzung.';n.style.display='block'}
+}
+function load(){
+  if(storeMode!=='local')return;
+  try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);S={...S,...d,read:d.read||{},days:d.days||{},tot:d.tot||{r:0,w:0}}}}catch(e){}
+}
+function save(){if(storeMode==='local')try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const readCount=()=>Object.keys(S.read).length;
+
+/* ================= Lese-Ansicht ================= */
+let view=null; /* {story, quiz:{i,right}} */
+let readTok=0;
+
+function wordSpan(word){
+  return '<span class="w" data-n="'+normRu(word)+'" data-r="'+esc(word)+'">'+acc(esc(word))+'</span>';
+}
+function sentHtml(s,idx){
+  const html=esc(s).replace(/[А-Яа-яЁё́-]+/g,m=>'%%W'+m+'W%%');
+  /* Marker zurück in Wort-Spans übersetzen (verhindert doppeltes Escapen) */
+  return '<span class="sent" data-k="'+idx+'">'+
+    html.replace(/%%W([А-Яа-яЁё́-]+)W%%/g,(_,w)=>wordSpan(w))+
+    '</span> <button class="sp-sent" data-s="'+idx+'" title="Satz anhören">🔊</button>';
+}
+function renderStoryList(){
+  view=null;readTok++;try{speechSynthesis.cancel()}catch(e){}
+  const done=readCount();
+  reading=false;
+  let html='<div class="hero"><div class="due-line">'+(done?'<b>'+done+'</b> von '+STORIES.length+' Geschichten gelesen':'Deine erste <b>Geschichte</b> wartet!')+'</div>'+
+    '<div class="sub">Tippe unbekannte Wörter an, hör dir jeden Satz an – und beantworte am Ende drei Fragen.</div></div>';
+  [1,2,3,4].forEach(lvl=>{
+    const st=STORIES.filter(s=>s.lvl===lvl);
+    if(!st.length)return;
+    html+='<div class="sect">'+LEVELS[lvl]+'</div>';
+    st.forEach(s=>{
+      const r=S.read[s.id];
+      const words=s.s.reduce((n,p)=>n+(p[0].match(/[А-Яа-яЁё́-]+/g)||[]).length,0);
+      html+='<button class="story" onclick="openStory(\''+s.id+'\')">'+
+        '<span class="ic">'+(r?'✅':'📖')+'</span>'+
+        '<span class="m"><span class="t">'+acc(esc(s.t))+'</span><span class="s" style="display:block">'+esc(s.tde)+' · '+words+' Wörter</span></span>'+
+        '<span class="st '+(r?'st-done':'st-new')+'">'+(r?(r.best+'/'+s.q.length):'neu')+'</span></button>';
+    });
+  });
+  $('#view-lesen').innerHTML=html;
+}
+function openStory(id){
+  const story=STORIES.find(s=>s.id===id);
+  view={story,quiz:null,showTr:false};
+  reading=false;readTok++;try{speechSynthesis.cancel()}catch(e){}
+  let body='';
+  story.s.forEach((p,k)=>{
+    body+='<div class="sline">'+sentHtml(p[0],k)+'</div><div class="strans">'+esc(p[1])+'</div>';
+  });
+  $('#view-lesen').innerHTML=
+    '<div class="sess-top"><span class="cnt">'+LEVELS[story.lvl].split('·')[0].trim()+'</span><div class="bar"><i style="width:0%"></i></div>'+
+    '<button class="quit" onclick="renderStoryList()">Zurück</button></div>'+
+    '<div class="card" id="storyCard">'+
+    '<div class="stitle">'+acc(esc(story.t))+'</div>'+
+    '<div class="stitle-de">'+esc(story.tde)+'</div>'+
+    '<div class="controls">'+
+    '<button class="ctl" id="playBtn" onclick="toggleRead()">▶ Vorlesen</button>'+
+    '<button class="ctl" id="trBtn" onclick="toggleTrans()">Übersetzung</button>'+
+    '</div>'+
+    '<div class="stext" id="stext">'+body+'</div>'+
+    '<div class="wordbox empty" id="wordBox">👆 Tippe ein russisches Wort an, um die Übersetzung zu sehen.</div>'+
+    '<div class="grade"><button onclick="startQuiz()">Zu den Fragen →</button></div>'+
+    '</div>';
+  document.querySelectorAll('#stext .w').forEach(w=>w.onclick=()=>{
+    document.querySelectorAll('#stext .w.sel').forEach(x=>x.classList.remove('sel'));
+    w.classList.add('sel');
+    const g=DICT[w.dataset.n];
+    $('#wordBox').className='wordbox';
+    $('#wordBox').innerHTML='<button class="spk" onclick="speak(\''+w.dataset.r.replace(/'/g,'')+'\')">🔊</button><b>'+acc(esc(w.dataset.r))+'</b> — '+(g?esc(g):'<i>keine Übersetzung hinterlegt – frag mich einfach!</i>');
+    speak(w.dataset.r);
+  });
+  document.querySelectorAll('#stext .sp-sent').forEach(b=>b.onclick=()=>{
+    readTok++;setReading(-1);
+    speak(view.story.s[+b.dataset.s][0]);
+  });
+}
+function toggleTrans(){
+  view.showTr=!view.showTr;
+  $('#stext').classList.toggle('showtr',view.showTr);
+  $('#trBtn').classList.toggle('on',view.showTr);
+}
+function setReading(k){
+  document.querySelectorAll('#stext .sent').forEach(s=>s.classList.toggle('reading',+s.dataset.k===k));
+}
+let reading=false;
+function toggleRead(){
+  if(reading){readTok++;reading=false;try{speechSynthesis.cancel()}catch(e){}setReading(-1);$('#playBtn').textContent='▶ Vorlesen';$('#playBtn').classList.remove('on');return}
+  reading=true;$('#playBtn').textContent='⏹ Stopp';$('#playBtn').classList.add('on');
+  const tok=++readTok;
+  const step=k=>{
+    if(tok!==readTok||!view||k>=view.story.s.length){
+      if(tok===readTok){reading=false;setReading(-1);const b=$('#playBtn');if(b){b.textContent='▶ Vorlesen';b.classList.remove('on')}}
+      return;
+    }
+    setReading(k);
+    try{
+      speechSynthesis.cancel();speechSynthesis.resume();
+      const u=utter(view.story.s[k][0]);
+      u.onend=()=>setTimeout(()=>step(k+1),350);
+      u.onerror=()=>setTimeout(()=>step(k+1),350);
+      speechSynthesis.speak(u);
+    }catch(e){setTimeout(()=>step(k+1),1200)}
+  };
+  step(0);
+}
+
+/* ================= Fragen ================= */
+function startQuiz(){
+  readTok++;try{speechSynthesis.cancel()}catch(e){}
+  view.quiz={i:0,right:0};
+  renderQuiz();
+}
+function renderQuiz(){
+  const st=view.story,qz=view.quiz,q=st.q[qz.i];
+  const opts=shuffle(q.o.map((o,k)=>({o,ok:k===q.a})));
+  $('#view-lesen').innerHTML=
+    '<div class="sess-top"><span class="cnt">Frage '+(qz.i+1)+' / '+st.q.length+'</span>'+
+    '<div class="bar"><i style="width:'+Math.round(100*qz.i/st.q.length)+'%"></i></div>'+
+    '<button class="quit" onclick="openStory(\''+st.id+'\')">Zur Geschichte</button></div>'+
+    '<div class="card">'+
+    '<div class="q-ru">'+acc(esc(q.q))+'</div>'+
+    '<div class="q-de">'+esc(q.qde)+'</div>'+
+    '<div class="opts">'+opts.map((e,k)=>'<button class="opt" data-k="'+k+'">'+acc(esc(e.o))+'</button>').join('')+'</div>'+
+    '<div id="fbZone"></div></div>';
+  document.querySelectorAll('#view-lesen .opt').forEach((b,k)=>b.onclick=()=>{
+    if(view.quiz.answered)return;
+    view.quiz.answered=true;
+    const ok=opts[+b.dataset.k].ok;
+    document.querySelectorAll('#view-lesen .opt').forEach((x,xk)=>{x.disabled=true;if(opts[+x.dataset.k].ok)x.classList.add('right')});
+    if(!ok)b.classList.add('wrong');
+    if(ok){qz.right++;S.tot.r++}else{S.tot.w++}
+    const t=new Date();const ds=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');
+    S.days[ds]=(S.days[ds]||0)+1;
+    save();
+    $('#fbZone').innerHTML='<div class="fb '+(ok?'fb-ok':'fb-no')+'">'+(ok?'✓ Richtig!':'✗ Nicht ganz.')+'</div>'+
+      '<div class="grade"><button onclick="nextQ()">Weiter</button></div>';
+  });
+}
+function nextQ(){
+  view.quiz.answered=false;
+  view.quiz.i++;
+  if(view.quiz.i>=view.story.q.length)finishQuiz();else renderQuiz();
+}
+function finishQuiz(){
+  const st=view.story,qz=view.quiz;
+  const prev=S.read[st.id];
+  S.read[st.id]={best:Math.max(prev?prev.best:0,qz.right),times:(prev?prev.times:0)+1};
+  save();
+  $('#readN').textContent=readCount();
+  const all=qz.right===st.q.length;
+  $('#view-lesen').innerHTML=
+    '<div class="hero"><div class="done-mark">'+(all?'🏆':'📖')+'</div>'+
+    '<div class="due-line">'+(all?'Alles richtig – отли́чно!':'Geschichte gelesen!')+'</div>'+
+    '<div class="sumgrid">'+
+    '<div class="sumbox"><b>'+qz.right+' / '+st.q.length+'</b><span>Fragen richtig</span></div>'+
+    '<div class="sumbox"><b>'+readCount()+' / '+STORIES.length+'</b><span>Geschichten gelesen</span></div>'+
+    '</div>'+
+    '<button class="btn btn-primary" onclick="renderStoryList()">Weiter</button><br>'+
+    '<button class="btn-ghost" onclick="openStory(\''+st.id+'\')">Nochmal lesen</button></div>';
+}
+
+/* ================= Statistik ================= */
+function renderStats(){
+  const tot=S.tot.r+S.tot.w,accy=tot?Math.round(100*S.tot.r/tot):0;
+  let words=0;
+  Object.keys(S.read).forEach(id=>{
+    const st=STORIES.find(s=>s.id===id);
+    if(st)words+=st.s.reduce((n,p)=>n+(p[0].match(/[А-Яа-яЁё́-]+/g)||[]).length,0)*(S.read[id].times||1);
+  });
+  let html='<div class="statgrid">'+
+    '<div class="stat"><b class="pl">'+readCount()+' / '+STORIES.length+'</b><span>Geschichten gelesen</span></div>'+
+    '<div class="stat"><b>'+accy+' %</b><span>Fragen richtig</span></div>'+
+    '<div class="stat"><b class="pl">'+words+'</b><span>Wörter gelesen (gesamt)</span></div>'+
+    '<div class="stat"><b>'+tot+'</b><span>Fragen beantwortet</span></div>'+
+    '</div><div class="sect">Pro Stufe</div>';
+  [1,2,3,4].forEach(lvl=>{
+    const st=STORIES.filter(s=>s.lvl===lvl);
+    const done=st.filter(s=>S.read[s.id]).length;
+    html+='<div class="story" style="cursor:default"><span class="ic">📚</span><span class="m"><span class="t" style="font-family:var(--sans);font-size:.9rem">'+LEVELS[lvl]+'</span></span><span class="st '+(done===st.length&&done?'st-done':'st-new')+'">'+done+' / '+st.length+'</span></div>';
+  });
+  html+='<p class="hint">Tipp: Eine Geschichte zweimal zu lesen bringt mehr als zwei neue – beim zweiten Mal liest du flüssig, und genau das trainiert das Sprachgefühl.</p>';
+  $('#view-statistik').innerHTML=html;
+}
+
+/* ================= Tabs, Backup, App-Navigation ================= */
+function tab(name){
+  readTok++;try{speechSynthesis.cancel()}catch(e){}
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='view-'+name));
+  if(name==='lesen'&&!view)renderStoryList();
+  if(name==='statistik')renderStats();
+}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>tab(b.dataset.tab));
+
+$('#bakMake').onclick=async()=>{
+  const data=JSON.stringify({v:1,...S});
+  $('#bakBox').value=data;
+  let copied=false;
+  try{await navigator.clipboard.writeText(data);copied=true}catch(e){$('#bakBox').select()}
+  $('#bakMsg').textContent=copied?'Backup erstellt und kopiert ✓':'Backup erstellt – bitte manuell kopieren.';
+  $('#bakMsg').className='msg ok';
+};
+$('#bakLoad').onclick=()=>{
+  const msg=$('#bakMsg');msg.className='msg';
+  try{
+    const d=JSON.parse($('#bakBox').value);
+    if(!d||typeof d!=='object'||!d.read)throw new Error('kein Backup');
+    S={read:d.read||{},days:d.days||{},tot:d.tot||{r:0,w:0}};
+    save();
+    $('#readN').textContent=readCount();
+    msg.textContent='Backup wiederhergestellt ✓';msg.classList.add('ok');
+    renderStoryList();tab('lesen');
+  }catch(e){msg.textContent='Das sieht nicht wie ein Backup aus.';msg.classList.add('err')}
+};
+$('#resetBtn').onclick=()=>{
+  if(!confirm('Wirklich den gesamten Lese-Fortschritt löschen?'))return;
+  S={read:{},days:{},tot:{r:0,w:0}};
+  save();
+  $('#readN').textContent=0;
+  $('#dataMsg').textContent='Fortschritt zurückgesetzt.';$('#dataMsg').className='msg ok';
+  renderStoryList();tab('lesen');
+};
+
+function buildAppNav(cur){
+  const isWeb=location.protocol!=='file:';
+  const APPS=[
+    ['СЛОВА́','/slova/','russisch-vokabeltrainer.html','slova'],
+    ['ГРАММА́ТИКА','/slova/grammatik/','grammatik-trainer.html','gram'],
+    ['СКА́ЗКИ','/slova/skazki/','skazki-lese-app.html','skazki']];
+  $('#appnav').innerHTML=APPS.map(a=>a[3]===cur
+    ?'<a class="cur">'+acc(a[0])+'</a>'
+    :'<a href="'+(isWeb?a[1]:a[2])+'">'+acc(a[0])+'</a>').join('');
+}
+
+/* ================= Start ================= */
+(function init(){
+  $('#brandTitle').innerHTML=acc('СКА́ЗКИ');
+  initStore();
+  load();
+  $('#readN').textContent=readCount();
+  buildAppNav('skazki');
+  renderStoryList();
+})();
+</script>
+</body>
+</html>
