@@ -2715,16 +2715,27 @@ function pickMode(w,p,cl){
     m.push('mc','mcRev');
     if(cl)m.push('clozeMC');
     if(sndOn())m.push('audio');
+    if(sndOn()&&w.e&&w.x)m.push('audioSent');
   }else{                         /* reifer: Produzieren (Deutsch → Russisch) höher gewichtet (Webb 2009) */
     m.push('type','type','mcRev');
     m.push(cl?'clozeType':'type');
     if(cl)m.push('clozeMC');
     if(sndOn())m.push('audio');
+    if(sndOn()&&w.e&&w.x)m.push('audioSent');
     if(S.set.mic!==false&&speechOK())m.push('speech');
   }
   return m[Math.floor(Math.random()*m.length)];
 }
-const MODE_LABEL={mc:'Bedeutung wählen',mcRev:'Übersetzen',type:'Schreiben',clozeMC:'Lückentext',clozeType:'Lückentext',audio:'Hören',speech:'Sprechen'};
+const MODE_LABEL={mc:'Bedeutung wählen',mcRev:'Übersetzen',type:'Schreiben',clozeMC:'Lückentext',clozeType:'Lückentext',audio:'Hören',audioSent:'Satz hören',speech:'Sprechen'};
+function sentDistractors(w,n){ /* Ablenker für Satz-Hör-Karten: Übersetzungen anderer Beispielsätze */
+  const out=[],seen=new Set([w.x]);
+  for(const o of shuffle(allWords().filter(o=>o.i!==w.i&&o.x&&o.e).slice())){
+    if(seen.has(o.x))continue;
+    seen.add(o.x);out.push(o.x);
+    if(out.length>=n)break;
+  }
+  return out;
+}
 function modeForPass(w,st,cl){ /* Kartentyp für den nächsten Durchgang eines neuen Wortes */
   let m;
   if(st.seen<st.plan.length){
@@ -2733,6 +2744,7 @@ function modeForPass(w,st,cl){ /* Kartentyp für den nächsten Durchgang eines n
     const pool=['mc','mcRev','type'];
     if(cl)pool.push('clozeMC','clozeType');
     if(sndOn())pool.push('audio');
+    if(sndOn()&&w.e&&w.x)pool.push('audioSent');
     m=pool[Math.floor(Math.random()*pool.length)];
     if(m===st.last)m=pool[(pool.indexOf(m)+1)%pool.length];
   }
@@ -2846,6 +2858,12 @@ function renderCard(forceMode){
     front='<button class="audio-big" onclick="speak(cur.w.r)" title="Nochmal anhören">🔊</button>'+
       '<div class="qlabel">Hör zu – was bedeutet das Wort?</div>'+optsHtml(cur.opts,false)+
       '<button class="skiplink" onclick="skipAV()">🔇 Gerade unpassend – Karte wechseln</button>';
+  }else if(mode==='audioSent'){
+    cur.opts=shuffle(sentDistractors(w,3).concat([w.x]));
+    cur.goodIdx=cur.opts.indexOf(w.x);
+    front='<button class="audio-big" onclick="speak(cur.w.e)" title="Nochmal anhören">🔊</button>'+
+      '<div class="qlabel">Hör den ganzen Satz – was bedeutet er?</div>'+optsHtml(cur.opts,false)+
+      '<button class="skiplink" onclick="skipAV()">🔇 Gerade unpassend – Karte wechseln</button>';
   }else{ /* speech */
     front='<div class="word">'+acc(esc(w.r))+'</div>'+
       '<div class="trans" style="text-align:center">['+esc(w.t)+']</div>'+
@@ -2881,6 +2899,7 @@ function renderCard(forceMode){
     $('#typeInp').addEventListener('keydown',e=>{if(e.key==='Enter')checkTyped()});
   }
   if(mode==='audio')setTimeout(()=>speak(w.r),300);
+  else if(mode==='audioSent')setTimeout(()=>speak(w.e),300);
 }
 function kbWire(){
   document.querySelectorAll('.kb-k').forEach(b=>b.onclick=()=>{
@@ -2925,7 +2944,7 @@ function resolveCard(ok,note){
     '<div class="fb '+(ok?'fb-ok':'fb-no')+'">'+(ok?'✓ Richtig!':'✗ Nicht ganz.')+(note?' <span style="font-weight:600">'+note+'</span>':'')+'</div>'+
     '<div class="answer on">'+answerBlock(cur.w)+'</div>'+btns;
   attachImg('imgSlot',cur.w.i);
-  if(cur.mode!=='audio'&&cur.mode!=='speech')speak(cur.w.r);
+  if(cur.mode!=='audio'&&cur.mode!=='audioSent'&&cur.mode!=='speech')speak(cur.w.r);
 }
 function skipAV(){ /* Hör-/Sprech-Karte gerade unpassend → stille Karte für dasselbe Wort */
   if(cur&&!cur.answered)renderCard(cur.p&&cur.p.b>=2?'type':'mc');
@@ -3528,6 +3547,7 @@ $('#bakLoad').onclick=()=>{
 function buildAppNav(cur){
   const isWeb=location.protocol!=='file:';
   const APPS=[
+    ['СЕГО́ДНЯ','/slova/heute/','heute-dashboard.html','heute'],
     ['СЛОВА́','/slova/','russisch-vokabeltrainer.html','slova'],
     ['ГРАММА́ТИКА','/slova/grammatik/','grammatik-trainer.html','gram'],
     ['СКА́ЗКИ','/slova/skazki/','skazki-lese-app.html','skazki']];

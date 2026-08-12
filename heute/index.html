@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>СЕГО́ДНЯ · Dein Russisch-Tag</title>
+<meta name="theme-color" content="#14181F">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2314181F'/%3E%3Ctext x='50' y='70' font-size='52' text-anchor='middle'%3E%E2%98%80%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#14181F;
+  --ink-soft:#4A5261;
+  --ink-faint:#8A93A5;
+  --paper:#F5F5F7;
+  --card:#FFFFFF;
+  --frost:#E2E2EA;
+  --gzhel:#2B4C9B;--gzhel-soft:#E7EDF9;
+  --mala:#1E7A63;--mala-soft:#E2F1EC;
+  --sliva:#6D4B9E;--sliva-soft:#EEE8F7;
+  --amber:#B9790F;
+  --radius:16px;
+  --serif:"Playfair Display",Georgia,serif;
+  --sans:"Inter",-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height:100vh;line-height:1.5}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;touch-action:manipulation}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:600px;margin:0 auto;padding:0 16px 60px}
+header{padding:22px 0 6px}
+.brand h1{font-family:var(--serif);font-weight:800;font-size:1.9rem;letter-spacing:.5px;line-height:1}
+.brand h1 .acc{color:var(--amber)}
+.brand p{font-size:.78rem;color:var(--ink-faint);font-weight:500;margin-top:4px}
+.appnav{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.appnav a{font-size:.72rem;font-weight:700;padding:4px 11px;border-radius:99px;color:var(--ink-faint);background:var(--card);border:1px solid var(--frost)}
+.appnav a.cur{background:var(--ink);color:#fff;border-color:transparent}
+.appnav a .acc{color:inherit}
+.hero{background:var(--ink);color:#fff;border-radius:var(--radius);padding:26px 22px;text-align:center;margin-top:16px}
+.hero .big{font-family:var(--serif);font-size:3rem;font-weight:800;line-height:1}
+.hero .lbl{font-size:.85rem;opacity:.75;font-weight:600;margin-top:6px}
+.hero .streakline{margin-top:14px;font-size:.95rem;font-weight:700}
+.hero .streakline span{opacity:.75;font-weight:500;font-size:.8rem}
+.grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px}
+.app{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--frost);border-radius:14px;padding:16px}
+.app:active{transform:scale(.99)}
+.app .dot{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.app.a1 .dot{background:var(--gzhel-soft)}
+.app.a2 .dot{background:var(--mala-soft)}
+.app.a3 .dot{background:var(--sliva-soft)}
+.app .m{flex:1;min-width:0}
+.app .t{font-family:var(--serif);font-weight:700;font-size:1.1rem}
+.app.a1 .t{color:var(--gzhel)}
+.app.a2 .t{color:var(--mala)}
+.app.a3 .t{color:var(--sliva)}
+.app .s{font-size:.8rem;color:var(--ink-soft);margin-top:2px}
+.app .n{text-align:right;flex-shrink:0}
+.app .n b{font-family:var(--serif);font-size:1.6rem;display:block;line-height:1.1}
+.app .n span{font-size:.7rem;color:var(--ink-faint);font-weight:600}
+.sect{font-family:var(--serif);font-weight:700;font-size:1.15rem;margin:22px 0 10px}
+.week{background:var(--card);border:1px solid var(--frost);border-radius:var(--radius);padding:18px}
+.bars{display:flex;gap:8px;align-items:flex-end;height:110px}
+.bcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.bar{width:100%;border-radius:6px 6px 3px 3px;background:linear-gradient(180deg,var(--amber),#D9A13F);min-height:3px}
+.bcol.today .bar{background:linear-gradient(180deg,var(--ink),#3A4150)}
+.bcol .d{font-size:.68rem;color:var(--ink-faint);font-weight:700}
+.bcol .v{font-size:.68rem;color:var(--ink-soft);font-weight:700;font-variant-numeric:tabular-nums}
+.hint{font-size:.78rem;color:var(--ink-faint);margin-top:10px;line-height:1.6}
+.foot{text-align:center;color:var(--ink-faint);font-size:.72rem;margin-top:26px;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="brand">
+    <h1 id="brandTitle">СЕГО́ДНЯ</h1>
+    <p>Dein Russisch-Tag · alle Apps auf einen Blick</p>
+  </div>
+  <div class="appnav" id="appnav"></div>
+</header>
+
+<div class="hero">
+  <div class="big" id="totToday">0</div>
+  <div class="lbl">Aufgaben &amp; Karten heute – über alle Apps</div>
+  <div class="streakline">🔥 <span id="comboStreak">0</span> Tage in Folge aktiv <span>(irgendwo gelernt zählt)</span></div>
+</div>
+
+<div class="grid" id="appGrid"></div>
+
+<div class="sect">Deine Woche</div>
+<div class="week">
+  <div class="bars" id="weekBars"></div>
+  <p class="hint">Alle Apps zusammengezählt. Dunkel = heute.</p>
+</div>
+
+<p class="foot" id="footNote">Aktualisiert sich automatisch, wenn du zurückkommst.</p>
+
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const acc=s=>s.replace(/([А-Яа-яЁё]́)/g,'<span class="acc">$1</span>');
+const pad=n=>String(n).padStart(2,'0');
+const dstr=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+
+function readKey(k){
+  try{const v=localStorage.getItem(k);return v?JSON.parse(v):null}catch(e){return null}
+}
+function unionDays(list){
+  const u={};
+  list.forEach(d=>{if(d&&d.days)Object.keys(d.days).forEach(k=>{u[k]=(u[k]||0)+d.days[k]})});
+  return u;
+}
+function comboStreak(u){
+  let n=0;
+  const d=new Date();
+  if(!u[dstr(d)])d.setDate(d.getDate()-1); /* heute noch nichts? Streak lebt bis inkl. gestern */
+  while(u[dstr(d)]){n++;d.setDate(d.getDate()-1)}
+  return n;
+}
+function buildAppNav(cur){
+  const isWeb=location.protocol!=='file:';
+  const APPS=[
+    ['СЕГО́ДНЯ','/slova/heute/','heute-dashboard.html','heute'],
+    ['СЛОВА́','/slova/','russisch-vokabeltrainer.html','slova'],
+    ['ГРАММА́ТИКА','/slova/grammatik/','grammatik-trainer.html','gram'],
+    ['СКА́ЗКИ','/slova/skazki/','skazki-lese-app.html','skazki']];
+  document.getElementById('appnav').innerHTML=APPS.map(a=>a[3]===cur
+    ?'<a class="cur">'+acc(a[0])+'</a>'
+    :'<a href="'+(isWeb?a[1]:a[2])+'">'+acc(a[0])+'</a>').join('');
+}
+function appLink(webPath,localFile){
+  return location.protocol!=='file:'?webPath:localFile;
+}
+
+function render(){
+  const t=dstr(new Date());
+  const sl=readKey('russisch-trainer-v1');
+  const gr=readKey('russisch-grammatik-v1');
+  const sk=readKey('russisch-skazki-v1');
+  const dSl=sl&&sl.days?(sl.days[t]||0):0;
+  const dGr=gr&&gr.days?(gr.days[t]||0):0;
+  const dSk=sk&&sk.days?(sk.days[t]||0):0;
+  $('#totToday').textContent=dSl+dGr+dSk;
+  const u=unionDays([sl,gr,sk]);
+  $('#comboStreak').textContent=comboStreak(u);
+  /* App-Karten */
+  const slWords=sl&&sl.prog?Object.keys(sl.prog).length:0;
+  const grDone=gr&&gr.tot?(gr.tot.r+gr.tot.w):0;
+  const skRead=sk&&sk.read?Object.keys(sk.read).length:0;
+  $('#appGrid').innerHTML=
+    '<a class="app a1" href="'+appLink('/slova/','russisch-vokabeltrainer.html')+'">'+
+    '<span class="dot">📘</span><span class="m"><span class="t">'+acc('СЛОВА́')+'</span>'+
+    '<span class="s" style="display:block">'+(sl?slWords+' Wörter im Training':'Noch nicht gestartet – tippe hier!')+'</span></span>'+
+    '<span class="n"><b>'+dSl+'</b><span>Karten heute</span></span></a>'+
+    '<a class="app a2" href="'+appLink('/slova/grammatik/','grammatik-trainer.html')+'">'+
+    '<span class="dot">✍️</span><span class="m"><span class="t">'+acc('ГРАММА́ТИКА')+'</span>'+
+    '<span class="s" style="display:block">'+(gr?grDone+' Aufgaben insgesamt gelöst':'Noch nicht gestartet – tippe hier!')+'</span></span>'+
+    '<span class="n"><b>'+dGr+'</b><span>Aufgaben heute</span></span></a>'+
+    '<a class="app a3" href="'+appLink('/slova/skazki/','skazki-lese-app.html')+'">'+
+    '<span class="dot">📖</span><span class="m"><span class="t">'+acc('СКА́ЗКИ')+'</span>'+
+    '<span class="s" style="display:block">'+(sk?skRead+' Geschichten gelesen':'Noch nicht gestartet – tippe hier!')+'</span></span>'+
+    '<span class="n"><b>'+dSk+'</b><span>Fragen heute</span></span></a>';
+  /* Wochen-Balken (letzte 7 Tage) */
+  const days=[];
+  for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(d)}
+  const max=Math.max(1,...days.map(d=>u[dstr(d)]||0));
+  const WD=['So','Mo','Di','Mi','Do','Fr','Sa'];
+  $('#weekBars').innerHTML=days.map((d,i)=>{
+    const v=u[dstr(d)]||0;
+    const h=Math.round(80*v/max);
+    return '<div class="bcol'+(i===6?' today':'')+'"><span class="v">'+(v||'')+'</span>'+
+      '<span class="bar" style="height:'+Math.max(3,h)+'px"></span>'+
+      '<span class="d">'+WD[d.getDay()]+'</span></div>';
+  }).join('');
+}
+
+(function init(){
+  $('#brandTitle').innerHTML=acc('СЕГО́ДНЯ');
+  buildAppNav('heute');
+  render();
+  window.addEventListener('focus',render);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)render()});
+})();
+</script>
+</body>
+</html>
