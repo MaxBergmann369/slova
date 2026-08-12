@@ -3308,19 +3308,44 @@ function renderRadio(){
     '<div class="sub">Freihändig lernen – perfekt fürs Auto, Spazieren oder Kochen. Ablauf pro Wort: Russisch → Pause zum Mitdenken → Deutsch → nochmal Russisch → Beispielsatz. Läuft endlos, ohne dass du etwas antippen musst.</div>'+
     '<div class="sub" style="margin-top:8px">🚗 Als Fahrer: nur zuhören, nie aufs Handy schauen! Der Bildschirm bleibt automatisch an.</div>'+
     '<div class="ctrow" style="margin-top:16px">'+
-    (mine?'<button class="btn btn-primary" onclick="startRadio(\'meine\')">Meine Wörter ('+mine+')</button>':'')+
-    '<button class="'+(mine?'btn-ghost':'btn btn-primary')+'" onclick="startRadio(\'neu\')">Neue Wörter entdecken</button>'+
+    '<button class="btn btn-primary" onclick="startRadio(\'mix\')">🎲 Schlau gemischt</button>'+
+    (mine?'<button class="btn-ghost" onclick="startRadio(\'meine\')">Nur meine Wörter ('+mine+')</button>':'')+
+    '<button class="btn-ghost" onclick="startRadio(\'neu\')">Nur neue entdecken</button>'+
     (probN?'<button class="btn-ghost" onclick="startRadio(\'prob\')">Problemwörter ('+probN+')</button>':'')+
     '</div>'+
+    '<div class="sub" style="margin-top:8px;font-size:.78rem">„Schlau gemischt" richtet sich nach deinem Lernstand: schwache Wörter kommen öfter, sichere selten, plus ein paar neue. Jede Runde startet anders.</div>'+
     '<label class="sub" style="display:block;margin-top:12px;cursor:pointer"><input type="checkbox" id="radioSent" checked> Beispielsätze mitspielen</label>'+
     '<button class="btn-ghost" onclick="renderHome()">Zurück</button></div>';
 }
+function radioWeighted(){
+  /* Gelernte Wörter, gewichtet: schwache & Problemwörter bis 3×, sichere nur 1× */
+  const q=[];
+  allWords().forEach(w=>{
+    const p=S.prog[w.i];
+    if(!p)return;
+    const n=(isProblem(p)||p.b<2)?3:(p.b<4?2:1);
+    for(let k=0;k<n;k++)q.push(w.i);
+  });
+  return q;
+}
+function deDupeAdjacent(q){
+  for(let k=1;k<q.length;k++){
+    if(q[k]!==q[k-1])continue;
+    for(let j=k+1;j<q.length;j++){if(q[j]!==q[k-1]){const t=q[k];q[k]=q[j];q[j]=t;break}}
+  }
+  return q;
+}
 function startRadio(src){
   let ids;
-  if(src==='meine')ids=shuffle(allWords().filter(w=>S.prog[w.i]).map(w=>w.i));
+  if(src==='meine')ids=deDupeAdjacent(shuffle(radioWeighted()));
   else if(src==='prob')ids=shuffle(allWords().filter(w=>isProblem(S.prog[w.i])).map(w=>w.i));
-  else ids=allWords().filter(w=>!S.prog[w.i]).slice(0,150).map(w=>w.i); /* neue: in Lern-Reihenfolge */
-  if(!ids.length)ids=allWords().slice(0,100).map(w=>w.i);
+  else if(src==='mix'){
+    /* Schlau gemischt: gewichtete gelernte Wörter + 30 neue zum Reinhören */
+    const fresh=shuffle(allWords().filter(w=>!S.prog[w.i]).slice(0,100).map(w=>w.i)).slice(0,30);
+    ids=deDupeAdjacent(shuffle(radioWeighted().concat(fresh)));
+  }
+  else ids=shuffle(allWords().filter(w=>!S.prog[w.i]).slice(0,150).map(w=>w.i)); /* neue: zufällig aus den nächsten 150 */
+  if(!ids.length)ids=shuffle(allWords().slice(0,100).map(w=>w.i));
   const sentEl=$('#radioSent');
   radio={q:ids,i:0,playing:true,sent:sentEl?sentEl.checked:true,count:0,src};
   renderRadioPlayer();
@@ -3349,7 +3374,7 @@ async function radioLoop(){
   const tok=++radioTok;
   try{if(navigator.wakeLock&&!wakeLock)wakeLock=await navigator.wakeLock.request('screen')}catch(e){}
   while(radio&&radio.playing&&tok===radioTok){
-    if(radio.i>=radio.q.length){shuffle(radio.q);radio.i=0}
+    if(radio.i>=radio.q.length){deDupeAdjacent(shuffle(radio.q));radio.i=0}
     const w=byId(radio.q[radio.i]);
     if(!w){radio.i++;continue}
     radio.count++;
