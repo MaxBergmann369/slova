@@ -206,6 +206,21 @@ textarea#bakBox{width:100%;min-height:110px;border:1px solid var(--frost);border
   </div>
 
   <div class="panel">
+    <h3>Personalpronomen in den Fällen</h3>
+    <div class="rtwrap"><table class="rt">
+      <tr><th>Nom.</th><th>Akk./Gen.</th><th>Dativ</th><th>Instr.</th><th>Präp.</th></tr>
+      <tr><td><b>я</b></td><td>меня́</td><td>мне</td><td>мной</td><td>обо мне</td></tr>
+      <tr><td><b>ты</b></td><td>тебя́</td><td>тебе́</td><td>тобо́й</td><td>о тебе́</td></tr>
+      <tr><td><b>он/оно́</b></td><td>его́</td><td>ему́</td><td>им</td><td>о нём</td></tr>
+      <tr><td><b>она́</b></td><td>её</td><td>ей</td><td>ей</td><td>о ней</td></tr>
+      <tr><td><b>мы</b></td><td>нас</td><td>нам</td><td>на́ми</td><td>о нас</td></tr>
+      <tr><td><b>вы</b></td><td>вас</td><td>вам</td><td>ва́ми</td><td>о вас</td></tr>
+      <tr><td><b>они́</b></td><td>их</td><td>им</td><td>и́ми</td><td>о них</td></tr>
+    </table></div>
+    <p class="hint">Nach Präpositionen bekommen die er/sie-Formen ein <b>н-</b>: у неё, с ним, к ним, о них. Ohne Präposition bleibt es его́/её/их: Я ви́жу её. – aber: Я был у неё.</p>
+  </div>
+
+  <div class="panel">
     <h3>Verben: Präsens</h3>
     <h4>е-Konjugation · рабо́тать (arbeiten)</h4>
     <div class="legend">я рабо́та<b>ю</b> · ты рабо́та<b>ешь</b> · он рабо́та<b>ет</b> · мы рабо́та<b>ем</b> · вы рабо́та<b>ете</b> · они́ рабо́та<b>ют</b></div>
@@ -325,6 +340,31 @@ textarea#bakBox{width:100%;min-height:110px;border:1px solid var(--frost);border
       <b>-ся</b> nach Konsonant, <b>-сь</b> nach Vokal:<br>
       я учу́<b>сь</b> · ты у́чишь<b>ся</b> · он у́чит<b>ся</b> · мы у́чим<b>ся</b> · они́ у́чат<b>ся</b> · er lernte: учи́л<b>ся</b>, sie: учи́ла<b>сь</b><br>
       Wichtige: занима́ться (+ Instrumental!) · называ́ться · встреча́ться · просыпа́ться · ложи́ться · начина́ться (etwas beginnt von selbst)
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Aufbau: Adjektive in den Fällen</h3>
+    <div class="rtwrap"><table class="rt">
+      <tr><th>Fall</th><th>maskulin/neutrum</th><th>feminin</th></tr>
+      <tr><td><b>Akkusativ</b></td><td>unbelebt = Nom. · belebt: <b>-ого/-его</b></td><td><b>-ую/-юю</b> (но́вую)</td></tr>
+      <tr><td><b>Genitiv</b></td><td><b>-ого/-его</b> (но́вого)</td><td><b>-ой/-ей</b></td></tr>
+      <tr><td><b>Dativ</b></td><td><b>-ому/-ему</b> (но́вому)</td><td><b>-ой/-ей</b></td></tr>
+      <tr><td><b>Instrumental</b></td><td><b>-ым/-им</b> (но́вым)</td><td><b>-ой/-ей</b></td></tr>
+      <tr><td><b>Präpositiv</b></td><td><b>-ом/-ем</b> (в но́вом)</td><td><b>-ой/-ей</b></td></tr>
+    </table></div>
+    <p class="hint">Feminin ist einfach: außer -ую (Akk.) fast immer <b>-ой/-ей</b>. Nach к, г, х, ж, ш, щ, ч steht и statt ы: с хоро́шим дру́гом.</p>
+  </div>
+
+  <div class="panel">
+    <h3>Aufbau: Konditional (würde, wenn)</h3>
+    <div class="legend">
+      <b>бы + Vergangenheit</b> = „würde“: я купи́л бы = ich würde kaufen · она́ чита́ла бы = sie würde lesen<br><br>
+      <b>Reale Bedingung</b> (kann passieren): е́сли + Futur, ohne бы<br>
+      <i>Е́сли бу́дет со́лнце, мы пойдём гуля́ть.</i><br><br>
+      <b>Irreale Bedingung</b> (nur gedacht): е́сли бы + Vergangenheit … бы<br>
+      <i>Е́сли бы у меня́ бы́ло вре́мя, я чита́л бы бо́льше.</i><br><br>
+      <b>что́бы</b> = damit / um zu: bei gleichem Subjekt + Infinitiv (Что́бы говори́ть, на́до говори́ть), bei anderem Subjekt + Vergangenheit (Я хочу́, что́бы ты пришёл).
     </div>
   </div>
 
@@ -513,6 +553,26 @@ const TOPICS=[
 {q:'Мы живём в ___ до́ме.',b:'ста́рый',a:'ста́ром',x:['ста́рый','ста́рая','ста́рые'],de:'Wir wohnen in einem alten Haus. (Präpositiv!)'},
 {q:'___ ма́ма рабо́тает врачо́м.',b:'мой',a:'Моя́',x:['Мой','Моё','Мои́'],de:'Meine Mama arbeitet als Ärztin.'},
 {q:'Э́то ___ молоко́?',b:'твой',a:'твоё',x:['твоя́','твой','твои́'],de:'Ist das deine Milch?'}
+]},
+{id:'pron',icon:'👤',t:'Pronomen in den Fällen',s:'mich, mir, mit mir – меня́, мне, мной',type:'gap',
+ intro:'Auch ich, du, er … ändern sich in jedem Fall – und zwar unregelmäßig: я → меня́ (wen?), мне (wem?), мной (mit wem?). Extra-Regel: Nach Präpositionen bekommen die er/sie-Formen ein н- vorne: у неё, с ним, к ним.',
+ items:[
+{q:'Ты ви́дишь ___?',b:'я',a:'меня́',x:['мне','мной','я'],de:'Siehst du mich? (Akkusativ)'},
+{q:'Я даю́ ___ кни́гу.',b:'ты',a:'тебе́',x:['тебя́','тобо́й','ты'],de:'Ich gebe dir das Buch. (Dativ)'},
+{q:'Мы идём в кино́ с ___.',b:'он',a:'ним',x:['его́','ему́','им'],de:'Wir gehen mit ihm ins Kino. (с ним – н nach Präposition!)'},
+{q:'У ___ есть соба́ка.',b:'она́',a:'неё',x:['её','ей','ней'],de:'Sie hat einen Hund. (у неё – н nach Präposition!)'},
+{q:'Он помога́ет ___.',b:'мы',a:'нам',x:['нас','на́ми','мы'],de:'Er hilft uns. (Dativ)'},
+{q:'Я зна́ю ___.',b:'вы',a:'вас',x:['вам','ва́ми','вы'],de:'Ich kenne Sie. (Akkusativ)'},
+{q:'Мы ду́маем о ___.',b:'они́',a:'них',x:['их','им','и́ми'],de:'Wir denken an sie. (о них – н nach Präposition!)'},
+{q:'Позвони́ ___ ве́чером!',b:'я',a:'мне',x:['меня́','мной','я'],de:'Ruf mich am Abend an! (Dativ)'},
+{q:'Я люблю́ ___.',b:'ты',a:'тебя́',x:['тебе́','тобо́й','ты'],de:'Ich liebe dich. (Akkusativ)'},
+{q:'Э́то пода́рок для ___.',b:'она́',a:'неё',x:['ей','её','ней'],de:'Das ist ein Geschenk für sie. (для + Genitiv)'},
+{q:'Учи́тель спра́шивает ___.',b:'мы',a:'нас',x:['нам','на́ми','мы'],de:'Der Lehrer fragt uns. (Akkusativ)'},
+{q:'Я е́ду к ___.',b:'они́',a:'ним',x:['них','им','и́ми'],de:'Ich fahre zu ihnen. (к ним – Dativ mit н!)'},
+{q:'Что ты ду́маешь обо ___?',b:'я',a:'мне',x:['меня́','мной','я'],de:'Was denkst du über mich? (обо мне – Präpositiv)'},
+{q:'Мы говори́м с ___.',b:'вы',a:'ва́ми',x:['вас','вам','вы'],de:'Wir sprechen mit Ihnen. (Instrumental)'},
+{q:'Он ждёт ___.',b:'она́',a:'её',x:['ей','ней','неё'],de:'Er wartet auf sie. (ohne Präposition: её, nicht неё!)'},
+{q:'Расскажи́ ___ о пое́здке!',b:'он',a:'ему́',x:['его́','им','нём'],de:'Erzähl ihm von der Reise! (Dativ)'}
 ]},
 {id:'vpr',icon:'⚙️',t:'Verben: Präsens',s:'ich arbeite, du sprichst …',type:'gap',
  intro:'е-Konjugation (рабо́тать → рабо́таю, -ешь, -ет …) und и-Konjugation (говори́ть → говорю́, -ишь, -ит …). Achtung bei люби́ть (люблю́!), ви́деть (ви́жу!) und den Unregelmäßigen хоте́ть, мочь, есть.',
@@ -728,6 +788,40 @@ const TOPICS=[
 {q:'Чем вы ___?',b:'занима́ться',a:'занима́етесь',x:['занима́ешься','занима́ется','занима́емся'],de:'Womit beschäftigen Sie sich? (+ Instrumental!)'},
 {q:'Уро́к ___ в де́вять часо́в.',b:'начина́ться',a:'начина́ется',x:['начина́ю','начина́ет','начина́ются'],de:'Der Unterricht beginnt um neun.'},
 {type:'mc2',q:'Фильм ___ в во́семь часо́в.',o:['начина́ется','начина́ет'],a:0,de:'Der Film beginnt um acht.',e:'Der Film beginnt „von selbst" → reflexiv начина́ться. начина́ть braucht ein Objekt: я начина́ю рабо́ту.'}
+]},
+{id:'adjf',icon:'🌈',t:'Adjektive in den Fällen',s:'но́вую маши́ну, в но́вом до́ме',sec:2,type:'gap',
+ intro:'Adjektive deklinieren mit ihrem Substantiv mit. Maskulin/Neutrum: -ого (Gen.), -ому (Dat.), -ым/-им (Instr.), -ом/-ем (Präp.). Feminin: -ую (Akk.), sonst fast immer -ой/-ей. Nach к, г, х, ж, ш, щ, ч steht и statt ы.',
+ items:[
+{q:'Я чита́ю ___ кни́гу.',b:'интере́сный',a:'интере́сную',x:['интере́сная','интере́сной','интере́сный'],de:'Ich lese ein interessantes Buch. (Akk. f: -ую)'},
+{q:'Мы живём в ___ до́ме.',b:'ста́рый',a:'ста́ром',x:['ста́рый','ста́рого','ста́рым'],de:'Wir wohnen in einem alten Haus. (Präp. m: -ом)'},
+{q:'Он идёт в кино́ с ___ дру́гом.',b:'хоро́ший',a:'хоро́шим',x:['хоро́ший','хоро́шего','хоро́шем'],de:'Er geht mit einem guten Freund ins Kino. (Instr.: -им nach ш!)'},
+{q:'У ___ де́вушки есть кот.',b:'молодо́й',a:'молодо́й',x:['молода́я','молоду́ю','молодо́м'],de:'Die junge Frau hat einen Kater. (Gen. f: -ой)'},
+{q:'Я е́ду в ___ го́род.',b:'но́вый',a:'но́вый',x:['но́вого','но́вом','но́вому'],de:'Ich fahre in eine neue Stadt. (Akk. m unbelebt = Nominativ!)'},
+{q:'Мы говори́м о ___ фи́льме.',b:'но́вый',a:'но́вом',x:['но́вый','но́вого','но́вым'],de:'Wir sprechen über den neuen Film. (Präp.)'},
+{q:'Она́ помога́ет ___ бра́ту.',b:'мла́дший',a:'мла́дшему',x:['мла́дший','мла́дшего','мла́дшим'],de:'Sie hilft dem jüngeren Bruder. (Dat.: -ему)'},
+{q:'Я ви́жу ___ челове́ка.',b:'высо́кий',a:'высо́кого',x:['высо́кий','высо́кому','высо́ким'],de:'Ich sehe einen großen Mann. (Akk. belebt = Genitiv: -ого)'},
+{q:'Стака́н ___ ча́я, пожа́луйста.',b:'горя́чий',a:'горя́чего',x:['горя́чий','горя́чему','горя́чим'],de:'Ein Glas heißen Tee, bitte. (Gen.: -его nach ч)'},
+{q:'Она́ живёт в ___ кварти́ре.',b:'ма́ленький',a:'ма́ленькой',x:['ма́ленькая','ма́ленькую','ма́леньким'],de:'Sie wohnt in einer kleinen Wohnung. (Präp. f: -ой)'},
+{q:'Мы гуля́ем с ___ соба́кой.',b:'большо́й',a:'большо́й',x:['больша́я','большу́ю','большо́м'],de:'Wir spazieren mit dem großen Hund. (Instr. f: -ой)'},
+{q:'Он купи́л пода́рок ___ ма́ме.',b:'люби́мый',a:'люби́мой',x:['люби́мая','люби́мую','люби́мым'],de:'Er kaufte der geliebten Mama ein Geschenk. (Dat. f: -ой)'},
+{q:'В ___ году́ мы е́дем в Росси́ю.',b:'сле́дующий',a:'сле́дующем',x:['сле́дующий','сле́дующего','сле́дующим'],de:'Nächstes Jahr fahren wir nach Russland. (Präp.: -ем)'},
+{q:'Она́ ду́мает о ___ рабо́те.',b:'но́вый',a:'но́вой',x:['но́вая','но́вую','но́вым'],de:'Sie denkt über die neue Arbeit nach. (Präp. f: -ой)'}
+]},
+{id:'kond',icon:'🌦️',t:'Konditional: wenn & würde',s:'е́сли, е́сли бы, что́бы',sec:2,type:'gap',
+ intro:'бы + Vergangenheitsform = „würde": я купи́л бы = ich würde kaufen. Reale Bedingung: е́сли + Futur, ohne бы (Е́сли бу́дет со́лнце, мы пойдём). Irreale: е́сли бы + Vergangenheit, im Hauptsatz auch бы. что́бы = damit / um zu.',
+ items:[
+{q:'Е́сли за́втра бу́дет со́лнце, мы ___ гуля́ть.',b:'пойти́',a:'пойдём',x:['пошли́','пошли́ бы','идём'],de:'Wenn morgen die Sonne scheint, gehen wir spazieren. (real → Futur)'},
+{q:'Я ___ э́ту маши́ну, но у меня́ нет де́нег.',b:'купи́ть + бы',a:'купи́л бы',x:['куплю́','купи́л','покупа́ю'],de:'Ich würde dieses Auto kaufen, aber ich habe kein Geld.'},
+{q:'Е́сли бы у меня́ бы́ло вре́мя, я ___ бо́льше.',b:'чита́ть + бы',a:'чита́л бы',x:['чита́ю','бу́ду чита́ть','чита́й'],de:'Hätte ich Zeit, würde ich mehr lesen.'},
+{q:'___ ты хо́чешь, мы мо́жем пойти́ в кино́.',b:'',h:'Wenn du willst, können wir ins Kino gehen.',a:'Е́сли',x:['Е́сли бы','Что́бы','Когда́ бы'],de:'Reale Bedingung → е́сли ohne бы.'},
+{q:'Что ___ ты де́лал на моём ме́сте?',b:'',h:'Was würdest du an meiner Stelle tun?',a:'бы',x:['е́сли','что́бы','когда́'],de:'Was würdest du an meiner Stelle tun? (бы + Vergangenheit)'},
+{type:'mc2',q:'Е́сли бы я знал ру́сский, я ___ рабо́тал в Москве́.',o:['бы','бу́ду'],a:0,de:'Wenn ich Russisch könnte, würde ich in Moskau arbeiten.',e:'Irreale Bedingung (е́сли бы) → im Hauptsatz ebenfalls бы + Vergangenheit.'},
+{q:'Я хочу́, ___ ты пришёл.',b:'',h:'Ich will, dass du kommst.',a:'что́бы',x:['е́сли','бы','когда́'],de:'Ich will, dass du kommst. (что́бы + Vergangenheitsform!)'},
+{q:'Е́сли пойдёт дождь, мы ___ до́ма.',b:'оста́ться',a:'оста́немся',x:['оста́лись бы','остаёмся','оста́лись'],de:'Wenn es regnet, bleiben wir zu Hause. (real → Futur)'},
+{q:'На твоём ме́сте я ___ извини́лся.',b:'',h:'An deiner Stelle würde ich mich entschuldigen.',a:'бы',x:['е́сли','что́бы','когда́'],de:'An deiner Stelle würde ich mich entschuldigen.'},
+{type:'mc2',q:'Е́сли у меня́ бу́дут де́ньги, я ___ биле́т.',o:['куплю́','купи́л бы'],a:0,de:'Wenn ich Geld habe, kaufe ich ein Ticket.',e:'Reale Bedingung (е́сли + Futur) → Futur im Hauptsatz, kein бы.'},
+{type:'mc2',q:'Мы пое́хали бы на мо́ре, е́сли бы ___ тепло́.',o:['бы́ло','бу́дет'],a:0,de:'Wir würden ans Meer fahren, wenn es warm wäre.',e:'Nach е́сли бы steht immer die Vergangenheitsform.'},
+{q:'Что́бы хорошо́ говори́ть, на́до мно́го ___.',b:'говори́ть',a:'говори́ть',x:['говорю́','говори́л','говори́шь'],de:'Um gut zu sprechen, muss man viel sprechen. (что́бы + Infinitiv bei gleichem Subjekt)'}
 ]}
 ];
 
