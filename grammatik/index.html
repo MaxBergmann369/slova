@@ -234,6 +234,51 @@ textarea#bakBox{width:100%;min-height:110px;border:1px solid var(--frost);border
     </div>
   </div>
 
+  <div class="panel">
+    <h3>Zukunft</h3>
+    <div class="legend">
+      <b>Unvollendet:</b> бу́ду + Infinitiv – für Verläufe und Wiederholungen.<br>
+      я бу́ду · ты бу́дешь · он бу́дет · мы бу́дем · вы бу́дете · они́ бу́дут + рабо́тать<br><br>
+      <b>Vollendet:</b> einfach die Präsensform des vollendeten Verbs:<br>
+      я позвоню́ = ich werde anrufen · он прочита́ет = er wird durchlesen<br>
+      <i>Niemals beides mischen: „бу́ду позвони́ть“ gibt es nicht!</i>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Modalverben &amp; Co.</h3>
+    <div class="legend">
+      <b>до́лжен</b> (müssen/sollen) richtet sich nach dem Subjekt:<br>
+      он до́лжен · она́ должна́ · оно́ должно́ · мы/вы/они́ должны́<br><br>
+      <b>Unpersönlich + Dativ</b> (der „Dativ-Trick“):<br>
+      Мне на́до/ну́жно рабо́тать = ich muss arbeiten (wörtl. „mir ist nötig“)<br>
+      Тебе́ мо́жно = du darfst · Здесь нельзя́ кури́ть = hier darf man nicht rauchen<br><br>
+      <b>уме́ть</b> = können (erlernte Fähigkeit): я уме́ю пла́вать<br>
+      <b>мочь</b> = können (Möglichkeit/Gelegenheit): я могу́ прийти́<br>
+      Nach allen Modalwörtern steht der <b>Infinitiv</b>.
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Gehen &amp; Fahren</h3>
+    <div class="rtwrap"><table class="rt">
+      <tr><th></th><th>jetzt, eine Richtung</th><th>regelmäßig / hin &amp; zurück</th></tr>
+      <tr><td><b>zu Fuß</b></td><td><b>идти́</b> – иду́, идёшь, идёт</td><td><b>ходи́ть</b> – хожу́, хо́дишь, хо́дит</td></tr>
+      <tr><td><b>mit Fahrzeug</b></td><td><b>е́хать</b> – е́ду, е́дешь, е́дет</td><td><b>е́здить</b> – е́зжу, е́здишь, е́здит</td></tr>
+    </table></div>
+    <p class="hint">Мы ходи́ли в теа́тр = „wir waren im Theater“ (hin und zurück). Der Bus „geht“ auf Russisch: авто́бус идёт.</p>
+  </div>
+
+  <div class="panel">
+    <h3>Adjektive &amp; Plural</h3>
+    <div class="legend">
+      <b>Adjektive im Nominativ:</b> но́в<b>ый</b> дом (m) · но́в<b>ая</b> маши́на (f) · но́в<b>ое</b> окно́ (n) · но́в<b>ые</b> дома́ (Pl.)<br>
+      Genauso: мой/моя́/моё/мои́ · твой/твоя́/твоё/твои́ · наш/на́ша/на́ше/на́ши<br><br>
+      <b>Plural (Nominativ):</b> -ы (столы́) · -и nach к, г, х, ж, ш, щ, ч und weichen Konsonanten (кни́ги, учителя́) · -а/-я bei Neutrum und Sonderfällen (о́кна, дома́, города́)<br>
+      <b>Merken:</b> друг → друзья́ · брат → бра́тья · ребёнок → де́ти · челове́к → лю́ди
+    </div>
+  </div>
+
   <p class="foot">Schwester-App von СЛОВА́ · Betonung ist überall markiert, weil sie die Aussprache steuert.</p>
 </section>
 
@@ -386,6 +431,40 @@ const TOPICS=[
 {q:'Пи́цца с ___.',b:'сыр',a:'сы́ром',x:['сыр','сы́ра','сы́ру'],de:'Pizza mit Käse.'},
 {q:'Я иду́ гуля́ть с ___.',b:'сестра́',a:'сестро́й',x:['сестра́','сестру́','сестре́'],de:'Ich gehe mit meiner Schwester spazieren.'}
 ]},
+{id:'plu',icon:'👥',t:'Plural',s:'ein Tisch, viele Tische',type:'gap',
+ intro:'Mehrzahl im Nominativ: -ы (hart), -и (nach к, г, х, ж, ш, щ, ч und nach weichen Konsonanten), -а/-я (Neutrum – und ein paar Maskulina wie дом → дома́). Ein paar wichtige Wörter haben ganz eigene Formen: друг → друзья́, челове́к → лю́ди, ребёнок → де́ти.',
+ items:[
+{q:'стол → ___',b:'',a:'столы́',x:['стола́','сто́ли','столе́'],de:'der Tisch → die Tische'},
+{q:'маши́на → ___',b:'',a:'маши́ны',x:['маши́ни','машина́','маши́ну'],de:'das Auto → die Autos'},
+{q:'кни́га → ___',b:'',a:'кни́ги',x:['кни́гы','кни́га','кни́гу'],de:'das Buch → die Bücher (nach к nie ы, immer и!)'},
+{q:'окно́ → ___',b:'',a:'о́кна',x:['окны́','окни́','о́кно'],de:'das Fenster → die Fenster (Betonung wandert!)'},
+{q:'го́род → ___',b:'',a:'города́',x:['го́роды','го́роди','городы́'],de:'die Stadt → die Städte (Sonderform auf -а́!)'},
+{q:'дом → ___',b:'',a:'дома́',x:['до́мы','до́ми','домы́'],de:'das Haus → die Häuser (Sonderform auf -а́!)'},
+{q:'учи́тель → ___',b:'',a:'учителя́',x:['учи́тели','учи́телы','учителе́'],de:'der Lehrer → die Lehrer (Sonderform auf -я́)'},
+{q:'друг → ___',b:'',a:'друзья́',x:['дру́ги','дру́гы','друга́'],de:'der Freund → die Freunde (Sonderform!)'},
+{q:'ребёнок → ___',b:'',a:'де́ти',x:['ребёнки','ребёнка','ребя́тки'],de:'das Kind → die Kinder (ganz neues Wort!)'},
+{q:'челове́к → ___',b:'',a:'лю́ди',x:['челове́ки','челове́ка','челове́цы'],de:'der Mensch → die Menschen (ganz neues Wort!)'},
+{q:'сестра́ → ___',b:'',a:'сёстры',x:['сестры́','сестра́','сёстри'],de:'die Schwester → die Schwestern'},
+{q:'брат → ___',b:'',a:'бра́тья',x:['бра́ты','бра́ти','брата́'],de:'der Bruder → die Brüder'}
+]},
+{id:'adj',icon:'🎨',t:'Adjektive & mein/dein',s:'но́вый, но́вая, но́вое – Angleichung',type:'gap',
+ intro:'Adjektive und die Wörter мой/твой/наш/ваш richten sich immer nach ihrem Substantiv: но́вый дом (m), но́вая маши́на (f), но́вое окно́ (n), но́вые дома́ (Mehrzahl). Das gilt in jedem Fall – hier übst du vor allem den Nominativ.',
+ items:[
+{q:'Э́то ___ маши́на.',b:'но́вый',a:'но́вая',x:['но́вый','но́вое','но́вые'],de:'Das ist ein neues Auto.'},
+{q:'Э́то ___ окно́.',b:'большо́й',a:'большо́е',x:['большо́й','больша́я','больши́е'],de:'Das ist ein großes Fenster.'},
+{q:'У нас ___ кварти́ра.',b:'ма́ленький',a:'ма́ленькая',x:['ма́ленький','ма́ленькое','ма́ленькие'],de:'Wir haben eine kleine Wohnung.'},
+{q:'Он чита́ет ___ кни́гу.',b:'интере́сный',a:'интере́сную',x:['интере́сная','интере́сный','интере́сное'],de:'Er liest ein interessantes Buch. (Akkusativ!)'},
+{q:'___ брат живёт в Москве́.',b:'мой',a:'Мой',x:['Моя́','Моё','Мои́'],de:'Mein Bruder wohnt in Moskau.'},
+{q:'Где ___ су́мка?',b:'твой',a:'твоя́',x:['твой','твоё','твои́'],de:'Wo ist deine Tasche?'},
+{q:'Э́то ___ де́ти.',b:'наш',a:'на́ши',x:['наш','на́ша','на́ше'],de:'Das sind unsere Kinder.'},
+{q:'Э́то ___ ме́сто?',b:'ваш',a:'ва́ше',x:['ваш','ва́ша','ва́ши'],de:'Ist das Ihr Platz?'},
+{q:'Сего́дня ___ пого́да.',b:'хоро́ший',a:'хоро́шая',x:['хоро́ший','хоро́шее','хоро́шие'],de:'Heute ist gutes Wetter.'},
+{q:'Я пью ___ чай.',b:'горя́чий',a:'горя́чий',x:['горя́чая','горя́чее','горя́чие'],de:'Ich trinke heißen Tee.'},
+{q:'У неё ___ глаза́.',b:'краси́вый',a:'краси́вые',x:['краси́вый','краси́вая','краси́вое'],de:'Sie hat schöne Augen. (Mehrzahl!)'},
+{q:'Мы живём в ___ до́ме.',b:'ста́рый',a:'ста́ром',x:['ста́рый','ста́рая','ста́рые'],de:'Wir wohnen in einem alten Haus. (Präpositiv!)'},
+{q:'___ ма́ма рабо́тает врачо́м.',b:'мой',a:'Моя́',x:['Мой','Моё','Мои́'],de:'Meine Mama arbeitet als Ärztin.'},
+{q:'Э́то ___ молоко́?',b:'твой',a:'твоё',x:['твоя́','твой','твои́'],de:'Ist das deine Milch?'}
+]},
 {id:'vpr',icon:'⚙️',t:'Verben: Präsens',s:'ich arbeite, du sprichst …',type:'gap',
  intro:'е-Konjugation (рабо́тать → рабо́таю, -ешь, -ет …) und и-Konjugation (говори́ть → говорю́, -ишь, -ит …). Achtung bei люби́ть (люблю́!), ви́деть (ви́жу!) und den Unregelmäßigen хоте́ть, мочь, есть.',
  items:[
@@ -425,6 +504,60 @@ const TOPICS=[
 {q:'Они́ ___ ру́сский.',b:'учи́ть',a:'учи́ли',x:['учи́л','учи́ла','учи́ло'],de:'Sie lernten Russisch.'},
 {q:'Молоко́ ___ в холоди́льнике.',b:'быть',a:'бы́ло',x:['был','была́','бы́ли'],de:'Die Milch war im Kühlschrank.'},
 {q:'Ба́бушка ___ нам ска́зку.',b:'расска́зывать',a:'расска́зывала',x:['расска́зывал','расска́зывало','расска́зывали'],de:'Oma erzählte uns ein Märchen.'}
+]},
+{id:'fut',icon:'🔮',t:'Verben: Zukunft',s:'бу́ду + Infinitiv oder perfektiv',type:'gap',
+ intro:'Zwei Wege in die Zukunft: (1) бу́ду/бу́дешь/бу́дет … + Infinitiv für Verläufe und Wiederholungen („ich werde arbeiten"). (2) Die Präsensform eines vollendeten Verbs ist automatisch Zukunft: я позвоню́ = „ich werde anrufen (einmal, fertig)".',
+ items:[
+{q:'За́втра я ___ рабо́тать до́ма.',b:'быть',a:'бу́ду',x:['бу́дешь','бу́дет','бу́дут'],de:'Morgen werde ich zu Hause arbeiten.'},
+{q:'Ты ___ смотре́ть фильм ве́чером?',b:'быть',a:'бу́дешь',x:['бу́ду','бу́дет','бу́дете'],de:'Wirst du am Abend einen Film schauen?'},
+{q:'Мы ___ гуля́ть в па́рке.',b:'быть',a:'бу́дем',x:['бу́ду','бу́дете','бу́дут'],de:'Wir werden im Park spazieren.'},
+{q:'Они́ ___ учи́ть ру́сский язы́к.',b:'быть',a:'бу́дут',x:['бу́дем','бу́дет','бу́ду'],de:'Sie werden Russisch lernen.'},
+{q:'Она́ ___ за́втра до́ма?',b:'быть',a:'бу́дет',x:['бу́дешь','бу́ду','бу́дут'],de:'Wird sie morgen zu Hause sein?'},
+{q:'За́втра ве́чером я тебе́ ___.',b:'позвони́ть',a:'позвоню́',x:['позвони́л','звоню́','позвони́шь'],de:'Morgen Abend rufe ich dich an. (vollendet = Zukunft!)'},
+{q:'Он ___ э́ту кни́гу за неде́лю.',b:'прочита́ть',a:'прочита́ет',x:['прочита́л','чита́ет','прочита́ю'],de:'Er wird dieses Buch in einer Woche durchlesen.'},
+{q:'Ве́чером мы ___ пи́ццу.',b:'пригото́вить',a:'пригото́вим',x:['пригото́вили','гото́вим','пригото́вит'],de:'Am Abend machen wir Pizza.'},
+{q:'В суббо́ту я ___ пода́рок ма́ме.',b:'купи́ть',a:'куплю́',x:['купи́л','покупа́ю','ку́пишь'],de:'Am Samstag kaufe ich Mama ein Geschenk.'},
+{q:'Ты ___ мне за́втра?',b:'помо́чь',a:'помо́жешь',x:['помо́г','помога́ешь','помо́жете'],de:'Hilfst du mir morgen?'},
+{type:'mc2',q:'Ка́ждое у́тро я ___ бе́гать в па́рке.',o:['бу́ду','побегу́'],a:0,de:'Ich werde jeden Morgen im Park laufen.',e:'Wiederholung („ка́ждое у́тро") → unvollendetes Futur mit бу́ду + Infinitiv.'},
+{type:'mc2',q:'За́втра я ___ письмо́ и отпра́влю его́.',o:['бу́ду писа́ть','напишу́'],a:1,de:'Morgen schreibe ich den Brief (fertig) und schicke ihn ab.',e:'Einmalig, mit Ergebnis → vollendetes Futur (напишу́).'}
+]},
+{id:'mod',icon:'⚡',t:'Modalverben',s:'müssen, dürfen, können – mit Dativ-Trick',type:'gap',
+ intro:'до́лжен (müssen) richtet sich nach dem Geschlecht: он до́лжен, она́ должна́, мы должны́. на́до/ну́жно (müssen) und мо́жно/нельзя́ (dürfen/nicht dürfen) sind unpersönlich und stehen mit Dativ: Мне на́до рабо́тать = „Mir ist nötig zu arbeiten". Und: уме́ть = können (gelernt haben), мочь = können (die Möglichkeit haben).',
+ items:[
+{q:'Он ___ рабо́тать за́втра.',b:'до́лжен',a:'до́лжен',x:['должна́','должны́','должно́'],de:'Er muss morgen arbeiten.'},
+{q:'Она́ ___ мно́го учи́ться.',b:'до́лжен',a:'должна́',x:['до́лжен','должны́','должно́'],de:'Sie muss viel lernen.'},
+{q:'Мы ___ купи́ть проду́кты.',b:'до́лжен',a:'должны́',x:['до́лжен','должна́','должно́'],de:'Wir müssen Lebensmittel kaufen.'},
+{q:'___ на́до отдохну́ть.',b:'я',a:'Мне',x:['Я','Меня́','Мной'],de:'Ich muss mich ausruhen. (wörtlich: „Mir ist nötig") – Dativ!'},
+{q:'___ ну́жно бо́льше спать.',b:'ты',a:'Тебе́',x:['Ты','Тебя́','Тобо́й'],de:'Du musst mehr schlafen. – Dativ!'},
+{q:'Здесь ___ фотографи́ровать.',b:'',h:'Hier darf man fotografieren.',a:'мо́жно',x:['на́до','нельзя́','до́лжен'],de:'Hier darf man fotografieren.'},
+{q:'В библиоте́ке ___ гро́мко говори́ть.',b:'',h:'In der Bibliothek darf man nicht laut sprechen.',a:'нельзя́',x:['мо́жно','на́до','ну́жно'],de:'In der Bibliothek darf man nicht laut sprechen.'},
+{q:'___ мне откры́ть окно́?',b:'',h:'Darf ich das Fenster öffnen?',a:'Мо́жно',x:['На́до','Нельзя́','До́лжен'],de:'Darf ich das Fenster öffnen?'},
+{q:'Я ___ пла́вать.',b:'',h:'Ich kann schwimmen – ich habe es gelernt.',a:'уме́ю',x:['могу́','до́лжен','хочу́'],de:'Ich kann schwimmen (beherrsche es). → уме́ть'},
+{q:'За́втра я не ___ прийти́.',b:'',h:'Morgen kann ich nicht kommen – keine Möglichkeit.',a:'могу́',x:['уме́ю','до́лжен','на́до'],de:'Morgen kann ich nicht kommen. → мочь'},
+{q:'Она́ ___ хорошо́ гото́вить.',b:'',h:'Sie kann gut kochen – sie beherrscht es.',a:'уме́ет',x:['мо́жет','должна́','на́до'],de:'Sie kann gut kochen. → уме́ть'},
+{q:'Ты ___ мне помо́чь?',b:'',h:'Kannst du mir (jetzt) helfen?',a:'мо́жешь',x:['уме́ешь','до́лжен','на́до'],de:'Kannst du mir helfen? → мочь'},
+{q:'Де́тям ___ спать.',b:'',h:'Die Kinder müssen schlafen.',a:'на́до',x:['мо́гут','должны́','уме́ют'],de:'Die Kinder müssen schlafen. (Де́тям = Dativ → на́до)'},
+{q:'Мне ну́жно ___ биле́т.',b:'купи́ть',a:'купи́ть',x:['покупа́ю','купи́л','куплю́'],de:'Ich muss ein Ticket kaufen. (nach Modalwörtern: Infinitiv!)'},
+{q:'Ты до́лжен ___ до́ма.',b:'оста́ться',a:'оста́ться',x:['остаёшься','оста́лся','оста́нешься'],de:'Du musst zu Hause bleiben. (nach до́лжен: Infinitiv!)'},
+{type:'mc2',q:'Он ___ игра́ть на гита́ре — он учи́лся три го́да.',o:['уме́ет','мо́жет'],a:0,de:'Er kann Gitarre spielen – er hat drei Jahre gelernt.',e:'Erlernte Fähigkeit → уме́ть.'},
+{type:'mc2',q:'Сего́дня ве́чером я ___ прийти́ к тебе́.',o:['могу́','уме́ю'],a:0,de:'Heute Abend kann ich zu dir kommen.',e:'Möglichkeit/Gelegenheit → мочь.'},
+{type:'mc2',q:'___ здесь кури́ть? — Нет, нельзя́!',o:['Мо́жно','На́до'],a:0,de:'Darf man hier rauchen? – Nein, verboten!',e:'Nach Erlaubnis fragen → мо́жно.'}
+]},
+{id:'mov',icon:'🚶',t:'Gehen & Fahren',s:'идти́/ходи́ть · е́хать/е́здить',type:'gap',
+ intro:'Russisch unterscheidet: gerade JETZT in eine Richtung unterwegs (идти́ zu Fuß, е́хать mit Fahrzeug) oder regelmäßig/hin und zurück (ходи́ть, е́здить). Мы ходи́ли в теа́тр = „wir waren im Theater (und wieder zurück)".',
+ items:[
+{q:'Смотри́! Вот ___ наш авто́бус.',b:'',h:'Schau! Da kommt (gerade) unser Bus.',a:'идёт',x:['хо́дит','е́здит','ходи́л'],de:'Schau! Da kommt unser Bus. (jetzt, eine Richtung → идти́)'},
+{q:'Ка́ждый день я ___ в шко́лу пешко́м.',b:'',h:'Jeden Tag gehe ich zu Fuß zur Schule.',a:'хожу́',x:['иду́','е́ду','е́зжу'],de:'Jeden Tag gehe ich zu Fuß zur Schule. (regelmäßig → ходи́ть)'},
+{q:'Сейча́с мы ___ в кино́.',b:'',h:'Wir gehen gerade ins Kino.',a:'идём',x:['хо́дим','е́здим','ходи́ли'],de:'Wir gehen gerade ins Kino.'},
+{q:'Ле́том мы ча́сто ___ на мо́ре.',b:'',h:'Im Sommer fahren wir oft ans Meer.',a:'е́здим',x:['е́дем','хо́дим','идём'],de:'Im Sommer fahren wir oft ans Meer. (regelmäßig + Fahrzeug → е́здить)'},
+{q:'Куда́ ты сейча́с ___?',b:'',h:'Wohin gehst du gerade?',a:'идёшь',x:['хо́дишь','е́здишь','ходи́л'],de:'Wohin gehst du gerade?'},
+{q:'За́втра я ___ в Ве́ну на по́езде.',b:'',h:'Morgen fahre ich mit dem Zug nach Wien.',a:'е́ду',x:['е́зжу','иду́','хожу́'],de:'Morgen fahre ich mit dem Zug nach Wien. (eine konkrete Fahrt → е́хать)'},
+{q:'Он ка́ждое у́тро ___ на рабо́ту на маши́не.',b:'',h:'Er fährt jeden Morgen mit dem Auto zur Arbeit.',a:'е́здит',x:['е́дет','идёт','хо́дит'],de:'Er fährt jeden Morgen mit dem Auto zur Arbeit.'},
+{q:'Вчера́ мы ___ в теа́тр.',b:'',h:'Gestern waren wir im Theater (hin und zurück).',a:'ходи́ли',x:['шли','е́хали','идём'],de:'Gestern waren wir im Theater. (hin und zurück → ходи́ли)'},
+{q:'Ба́бушка ре́дко ___ в го́род.',b:'',h:'Oma fährt selten in die Stadt.',a:'е́здит',x:['е́дет','хо́дит','идёт'],de:'Oma fährt selten in die Stadt.'},
+{q:'Дождь! Мы бы́стро ___ домо́й.',b:'',h:'Es regnet! Wir gehen schnell nach Hause (jetzt).',a:'идём',x:['хо́дим','е́здим','шли'],de:'Es regnet! Wir gehen schnell nach Hause.'},
+{type:'mc2',q:'Сейча́с я ___ в магази́н.',o:['иду́','хожу́'],a:0,de:'Ich gehe gerade in den Laden.',e:'Jetzt, eine Richtung → идти́.'},
+{type:'mc2',q:'По суббо́там я ___ в бассе́йн.',o:['хожу́','иду́'],a:0,de:'Samstags gehe ich (regelmäßig) ins Schwimmbad.',e:'Regelmäßig, hin und zurück → ходи́ть.'}
 ]},
 {id:'asp',icon:'⚖️',t:'Aspekt',s:'Prozess oder Ergebnis?',type:'mc2',
  intro:'Unvollendet = Prozess, Dauer, Gewohnheit (чита́л). Vollendet = einmalig, abgeschlossen, Ergebnis (прочита́л). Lies das Signalwort im Satz!',
@@ -531,13 +664,15 @@ function topicOf(ref){return TOPICS.find(t=>t.id===ref.tid)}
 function renderItem(){
   const ref=sess.q[sess.i],tp=topicOf(ref),it=tp.items[ref.k];
   const st=itemStat(ref.tid,ref.k);
-  cur={ref,tp,it,st,answered:false,opts:null,goodIdx:-1,puz:null};
+  const itype=it.type||tp.type; /* Aufgaben können den Themen-Typ überschreiben */
+  cur={ref,tp,it,st,itype,answered:false,opts:null,goodIdx:-1,puz:null};
   let front='';
   const chips='<div class="badges"><span class="chip">'+tp.icon+' '+esc(tp.t)+'</span>'+(st&&st.l===0?'<span class="chip k2">nochmal üben</span>':'')+'</div>';
-  if(tp.type==='gap'){
+  if(itype==='gap'){
     const typing=st&&st.c>=2; /* gemeisterte Aufgaben werden getippt statt geklickt */
     front='<div class="sent">'+acc(esc(it.q)).replace('___','<span class="gapx">___</span>')+'</div>'+
-      '<div class="baseword">(<b>'+acc(esc(it.b))+'</b>)</div>';
+      (it.b?'<div class="baseword">(<b>'+acc(esc(it.b))+'</b>)</div>':'')+
+      (it.h?'<div class="baseword" style="font-style:italic;font-size:.88rem">'+esc(it.h)+'</div>':'');
     if(typing){
       front+='<div class="qlabel">Schreib die richtige Form:</div>'+typeHtml();
     }else{
@@ -546,7 +681,7 @@ function renderItem(){
       front+='<div class="qlabel">Welche Form passt?</div>'+
         '<div class="opts">'+cur.opts.map((o,k)=>'<button class="opt" data-k="'+k+'">'+acc(esc(o))+'</button>').join('')+'</div>';
     }
-  }else if(tp.type==='mc2'){
+  }else if(itype==='mc2'){
     cur.opts=it.o.slice();
     cur.goodIdx=it.a;
     front='<div class="sent">'+acc(esc(it.q)).replace('___','<span class="gapx">___</span>')+'</div>'+
@@ -574,12 +709,12 @@ function renderItem(){
       resolveItem(ok);
     });
   }
-  if(tp.type==='gap'&&st&&st.c>=2){
+  if(itype==='gap'&&st&&st.c>=2){
     kbWire();
     $('#checkBtn').onclick=checkTyped;
     $('#typeInp').addEventListener('keydown',e=>{if(e.key==='Enter')checkTyped()});
   }
-  if(tp.type==='puz'){
+  if(itype==='puz'){
     wirePuzzle();
   }
 }
@@ -642,9 +777,9 @@ function wirePuzzle(){
 
 /* ---- Auswertung ---- */
 function speakCur(){
-  const it=cur.it,tp=cur.tp;
-  if(tp.type==='gap')speak(it.q.replace('___',it.a));
-  else if(tp.type==='mc2')speak(it.q.replace('___',it.o[it.a]));
+  const it=cur.it;
+  if(cur.itype==='gap')speak(it.q.replace('___',it.a));
+  else if(cur.itype==='mc2')speak(it.q.replace('___',it.o[it.a]));
   else speak(it.w.join(' '));
 }
 function resolveItem(ok){
@@ -670,10 +805,10 @@ function resolveItem(ok){
   speakCur();
 }
 function fullHtml(){
-  const it=cur.it,tp=cur.tp;
+  const it=cur.it;
   let s;
-  if(tp.type==='gap')s=esc(it.q).replace('___','<span class="hl">'+esc(it.a)+'</span>');
-  else if(tp.type==='mc2')s=esc(it.q).replace('___','<span class="hl">'+esc(it.o[it.a])+'</span>');
+  if(cur.itype==='gap')s=esc(it.q).replace('___','<span class="hl">'+esc(it.a)+'</span>');
+  else if(cur.itype==='mc2')s=esc(it.q).replace('___','<span class="hl">'+esc(it.o[it.a])+'</span>');
   else s=esc(it.w.join(' '));
   return acc(s);
 }
