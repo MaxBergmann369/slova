@@ -112,6 +112,8 @@ nav.tabsbar{position:sticky;top:0;z-index:20;background:var(--paper);padding:12p
 .q-ru{font-family:var(--serif);font-weight:700;font-size:1.3rem;text-align:center;margin-top:14px}
 .q-ru .acc{color:var(--sliva)}
 .q-de{text-align:center;font-size:.82rem;color:var(--ink-faint);margin-top:2px}
+.gapmark{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--frost);color:var(--ink-soft);align-items:center;justify-content:center;font-size:.75rem;font-weight:700;vertical-align:middle}
+.gapmark.cur{background:var(--sliva);color:#fff}
 .fb{border-radius:10px;padding:10px 14px;font-weight:700;margin-top:14px;text-align:center}
 .fb-ok{background:var(--birch-soft);color:var(--birch)}
 .fb-no{background:var(--kalina-soft);color:var(--kalina)}
@@ -241,7 +243,10 @@ const DICT={
 'поехала':'fuhr los (sie)','дорога':'Weg, Straße','длинная':'lang (f)','поезд':'Zug','когда':'als; wann','море':'Meer','забыл':'vergaß (er)','обо':'über – обо всём = über alles','всем':'allem','плавал':'schwamm (er)','пляже':'Strand (am ~)','берегу':'Ufer (am ~)','видели':'sahen','дельфинов':'Delfine (Akk.)','фотографировала':'fotografierte (sie)','неделю':'Woche (Akk.)','надо':'man muss','обязательно':'unbedingt, bestimmt','вернемся':'(wir) kommen zurück',
 'важный':'wichtig','экзамен':'Prüfung','по':'in, nach – по истории = in Geschichte','истории':'Geschichte (Fach); Geschichten','учила':'lernte (sie)','весь':'den ganzen','всю':'die ganze','ночь':'Nacht','выпила':'trank aus (sie)','чашки':'Tassen','университет':'Universität (Akk.)','аудитории':'Hörsaal (im ~)','страшно':'unheimlich (es ist ~)','профессор':'Professor','посмотрел':'schaute (er)','нее':'sie – на неё = sie an','вопрос':'Frage','единственный':'der einzige','закрыла':'schloss (sie)','глаза':'Augen','начала':'begann (sie)','знала':'wusste (sie)','десять':'zehn','предмет':'Fach, Schulfach','пять':'Fünf (beste Note in Russland!)','вышла':'ging hinaus (sie)','счастливая':'glücklich (f)','двенадцать':'zwölf',
 'помогал':'half (er)','убирать':'aufräumen, putzen','шкафу':'Schrank (im ~)','нашел':'fand (er)','старую':'alte (Akk.)','коробку':'Schachtel (Akk.)','коробке':'Schachtel (in der ~)','лежали':'lagen','письма':'Briefe','одна':'eine','фотографии':'Foto (auf dem ~)','молодая':'jung (f)','девушка':'Mädchen, junge Frau','танцевала':'tanzte (sie)','сцене':'Bühne (auf der ~)','пятьдесят':'fünfzig','назад':'vor – 50 лет назад = vor 50 Jahren','театре':'Theater (im ~)','поверить':'glauben','балерина':'Ballerina','почему':'warum','никогда':'nie','рассказывала':'erzählt hast (du)','спрашивал':'gefragt hast (du)','засмеялась':'lachte los (sie)','каждую':'jeden (f, Akk.)','субботу':'Samstag (Akk.)','рассказывает':'erzählt',
-'столе':'Tisch (auf dem ~)','книги':'Bücher','семьи':'Familie (Gen.)','еду':'(ich) fahre','людей':'Menschen (Gen. – viele ~)','вот':'da, hier (ist)','тебя':'dich','магазине':'Laden (im ~)','сыр':'Käse','две':'zwei (weiblich)','смотрит':'schaut','во':'in – во дворе = im Hof','один':'ein, eins – оди́н раз = einmal','автобус':'Bus','играл':'spielte (er)','ехать':'fahren','анны':'Anna (Gen.)','три':'drei','говорить':'sprechen, reden','минут':'Minuten (Gen.)','знаете':'(Sie) kennen, wissen','квартиру':'Wohnung (Akk.)','кто':'wer','смотрела':'schaute (sie)','фотографию':'Foto (Akk.)','улыбалась':'lächelte (sie)','историю':'Geschichte (Akk.)'
+'столе':'Tisch (auf dem ~)','книги':'Bücher','семьи':'Familie (Gen.)','еду':'(ich) fahre','людей':'Menschen (Gen. – viele ~)','вот':'da, hier (ist)','тебя':'dich','магазине':'Laden (im ~)','сыр':'Käse','две':'zwei (weiblich)','смотрит':'schaut','во':'in – во дворе = im Hof','один':'ein, eins – оди́н раз = einmal','автобус':'Bus','играл':'spielte (er)','ехать':'fahren','анны':'Anna (Gen.)','три':'drei','говорить':'sprechen, reden','минут':'Minuten (Gen.)','знаете':'(Sie) kennen, wissen','квартиру':'Wohnung (Akk.)','кто':'wer','смотрела':'schaute (sie)','фотографию':'Foto (Akk.)','улыбалась':'lächelte (sie)','историю':'Geschichte (Akk.)',
+'мае':'Mai (im ~)','лиза':'Lisa (Name)','санкт-петербург':'Sankt Petersburg','петербург':'Petersburg','ехали':'fuhren','их':'sie (Mehrzahl, Akk.); ihre','дождем':'Regen (mit ~)','важно':'wichtig – не ва́жно = egal','невский':'Newski- (Name des Boulevards)','проспект':'Prospekt, Boulevard','главную':'Haupt- (Akk.)','улицу':'Straße (Akk.)','магазинов':'Läden (Gen.)','красивых':'schöner (Gen. Pl.)','старых':'alter (Gen. Pl.)','домов':'Häuser (Gen.)','гуляли':'spazierten','эрмитажу':'Eremitage (durch die ~)','самых':'оди́н из са́мых … = eines der …sten','больших':'größten (Gen.)','музеев':'Museen (Gen.)','мира':'Welt (Gen.)','девушки':'Mädchen, junge Frauen (Pl.)','захотели':'bekamen Lust, wollten plötzlich','нашли':'fanden','принес':'brachte (er)','им':'ihnen','блины':'Blini (russische Pfannkuchen)','поняла':'begriff, verstand (sie)','сумку':'Tasche (Akk.)','деньги':'Geld','телефон':'Telefon, Handy','билеты':'Tickets','побежали':'rannten los','входа':'Eingang (beim ~)','стоял':'stand (er)','охранник':'Wachmann','держал':'hielt (er)','вернетесь':'(Sie) kommen zurück','так':'so','рада':'froh (f)','обняла':'umarmte (sie)','добрых':'guter, gütiger (Gen. Pl.)','музее':'Museum (im ~)',
+'банке':'Bank (in der ~)','похож':'ähnlich – похо́ж на = glich','другой':'anderer','документы':'Dokumente','компьютер':'Computer','позвонил':'rief an (er)','незнакомый':'unbekannt','номер':'Nummer','привет':'hallo!','саша':'Sascha (Name)','помнишь':'(du) erinnerst dich','лучшим':'bester (Instr.)','виделись':'sahen einander','твоем':'deiner (in ~)','встретимся':'treffen wir uns!','следующий':'nächster','немного':'ein wenig','боялся':'hatte Angst (er)','чем':'worüber; als','вошел':'trat ein (er)','смеяться':'lachen','детстве':'Kindheit (in der ~)','четыре':'vier','семьях':'Familien (über die ~)','испании':'Spanien (in ~)','учит':'lehrt, unterrichtet','детей':'Kinder (Akk./Gen.)','гитара':'Gitarre','об':'über (vor Vokal: об э́том)','этом':'dieses – об э́том = darüber','билет':'Ticket','барселону':'Barcelona (Akk.)','друзья':'Freunde','можно':'man kann, man darf','вернуться':'zurückkehren','любое':'jede beliebige','время':'Zeit',
+'подруга':'Freundin','поехали':'fuhren los','поезде':'Zug (mit dem ~)','города':'Stadt (Gen.)','маленькое':'klein (n)','офис':'Büro','другом':'Freund (Instr. – bester ~ / mit dem ~)','школе':'Schule (in der ~)','буду':'(ich) werde sein','городе':'Stadt (in der ~)','ждал':'wartete (er)','после':'nach','двадцати':'zwanzig (nach ~ Jahren)','начали':'begannen','дом':'Haus, Zuhause'
 };
 
 /* ================= Geschichten ================= */
@@ -558,7 +563,55 @@ const STORIES=[
  q:[
  {q:'Что Макс нашёл в шкафу́?',qde:'Was fand Max im Schrank?',o:['ста́рую коро́бку','кни́гу','де́ньги'],a:0},
  {q:'Кем была́ ба́бушка?',qde:'Was war Oma früher?',o:['балери́ной','учи́тельницей','врачо́м'],a:0},
- {q:'Когда́ ба́бушка расска́зывает исто́рии?',qde:'Wann erzählt Oma jetzt Geschichten?',o:['ка́ждую суббо́ту','ка́ждый день','никогда́'],a:0}]}
+ {q:'Когда́ ба́бушка расска́зывает исто́рии?',qde:'Wann erzählt Oma jetzt Geschichten?',o:['ка́ждую суббо́ту','ка́ждый день','никогда́'],a:0}]},
+{id:'piter',lvl:4,t:'Путеше́ствие в Петербу́рг',tde:'Die Reise nach Sankt Petersburg (lange Geschichte)',
+ s:[
+ ['В ма́е А́нна и её подру́га Ли́за пое́хали в Санкт-Петербу́рг.','Im Mai fuhren Anna und ihre Freundin Lisa nach Sankt Petersburg.'],
+ ['Они́ е́хали на по́езде всю ночь.','Sie fuhren die ganze Nacht mit dem Zug.'],
+ ['У́тром го́род встре́тил их дождём, но э́то бы́ло не ва́жно.','Morgens empfing sie die Stadt mit Regen, aber das war egal.'],
+ ['Снача́ла они́ пошли́ на Не́вский проспе́кт — гла́вную у́лицу го́рода.','Zuerst gingen sie zum Newski-Prospekt – der Hauptstraße der Stadt.'],
+ ['Там мно́го магази́нов, кафе́ и краси́вых ста́рых домо́в.','Dort gibt es viele Läden, Cafés und schöne alte Häuser.'],
+ ['Пото́м они́ до́лго гуля́ли по Эрмита́жу.','Danach spazierten sie lange durch die Eremitage.'],
+ ['Э́то оди́н из са́мых больши́х музе́ев ми́ра.','Das ist eines der größten Museen der Welt.'],
+ ['Ве́чером де́вушки захоте́ли есть и нашли́ ма́ленькое кафе́.','Abends bekamen die Mädchen Hunger und fanden ein kleines Café.'],
+ ['Официа́нт принёс им борщ, блины́ и горя́чий чай.','Der Kellner brachte ihnen Borschtsch, Blini und heißen Tee.'],
+ ['Вдруг А́нна поняла́, что забы́ла су́мку в музе́е!','Plötzlich begriff Anna, dass sie ihre Tasche im Museum vergessen hatte!'],
+ ['В су́мке бы́ли де́ньги, телефо́н и биле́ты домо́й.','In der Tasche waren Geld, Handy und die Tickets nach Hause.'],
+ ['Де́вушки бы́стро побежа́ли наза́д.','Die Mädchen rannten schnell zurück.'],
+ ['О́коло вхо́да стоя́л охра́нник и держа́л её су́мку.','Am Eingang stand ein Wachmann und hielt ihre Tasche.'],
+ ['— Я знал, что вы вернётесь, — улыбну́лся он.','„Ich wusste, dass Sie zurückkommen", lächelte er.'],
+ ['А́нна была́ так ра́да, что обняла́ его́.','Anna war so froh, dass sie ihn umarmte.'],
+ ['Тепе́рь она́ говори́т: «Петербу́рг — го́род до́брых люде́й».','Jetzt sagt sie: „Petersburg ist eine Stadt guter Menschen."']],
+ q:[
+ {q:'Куда́ пое́хали де́вушки?',qde:'Wohin fuhren die Mädchen?',o:['в Санкт-Петербу́рг','в Москву́','в Ки́ев'],a:0},
+ {q:'Как называ́ется гла́вная у́лица го́рода?',qde:'Wie heißt die Hauptstraße der Stadt?',o:['Не́вский проспе́кт','Кра́сная пло́щадь','Арба́т'],a:0},
+ {q:'Что принёс официа́нт?',qde:'Was brachte der Kellner?',o:['борщ, блины́ и чай','пи́ццу и ко́фе','суп и хлеб'],a:0},
+ {q:'Что А́нна забы́ла в музе́е?',qde:'Was vergaß Anna im Museum?',o:['су́мку','телефо́н','кни́гу'],a:0},
+ {q:'Кто держа́л её су́мку?',qde:'Wer hielt ihre Tasche?',o:['охра́нник','официа́нт','Ли́за'],a:0}]},
+{id:'drug',lvl:4,t:'Ста́рый друг',tde:'Der alte Freund (lange Geschichte)',
+ s:[
+ ['И́горь рабо́тал в ба́нке уже́ де́сять лет.','Igor arbeitete schon zehn Jahre in einer Bank.'],
+ ['Ка́ждый день был похо́ж на друго́й: о́фис, докуме́нты, компью́тер.','Jeder Tag glich dem anderen: Büro, Dokumente, Computer.'],
+ ['Одна́жды у́тром ему́ позвони́л незнако́мый но́мер.','Eines Morgens rief ihn eine unbekannte Nummer an.'],
+ ['— Приве́т, И́горь! Э́то Са́ша. По́мнишь меня́?','„Hallo, Igor! Hier ist Sascha. Erinnerst du dich an mich?"'],
+ ['Са́ша был его́ лу́чшим дру́гом в шко́ле.','Sascha war sein bester Freund in der Schule gewesen.'],
+ ['Они́ не ви́делись два́дцать лет.','Sie hatten sich zwanzig Jahre nicht gesehen.'],
+ ['— Я за́втра бу́ду в твоём го́роде. Дава́й встре́тимся!','„Ich bin morgen in deiner Stadt. Lass uns treffen!"'],
+ ['На сле́дующий день И́горь ждал его́ в кафе́ и немно́го боя́лся.','Am nächsten Tag wartete Igor im Café auf ihn und hatte etwas Angst.'],
+ ['О чём говори́ть по́сле двадцати́ лет?','Worüber redet man nach zwanzig Jahren?'],
+ ['Но когда́ Са́ша вошёл, они́ на́чали смея́ться, как в де́тстве.','Aber als Sascha hereinkam, fingen sie an zu lachen wie in der Kindheit.'],
+ ['Они́ говори́ли четы́ре часа́ — о шко́ле, о семья́х, о жи́зни.','Sie redeten vier Stunden – über die Schule, die Familien, das Leben.'],
+ ['Са́ша тепе́рь живёт в Испа́нии и у́чит там дете́й му́зыке.','Sascha lebt jetzt in Spanien und unterrichtet dort Kinder in Musik.'],
+ ['— Приезжа́й ле́том! Мо́ре, со́лнце, гита́ра, — сказа́л он.','„Komm im Sommer! Meer, Sonne, Gitarre", sagte er.'],
+ ['И́горь до́лго ду́мал об э́том ве́чером.','Igor dachte am Abend lange darüber nach.'],
+ ['А пото́м купи́л биле́т в Барсело́ну.','Und dann kaufte er ein Ticket nach Barcelona.'],
+ ['Ста́рые друзья́ — э́то как дом: мо́жно верну́ться в любо́е вре́мя.','Alte Freunde sind wie ein Zuhause: Man kann jederzeit zurückkehren.']],
+ q:[
+ {q:'Где рабо́тал И́горь?',qde:'Wo arbeitete Igor?',o:['в ба́нке','в шко́ле','в кафе́'],a:0},
+ {q:'Кто позвони́л И́горю?',qde:'Wer rief Igor an?',o:['Са́ша','ма́ма','его́ брат'],a:0},
+ {q:'Ско́лько лет они́ не ви́делись?',qde:'Wie lange hatten sie sich nicht gesehen?',o:['два́дцать лет','де́сять лет','пять лет'],a:0},
+ {q:'Где тепе́рь живёт Са́ша?',qde:'Wo lebt Sascha jetzt?',o:['в Испа́нии','в Росси́и','в Герма́нии'],a:0},
+ {q:'Что купи́л И́горь в конце́?',qde:'Was kaufte Igor am Ende?',o:['биле́т в Барсело́ну','гита́ру','дом'],a:0}]}
 ];
 const LEVELS={1:'Stufe 1 · Ganz leicht (A1)',2:'Stufe 2 · Leicht (A1+)',3:'Stufe 3 · Mittel (A2)',4:'Stufe 4 · Fortgeschritten (A2+/B1)'};
 
@@ -606,7 +659,7 @@ function renderStoryList(){
       html+='<button class="story" onclick="openStory(\''+s.id+'\')">'+
         '<span class="ic">'+(r?'✅':'📖')+'</span>'+
         '<span class="m"><span class="t">'+acc(esc(s.t))+'</span><span class="s" style="display:block">'+esc(s.tde)+' · '+words+' Wörter</span></span>'+
-        '<span class="st '+(r?'st-done':'st-new')+'">'+(r?(r.best+'/'+s.q.length):'neu')+'</span></button>';
+        '<span class="st '+(r?'st-done':'st-new')+'">'+(r?(r.best+'/'+(r.max||s.q.length)):'neu')+'</span></button>';
     });
   });
   $('#view-lesen').innerHTML=html;
@@ -631,7 +684,7 @@ function openStory(id){
     '</div>'+
     '<div class="stext" id="stext">'+body+'</div>'+
     '<div class="wordbox empty" id="wordBox">👆 Tippe ein russisches Wort an, um die Übersetzung zu sehen.</div>'+
-    '<div class="grade"><button onclick="startQuiz()">Zu den Fragen →</button></div>'+
+    '<div class="grade"><button onclick="startQuiz()">Zu den Aufgaben (3 Teile) →</button></div>'+
     '</div>';
   document.querySelectorAll('#stext .w').forEach(w=>w.onclick=()=>{
     document.querySelectorAll('#stext .w.sel').forEach(x=>x.classList.remove('sel'));
@@ -676,29 +729,66 @@ function toggleRead(){
   step(0);
 }
 
-/* ================= Fragen ================= */
+/* ================= Aufgaben: 3 Teile (Fragen · Wort-Lücken · Sätze einsetzen) ================= */
+function pickClozeTasks(st,n){
+  /* Teil 2: automatisch generierte Wort-Lücken – längstes Wort eines Satzes wird ausgeblendet */
+  const cands=[];
+  st.s.forEach((p,si)=>{
+    const words=(p[0].match(/[А-Яа-яЁё́-]{5,}/g)||[]);
+    if(!words.length)return;
+    cands.push({si,target:words.sort((a,b)=>b.length-a.length)[0]});
+  });
+  return shuffle(cands).slice(0,n).map(c=>{
+    const gapped=st.s[c.si][0].replace(c.target,'_____');
+    const others=[];
+    st.s.forEach((p,si)=>{if(si!==c.si)(p[0].match(/[А-Яа-яЁё́-]{5,}/g)||[]).forEach(w=>others.push(w))});
+    const seen=new Set([normRu(c.target)]),xs=[];
+    for(const w of shuffle(others)){if(seen.has(normRu(w)))continue;seen.add(normRu(w));xs.push(w);if(xs.length>=3)break}
+    return{gapped,answer:c.target,opts:shuffle(xs.concat([c.target]))};
+  });
+}
+function pickInsTask(st){
+  /* Teil 3: zwei Sätze werden aus dem Text entfernt (nie der erste/letzte, nie benachbart) */
+  const cand=[];
+  for(let i=1;i<st.s.length-1;i++)cand.push(i);
+  shuffle(cand);
+  const idxs=[cand[0]];
+  const second=cand.find(i=>Math.abs(i-cand[0])>1);
+  if(second!=null)idxs.push(second);
+  idxs.sort((a,b)=>a-b);
+  return{idxs};
+}
+function insOptions(st,gapIdx){
+  /* Optionen: der richtige Satz + ein Satz aus einer anderen Geschichte + ein anderer Satz derselben */
+  const correct=st.s[gapIdx][0];
+  const other=STORIES.filter(s=>s.id!==st.id);
+  const dis1=other[Math.floor(Math.random()*other.length)];
+  const disSent=dis1.s[Math.floor(Math.random()*dis1.s.length)][0];
+  const ownPool=st.s.map((p,k)=>k).filter(k=>k!==gapIdx&&view.quiz.ins.idxs.indexOf(k)<0);
+  const ownSent=st.s[ownPool[Math.floor(Math.random()*ownPool.length)]][0];
+  return shuffle([{o:correct,ok:true},{o:disSent,ok:false},{o:ownSent,ok:false}]);
+}
 function startQuiz(){
   readTok++;try{speechSynthesis.cancel()}catch(e){}
-  view.quiz={i:0,right:0};
+  const st=view.story;
+  const cz=pickClozeTasks(st,3);
+  const ins=pickInsTask(st);
+  view.quiz={phase:'mc',i:0,right:0,done:0,cz,ins,total:st.q.length+cz.length+ins.idxs.length,answered:false};
   renderQuiz();
 }
-function renderQuiz(){
-  const st=view.story,qz=view.quiz,q=st.q[qz.i];
-  const opts=shuffle(q.o.map((o,k)=>({o,ok:k===q.a})));
-  $('#view-lesen').innerHTML=
-    '<div class="sess-top"><span class="cnt">Frage '+(qz.i+1)+' / '+st.q.length+'</span>'+
-    '<div class="bar"><i style="width:'+Math.round(100*qz.i/st.q.length)+'%"></i></div>'+
-    '<button class="quit" onclick="openStory(\''+st.id+'\')">Zur Geschichte</button></div>'+
-    '<div class="card">'+
-    '<div class="q-ru">'+acc(esc(q.q))+'</div>'+
-    '<div class="q-de">'+esc(q.qde)+'</div>'+
-    '<div class="opts">'+opts.map((e,k)=>'<button class="opt" data-k="'+k+'">'+acc(esc(e.o))+'</button>').join('')+'</div>'+
-    '<div id="fbZone"></div></div>';
-  document.querySelectorAll('#view-lesen .opt').forEach((b,k)=>b.onclick=()=>{
-    if(view.quiz.answered)return;
-    view.quiz.answered=true;
+function quizTop(teil,label){
+  const qz=view.quiz;
+  return '<div class="sess-top"><span class="cnt">Teil '+teil+' · '+label+' · '+Math.min(qz.done+1,qz.total)+' / '+qz.total+'</span>'+
+    '<div class="bar"><i style="width:'+Math.round(100*qz.done/qz.total)+'%"></i></div>'+
+    '<button class="quit" onclick="openStory(\''+view.story.id+'\')">Zur Geschichte</button></div>';
+}
+function quizAnswer(opts){
+  document.querySelectorAll('#view-lesen .opt').forEach(b=>b.onclick=()=>{
+    const qz=view.quiz;
+    if(qz.answered)return;
+    qz.answered=true;
     const ok=opts[+b.dataset.k].ok;
-    document.querySelectorAll('#view-lesen .opt').forEach((x,xk)=>{x.disabled=true;if(opts[+x.dataset.k].ok)x.classList.add('right')});
+    document.querySelectorAll('#view-lesen .opt').forEach(x=>{x.disabled=true;if(opts[+x.dataset.k].ok)x.classList.add('right')});
     if(!ok)b.classList.add('wrong');
     if(ok){qz.right++;S.tot.r++}else{S.tot.w++}
     const t=new Date();const ds=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');
@@ -708,23 +798,67 @@ function renderQuiz(){
       '<div class="grade"><button onclick="nextQ()">Weiter</button></div>';
   });
 }
+function renderQuiz(){
+  const st=view.story,qz=view.quiz;
+  if(qz.phase==='mc'&&qz.i>=st.q.length){qz.phase='cz';qz.i=0}
+  if(qz.phase==='cz'&&qz.i>=qz.cz.length){qz.phase='ins';qz.i=0}
+  if(qz.phase==='ins'&&qz.i>=qz.ins.idxs.length){finishQuiz();return}
+  if(qz.phase==='mc'){
+    const q=st.q[qz.i];
+    const opts=shuffle(q.o.map((o,k)=>({o,ok:k===q.a})));
+    $('#view-lesen').innerHTML=quizTop(1,'Fragen')+
+      '<div class="card"><div class="q-ru">'+acc(esc(q.q))+'</div>'+
+      '<div class="q-de">'+esc(q.qde)+'</div>'+
+      '<div class="opts">'+opts.map((e,k)=>'<button class="opt" data-k="'+k+'">'+acc(esc(e.o))+'</button>').join('')+'</div>'+
+      '<div id="fbZone"></div></div>';
+    quizAnswer(opts);
+  }else if(qz.phase==='cz'){
+    const c=qz.cz[qz.i];
+    const opts=c.opts.map(o=>({o,ok:o===c.answer}));
+    $('#view-lesen').innerHTML=quizTop(2,'Wort-Lücken')+
+      '<div class="card"><div class="q-ru" style="font-size:1.15rem;line-height:1.7">'+acc(esc(c.gapped))+'</div>'+
+      '<div class="q-de">Welches Wort fehlt in diesem Satz aus der Geschichte?</div>'+
+      '<div class="opts">'+opts.map((e,k)=>'<button class="opt" data-k="'+k+'">'+acc(esc(e.o))+'</button>').join('')+'</div>'+
+      '<div id="fbZone"></div></div>';
+    quizAnswer(opts);
+  }else{
+    const gapIdx=qz.ins.idxs[qz.i];
+    const opts=insOptions(st,gapIdx);
+    const text=st.s.map((p,k)=>{
+      const g=qz.ins.idxs.indexOf(k);
+      if(g>=0){
+        if(g<qz.i)return '<div class="sline" style="color:var(--birch)">'+acc(esc(p[0]))+' ✓</div>';
+        return '<div class="sline"><span class="gapmark'+(g===qz.i?' cur':'')+'">'+(g+1)+'</span> ______________</div>';
+      }
+      return '<div class="sline">'+acc(esc(p[0]))+'</div>';
+    }).join('');
+    $('#view-lesen').innerHTML=quizTop(3,'Sätze einsetzen')+
+      '<div class="card"><div class="stext" style="font-size:.98rem;line-height:1.8">'+text+'</div>'+
+      '<div class="q-de" style="margin-top:12px">Welcher Satz gehört in Lücke '+(qz.i+1)+'?</div>'+
+      '<div class="opts">'+opts.map((e,k)=>'<button class="opt" style="font-size:.92rem;text-align:left;font-family:var(--serif)" data-k="'+k+'">'+acc(esc(e.o))+'</button>').join('')+'</div>'+
+      '<div id="fbZone"></div></div>';
+    quizAnswer(opts);
+  }
+}
 function nextQ(){
-  view.quiz.answered=false;
-  view.quiz.i++;
-  if(view.quiz.i>=view.story.q.length)finishQuiz();else renderQuiz();
+  const qz=view.quiz;
+  qz.answered=false;
+  qz.done++;
+  qz.i++;
+  renderQuiz();
 }
 function finishQuiz(){
   const st=view.story,qz=view.quiz;
   const prev=S.read[st.id];
-  S.read[st.id]={best:Math.max(prev?prev.best:0,qz.right),times:(prev?prev.times:0)+1};
+  S.read[st.id]={best:Math.max(prev?prev.best:0,qz.right),max:qz.total,times:(prev?prev.times:0)+1};
   save();
   $('#readN').textContent=readCount();
-  const all=qz.right===st.q.length;
+  const all=qz.right===qz.total;
   $('#view-lesen').innerHTML=
     '<div class="hero"><div class="done-mark">'+(all?'🏆':'📖')+'</div>'+
     '<div class="due-line">'+(all?'Alles richtig – отли́чно!':'Geschichte gelesen!')+'</div>'+
     '<div class="sumgrid">'+
-    '<div class="sumbox"><b>'+qz.right+' / '+st.q.length+'</b><span>Fragen richtig</span></div>'+
+    '<div class="sumbox"><b>'+qz.right+' / '+qz.total+'</b><span>Aufgaben richtig (3 Teile)</span></div>'+
     '<div class="sumbox"><b>'+readCount()+' / '+STORIES.length+'</b><span>Geschichten gelesen</span></div>'+
     '</div>'+
     '<button class="btn btn-primary" onclick="renderStoryList()">Weiter</button><br>'+
