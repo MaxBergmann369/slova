@@ -3367,6 +3367,8 @@ async function radioLoop(){
       await sleepR(500);
       if(!radio||!radio.playing||tok!==radioTok)break;
       await speakLang(w.e,false);
+      if(!radio||!radio.playing||tok!==radioTok)break;
+      if(w.x){await sleepR(400);await speakLang(w.x,true);} /* deutsche Übersetzung des Satzes */
     }
     await sleepR(1100);
     if(radio)radio.i++;
@@ -3714,6 +3716,11 @@ function buildAppNav(cur){
   });
   renderHome();
 })();
+
+/* Offline-Modus: Service Worker cached alle vier Apps (nur auf der Webseite aktiv) */
+if('serviceWorker' in navigator&&location.protocol==='https:'){
+  try{navigator.serviceWorker.register('/slova/sw.js')}catch(e){}
+}
 </script>
 </body>
 </html>

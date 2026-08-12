@@ -1101,6 +1101,11 @@ function buildAppNav(cur){
   $('#streakN').textContent=dispStreak();
   renderHome();
 })();
+
+/* Offline-Modus: Service Worker cached alle vier Apps (nur auf der Webseite aktiv) */
+if('serviceWorker' in navigator&&location.protocol==='https:'){
+  try{navigator.serviceWorker.register('/slova/sw.js')}catch(e){}
+}
 </script>
 </body>
 </html>

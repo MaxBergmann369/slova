@@ -185,6 +185,11 @@ function render(){
   window.addEventListener('focus',render);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)render()});
 })();
+
+/* Offline-Modus: Service Worker cached alle vier Apps (nur auf der Webseite aktiv) */
+if('serviceWorker' in navigator&&location.protocol==='https:'){
+  try{navigator.serviceWorker.register('/slova/sw.js')}catch(e){}
+}
 </script>
 </body>
 </html>
