@@ -279,6 +279,55 @@ textarea#bakBox{width:100%;min-height:110px;border:1px solid var(--frost);border
     </div>
   </div>
 
+  <div class="panel">
+    <h3>Aufbau: Imperativ</h3>
+    <div class="legend">
+      Von der ты-Form: Endung weg, dann<br>
+      <b>-й</b> nach Vokal: чита́ешь → чита́<b>й</b> &nbsp;·&nbsp; <b>-и</b> bei Endbetonung: ска́жешь → скаж<b>и́</b> &nbsp;·&nbsp; <b>-ь</b> sonst: забу́дешь → забу́д<b>ь</b><br>
+      Höflich / Mehrzahl: <b>+ те</b> → скажи́те, подожди́те, извини́те
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Aufbau: Komparativ</h3>
+    <div class="legend">
+      Regelform: <b>-ее</b> (быстре́е, интере́снее, вкусне́е)<br>
+      <b>Sonderformen:</b> лу́чше (besser) · ху́же (schlechter) · бо́льше (mehr/größer) · ме́ньше · ста́рше · моло́же · вы́ше · коро́че<br>
+      Vergleich: <b>чем</b> + Nominativ (бо́льше, чем дом) <b>oder</b> Genitiv (ста́рше меня́)<br>
+      Superlativ: <b>са́мый</b> + Grundform (са́мый коро́ткий день)
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Aufbau: Zahlen + Substantiv</h3>
+    <div class="rtwrap"><table class="rt">
+      <tr><th>Zahl</th><th>Fall</th><th>Beispiel</th></tr>
+      <tr><td><b>1</b> (21, 31 …)</td><td>Nominativ Sg.</td><td>оди́н год · два́дцать оди́н год</td></tr>
+      <tr><td><b>2–4</b> (22, 23 …)</td><td>Genitiv Sg.</td><td>два го́да · три часа́ · четы́ре кни́ги</td></tr>
+      <tr><td><b>5–20</b> (25, 100 …)</td><td>Genitiv Pl.</td><td>пять лет · семь дней · сто рубле́й</td></tr>
+    </table></div>
+    <p class="hint">Es zählt immer die letzte Ziffer! Und feminin heißt es две (nicht два): две сестры́.</p>
+  </div>
+
+  <div class="panel">
+    <h3>Aufbau: Genitiv Plural</h3>
+    <div class="legend">
+      <b>-ов</b> nach hartem Konsonanten: домо́в, столо́в, ме́сяцев<br>
+      <b>-ей</b> nach weichen &amp; Zischlauten: друзе́й, дней, сосе́дей<br>
+      <b>Nullendung</b> bei -а/-о-Wörtern: книг, мест, я́блок, слов<br>
+      <b>Sonderformen:</b> дете́й · люде́й · де́нег · сестёр · челове́к (nach Zahlen!)
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Aufbau: Reflexive Verben</h3>
+    <div class="legend">
+      <b>-ся</b> nach Konsonant, <b>-сь</b> nach Vokal:<br>
+      я учу́<b>сь</b> · ты у́чишь<b>ся</b> · он у́чит<b>ся</b> · мы у́чим<b>ся</b> · они́ у́чат<b>ся</b> · er lernte: учи́л<b>ся</b>, sie: учи́ла<b>сь</b><br>
+      Wichtige: занима́ться (+ Instrumental!) · называ́ться · встреча́ться · просыпа́ться · ложи́ться · начина́ться (etwas beginnt von selbst)
+    </div>
+  </div>
+
   <p class="foot">Schwester-App von СЛОВА́ · Betonung ist überall markiert, weil sie die Aussprache steuert.</p>
 </section>
 
@@ -598,6 +647,87 @@ const TOPICS=[
 {de:'Am Abend schauen wir einen Film.',w:['Ве́чером','мы','смо́трим','фильм'],alt:[['Мы','смо́трим','фильм','ве́чером']]},
 {de:'Meine Mama kocht sehr gut.',w:['Моя́','ма́ма','о́чень','хорошо́','гото́вит']},
 {de:'Morgen fahre ich nach Moskau.',w:['За́втра','я','е́ду','в','Москву́'],alt:[['Я','за́втра','е́ду','в','Москву́'],['Я','е́ду','в','Москву́','за́втра']]}
+]},
+/* ---------- Aufbau · Intermediate (schaltet nach den Basics frei) ---------- */
+{id:'imp',icon:'🗣️',t:'Imperativ',s:'Sag! Warte! Gib! – Befehle & Bitten',sec:2,type:'gap',
+ intro:'Der Imperativ entsteht aus der ты-Form: Endung weg, dann -й nach Vokal (чита́ешь → чита́й), -и nach Konsonant bei Endbetonung (ска́жешь → скажи́), -ь nach Konsonant ohne Endbetonung (забу́дешь → забу́дь). Höflich/Mehrzahl: + те (скажи́те).',
+ items:[
+{q:'___ мне, пожа́луйста!',b:'сказа́ть · ты',a:'Скажи́',x:['Скажи́те','Ска́жешь','Сказа́л'],de:'Sag mir bitte!'},
+{q:'___, пожа́луйста, ещё раз!',b:'повтори́ть · вы',a:'Повтори́те',x:['Повтори́','Повто́ришь','Повторя́ть'],de:'Wiederholen Sie bitte noch einmal!'},
+{q:'___ мне во́ду, пожа́луйста.',b:'дать · ты',a:'Дай',x:['Да́йте','Даёшь','Дал'],de:'Gib mir bitte das Wasser.'},
+{q:'___ мину́тку!',b:'подожда́ть · вы',a:'Подожди́те',x:['Подожди́','Подождёшь','Ждать'],de:'Warten Sie einen Moment!'},
+{q:'___ текст ещё раз.',b:'чита́ть · ты',a:'Чита́й',x:['Чита́йте','Чита́ешь','Чита́л'],de:'Lies den Text noch einmal. (nach Vokal → -й)'},
+{q:'___ сюда́!',b:'идти́ · ты',a:'Иди́',x:['Иди́те','Идёшь','Шёл'],de:'Komm her!'},
+{q:'Не ___ телефо́н до́ма!',b:'забы́ть · ты',a:'забу́дь',x:['забу́дьте','забу́дешь','забы́л'],de:'Vergiss das Telefon nicht zu Hause! (unbetont → -ь)'},
+{q:'___ внима́тельно!',b:'слу́шать · вы',a:'Слу́шайте',x:['Слу́шай','Слу́шаете','Слу́шали'],de:'Hören Sie aufmerksam zu!'},
+{q:'___ мне за́втра.',b:'позвони́ть · ты',a:'Позвони́',x:['Позвони́те','Позвони́шь','Звони́л'],de:'Ruf mich morgen an.'},
+{q:'___, где вокза́л?',b:'извини́ть · вы',a:'Извини́те',x:['Извини́','Изви́нишь','Извиня́ть'],de:'Entschuldigen Sie, wo ist der Bahnhof?'},
+{q:'___ окно́, здесь жа́рко.',b:'откры́ть · ты',a:'Откро́й',x:['Откро́йте','Откро́ешь','Откры́л'],de:'Öffne das Fenster, hier ist es heiß.'},
+{q:'___ ру́ки пе́ред едо́й!',b:'мыть · ты',a:'Мой',x:['Мо́йте','Мо́ешь','Мыл'],de:'Wasch dir die Hände vor dem Essen! (мо́ешь → мой)'}
+]},
+{id:'komp',icon:'📈',t:'Komparativ',s:'größer, besser, interessanter',sec:2,type:'gap',
+ intro:'Vergleichsform meist auf -ее (быстре́е, интере́снее). Wichtige Sonderformen: лу́чше (besser), ху́же (schlechter), бо́льше (größer/mehr), ме́ньше (kleiner/weniger), ста́рше (älter), моло́же (jünger), вы́ше (höher), коро́че (kürzer). Vergleich: чем + Nominativ – oder einfach der Genitiv (ста́рше меня́).',
+ items:[
+{q:'Мой брат ___ меня́.',b:'ста́рый',h:'älter',a:'ста́рше',x:['моло́же','бо́льше','ста́рый'],de:'Mein Bruder ist älter als ich. (Vergleich mit Genitiv!)'},
+{q:'Сестра́ ___ бра́та.',b:'молодо́й',h:'jünger',a:'моло́же',x:['ста́рше','ме́ньше','молодо́й'],de:'Die Schwester ist jünger als der Bruder.'},
+{q:'Э́тот фильм ___, чем кни́га.',b:'интере́сный',a:'интере́снее',x:['интере́сный','интере́сное','са́мый интере́сный'],de:'Dieser Film ist interessanter als das Buch.'},
+{q:'Сего́дня пого́да ___, чем вчера́.',b:'хоро́ший',h:'besser',a:'лу́чше',x:['ху́же','хоро́шее','хоро́ший'],de:'Heute ist das Wetter besser als gestern. (Sonderform!)'},
+{q:'Он говори́т по-ру́сски ___, чем я.',b:'хорошо́',h:'besser',a:'лу́чше',x:['ху́же','хорошо́','лу́чший'],de:'Er spricht besser Russisch als ich.'},
+{q:'Зимо́й дни ___, чем ле́том.',b:'коро́ткий',h:'kürzer',a:'коро́че',x:['коро́ткий','длинне́е','коро́ткое'],de:'Im Winter sind die Tage kürzer als im Sommer.'},
+{q:'Маши́на ___ велосипе́да.',b:'бы́стрый',h:'schneller',a:'быстре́е',x:['бы́стрый','ме́дленнее','бы́стро'],de:'Das Auto ist schneller als das Fahrrad.'},
+{q:'Э́та кварти́ра ___, чем на́ша.',b:'большо́й',h:'größer',a:'бо́льше',x:['большо́й','больша́я','ме́ньше'],de:'Diese Wohnung ist größer als unsere.'},
+{q:'Ко́фе здесь ___, чем до́ма.',b:'вку́сный',h:'leckerer',a:'вкусне́е',x:['вку́сный','вку́сно','са́мый вку́сный'],de:'Der Kaffee hier ist leckerer als zu Hause.'},
+{q:'Говори́, пожа́луйста, ___!',b:'ме́дленно',h:'langsamer',a:'ме́дленнее',x:['ме́дленно','ме́дленный','быстре́е'],de:'Sprich bitte langsamer!'},
+{type:'mc2',q:'Мой дом ___ твоего́.',o:['вы́ше','высо́кий'],a:0,de:'Mein Haus ist höher als deins.',e:'Vergleich → Komparativ вы́ше. Nach dem Komparativ steht der Genitiv (твоего́ = „als deins").'},
+{type:'mc2',q:'Э́то са́мый ___ день го́да.',o:['коро́ткий','коро́че'],a:0,de:'Das ist der kürzeste Tag des Jahres.',e:'са́мый + Grundform = Superlativ. Der Komparativ (коро́че) wäre hier falsch.'}
+]},
+{id:'num',icon:'🔢',t:'Zahlen + Substantiv',s:'два часа́, пять часо́в',sec:2,type:'gap',
+ intro:'Nach 1 (und 21, 31 …): Nominativ Singular (оди́н год). Nach 2–4 (und 22, 33 …): Genitiv Singular (два го́да). Ab 5: Genitiv Plural (пять лет). Es zählt immer die letzte Ziffer!',
+ items:[
+{q:'Сейча́с два ___.',b:'час',a:'часа́',x:['час','часо́в','часы́'],de:'Es ist jetzt zwei Uhr. (2–4 → Gen. Sg.)'},
+{q:'Я жду уже́ пять ___.',b:'мину́та',a:'мину́т',x:['мину́ты','мину́та','мину́ту'],de:'Ich warte schon fünf Minuten. (5+ → Gen. Pl.)'},
+{q:'Мне два́дцать оди́н ___.',b:'год',a:'год',x:['го́да','лет','го́ды'],de:'Ich bin 21. (letzte Ziffer 1 → Nominativ!)'},
+{q:'Бра́ту три ___.',b:'год',a:'го́да',x:['год','лет','го́ды'],de:'Der Bruder ist drei. (2–4 → го́да)'},
+{q:'Ба́бушке се́мьдесят ___.',b:'год',a:'лет',x:['год','го́да','го́ды'],de:'Oma ist siebzig. (5+ → лет!)'},
+{q:'Хлеб сто́ит со́рок два ___.',b:'рубль',a:'рубля́',x:['рубль','рубле́й','рубли́'],de:'Das Brot kostet 42 Rubel. (letzte Ziffer 2 → Gen. Sg.)'},
+{q:'Биле́т сто́ит сто ___.',b:'рубль',a:'рубле́й',x:['рубль','рубля́','рубли́'],de:'Das Ticket kostet 100 Rubel. (→ Gen. Pl.)'},
+{q:'В кла́ссе два́дцать ___.',b:'челове́к',a:'челове́к',x:['челове́ка','лю́ди','челове́ки'],de:'In der Klasse sind 20 Leute. (Sonderform: Gen. Pl. = челове́к!)'},
+{q:'У меня́ две ___.',b:'сестра́',a:'сестры́',x:['сестра́','сестёр','сёстры'],de:'Ich habe zwei Schwestern. (feminin: две + Gen. Sg.)'},
+{q:'На столе́ четы́ре ___.',b:'кни́га',a:'кни́ги',x:['кни́га','книг','кни́гу'],de:'Auf dem Tisch liegen vier Bücher. (2–4 → Gen. Sg.)'},
+{q:'В неде́ле семь ___.',b:'день',a:'дней',x:['дня','день','дни'],de:'Die Woche hat sieben Tage. (5+ → Gen. Pl.)'},
+{type:'mc2',q:'Мне ну́жно три ___.',o:['биле́та','биле́тов'],a:0,de:'Ich brauche drei Tickets.',e:'2–4 → Genitiv Singular: три биле́та. биле́тов wäre ab 5 richtig.'}
+]},
+{id:'genp',icon:'🧱',t:'Genitiv Plural',s:'мно́го книг, домо́в, друзе́й',sec:2,type:'gap',
+ intro:'Der schwierigste Fall im Russischen – nach мно́го, ско́лько, нет und Zahlen ab 5: -ов nach hartem Konsonanten (домо́в), -ей nach weichen und Zischlauten (друзе́й, дней), Nullendung bei -а/-о-Wörtern (книг, мест, я́блок). Plus Sonderformen: дете́й, люде́й, де́нег, сестёр.',
+ items:[
+{q:'В го́роде мно́го ___.',b:'дом',a:'домо́в',x:['дома́','до́ма','дом'],de:'In der Stadt gibt es viele Häuser.'},
+{q:'У меня́ мно́го ___.',b:'кни́га',a:'книг',x:['кни́ги','кни́гов','кни́гу'],de:'Ich habe viele Bücher. (Nullendung!)'},
+{q:'В шко́ле мно́го ___.',b:'ребёнок',a:'дете́й',x:['де́ти','ребёнка','ребёнков'],de:'In der Schule sind viele Kinder. (Sonderform!)'},
+{q:'Ско́лько ___ в году́?',b:'ме́сяц',a:'ме́сяцев',x:['ме́сяца','ме́сяцы','ме́сяц'],de:'Wie viele Monate hat das Jahr?'},
+{q:'У неё мно́го ___.',b:'друг',a:'друзе́й',x:['друзья́','дру́гов','дру́га'],de:'Sie hat viele Freunde.'},
+{q:'В э́том кафе́ мно́го ___.',b:'ме́сто',a:'мест',x:['ме́ста','ме́стов','места́'],de:'In diesem Café sind viele Plätze frei. (Nullendung!)'},
+{q:'Купи́ кило́ ___.',b:'я́блоко',a:'я́блок',x:['я́блоки','я́блока','я́блоков'],de:'Kauf ein Kilo Äpfel! (Nullendung)'},
+{q:'В на́шем до́ме мно́го ___.',b:'сосе́д',a:'сосе́дей',x:['сосе́ды','сосе́дов','сосе́да'],de:'In unserem Haus gibt es viele Nachbarn.'},
+{q:'Ско́лько ___ ты уже́ зна́ешь?',b:'сло́во',a:'слов',x:['слова́','сло́вов','сло́ва'],de:'Wie viele Wörter kennst du schon? (Nullendung)'},
+{q:'На у́лице мно́го ___.',b:'челове́к',a:'люде́й',x:['лю́ди','челове́ки','челове́ка'],de:'Auf der Straße sind viele Menschen. (Sonderform!)'},
+{q:'У нас нет ___.',b:'де́ньги',a:'де́нег',x:['де́ньги','де́ньгов','деньга́ми'],de:'Wir haben kein Geld. (Sonderform!)'},
+{q:'У ба́бушки пять ___.',b:'сестра́',a:'сестёр',x:['сёстры','сестры́','сестра́ми'],de:'Oma hat fünf Schwestern. (Sonderform!)'}
+]},
+{id:'refl',icon:'🔄',t:'Reflexive Verben',s:'учи́ться, занима́ться, встреча́ться',sec:2,type:'gap',
+ intro:'-ся hängt am Verb (nach Vokal wird es zu -сь): учи́ться → я учу́сь, ты у́чишься, он у́чится, они́ у́чатся. Viele Alltagsverben sind reflexiv: занима́ться (+ Instrumental!), называ́ться, встреча́ться, просыпа́ться, ложи́ться.',
+ items:[
+{q:'Я ___ в университе́те.',b:'учи́ться',a:'учу́сь',x:['у́чишься','у́чится','учи́ться'],de:'Ich studiere an der Universität.'},
+{q:'Ты ___ спо́ртом?',b:'занима́ться',a:'занима́ешься',x:['занима́юсь','занима́ется','занима́ться'],de:'Treibst du Sport? (+ Instrumental!)'},
+{q:'Как ___ э́та у́лица?',b:'называ́ться',a:'называ́ется',x:['называ́юсь','называ́ешься','называ́ются'],de:'Wie heißt diese Straße?'},
+{q:'У́тром я ___ в семь часо́в.',b:'просыпа́ться',a:'просыпа́юсь',x:['просыпа́ешься','просыпа́ется','просыпа́ются'],de:'Morgens wache ich um sieben auf.'},
+{q:'Мы ча́сто ___ с друзья́ми.',b:'встреча́ться',a:'встреча́емся',x:['встреча́юсь','встреча́етесь','встреча́ются'],de:'Wir treffen uns oft mit Freunden.'},
+{q:'Он по́здно ___ спать.',b:'ложи́ться',a:'ложи́тся',x:['ложу́сь','ложи́шься','ло́жатся'],de:'Er geht spät schlafen.'},
+{q:'Де́ти ___ о́чень ра́но.',b:'просыпа́ться',a:'просыпа́ются',x:['просыпа́ется','просыпа́юсь','просыпа́лись'],de:'Die Kinder wachen sehr früh auf.'},
+{q:'Вчера́ он ___ домо́й по́здно.',b:'верну́ться',a:'верну́лся',x:['верну́лась','верну́лись','вернётся'],de:'Gestern kam er spät nach Hause zurück. (-ся nach Konsonant)'},
+{q:'Она́ всегда́ ___.',b:'улыба́ться',a:'улыба́ется',x:['улыба́юсь','улыба́ешься','улыба́ются'],de:'Sie lächelt immer.'},
+{q:'Чем вы ___?',b:'занима́ться',a:'занима́етесь',x:['занима́ешься','занима́ется','занима́емся'],de:'Womit beschäftigen Sie sich? (+ Instrumental!)'},
+{q:'Уро́к ___ в де́вять часо́в.',b:'начина́ться',a:'начина́ется',x:['начина́ю','начина́ет','начина́ются'],de:'Der Unterricht beginnt um neun.'},
+{type:'mc2',q:'Фильм ___ в во́семь часо́в.',o:['начина́ется','начина́ет'],a:0,de:'Der Film beginnt um acht.',e:'Der Film beginnt „von selbst" → reflexiv начина́ться. начина́ть braucht ein Objekt: я начина́ю рабо́ту.'}
 ]}
 ];
 
@@ -652,9 +782,18 @@ function startTopic(tid){
   sess={q:shuffle(pickItems(tp,n)),i:0,right:0,wrong:0,done:0,tid};
   renderItem();
 }
+function basisAvg(){ /* Durchschnitts-Fortschritt der Basis-Themen */
+  const b=TOPICS.filter(t=>t.sec!==2);
+  return Math.round(b.reduce((n,t)=>n+topicProgress(t),0)/b.length);
+}
+function aufbauOpen(){return basisAvg()>=50}
+function topicStarted(tp){return tp.items.some((it,k)=>itemStat(tp.id,k))}
 function startMix(){
+  /* Mix nur aus Themen, die du schon angefangen hast – gesperrte Aufbau-Themen nie */
+  let cands=TOPICS.filter(tp=>(tp.sec!==2||aufbauOpen())&&topicStarted(tp));
+  if(cands.length<2)cands=TOPICS.filter(tp=>tp.sec!==2).slice(0,4); /* Erststart: die ersten Basis-Themen */
   let pool=[];
-  TOPICS.forEach(tp=>{pool=pool.concat(pickItems(tp,2))});
+  cands.forEach(tp=>{pool=pool.concat(pickItems(tp,3))});
   sess={q:shuffle(pool).slice(0,12),i:0,right:0,wrong:0,done:0,tid:null};
   renderItem();
 }
@@ -842,25 +981,36 @@ function finishSession(){
 }
 
 /* ================= Ansichten ================= */
+function topicCard(tp){
+  const p=topicProgress(tp);
+  return '<button class="topic" onclick="showTopic(\''+tp.id+'\')">'+
+    '<span class="ic">'+tp.icon+'</span>'+
+    '<span class="m"><span class="t">'+esc(tp.t)+'</span><span class="s" style="display:block">'+esc(tp.s)+'</span>'+
+    '<span class="pbar"><i style="width:'+p+'%"></i></span></span>'+
+    '<span class="pct">'+p+' %</span></button>';
+}
 function renderHome(){
   const total=TOPICS.reduce((n,tp)=>n+tp.items.length,0);
   const dT=S.days[todayStr()]||0;
+  const open=aufbauOpen(),avg=basisAvg();
   let html='<div class="hero"><div class="due-line">Was übst du <b>heute</b>?</div>'+
     '<div class="sub">'+total+' Aufgaben in '+TOPICS.length+' Themen · heute schon '+dT+' gelöst</div>'+
-    '<button class="btn btn-primary" onclick="startMix()">🎲 Mix-Training (12 Aufgaben)</button></div>'+
-    '<div class="sect">Themen</div>';
-  TOPICS.forEach(tp=>{
-    const p=topicProgress(tp);
-    html+='<button class="topic" onclick="showTopic(\''+tp.id+'\')">'+
-      '<span class="ic">'+tp.icon+'</span>'+
-      '<span class="m"><span class="t">'+esc(tp.t)+'</span><span class="s" style="display:block">'+esc(tp.s)+'</span>'+
-      '<span class="pbar"><i style="width:'+p+'%"></i></span></span>'+
-      '<span class="pct">'+p+' %</span></button>';
+    '<button class="btn btn-primary" onclick="startMix()">🎲 Mix-Training (12 Aufgaben)</button>'+
+    '<div class="sub" style="margin-top:8px;font-size:.78rem">Der Mix enthält nur Themen, die du schon angefangen hast.</div></div>'+
+    '<div class="sect">Basis</div>';
+  TOPICS.filter(t=>t.sec!==2).forEach(tp=>{html+=topicCard(tp)});
+  html+='<div class="sect">Aufbau · Intermediate '+(open?'':'🔒')+'</div>';
+  if(!open)html+='<p class="hint" style="margin:-4px 0 10px">Schaltet frei, wenn deine Basis-Themen im Schnitt <b>50 %</b> erreichen – aktuell '+avg+' %. Erst die Grundlagen, dann die harten Sachen!</p>';
+  TOPICS.filter(t=>t.sec===2).forEach(tp=>{
+    html+=open?topicCard(tp):
+      '<div class="topic" style="opacity:.55;cursor:default"><span class="ic">🔒</span>'+
+      '<span class="m"><span class="t">'+esc(tp.t)+'</span><span class="s" style="display:block">'+esc(tp.s)+'</span></span></div>';
   });
   $('#view-lernen').innerHTML=html;
 }
 function showTopic(tid){
   const tp=TOPICS.find(t=>t.id===tid);
+  if(tp.sec===2&&!aufbauOpen()){renderHome();return}
   const p=topicProgress(tp);
   $('#view-lernen').innerHTML=
     '<div class="hero"><div class="done-mark">'+tp.icon+'</div>'+
@@ -878,12 +1028,15 @@ function renderStats(){
     '<div class="stat"><b>'+accy+' %</b><span>Trefferquote gesamt</span></div>'+
     '<div class="stat"><b>🔥 '+dispStreak()+'</b><span>Tage in Folge · 🛡️ '+(freezeAvail()?'Schutz bereit':'Schutz verbraucht')+'</span></div>'+
     '<div class="stat"><b>'+tot+'</b><span>Aufgaben gesamt</span></div>'+
-    '</div><div class="sect">Deine Themen</div>';
-  TOPICS.forEach(tp=>{
+    '</div><div class="sect">Basis</div>';
+  const trow=tp=>{
     const p=topicProgress(tp);
-    html+='<div class="trow"><span class="ic">'+tp.icon+'</span><span class="n">'+esc(tp.t)+'</span>'+
+    return '<div class="trow"><span class="ic">'+tp.icon+'</span><span class="n">'+esc(tp.t)+'</span>'+
       '<span class="pb"><i style="width:'+p+'%"></i></span><span class="pc">'+p+' %</span></div>';
-  });
+  };
+  TOPICS.filter(t=>t.sec!==2).forEach(tp=>{html+=trow(tp)});
+  html+='<div class="sect">Aufbau · Intermediate'+(aufbauOpen()?'':' 🔒')+'</div>';
+  TOPICS.filter(t=>t.sec===2).forEach(tp=>{html+=trow(tp)});
   html+='<p class="hint">„Gemeistert“ heißt: mindestens 2× richtig gelöst und beim letzten Mal richtig. Gemeisterte Lücken-Aufgaben musst du tippen statt klicken – so bleibt es fordernd.</p>';
   $('#view-statistik').innerHTML=html;
 }
