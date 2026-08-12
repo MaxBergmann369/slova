@@ -2653,11 +2653,13 @@ function renderHome(){
     inner='<div class="done-mark">☀️</div><div class="due-line">Für heute alles erledigt!</div>'+
       '<div class="sub">Молоде́ц! Komm morgen wieder – dann warten neue Wiederholungen.</div>'+goalLine;
     if(probN)inner+='<br><button class="btn-ghost" onclick="startProblems()">Problemwörter üben ('+probN+')</button>';
+    inner+='<br><button class="btn-ghost" onclick="renderRadio()">📻 Audio-Modus (freihändig)</button>';
   }else{
     inner='<div class="due-line"><b>'+due.length+'</b> Wiederholung'+(due.length===1?'':'en')+' · <b>'+fresh.length+'</b> neue Wörter</div>'+
       '<div class="sub">≈ '+(due.length+fresh.length*3)+' Karten – jedes neue Wort kommt 3× in verschiedenen Formen · etwa '+Math.max(1,Math.round((due.length+fresh.length*3)*0.25))+' Minuten</div>'+goalLine+
       '<button class="btn btn-primary" onclick="startDaily()">Los geht’s</button>';
     if(probN)inner+='<br><button class="btn-ghost" onclick="startProblems()">Nur Problemwörter üben ('+probN+')</button>';
+    inner+='<br><button class="btn-ghost" onclick="renderRadio()">📻 Audio-Modus (freihändig)</button>';
   }
   $('#view-lernen').innerHTML='<div class="hero">'+inner+'</div>';
 }
@@ -3266,6 +3268,132 @@ function renderStats(){
   }
   $('#view-statistik').innerHTML=html;
 }
+
+/* ================= 📻 Аудио-Modus: freihändig lernen (Auto, Spazieren, Kochen) ================= */
+let radio=null,radioTok=0,DE_VOICE=null,wakeLock=null;
+function pickDeVoice(){
+  try{
+    const vs=speechSynthesis.getVoices()||[];
+    DE_VOICE=vs.find(v=>v.lang&&v.lang.toLowerCase().indexOf('de')===0)||null;
+  }catch(e){}
+}
+const sleepR=ms=>new Promise(r=>setTimeout(r,ms));
+function speakLang(txt,de){
+  /* Promise-basiertes Sprechen für die Abspiel-Kette; löst spätestens nach 12 s auf */
+  return new Promise(res=>{
+    try{
+      const u=new SpeechSynthesisUtterance(String(txt).replace(/́/g,''));
+      if(de){
+        u.lang='de-DE';u.rate=1;
+        if(!DE_VOICE)pickDeVoice();
+        if(DE_VOICE)u.voice=DE_VOICE;
+      }else{
+        u.lang='ru-RU';u.rate=.85;
+        if(!RU_VOICE)pickRuVoice();
+        if(RU_VOICE)u.voice=RU_VOICE;
+      }
+      u.onend=res;u.onerror=res;
+      speechSynthesis.resume();
+      speechSynthesis.speak(u);
+      setTimeout(res,12000);
+    }catch(e){res()}
+  });
+}
+function renderRadio(){
+  sess=null;
+  const mine=allWords().filter(w=>S.prog[w.i]).length;
+  const probN=allWords().filter(w=>isProblem(S.prog[w.i])).length;
+  $('#view-lernen').innerHTML='<div class="hero"><div class="done-mark">📻</div>'+
+    '<div class="due-line">Аудио-Modus</div>'+
+    '<div class="sub">Freihändig lernen – perfekt fürs Auto, Spazieren oder Kochen. Ablauf pro Wort: Russisch → Pause zum Mitdenken → Deutsch → nochmal Russisch → Beispielsatz. Läuft endlos, ohne dass du etwas antippen musst.</div>'+
+    '<div class="sub" style="margin-top:8px">🚗 Als Fahrer: nur zuhören, nie aufs Handy schauen! Der Bildschirm bleibt automatisch an.</div>'+
+    '<div class="ctrow" style="margin-top:16px">'+
+    (mine?'<button class="btn btn-primary" onclick="startRadio(\'meine\')">Meine Wörter ('+mine+')</button>':'')+
+    '<button class="'+(mine?'btn-ghost':'btn btn-primary')+'" onclick="startRadio(\'neu\')">Neue Wörter entdecken</button>'+
+    (probN?'<button class="btn-ghost" onclick="startRadio(\'prob\')">Problemwörter ('+probN+')</button>':'')+
+    '</div>'+
+    '<label class="sub" style="display:block;margin-top:12px;cursor:pointer"><input type="checkbox" id="radioSent" checked> Beispielsätze mitspielen</label>'+
+    '<button class="btn-ghost" onclick="renderHome()">Zurück</button></div>';
+}
+function startRadio(src){
+  let ids;
+  if(src==='meine')ids=shuffle(allWords().filter(w=>S.prog[w.i]).map(w=>w.i));
+  else if(src==='prob')ids=shuffle(allWords().filter(w=>isProblem(S.prog[w.i])).map(w=>w.i));
+  else ids=allWords().filter(w=>!S.prog[w.i]).slice(0,150).map(w=>w.i); /* neue: in Lern-Reihenfolge */
+  if(!ids.length)ids=allWords().slice(0,100).map(w=>w.i);
+  const sentEl=$('#radioSent');
+  radio={q:ids,i:0,playing:true,sent:sentEl?sentEl.checked:true,count:0,src};
+  renderRadioPlayer();
+  radioLoop();
+}
+function renderRadioPlayer(){
+  $('#view-lernen').innerHTML=
+    '<div class="sess-top"><span class="cnt">📻 <span id="rCount">0</span> Wörter gehört</span>'+
+    '<div class="bar"><i style="width:100%;opacity:.25"></i></div>'+
+    '<button class="quit" onclick="stopRadio()">Beenden</button></div>'+
+    '<div class="card" style="text-align:center">'+
+    '<div class="word" id="rWord" style="min-height:1.3em">…</div>'+
+    '<div class="mean" id="rMean" style="min-height:1.3em;color:var(--ink-soft)"></div>'+
+    '<button class="audio-big" id="rToggle" onclick="toggleRadio()" style="margin-top:18px;background:var(--gzhel);color:#fff">⏸</button>'+
+    '<div class="mic-status" id="rState">Läuft … einfach zuhören. Bildschirm anlassen, App im Vordergrund.</div>'+
+    '</div>';
+}
+function updRadioUI(w){
+  const el=$('#rWord');
+  if(!el)return;
+  el.innerHTML=acc(esc(w.r));
+  $('#rMean').textContent=w.d;
+  $('#rCount').textContent=radio.count;
+}
+async function radioLoop(){
+  const tok=++radioTok;
+  try{if(navigator.wakeLock&&!wakeLock)wakeLock=await navigator.wakeLock.request('screen')}catch(e){}
+  while(radio&&radio.playing&&tok===radioTok){
+    if(radio.i>=radio.q.length){shuffle(radio.q);radio.i=0}
+    const w=byId(radio.q[radio.i]);
+    if(!w){radio.i++;continue}
+    radio.count++;
+    updRadioUI(w);
+    try{speechSynthesis.cancel()}catch(e){}
+    await speakLang(w.r,false);
+    if(!radio||!radio.playing||tok!==radioTok)break;
+    await sleepR(1800); /* Pause: selbst an die Bedeutung denken */
+    if(!radio||!radio.playing||tok!==radioTok)break;
+    await speakLang(w.d.split(/[(]/)[0],true);
+    await sleepR(400);
+    if(!radio||!radio.playing||tok!==radioTok)break;
+    await speakLang(w.r,false);
+    if(radio.sent&&w.e){
+      await sleepR(500);
+      if(!radio||!radio.playing||tok!==radioTok)break;
+      await speakLang(w.e,false);
+    }
+    await sleepR(1100);
+    if(radio)radio.i++;
+  }
+}
+function toggleRadio(){
+  if(!radio)return;
+  radio.playing=!radio.playing;
+  const b=$('#rToggle');
+  if(b)b.textContent=radio.playing?'⏸':'▶';
+  const st=$('#rState');
+  if(st)st.textContent=radio.playing?'Läuft … einfach zuhören.':'Pausiert – ▶ zum Weiterhören.';
+  if(radio.playing)radioLoop();
+  else{radioTok++;try{speechSynthesis.cancel()}catch(e){}}
+}
+function stopRadio(){
+  radioTok++;radio=null;
+  try{speechSynthesis.cancel()}catch(e){}
+  try{if(wakeLock){wakeLock.release();wakeLock=null}}catch(e){}
+  renderHome();
+}
+document.addEventListener('visibilitychange',()=>{ /* Wake Lock nach Tab-Wechsel neu anfordern */
+  if(!document.hidden&&radio&&radio.playing&&navigator.wakeLock){
+    wakeLock=null;
+    navigator.wakeLock.request('screen').then(w=>{wakeLock=w}).catch(()=>{});
+  }
+});
 
 /* ================= Spiel: Paare finden ================= */
 let game=null;
