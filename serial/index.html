@@ -3660,6 +3660,19 @@ function load(){
     exam:d.exam||{},gate:d.gate!==false,recall:d.recall!==false}}}catch(e){}
 }
 function save(){if(storeMode==='local')try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+/* Wörter, die vor der Auffrischung gemeistert wurden, holen wir nach – aber
+   gestaffelt über eine Woche, damit nicht alles auf einmal fällig wird. */
+function migrateRotation(){
+  let n=0;
+  Object.keys(S.prog).forEach(k=>{
+    const st=S.prog[k];
+    if(!st||st.rd||!(st.c>=2))return;
+    let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))%7;
+    st.iv=1;st.rd=addDays(1+h);n++;
+  });
+  if(n)save();
+  return n;
+}
 
 /* ---- Sprachebene: was man gefahrlos sagen kann und was nicht ----
    slang = locker, nur unter Freunden/Gleichaltrigen · grob = besser nur verstehen, nicht benutzen */
@@ -4627,6 +4640,7 @@ $('#recallChk').onchange=e=>{
   buildAppNav('serial');
   $('#gateChk').checked=S.gate!==false;
   $('#recallChk').checked=S.recall!==false;
+  migrateRotation();
   $('#doneN').textContent=totalDone();
   renderPacks();
 })();
