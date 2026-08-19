@@ -137,6 +137,25 @@ nav.tabsbar{position:sticky;top:0;z-index:20;background:var(--paper);padding:12p
 .reg{display:inline-block;font-size:.64rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:99px;margin-top:6px;vertical-align:middle}
 .reg.slang{background:#FBF0D9;color:#8A6A12}
 .reg.grob{background:var(--kalina-soft);color:var(--kalina)}
+.srsbox{background:var(--birch-soft);border:1px solid var(--birch);border-radius:var(--radius);padding:18px;text-align:center;margin:12px 0 4px}
+.srsbox .lk-t{font-family:var(--serif);font-weight:700;font-size:1.05rem;color:var(--birch)}
+.srsbox .lk-s{font-size:.82rem;color:var(--ink-soft);margin:6px 0 12px;line-height:1.6}
+.recallbox{text-align:center;margin-top:16px;padding:16px;background:var(--paper);border-radius:12px}
+.recallbox .rc-h{font-size:.84rem;color:var(--ink-soft);font-weight:600;margin-bottom:10px}
+.recallbox button{margin:0}
+.bau{margin-top:10px;background:var(--birch-soft);border-radius:10px;padding:10px 12px;text-align:left}
+.bau .ft{font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--birch);margin-bottom:6px}
+.bau .bl{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;padding:2px 0}
+.bau .bl b{font-family:var(--serif);font-size:1rem}
+.bau .bl span{font-size:.8rem;color:var(--ink-soft)}
+.bau .bh{margin-top:6px;padding-top:6px;border-top:1px solid rgba(0,0,0,.07);font-size:.86rem;font-weight:600}
+.syls{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px 0}
+.syl{background:var(--card);border:1.5px solid var(--frost);border-radius:12px;padding:10px 16px;font-family:var(--serif);font-weight:700;font-size:1.15rem}
+.syl:hover{border-color:var(--rust)}
+.syl:disabled{opacity:.25}
+.sylbuilt{font-family:var(--serif);font-weight:700;font-size:1.7rem;text-align:center;margin:14px 0 4px;min-height:2.2rem;border-bottom:2px dashed var(--frost);padding-bottom:6px;overflow-wrap:anywhere}
+.sylbuilt.inp-ok{border-color:var(--birch);color:var(--birch)}
+.sylbuilt.inp-no{border-color:var(--kalina);color:var(--kalina)}
 .lockbox{background:var(--card);border:1px dashed var(--frost);border-radius:var(--radius);padding:18px;text-align:center;margin-bottom:8px}
 .lockbox .lk-t{font-family:var(--serif);font-weight:700;font-size:1.05rem}
 .lockbox .lk-s{font-size:.82rem;color:var(--ink-soft);margin:6px 0 12px;line-height:1.6}
@@ -212,6 +231,12 @@ textarea{width:100%;min-height:110px;border:1px solid var(--frost);border-radius
     <p class="hint" style="margin-top:0">Nach jeder Folge gibt es ein Gesamtpaket mit allen Wörtern der Folge. Erst wenn du dessen Prüfung bestehst (25 Karten, ab 85 %), wird die nächste Folge freigeschaltet. Was du schon angefangen hast, bleibt immer offen.</p>
     <label class="gate-row"><input type="checkbox" id="gateChk"><span>Nächste Folge erst nach bestandener Prüfung</span></label>
     <div class="msg" id="gateMsg"></div>
+  </div>
+  <div class="panel">
+    <h3>Erst denken, dann aufdecken</h3>
+    <p class="hint" style="margin-top:0">Bei Auswahlfragen bleiben die vier Möglichkeiten zuerst verdeckt. Du beantwortest die Karte im Kopf und deckst dann auf. Das verhindert, dass du die Lösung nur wiedererkennst, statt sie zu wissen – der Unterschied zwischen „kommt mir bekannt vor“ und „kann ich sagen“.</p>
+    <label class="gate-row"><input type="checkbox" id="recallChk"><span>Antwortmöglichkeiten erst nach dem Aufdecken zeigen</span></label>
+    <div class="msg" id="recallMsg"></div>
   </div>
   <div class="panel">
     <h3>Neues Paket anlegen</h3>
@@ -3623,7 +3648,7 @@ const PACKS=[
 ];
 
 /* ================= Zustand ================= */
-let S={prog:{},days:{},extras:[],watched:{},exam:{},gate:true};
+let S={prog:{},days:{},extras:[],watched:{},exam:{},gate:true,recall:true};
 let storeMode='none';
 function initStore(){
   try{const t='__ser_test';localStorage.setItem(t,'1');localStorage.removeItem(t);storeMode='local'}
@@ -3632,7 +3657,7 @@ function initStore(){
 function load(){
   if(storeMode!=='local')return;
   try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);S={...S,...d,prog:d.prog||{},days:d.days||{},extras:d.extras||[],watched:d.watched||{},
-    exam:d.exam||{},gate:d.gate!==false}}}catch(e){}
+    exam:d.exam||{},gate:d.gate!==false,recall:d.recall!==false}}}catch(e){}
 }
 function save(){if(storeMode==='local')try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 
@@ -3764,6 +3789,92 @@ const IDIOM_FORMS={
 'голыми руками':['Я де́лаю э́то го́лыми рука́ми.|Ich mache das mit bloßen Händen.','Не хвата́й его́ го́лыми рука́ми!|Fass es nicht mit bloßen Händen an!','Он победи́л ро́бота го́лыми рука́ми.|Er besiegte den Roboter mit bloßen Händen.'],
 'заслуживать':['Ты заслу́живаешь лу́чшего.|Du verdienst Besseres.','Заслужи́ э́то!|Verdiene es dir!','Он заслужи́л побе́ду.|Er hat den Sieg verdient.']
 };
+/* ---- Wortbausteine ----------------------------------------------------------
+   Lange russische Wörter sind fast nie neu, sondern zusammengesetzt:
+   Vorsilbe + Wort, das du schon kennst. Wer das sieht, muss nicht mehr
+   20 Buchstaben am Stück auswendig lernen, sondern nur noch eine Rechnung. */
+const PREFIXE=[['пере','hinüber-, um-, noch einmal'],['пред','vor-'],['при','heran-, hinzu-'],
+['про','durch-, hindurch-'],['раз','auseinander-, ent-'],['рас','auseinander-, ent-'],
+['воз','auf-, hinauf-'],['вос','auf-'],['под','unter-, heran-'],['над','über-'],
+['обо','um-, herum-'],['об','um-, herum-'],['ото','weg-, ab-'],['от','weg-, ab-'],
+['из','heraus-'],['ис','heraus-'],['за','hinter-, weg-; losgehen'],['на','auf-, drauf-'],
+['до','bis zum Ende'],['вы','heraus-'],['по','ein wenig; losgehen'],['со','zusammen-'],
+['у','weg-, fort-'],['в','hinein-'],['с','zusammen-, herunter-'],['о','um-, be-']];
+/* Konsonantenwechsel: бросить → брошенный, ходить → хожу */
+const ALT={'ш':'с','ж':'д','ч':'к','щ':'ст'};
+function bareStem(x){
+  return String(x).replace(/́/g,'').toLowerCase()
+    .replace(/(ться|тся|ать|ять|ить|еть|уть|ся|ый|ий|ой|ая|ое|ые|ие|ов|ам|ах|а|я|о|е|ы|и|у|ю|ь)$/,'');
+}
+function stemKeys(x){
+  const s=bareStem(x),out=[s],last=s.slice(-1);
+  if(ALT[last])out.push(s.slice(0,-1)+ALT[last]);
+  return out.filter(v=>v.length>=4);
+}
+let _baseIdx=null;
+function baseIndex(){
+  if(_baseIdx)return _baseIdx;
+  _baseIdx={};
+  PACKS.forEach(p=>p.words.forEach(w=>{
+    const plain=w.r.replace(/́/g,'');
+    if(/\s|-/.test(plain))return;                   /* keine Wendungen als Grundwort */
+    stemKeys(plain).forEach(k=>{
+      const cur=_baseIdx[k];
+      if(!cur||plain.length<cur.r.replace(/́/g,'').length)_baseIdx[k]=w;
+    });
+  }));
+  return _baseIdx;
+}
+/* Wörter, bei denen der Wortstamm zufällig passt, die Bedeutung aber nicht:
+   отпусти́ть kommt von пусти́ть (lassen), nicht von пусто́й (leer). */
+const BAU_STOP=new Set(['отпустить','выпустить','пропустить','допустить','впустить','запросто',
+'обалдеть','назначить','налоговый','опередить','разоблачить']);
+function bausteine(w){
+  const plain=String(w.r).replace(/́/g,'').toLowerCase();
+  if(plain.length<8||/\s|-/.test(plain)||BAU_STOP.has(plain))return '';
+  for(const pb of PREFIXE){
+    const pre=pb[0];
+    if(plain.indexOf(pre)!==0||plain.length-pre.length<5)continue;
+    const rest=plain.slice(pre.length);
+    for(const k of stemKeys(rest)){
+      const base=baseIndex()[k];
+      if(!base)continue;
+      const bp=base.r.replace(/́/g,'').toLowerCase();
+      if(bp===plain||bp.length>=plain.length)continue;
+      return '<div class="bau"><div class="ft">🧩 Wortbausteine</div>'+
+        '<div class="bl"><b>'+esc(pre)+'-</b><span>'+esc(pb[1])+'</span></div>'+
+        '<div class="bl"><b>'+acc(esc(base.r))+'</b><span>'+esc(base.d)+'</span>'+sayBtn(base.r)+'</div>'+
+        '<div class="bh">'+esc(pre)+'- + '+acc(esc(base.r))+' → '+acc(esc(w.r))+'</div></div>';
+    }
+  }
+  return '';
+}
+/* ---- Silben: lange Wörter in Häppchen statt 14 Buchstaben am Stück ---- */
+const isVow=ch=>'аеёиоуыэюяАЕЁИОУЫЭЮЯ'.indexOf(ch)>=0;
+function syllables(word){
+  const parts=[];let cur='',hasVow=false;
+  const chars=[...String(word)];
+  for(let i=0;i<chars.length;i++){
+    const ch=chars[i];
+    if(ch==='́'){cur+=ch;continue}            /* Betonungszeichen klebt am Vokal */
+    if(isVow(ch)){
+      if(!hasVow){cur+=ch;hasVow=true;continue}
+      let buf='';
+      while(cur.length&&!isVow(cur[cur.length-1])&&cur[cur.length-1]!=='́'){
+        buf=cur[cur.length-1]+buf;cur=cur.slice(0,-1);
+      }
+      if(buf.length>=2){cur+=buf[0];buf=buf.slice(1)}
+      while(buf.length&&'ьъй'.indexOf(buf[0].toLowerCase())>=0){cur+=buf[0];buf=buf.slice(1)}
+      parts.push(cur);cur=buf+ch;hasVow=true;
+    }else cur+=ch;
+  }
+  if(cur){if(parts.length&&!hasVow)parts[parts.length-1]+=cur;else parts.push(cur)}
+  return parts.filter(Boolean);
+}
+function isLongWord(w){
+  const plain=String(w.r).replace(/́/g,'');
+  return !/\s|-/.test(plain)&&plain.length>=9&&syllables(w.r).length>=3;
+}
 function formsBox(w){
   const f=IDIOM_FORMS[String(w.r).replace(/́/g,'')];
   if(!f)return '';
@@ -3882,6 +3993,53 @@ function startPack(pid,mode){
   sess={pid,q:idx.slice(0,10),i:0,right:0,wrong:0,mode:mode||'mix'};
   renderCard();
 }
+/* ---- Auffrischung ------------------------------------------------------------
+   Zweimal richtig in einer Sitzung heißt nur „gerade eben gewusst". Behalten wird,
+   was man nach einer Pause noch kann. Jedes gemeisterte Wort kommt deshalb am
+   nächsten Tag wieder – und danach in immer größeren Abständen. */
+const addDays=n=>{const d=new Date();d.setDate(d.getDate()+n);return dstr(d)};
+function startRotation(st){if(!st.rd){st.iv=1;st.rd=addDays(1)}}
+function dueRefs(){
+  const t=todayStr(),seen=new Set(),out=[];
+  allPacks().forEach(p=>{
+    if(!p.words.length)return;
+    p.words.forEach((w,k)=>{
+      const nk=w.r.replace(/́/g,'');
+      if(seen.has(nk))return;
+      const st=S.prog[wordKey(p.id,k)];
+      if(st&&st.rd&&st.rd<=t){seen.add(nk);out.push({pid:p.id,k})}
+    });
+  });
+  return out;
+}
+function inRotation(){
+  let n=0;
+  Object.keys(S.prog).forEach(k=>{if(S.prog[k].rd)n++});
+  return n;
+}
+function startRefresh(){
+  const use=shuffle(dueRefs()).slice(0,40);
+  if(!use.length){renderPacks();return}
+  sess={srs:true,refs:use,q:use.map((r,i)=>i),i:0,right:0,wrong:0,mode:'mix'};
+  renderCard();
+}
+function finishRefresh(){
+  const richtig=sess.right,tot=sess.right+sess.wrong,accy=tot?Math.round(100*sess.right/tot):100;
+  sess=null;
+  const rest=dueRefs().length;
+  $('#doneN').textContent=totalDone();
+  $('#view-packs').innerHTML='<div class="hero"><div class="done-mark">🔁</div>'+
+    '<div class="due-line">Aufgefrischt!</div>'+
+    '<div class="sumgrid">'+
+    '<div class="sumbox"><b>'+richtig+'</b><span>richtig</span></div>'+
+    '<div class="sumbox"><b>'+accy+' %</b><span>Trefferquote</span></div>'+
+    '<div class="sumbox"><b>'+rest+'</b><span>noch fällig</span></div>'+
+    '<div class="sumbox"><b>'+inRotation()+'</b><span>in Rotation</span></div>'+
+    '</div>'+
+    '<div class="sub" style="margin-top:14px">Was du hier konntest, kommt erst in ein paar Tagen wieder. Was du vergessen hast, schon morgen.</div>'+
+    (rest?'<button class="btn btn-primary" onclick="startRefresh()">Weiter auffrischen</button><br>':'')+
+    '<button class="btn-ghost" onclick="renderPacks()">Zurück zur Übersicht</button></div>';
+}
 /* ---- Prüfung: Querschnitt durch eine ganze Folge, schwache Wörter zuerst ---- */
 function startExam(n){
   const p=examOf(n);
@@ -3922,36 +4080,78 @@ function typeHtml(){
   return '<div class="type-row"><input id="typeInp" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="по-русски …"><button class="check-btn" id="checkBtn">Prüfen</button></div>'+
     '<div class="kb" id="kb">'+KB_ROWS.map((row,ri)=>'<div class="kb-row">'+row.split('').map(ch=>'<button type="button" class="kb-k" data-ch="'+ch+'">'+ch+'</button>').join('')+(ri===2?'<button type="button" class="kb-k kb-bs" data-bs="1">⌫</button>':'')+'</div>').join('')+'</div>';
 }
+/* Ablenker sollen wehtun: ähnliche Länge, gleicher Anfang, gleiche Endung, gleiche Wortart.
+   Zufällige Ablenker kann man am Muster erkennen, ohne das Wort zu können – genau das
+   soll hier nicht mehr funktionieren. */
 function distract(p,k,field,n){
   const self=p.words[k][field];
-  const pool=shuffle(p.words.filter((w,j)=>j!==k).map(w=>w[field]));
+  const isNoun=/^[A-ZÄÖÜ]/.test(String(p.words[k].d).trim());
+  const nrm=s=>String(s).replace(/́/g,'').toLowerCase();
+  const a=nrm(self);
+  const scored=[];
+  p.words.forEach((w,j)=>{
+    if(j===k)return;
+    const v=w[field];
+    if(!v||v===self)return;
+    const b=nrm(v);
+    let s=0;
+    if(/^[A-ZÄÖÜ]/.test(String(w.d).trim())===isNoun)s+=8;      /* Substantiv oder nicht */
+    s+=Math.max(0,6-Math.abs(b.length-a.length));                /* ähnlich lang */
+    let i=0;while(i<Math.min(a.length,b.length)&&a[i]===b[i])i++;
+    s+=i*4;                                                      /* gleicher Wortanfang */
+    let e=0;while(e<Math.min(a.length,b.length)&&a[a.length-1-e]===b[b.length-1-e])e++;
+    s+=e*3;                                                      /* gleiche Endung */
+    scored.push({v,s:s+Math.random()*3});
+  });
+  scored.sort((x,y)=>y.s-x.s);
   const out=[],seen=new Set([self]);
-  for(const v of pool){if(seen.has(v))continue;seen.add(v);out.push(v);if(out.length>=n)break}
+  for(const e of scored){if(seen.has(e.v))continue;seen.add(e.v);out.push(e.v);if(out.length>=n)break}
   return out;
 }
+/* Erst selbst antworten, dann aufdecken: verhindert, dass man die Lösung nur
+   an den Antwortmöglichkeiten wiedererkennt, statt sie wirklich zu wissen. */
+function recallOn(){return S.recall!==false}
+function optsHtml(cls){
+  const inner=cur.opts.map((o,i)=>'<button class="opt'+(cls||'')+'" data-k="'+i+'">'+(cls?acc(esc(o)):esc(o))+'</button>').join('');
+  if(!recallOn())return '<div class="opts">'+inner+'</div>';
+  return '<div class="recallbox" id="recallBox">'+
+    '<div class="rc-h">Antworte erst selbst – laut oder im Kopf.</div>'+
+    '<button class="btn btn-primary" id="revealBtn">Antwortmöglichkeiten zeigen</button></div>'+
+    '<div class="opts" id="optsBox" style="display:none">'+inner+'</div>';
+}
 function renderCard(){
-  const p=packById(sess.pid),k=sess.q[sess.i],w=p.words[k];
+  const ref=sess.refs?sess.refs[sess.q[sess.i]]:null;
+  const p=ref?packById(ref.pid):packById(sess.pid),k=ref?ref.k:sess.q[sess.i],w=p.words[k];
   const st=S.prog[wordKey(p.id,k)];
   let mode=sess.mode;
   if(sess.drill){
     /* erst erkennen (RU→DE), dann produzieren (DE→RU) */
     mode=sess.st[k].ok===0?'mc':(Math.random()<.5?'mcRev':'type');
+    /* lange Wörter zuerst als Silbenpuzzle – 14 Buchstaben am Stück tippen hilft niemandem */
+    if(sess.st[k].ok===1&&isLongWord(w)&&Math.random()<.6)mode='syl';
   }
-  else if(mode==='mix')mode=(st&&st.c>=2)?'type':(Math.random()<.5?'mc':'mcRev');
+  else if(mode==='mix')mode=(st&&st.c>=2)?(Math.random()<.6?'type':'mcRev'):(Math.random()<.5?'mc':'mcRev');
+  if(mode==='type'&&isLongWord(w)&&Math.random()<.5)mode='syl';
   cur={p,k,w,mode,answered:false,opts:null,goodIdx:-1,optRu:(mode==='mcRev')};
   let front='';
   if(mode==='mc'){
     cur.opts=shuffle(distract(p,k,'d',3).concat([w.d]));
     cur.goodIdx=cur.opts.indexOf(w.d);
     front='<div class="word">'+acc(esc(w.r))+'</div><button class="speak" onclick="speak(cur.w.r)">🔊</button>'+
-      '<div class="qlabel">Was bedeutet das?</div>'+
-      '<div class="opts">'+cur.opts.map((o,i)=>'<button class="opt" data-k="'+i+'">'+esc(o)+'</button>').join('')+'</div>';
+      '<div class="qlabel">Was bedeutet das?</div>'+optsHtml('');
   }else if(mode==='mcRev'){
     cur.opts=shuffle(distract(p,k,'r',3).concat([w.r]));
     cur.goodIdx=cur.opts.indexOf(w.r);
     front='<div class="word-de">'+esc(w.d)+'</div><div class="qlabel">Wie heißt das auf Russisch?</div>'+
-      '<div class="opts">'+cur.opts.map((o,i)=>'<button class="opt opt-ru" data-k="'+i+'">'+acc(esc(o))+'</button>').join('')+'</div>'+
+      optsHtml(' opt-ru')+
       '<div class="hint" style="text-align:center;margin-top:8px">Nach dem Antworten kannst du alle Varianten anhören.</div>';
+  }else if(mode==='syl'){
+    cur.syl=syllables(w.r);
+    cur.pick=[];
+    front='<div class="word-de">'+esc(w.d)+'</div><div class="qlabel">Setz das Wort aus den Silben zusammen:</div>'+
+      '<div class="sylbuilt" id="sylBuilt">·</div>'+
+      '<div class="syls" id="sylPool">'+shuffle(cur.syl.map((s,i)=>({s,i}))).map(o=>'<button class="syl" data-s="'+o.i+'">'+acc(esc(o.s))+'</button>').join('')+'</div>'+
+      '<div class="type-row" style="justify-content:center"><button class="btn-ghost" id="sylUndo">⌫ zurück</button><button class="check-btn" id="sylCheck">Prüfen</button></div>';
   }else{
     front='<div class="word-de">'+esc(w.d)+'</div><div class="qlabel">Schreib es auf Russisch:</div>'+typeHtml();
   }
@@ -3969,6 +4169,8 @@ function renderCard(){
     '<div class="card"><div class="badges">'+chips+'</div>'+front+
     '<div id="fbZone"></div></div>';
   if(cur.opts){
+    const rv=$('#revealBtn');
+    if(rv)rv.onclick=()=>{$('#recallBox').style.display='none';$('#optsBox').style.display='';};
     document.querySelectorAll('#view-packs .opt').forEach(b=>b.onclick=()=>{
       if(cur.answered)return;
       const ok=+b.dataset.k===cur.goodIdx;
@@ -3976,6 +4178,18 @@ function renderCard(){
       if(!ok)b.classList.add('wrong');
       resolve(ok);
     });
+  }else if(cur.mode==='syl'){
+    const draw=()=>{
+      $('#sylBuilt').textContent=cur.pick.length?cur.pick.map(i=>cur.syl[i]).join(''):'·';
+      document.querySelectorAll('#sylPool .syl').forEach(b=>{b.disabled=cur.pick.indexOf(+b.dataset.s)>=0;});
+    };
+    document.querySelectorAll('#sylPool .syl').forEach(b=>b.onclick=()=>{
+      if(cur.answered)return;
+      cur.pick.push(+b.dataset.s);draw();
+      if(cur.pick.length===cur.syl.length)checkSyl();
+    });
+    $('#sylUndo').onclick=()=>{if(cur.answered)return;cur.pick.pop();draw()};
+    $('#sylCheck').onclick=checkSyl;
   }else{
     document.querySelectorAll('.kb-k').forEach(b=>b.onclick=()=>{
       const inp=$('#typeInp');
@@ -3985,6 +4199,16 @@ function renderCard(){
     $('#checkBtn').onclick=checkTyped;
     $('#typeInp').addEventListener('keydown',e=>{if(e.key==='Enter')checkTyped()});
   }
+}
+function checkSyl(){
+  if(!cur||cur.answered)return;
+  const built=cur.pick.map(i=>cur.syl[i]).join('');
+  const ok=normRu(built)===normRu(cur.w.r);
+  document.querySelectorAll('#sylPool .syl').forEach(b=>b.disabled=true);
+  const bl=$('#sylBuilt');if(bl)bl.classList.add(ok?'inp-ok':'inp-no');
+  const cb=$('#sylCheck');if(cb)cb.style.display='none';
+  const ub=$('#sylUndo');if(ub)ub.style.display='none';
+  resolve(ok);
 }
 function checkTyped(){
   const inp=$('#typeInp');
@@ -4002,18 +4226,24 @@ function resolve(ok){
   cur.answered=true;
   const key=wordKey(cur.p.id,cur.k);
   const st=S.prog[key]||(S.prog[key]={c:0,w:0});
-  if(sess.drill){
+  if(sess.srs){
+    /* Auffrischung: richtig → Abstand wächst, falsch → zurück auf morgen */
+    if(ok){st.c=Math.max(st.c,NEED);st.iv=Math.min(120,Math.round((st.iv||1)*2.3)+1);st.rd=addDays(st.iv);sess.right++}
+    else{st.w++;st.c=1;st.iv=1;st.rd=addDays(1);sess.wrong++;sess.q.push(sess.q[sess.i])}
+  }
+  else if(sess.drill){
     const d=sess.st[cur.k];
     if(ok){
       d.ok++;sess.right++;
-      if(d.ok>=NEED){st.c=Math.max(st.c,NEED)} /* gemeistert → zählt in den Paket-Fortschritt */
+      if(d.ok>=NEED){st.c=Math.max(st.c,NEED);startRotation(st)} /* gemeistert → in die Wiederholungs-Rotation */
       else sess.q.splice(Math.min(sess.i+3+Math.floor(Math.random()*3),sess.q.length),0,cur.k);
     }else{
       d.ok=0;st.w++;st.c=0;sess.wrong++;
       sess.q.splice(Math.min(sess.i+2+Math.floor(Math.random()*2),sess.q.length),0,cur.k);
     }
   }
-  else if(ok){st.c++;sess.right++}else{st.w++;st.c=0;sess.wrong++;sess.q.push(cur.k)}
+  else if(ok){st.c++;if(st.c>=NEED)startRotation(st);sess.right++}
+  else{st.w++;st.c=0;sess.wrong++;sess.q.push(sess.q[sess.i])}
   const t=todayStr();S.days[t]=(S.days[t]||0)+1;
   save();
   const w=cur.w;
@@ -4022,7 +4252,7 @@ function resolve(ok){
     '<div class="answer"><div class="word" style="font-size:1.6rem;margin:2px 0 4px">'+acc(esc(w.r))+' '+sayBtn(w.r,'speak')+'</div>'+
     '<div class="trans">['+esc(w.t)+']</div><div class="mean">'+esc(w.d)+'</div>'+regBadge(w)+
     (w.e?'<div class="ex"><div class="ru">'+acc(esc(w.e))+' '+sayBtn(w.e)+'</div><div class="de">'+esc(w.x||'')+'</div></div>':'')+
-    formsBox(w)+
+    bausteine(w)+formsBox(w)+
     (cur.optRu?hearAll(cur.opts,'Alle Antwortmöglichkeiten anhören:'):'')+
     '</div><div class="grade"><button onclick="nextCard()">Weiter</button></div>';
   speak(w.r);
@@ -4032,6 +4262,7 @@ function nextCard(){
   if(sess.i>=sess.q.length)finishSess();else renderCard();
 }
 function finishSess(){
+  if(sess.srs){finishRefresh();return}
   const p=packById(sess.pid);
   const tot=sess.right+sess.wrong,accy=tot?Math.round(100*sess.right/tot):100;
   const war=sess.drill;
@@ -4129,8 +4360,12 @@ function renderPacks(){
   sess=null;quiz=null;
   const ps=allPacks();
   let html='<div class="hero"><div class="due-line">Was hast du <b>geschaut</b>?</div>'+
-    '<div class="sub">Üb die Wörter aus deinen Folgen – und schau sie danach nochmal. Kein Transkript, nur Vokabeln und Fragen.</div></div>'+
-    '<div class="sect">Deine Pakete</div>';
+    '<div class="sub">Üb die Wörter aus deinen Folgen – und schau sie danach nochmal. Kein Transkript, nur Vokabeln und Fragen.</div></div>';
+  const due=dueRefs().length;
+  if(due)html+='<div class="srsbox"><div class="lk-t">🔁 '+due+' Wörter sind zur Auffrischung fällig</div>'+
+    '<div class="lk-s">Die hattest du schon. Heute entscheidet sich, ob sie wirklich sitzen – wer sie jetzt kann, sieht sie erst in ein paar Tagen wieder.</div>'+
+    '<button class="btn btn-primary" onclick="startRefresh()">Jetzt auffrischen</button></div>';
+  html+='<div class="sect">Deine Pakete</div>';
   if(!ps.length)html+='<p class="hint">Noch keine Pakete. Unter „Mehr" kannst du eins einfügen.</p>';
   let lastEp=null,skipN=0;
   ps.forEach(p=>{
@@ -4247,7 +4482,7 @@ function showWords(pid){
       return '<div class="row"><div class="l"><div class="ru">'+acc(esc(w.r))+'</div>'+
         '<div class="tr">['+esc(w.t||'')+']</div><div class="de">'+esc(w.d)+' '+regBadge(w)+'</div>'+
         (w.e?'<div class="de" style="margin-top:4px;font-style:italic">'+acc(esc(w.e))+' '+sayBtn(w.e)+'</div>':'')+
-        formsBox(w)+
+        bausteine(w)+formsBox(w)+
         '</div><div>'+(st&&st.c>=2?'<span style="color:var(--birch);font-weight:700">✓</span>':'')+'</div>'+
         sayBtn(w.r)+'</div>';
     }).join('')+
@@ -4380,11 +4615,18 @@ $('#gateChk').onchange=e=>{
   renderPacks();
 };
 
+$('#recallChk').onchange=e=>{
+  S.recall=e.target.checked;save();
+  $('#recallMsg').textContent=S.recall?'An – du antwortest erst selbst.':'Aus – die Möglichkeiten stehen sofort da.';
+  $('#recallMsg').className='msg ok';
+};
+
 (function init(){
   $('#brandTitle').innerHTML=acc('СЕРИА́Л');
   initStore();load();
   buildAppNav('serial');
   $('#gateChk').checked=S.gate!==false;
+  $('#recallChk').checked=S.recall!==false;
   $('#doneN').textContent=totalDone();
   renderPacks();
 })();
