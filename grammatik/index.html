@@ -165,6 +165,25 @@ textarea#bakBox{width:100%;min-height:110px;border:1px solid var(--frost);border
 .trow .pb i{display:block;height:100%;background:var(--mala)}
 .trow .pc{font-size:.78rem;font-weight:700;color:var(--mala);width:40px;text-align:right;font-variant-numeric:tabular-nums}
 .foot{text-align:center;color:var(--ink-faint);font-size:.72rem;margin-top:26px;line-height:1.7}
+
+/* ---------- Regel-Erklärungen ---------- */
+.lesson{background:var(--card);border:1px solid var(--frost);border-left:4px solid var(--mala);border-radius:12px;padding:16px 18px;margin-top:12px;font-size:.92rem;line-height:1.65;text-align:left}
+.lesson h4{font-family:var(--sans);font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--mala);margin:16px 0 6px}
+.lesson h4:first-child{margin-top:0}
+.lesson b{color:var(--ink)}
+.lesson i{color:var(--ink-soft)}
+.lesson u{text-decoration:underline;text-underline-offset:2px}
+.lesson table.rt{margin:8px 0}
+.lesson table.rt td,.lesson table.rt th{font-size:.8rem}
+.rulebtn{background:var(--mala-soft);color:var(--mala);font-size:.75rem;font-weight:700;padding:5px 12px;border-radius:99px;white-space:nowrap}
+.rulebtn:hover{background:#D3E8E1}
+.ovl{position:fixed;inset:0;background:rgba(20,24,31,.55);z-index:50;display:flex;align-items:flex-end;justify-content:center;padding:12px;animation:fadeUp .2s ease}
+.ovl-in{background:var(--paper);border-radius:16px;max-width:600px;width:100%;max-height:86vh;overflow-y:auto;padding:16px}
+.ovl-top{display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;background:var(--paper);padding-bottom:8px}
+.ovl-top b{font-family:var(--serif);font-size:1.1rem}
+.ovl-x{background:var(--ink);color:#fff;border-radius:99px;width:30px;height:30px;font-weight:700;flex-shrink:0}
+.fbrule{margin-top:10px;font-size:.84rem;background:var(--gzhel-soft);color:var(--gzhel);padding:9px 13px;border-radius:10px;text-align:left;line-height:1.55}
+.fbrule button{color:var(--gzhel);font-weight:800;text-decoration:underline;padding:0}
 </style>
 </head>
 <body>
@@ -191,6 +210,12 @@ textarea#bakBox{width:100%;min-height:110px;border:1px solid var(--frost);border
 <section class="view on" id="view-lernen"></section>
 
 <section class="view" id="view-regeln">
+  <div class="panel">
+    <h3>Regeln erklärt</h3>
+    <p class="hint" style="margin-top:0">Ausführliche Erklärung zu jedem Thema: Wozu? · Woran erkenne ich es? · Wie bilde ich es? · Typische Fehler.</p>
+    <div class="ctrow" id="lessonList" style="margin-top:10px"></div>
+  </div>
+
   <div class="panel">
     <h3>Die Fälle: Endungen (Singular)</h3>
     <div class="rtwrap"><table class="rt">
@@ -825,6 +850,404 @@ const TOPICS=[
 ]}
 ];
 
+/* ================= Regel-Erklärungen pro Thema ================= */
+const LESSONS={
+akk:`<h4>Wozu ist der Akkusativ da?</h4>
+Er zeigt, <b>worauf sich die Handlung richtet</b> – das Ziel der Handlung. Im Deutschen genau dasselbe: „Ich sehe <u>den Hund</u>."<br>
+Frage: <b>кого́? что?</b> (wen? was?)
+<h4>Woran erkenne ich, dass ich ihn brauche?</h4>
+<b>1. Nach Verben mit direktem Objekt:</b> ви́деть (sehen), чита́ть (lesen), люби́ть (lieben), покупа́ть (kaufen), есть, пить, знать, ждать, слу́шать, смотре́ть …<br>
+<i>Я чита́ю <b>кни́гу</b>.</i> – Was lese ich? Ein Buch. → Akkusativ<br>
+<b>2. Nach в / на bei einer Richtung (Wohin?):</b><br>
+<i>Я иду́ в <b>шко́лу</b>.</i> (wohin? → Akkusativ)<br>
+Aber: <i>Я в <b>шко́ле</b>.</i> (wo? → Präpositiv!)
+<h4>Wie bilde ich ihn?</h4>
+Der Akkusativ ist der <b>faulste Fall</b> – meistens ändert sich gar nichts:<br>
+• <b>feminin -а/-я</b> → <b>-у/-ю</b>: маши́н<b>а</b> → маши́н<b>у</b>, неде́л<b>я</b> → неде́л<b>ю</b><br>
+• <b>maskulin unbelebt</b> (Dinge) → <b>bleibt gleich</b>: стол → стол<br>
+• <b>maskulin belebt</b> (Menschen, Tiere) → <b>wie Genitiv (-а/-я)</b>: брат → бра́т<b>а</b><br>
+• <b>neutrum</b> → <b>bleibt gleich</b>: окно́ → окно́<br>
+• feminin auf <b>-ь</b> → bleibt gleich: дверь → дверь
+<h4>Typische Fehler</h4>
+• „Я ви́жу брат" ✗ – брат ist belebt → <b>бра́та</b> ✓<br>
+• „Я иду́ в шко́ле" ✗ – Richtung, nicht Ort → <b>в шко́лу</b> ✓<br>
+• Bei „у меня́ есть …" steht <b>kein</b> Akkusativ, sondern der Nominativ: у меня́ есть <b>соба́ка</b>.`,
+
+prep:`<h4>Wozu ist der Präpositiv da?</h4>
+Er sagt, <b>wo</b> etwas ist oder <b>worüber</b> gesprochen wird. Er heißt so, weil er <b>nie ohne Präposition</b> steht – das ist die einfachste Erkennungsregel überhaupt.<br>
+Frage: <b>где? о ком? о чём?</b> (wo? über wen/was?)
+<h4>Woran erkenne ich ihn?</h4>
+Nur nach diesen Wörtern:<br>
+• <b>в</b> = in (wo?) – <i>в го́роде</i><br>
+• <b>на</b> = auf / an (wo?) – <i>на столе́</i><br>
+• <b>о / об</b> = über – <i>о рабо́те, об э́том</i><br>
+Merke den Unterschied zum Akkusativ: <b>Wohin?</b> → Akkusativ (в шко́л<b>у</b>) · <b>Wo?</b> → Präpositiv (в шко́л<b>е</b>).
+<h4>Wie bilde ich ihn?</h4>
+Der einfachste Fall: <b>fast alles endet auf -е</b>.<br>
+го́род → в го́род<b>е</b> · шко́ла → в шко́л<b>е</b> · окно́ → в окн<b>е́</b><br>
+Drei Ausnahmen:<br>
+• <b>-ия / -ие</b> → <b>-ии</b>: Росси́я → в Росси́<b>и</b><br>
+• feminin auf <b>-ь</b> → <b>-и</b>: тетра́дь → в тетра́д<b>и</b><br>
+• ein paar Männer-Wörter mit <b>-у́</b>: в лес<b>у́</b>, в сад<b>у́</b>, в год<b>у́</b>
+<h4>Typische Fehler</h4>
+• Präpositiv ohne Präposition gibt es nicht – „Я живу́ Москве́" ✗ → <b>в</b> Москве́ ✓<br>
+• в oder на? Gebäude/Länder meist <b>в</b>, Flächen und Veranstaltungen <b>на</b>: на рабо́те, на по́чте, на конце́рте.`,
+
+gen:`<h4>Wozu ist der Genitiv da?</h4>
+Er ist der <b>Verbindungs-Fall</b>: Er zeigt Besitz („das Auto <u>des Bruders</u>"), Abwesenheit und Mengen.<br>
+Frage: <b>кого́? чего́?</b> (wessen? von wem/was?)
+<h4>Woran erkenne ich ihn? – vier Auslöser</h4>
+<b>1. Besitz / Zugehörigkeit:</b> маши́на <b>бра́та</b> (das Auto des Bruders)<br>
+<b>2. Nach нет / не́ было / не бу́дет</b> (etwas ist nicht da): <i>Здесь нет <b>магази́на</b>.</i><br>
+<b>3. Nach у</b> – auch beim Haben-Satz: <i>У <b>бра́та</b> есть соба́ка.</i><br>
+<b>4. Nach Präpositionen:</b> из, от, до, по́сле, без, для, о́коло<br>
+Bonus: nach Mengen – мно́го, ма́ло, ско́лько, стака́н, кило́ …
+<h4>Wie bilde ich ihn?</h4>
+• <b>maskulin/neutrum</b> → <b>-а/-я</b>: стол → стол<b>а́</b>, мо́ре → мо́р<b>я</b><br>
+• <b>feminin</b> → <b>-ы/-и</b>: маши́на → маши́н<b>ы</b>, неде́ля → неде́л<b>и</b><br>
+(nach к, г, х, ж, ш, щ, ч immer <b>-и</b>: кни́га → кни́г<b>и</b>)
+<h4>Typische Fehler</h4>
+• Der Haben-Satz dreht sich um: „Ich habe einen Hund" = <i>У <b>меня́</b> есть соба́ка</i> – die Person steht im Genitiv, der Hund im Nominativ!<br>
+• Verneintes Haben braucht Genitiv: <i>У меня́ нет <b>соба́ки</b></i> (nicht соба́ка).`,
+
+dat:`<h4>Wozu ist der Dativ da?</h4>
+Er zeigt den <b>Empfänger</b> – wem etwas gegeben, gesagt oder wem geholfen wird.<br>
+Frage: <b>кому́? чему́?</b> (wem?)
+<h4>Woran erkenne ich ihn?</h4>
+<b>1. Nach diesen Verben:</b> дать (geben), сказа́ть, звони́ть (anrufen!), помога́ть (helfen), писа́ть, покупа́ть (jemandem), объясня́ть<br>
+<b>2. Nach к</b> (zu jemandem) und <b>по</b> (entlang, über): <i>Я иду́ к <b>врачу́</b>.</i><br>
+<b>3. Bei Gefühlen und Zuständen</b> – das ist typisch russisch:<br>
+<i><b>Мне</b> нра́вится чай.</i> (Mir gefällt Tee)<br>
+<i><b>Мне</b> хо́лодно / ску́чно.</i> (Mir ist kalt/langweilig)<br>
+<i><b>Мне</b> на́до рабо́тать.</i> (Ich muss arbeiten)<br>
+<b>4. Beim Alter:</b> <i><b>Ба́бушке</b> 80 лет.</i>
+<h4>Wie bilde ich ihn?</h4>
+• <b>maskulin/neutrum</b> → <b>-у/-ю</b>: брат → бра́т<b>у</b><br>
+• <b>feminin</b> → <b>-е</b>: ма́ма → ма́м<b>е</b> (aber -ия → -ии, -ь → -и)
+<h4>Typische Fehler</h4>
+• Im Deutschen „ich mag Tee", im Russischen <i>мне нра́вится чай</i> – wörtlich „mir gefällt Tee". Das Subjekt wechselt!<br>
+• звони́ть braucht Dativ, nicht Akkusativ: <i>Я звоню́ <b>ма́ме</b></i> ✓`,
+
+ins:`<h4>Wozu ist der Instrumental da?</h4>
+Er beantwortet <b>womit?</b> und <b>mit wem?</b> – das Werkzeug und die Begleitung.<br>
+Frage: <b>кем? чем?</b>
+<h4>Woran erkenne ich ihn? – drei Auslöser</h4>
+<b>1. Nach с</b> = zusammen mit: <i>чай с <b>са́харом</b></i>, <i>с <b>дру́гом</b></i><br>
+<b>2. Werkzeug – ganz ohne Präposition!</b> Das ist der Unterschied zum Deutschen:<br>
+<i>Я ем <b>ло́жкой</b>.</i> = Ich esse <u>mit dem Löffel</u> (kein „с"!)<br>
+<b>3. Beruf</b> nach рабо́тать / стать / быть:<br>
+<i>Он рабо́тает <b>учи́телем</b>.</i> (Er arbeitet als Lehrer)<br>
+Außerdem: занима́ться <b>спо́ртом</b>, интересова́ться <b>му́зыкой</b>.
+<h4>Wie bilde ich ihn?</h4>
+• <b>maskulin/neutrum</b> → <b>-ом/-ем</b>: стол → стол<b>о́м</b><br>
+• <b>feminin</b> → <b>-ой/-ей</b>: ма́ма → ма́м<b>ой</b>
+<h4>Typische Fehler</h4>
+• „Я пишу́ с ру́чкой" ✗ – das hieße „ich schreibe gemeinsam mit dem Kuli". Werkzeug ohne с: <b>ру́чкой</b> ✓<br>
+• Beruf ohne „als": <i>Она́ ста́ла <b>врачо́м</b></i> – das Wort „als" steckt schon in der Endung.`,
+
+plu:`<h4>Wozu?</h4>
+Aus einem Tisch werden viele Tische. Hier geht es nur um den <b>Nominativ Plural</b> (die Nenn-Form).
+<h4>Wie bilde ich ihn?</h4>
+• Standard: <b>-ы</b> → стол → стол<b>ы́</b>, маши́на → маши́н<b>ы</b><br>
+• <b>-и</b> nach к, г, х, ж, ш, щ, ч und nach weichem Zeichen: кни́га → кни́г<b>и</b> (nie „книгы"!)<br>
+• <b>Neutrum -о/-е</b> → <b>-а/-я</b>: окно́ → <b>о́</b>кна (Betonung wandert oft!)
+<h4>Sonderformen – die musst du auswendig lernen</h4>
+дом → дом<b>а́</b> · го́род → город<b>а́</b> · учи́тель → учител<b>я́</b><br>
+друг → <b>друзья́</b> · брат → <b>бра́тья</b> · сестра́ → <b>сёстры</b><br>
+ребёнок → <b>де́ти</b> · челове́к → <b>лю́ди</b>
+<h4>Typische Fehler</h4>
+• „книгы" ✗ – nach к steht nie ы → <b>кни́ги</b> ✓<br>
+• Betonung beachten: <b>о́</b>кна (Plural) vs. окн<b>о́</b> (Singular).`,
+
+adj:`<h4>Worum geht's?</h4>
+Adjektive und die Wörter мой/твой/наш/ваш <b>passen sich immer an ihr Substantiv an</b> – an Geschlecht, Zahl und Fall. Im Deutschen machen wir das auch („ein <u>neues</u> Auto"), im Russischen nur regelmäßiger.
+<h4>Die vier Grundformen (Nominativ)</h4>
+• <b>maskulin -ый/-ой/-ий</b>: но́в<b>ый</b> дом<br>
+• <b>feminin -ая/-яя</b>: но́в<b>ая</b> маши́на<br>
+• <b>neutrum -ое/-ее</b>: но́в<b>ое</b> окно́<br>
+• <b>Plural -ые/-ие</b>: но́в<b>ые</b> дома́<br>
+Genauso: мой / моя́ / моё / мои́ · наш / на́ша / на́ше / на́ши
+<h4>So gehst du vor</h4>
+1. Welches Geschlecht hat das Substantiv? (-а/-я = feminin, -о/-е = neutrum, Rest meist maskulin)<br>
+2. In welchem Fall steht es?<br>
+3. Adjektiv bekommt dieselbe „Farbe".
+<h4>Typische Fehler</h4>
+• Das Adjektiv richtet sich nach dem <b>Substantiv</b>, nicht nach dir: ein Mann sagt <i>моя́ ма́ма</i> (weil ма́ма feminin ist).<br>
+• Nach к, г, х, ж, ш, щ, ч steht <b>-ий/-ие</b> statt -ый/-ые: <i>ру́сский, хоро́шие</i>.`,
+
+pron:`<h4>Worum geht's?</h4>
+Auch <b>ich, du, er, sie</b> verändern sich in den Fällen – genau wie im Deutschen (ich → mich → mir), nur mit mehr Formen. Du brauchst sie in fast jedem Satz.
+<h4>Die Tabelle</h4>
+<b>я</b> → меня́ (wen) · мне (wem) · мной (mit wem)<br>
+<b>ты</b> → тебя́ · тебе́ · тобо́й<br>
+<b>он/оно́</b> → его́ · ему́ · им<br>
+<b>она́</b> → её · ей · ей<br>
+<b>мы</b> → нас · нам · на́ми<br>
+<b>вы</b> → вас · вам · ва́ми<br>
+<b>они́</b> → их · им · и́ми
+<h4>Die н-Regel – der häufigste Stolperstein</h4>
+Nach einer <b>Präposition</b> bekommen die er/sie/es/sie-Formen ein <b>н-</b> davor:<br>
+<i>Я ви́жу <b>её</b>.</i> (ohne Präposition) &nbsp;aber&nbsp; <i>Я был у <b>неё</b>.</i> (mit у)<br>
+Genauso: с <b>ним</b>, к <b>ним</b>, о <b>них</b>, для <b>неё</b>.
+<h4>Typische Fehler</h4>
+• „у его́" ✗ → <b>у него́</b> ✓<br>
+• Bei Gefühlen steht der Dativ: <i><b>Мне</b> нра́вится</i>, nicht „я нра́влюсь" (das hieße „ich gefalle").`,
+
+vpr:`<h4>Worum geht's?</h4>
+Das Präsens – was gerade oder regelmäßig passiert. Russisch hat nur <b>eine</b> Gegenwartsform (kein „I am working" vs. „I work").
+<h4>Zwei Konjugationen</h4>
+<b>е-Konjugation</b> (die meisten Verben auf -ать):<br>
+рабо́та<b>ю</b> · рабо́та<b>ешь</b> · рабо́та<b>ет</b> · рабо́та<b>ем</b> · рабо́та<b>ете</b> · рабо́та<b>ют</b><br>
+<b>и-Konjugation</b> (meist Verben auf -ить):<br>
+говор<b>ю́</b> · говор<b>и́шь</b> · говор<b>и́т</b> · говор<b>и́м</b> · говор<b>и́те</b> · говор<b>я́т</b>
+<h4>Wichtige Unregelmäßige</h4>
+хоте́ть: хочу́, хо́чешь, хо́чет, <b>хоти́м</b>, хоти́те, <b>хотя́т</b> (wechselt mitten in der Reihe!)<br>
+мочь: могу́, мо́жешь … мо́гут · есть: ем, ешь, ест, еди́м · жить: живу́, живёшь
+<h4>Zwei Buchstaben-Tricks</h4>
+• <b>л-Einschub</b> bei б, в, м, п, ф in der я-Form: люби́ть → я лю<b>бл</b>ю́, спать → я с<b>пл</b>ю<br>
+• <b>Konsonantenwechsel</b>: ви́деть → я ви́<b>ж</b>у, писа́ть → я пи<b>ш</b>у́ (nur in der я-Form!)
+<h4>Typische Fehler</h4>
+• „я любю́" ✗ → <b>я люблю́</b> ✓<br>
+• Es gibt kein „bin/ist" im Präsens: <i>Он врач.</i> = „Er ist Arzt."`,
+
+vpa:`<h4>Worum geht's?</h4>
+Die Vergangenheit ist im Russischen <b>einfacher als im Deutschen</b> – es gibt nur eine Form, kein Perfekt/Präteritum-Wirrwarr.
+<h4>Wie bilde ich sie?</h4>
+Infinitiv nehmen, <b>-ть abschneiden</b>, Endung anhängen:<br>
+• <b>er</b> → <b>-л</b>: чита́<b>л</b><br>
+• <b>sie</b> → <b>-ла</b>: чита́<b>ла</b><br>
+• <b>es</b> → <b>-ло</b>: чита́<b>ло</b><br>
+• <b>Plural</b> (мы/вы/они́) → <b>-ли</b>: чита́<b>ли</b>
+<h4>Der große Unterschied zum Deutschen</h4>
+Die Endung richtet sich nach dem <b>Geschlecht des Subjekts</b>, nicht nach der Person!<br>
+Ein Mann sagt: <i>Я чита́<b>л</b>.</i> · Eine Frau sagt: <i>Я чита́<b>ла</b>.</i><br>
+Auch bei ты: <i>Ты чита́<b>ла</b>?</i> (zu einer Frau)
+<h4>Typische Fehler</h4>
+• Frauen vergessen oft das -а: „Я чита́л" von einer Frau ist falsch → <b>чита́ла</b> ✓<br>
+• быть in der Vergangenheit gibt es (anders als im Präsens): был / была́ / бы́ло / бы́ли.`,
+
+fut:`<h4>Worum geht's?</h4>
+Zwei Wege in die Zukunft – und welchen du nimmst, hängt vom <b>Aspekt</b> ab (siehe Thema „Aspekt").
+<h4>Weg 1: бу́ду + Infinitiv (unvollendet)</h4>
+Für <b>Verläufe, Dauer, Wiederholung</b>:<br>
+я <b>бу́ду</b> · ты <b>бу́дешь</b> · он <b>бу́дет</b> · мы <b>бу́дем</b> · вы <b>бу́дете</b> · они́ <b>бу́дут</b> + рабо́тать<br>
+<i>За́втра я <b>бу́ду рабо́тать</b> весь день.</i> (den ganzen Tag = Dauer)
+<h4>Weg 2: vollendete Präsensform (= Zukunft)</h4>
+Klingt wie Präsens, bedeutet aber Zukunft – für <b>einmalige Handlungen mit Ergebnis</b>:<br>
+<i>Я <b>позвоню́</b> тебе́.</i> = Ich rufe dich an (einmal, fertig).<br>
+<i>Он <b>прочита́ет</b> кни́гу.</i> = Er wird das Buch zu Ende lesen.
+<h4>Typische Fehler</h4>
+• <b>Niemals mischen:</b> „бу́ду позвони́ть" ✗ gibt es nicht! Entweder бу́ду звони́ть oder позвоню́.<br>
+• Ein vollendetes Verb hat <b>keine</b> Gegenwart: прочита́ю heißt immer „ich werde lesen", nie „ich lese".`,
+
+mod:`<h4>Worum geht's?</h4>
+müssen, dürfen, können – im Russischen läuft das <b>anders als im Deutschen</b>. Viele dieser Ausdrücke haben gar kein Subjekt, sondern stehen mit dem <b>Dativ</b>.
+<h4>1. до́лжен = müssen (mit Subjekt)</h4>
+Verhält sich wie ein Adjektiv und richtet sich nach der Person:<br>
+он <b>до́лжен</b> · она́ <b>должна́</b> · мы/вы/они́ <b>должны́</b><br>
+<i>Она́ должна́ рабо́тать.</i>
+<h4>2. Der Dativ-Trick: на́до, ну́жно, мо́жно, нельзя́</h4>
+Kein Subjekt – die Person steht im <b>Dativ</b>:<br>
+<i><b>Мне</b> на́до рабо́тать.</i> = wörtlich „Mir ist nötig zu arbeiten"<br>
+<i><b>Тебе́</b> мо́жно.</i> = Du darfst. · <i>Здесь <b>нельзя́</b> кури́ть.</i> = Hier darf man nicht rauchen.
+<h4>3. мочь oder уме́ть? Beides heißt „können"</h4>
+• <b>уме́ть</b> = eine Fähigkeit <u>gelernt</u> haben: <i>Я уме́ю пла́вать.</i> (Ich kann schwimmen)<br>
+• <b>мочь</b> = die <u>Möglichkeit/Gelegenheit</u> haben: <i>Я не могу́ прийти́.</i> (Ich kann nicht kommen)
+<h4>Merke</h4>
+Nach <b>allen</b> diesen Wörtern steht der <b>Infinitiv</b>: на́до <b>идти́</b>, до́лжен <b>рабо́тать</b>, мо́жно <b>откры́ть</b>.
+<h4>Typische Fehler</h4>
+• „Я на́до" ✗ → <b>Мне на́до</b> ✓ (Dativ!)<br>
+• „Я могу́ пла́вать" bedeutet „ich habe jetzt die Gelegenheit zu schwimmen" – für die Fähigkeit: <b>уме́ю</b>.`,
+
+mov:`<h4>Worum geht's?</h4>
+Russisch hat für „gehen" und „fahren" jeweils <b>zwei Verben</b>. Welches du nimmst, hängt nicht von der Zeit ab, sondern von der <b>Art der Bewegung</b>.
+<h4>Die Tabelle</h4>
+<table class="rt"><tr><th></th><th>jetzt, eine Richtung</th><th>regelmäßig / hin &amp; zurück</th></tr>
+<tr><td><b>zu Fuß</b></td><td>идти́ – иду́, идёшь</td><td>ходи́ть – хожу́, хо́дишь</td></tr>
+<tr><td><b>Fahrzeug</b></td><td>е́хать – е́ду, е́дешь</td><td>е́здить – е́зжу, е́здишь</td></tr></table>
+<h4>So entscheidest du</h4>
+Frag dich: <b>Bin ich gerade unterwegs zu einem Ziel?</b> → идти́/е́хать<br>
+<i>Сейча́с я <b>иду́</b> в магази́н.</i> (gerade jetzt, ein Weg)<br>
+<b>Mache ich das regelmäßig, oder war ich da und bin zurück?</b> → ходи́ть/е́здить<br>
+<i>Ка́ждый день я <b>хожу́</b> в шко́лу.</i> (jeden Tag)<br>
+<i>Вчера́ мы <b>ходи́ли</b> в теа́тр.</i> = „Wir waren im Theater" (hin und wieder zurück!)
+<h4>Gut zu wissen</h4>
+• Fahrzeuge „gehen" auf Russisch: <i>Авто́бус <b>идёт</b>.</i><br>
+• Auch Regen und Schnee gehen: <i><b>Идёт</b> дождь.</i> = Es regnet.
+<h4>Typische Fehler</h4>
+• „Ка́ждый день я иду́ …" ✗ – regelmäßig → <b>хожу́</b> ✓<br>
+• Zu Fuß oder mit Fahrzeug? In der Stadt zwischen Ländern/Städten immer <b>е́хать</b>, auch wenn du im Zug sitzt.`,
+
+asp:`<h4>Warum ist das so ungewohnt?</h4>
+Weil es im Deutschen <b>nichts Vergleichbares</b> gibt. Wir sagen „ich las" und „ich habe gelesen" – das sind Zeiten. Der russische Aspekt sagt dagegen etwas ganz anderes: <b>Interessiert mich der Vorgang oder das Ergebnis?</b><br>
+Fast jedes Verb existiert deshalb als <b>Paar</b>: чита́ть / прочита́ть, де́лать / сде́лать.
+<h4>Unvollendet (чита́ть) = die Kamera läuft</h4>
+Du beschreibst den <b>Vorgang</b>: Dauer, Wiederholung, Gewohnheit, Hintergrund.<br>
+<i>Вчера́ я <b>чита́л</b> весь ве́чер.</i> (Was habe ich gemacht? Gelesen – ob fertig, ist egal.)
+<h4>Vollendet (прочита́ть) = das Foto danach</h4>
+Du zeigst das <b>Ergebnis</b>: einmalig, abgeschlossen, geschafft.<br>
+<i>Я <b>прочита́л</b> кни́гу.</i> (Das Buch ist durch.)
+<h4>Signalwörter – dein bester Freund</h4>
+<table class="rt"><tr><th>unvollendet</th><th>vollendet</th></tr>
+<tr><td>ка́ждый день (jeden Tag)</td><td>уже́ (schon)</td></tr>
+<tr><td>всегда́, обы́чно, ча́сто</td><td>наконе́ц (endlich)</td></tr>
+<tr><td>до́лго, весь день, два часа́</td><td>вдруг (plötzlich)</td></tr>
+<tr><td>ра́ньше (früher)</td><td>за час (in einer Stunde)</td></tr></table>
+<h4>Die Faustregel für den Anfang</h4>
+Steht ein <b>Zeitraum</b> im Satz (weiter Abend, zwei Stunden, jeden Tag) → <b>unvollendet</b>.<br>
+Ist etwas <b>fertig geworden</b> oder passiert genau einmal → <b>vollendet</b>.
+<h4>Drei feste Regeln</h4>
+1. Im <b>Präsens</b> gibt es nur unvollendet (das Ergebnis kann ja noch nicht da sein).<br>
+2. Die vollendete „Präsensform" ist immer <b>Zukunft</b>: я прочита́ю = ich werde lesen.<br>
+3. Nach <b>на́чал / ко́нчил / продолжа́л</b> (begann, hörte auf) steht immer <b>unvollendet</b>.
+<h4>Typische Fehler</h4>
+• „Ка́ждый день я прочита́л" ✗ – Wiederholung → <b>чита́л</b> ✓<br>
+• „Я бу́ду прочита́ть" ✗ – niemals бу́ду + vollendet.`,
+
+puz:`<h4>Worum geht's?</h4>
+Die russische Wortstellung ist <b>freier als die deutsche</b> – aber nicht beliebig.
+<h4>Grundmuster</h4>
+<b>Subjekt – Verb – Objekt</b>, wie im Deutschen:<br>
+<i>Я чита́ю кни́гу.</i> · <i>Он идёт в шко́лу.</i>
+<h4>Was anders ist</h4>
+• <b>Kein Artikel</b> – weder der/die/das noch ein/eine.<br>
+• <b>Kein „ist" im Präsens</b>: <i>Он врач.</i> = „Er ist Arzt."<br>
+• <b>Zeitangaben</b> stehen gern vorne: <i>За́втра я е́ду в Москву́.</i><br>
+• Das <b>Wichtigste</b> rutscht ans Satzende – dort liegt die Betonung der Aussage.
+<h4>Feste Wendungen</h4>
+<i>Меня́ зову́т Макс.</i> = Ich heiße Max (wörtlich: „mich nennt man")<br>
+<i>У меня́ есть …</i> = Ich habe … · <i>Как у тебя́ дела́?</i> = Wie geht's dir?
+<h4>Tipp</h4>
+Bau erst das Gerüst (wer – macht – was) und häng dann Zeit und Ort dazu.`,
+
+imp:`<h4>Worum geht's?</h4>
+Der Imperativ = Aufforderung: „Sag!", „Warte!", „Hören Sie zu!"
+<h4>Wie bilde ich ihn? – drei Schritte</h4>
+1. Nimm die <b>ты-Form</b> im Präsens: чита́<b>ешь</b>, ска́ж<b>ешь</b>, забу́д<b>ешь</b><br>
+2. Endung weg: чита́-, скаж-, забу́д-<br>
+3. Neue Endung anhängen:<br>
+• endet auf <b>Vokal</b> → <b>-й</b>: чита́ → чита́<b>й</b><br>
+• endet auf <b>Konsonant</b> + Betonung liegt auf der Endung → <b>-и</b>: скаж → скаж<b>и́</b><br>
+• endet auf <b>Konsonant</b>, Betonung vorn → <b>-ь</b>: забу́д → забу́д<b>ь</b>
+<h4>Höflich oder mehrere Personen</h4>
+Einfach <b>-те</b> anhängen: скажи́<b>те</b>, подожди́<b>те</b>, чита́й<b>те</b>
+<h4>Höflichkeit im Alltag</h4>
+Mit пожа́луйста klingt jeder Imperativ freundlich: <i>Скажи́те, пожа́луйста, …</i><br>
+Noch weicher: <i>Мо́жно …?</i> oder <i>Вы не могли́ бы …?</i>
+<h4>Typische Fehler</h4>
+• Verneinter Imperativ steht fast immer im <b>unvollendeten</b> Aspekt: <i>Не забыва́й!</i><br>
+• Zu Fremden immer die -те-Form – ohne wirkt es sehr direkt.`,
+
+komp:`<h4>Worum geht's?</h4>
+Vergleiche: größer, besser, interessanter.
+<h4>Die Regelform: -ее</h4>
+Adjektiv-Stamm + <b>-ее</b>:<br>
+интере́сный → интере́сн<b>ее</b> · бы́стрый → быстр<b>е́е</b> · вку́сный → вкусн<b>е́е</b><br>
+Diese Form ist <b>unveränderlich</b> – keine Endungen mehr!
+<h4>Sonderformen (auswendig)</h4>
+хоро́ший → <b>лу́чше</b> (besser) · плохо́й → <b>ху́же</b><br>
+большо́й → <b>бо́льше</b> · ма́ленький → <b>ме́ньше</b><br>
+ста́рый → <b>ста́рше</b> · молодо́й → <b>моло́же</b> · высо́кий → <b>вы́ше</b> · коро́ткий → <b>коро́че</b>
+<h4>Zwei Wege für „als"</h4>
+1. Mit <b>чем</b> + Nominativ: <i>Он ста́рше, <b>чем я</b>.</i><br>
+2. Ohne чем, dafür <b>Genitiv</b> – klingt natürlicher: <i>Он ста́рше <b>меня́</b>.</i>
+<h4>Superlativ</h4>
+<b>са́мый</b> + normales Adjektiv: <i>са́мый интере́сный фильм</i> (der interessanteste Film)
+<h4>Typische Fehler</h4>
+• „бо́лее лу́чше" ✗ – die Sonderform reicht: <b>лу́чше</b> ✓<br>
+• Nach dem Komparativ ohne чем steht Genitiv, nicht Nominativ: ста́рше <b>меня́</b> (nicht „я").`,
+
+num:`<h4>Worum geht's?</h4>
+Nach Zahlen ändert sich im Russischen das <b>Substantiv</b>. Welche Form du brauchst, entscheidet allein die <b>letzte Ziffer</b>.
+<h4>Die drei Gruppen</h4>
+<b>1, 21, 31, 101 …</b> → Nominativ Singular: <i>оди́н <b>год</b></i>, <i>два́дцать оди́н <b>год</b></i><br>
+<b>2, 3, 4, 22, 33 …</b> → Genitiv Singular: <i>два <b>го́да</b></i>, <i>три <b>часа́</b></i>, <i>четы́ре <b>кни́ги</b></i><br>
+<b>5–20, 25, 100 …</b> → Genitiv Plural: <i>пять <b>лет</b></i>, <i>семь <b>дней</b></i>, <i>сто <b>рубле́й</b></i>
+<h4>Wichtig: 11–14 sind Ausnahmen</h4>
+Sie gehören trotz der Endziffer zur 5er-Gruppe: <i>оди́ннадцать <b>лет</b></i>, <i>двена́дцать <b>часо́в</b></i>.
+<h4>Zwei Kleinigkeiten</h4>
+• Feminin heißt „zwei" <b>две</b>: <i>две сестры́</i> (nicht два)<br>
+• „Jahr" hat eine Sonderform im Genitiv Plural: 5 <b>лет</b> (nicht „годо́в")
+<h4>Typische Fehler</h4>
+• „пять го́да" ✗ → <b>пять лет</b> ✓<br>
+• „два часо́в" ✗ → <b>два часа́</b> ✓<br>
+• Bei der Uhrzeit: час (1), два/три/четы́ре часа́, пять часо́в.`,
+
+genp:`<h4>Warum ist das der schwierigste Fall?</h4>
+Weil es <b>drei verschiedene Endungen</b> gibt und die Wahl vom letzten Buchstaben des Wortes abhängt. Gute Nachricht: Du brauchst ihn nur in klar erkennbaren Situationen.
+<h4>Wann brauche ich ihn?</h4>
+• Nach <b>мно́го, ма́ло, ско́лько, не́сколько</b><br>
+• Nach <b>нет / не́ было</b><br>
+• Nach <b>Zahlen ab 5</b><br>
+• Nach Mengenangaben: кило́, стака́н, буты́лка
+<h4>Die drei Endungen</h4>
+<b>1. -ов/-ев</b> – bei maskulinen Wörtern auf harten Konsonanten:<br>
+дом → домо́<b>в</b> · стол → столо́<b>в</b> · ме́сяц → ме́сяце<b>в</b><br>
+<b>2. -ей</b> – nach ь, ж, ш, щ, ч:<br>
+день → дн<b>ей</b> · друг → друз<b>е́й</b> · сосе́д → сосе́д<b>ей</b><br>
+<b>3. Nullendung</b> (einfach -а/-о weg!) – bei femininen und neutralen Wörtern:<br>
+кни́г<b>а</b> → книг · ме́ст<b>о</b> → мест · я́блок<b>о</b> → я́блок
+<h4>Sonderformen</h4>
+де́ти → <b>дете́й</b> · лю́ди → <b>люде́й</b> · де́ньги → <b>де́нег</b> · сёстры → <b>сестёр</b><br>
+Nach Zahlen: 20 <b>челове́к</b> (nicht „люде́й"!)
+<h4>Tipp</h4>
+Lern ihn nicht als Tabelle, sondern in <b>festen Wendungen</b>: мно́го люде́й, нет де́нег, ско́лько лет.`,
+
+refl:`<h4>Worum geht's?</h4>
+Verben mit <b>-ся</b> am Ende. Im Deutschen entspricht das oft „sich" (sich treffen), oft aber auch gar nichts (учи́ться = lernen).
+<h4>Wie sieht das aus?</h4>
+Das -ся hängt <b>hinter</b> der normalen Endung und wird nach Vokal zu <b>-сь</b>:<br>
+я учу́<b>сь</b> · ты у́чишь<b>ся</b> · он у́чит<b>ся</b> · мы у́чим<b>ся</b> · вы у́чите<b>сь</b> · они́ у́чат<b>ся</b><br>
+Vergangenheit: он учи́л<b>ся</b> · она́ учи́ла<b>сь</b> · они́ учи́ли<b>сь</b>
+<h4>Die wichtigsten</h4>
+учи́ться (lernen/studieren) · занима́ться (sich beschäftigen, <b>+ Instrumental</b>: занима́ться спо́ртом) · называ́ться (heißen – für Dinge) · встреча́ться (sich treffen) · просыпа́ться (aufwachen) · ложи́ться (sich hinlegen) · улыба́ться (lächeln) · верну́ться (zurückkehren)
+<h4>Paare mit und ohne -ся</h4>
+Oft gibt es beides – mit -ся passiert es <b>von selbst</b>, ohne -ся macht es <b>jemand</b>:<br>
+<i>Фильм <b>начина́ется</b>.</i> (Der Film beginnt) vs. <i>Я <b>начина́ю</b> рабо́ту.</i> (Ich beginne die Arbeit)<br>
+<i>Как <b>называ́ется</b> у́лица?</i> (Wie heißt die Straße?) vs. <i>Меня́ <b>зову́т</b> Макс.</i> (bei Personen!)
+<h4>Typische Fehler</h4>
+• Reflexive Verben haben <b>nie ein direktes Objekt</b>: „Я учу́сь ру́сский" ✗ → <i>Я учу́ ру́сский</i> ✓ oder <i>Я учу́сь в университе́те</i> ✓<br>
+• занима́ться verlangt den Instrumental: занима́ться <b>спо́ртом</b>.`,
+
+adjf:`<h4>Worum geht's?</h4>
+Adjektive bekommen <b>im gleichen Fall wie ihr Substantiv</b> eine eigene Endung. Wenn du die Fälle schon kennst, ist das nur noch eine zweite Endungsreihe.
+<h4>Die Endungen im Überblick</h4>
+<b>maskulin / neutrum:</b><br>
+Genitiv <b>-ого/-его</b> (но́вого) · Dativ <b>-ому/-ему</b> · Instrumental <b>-ым/-им</b> · Präpositiv <b>-ом/-ем</b><br>
+Akkusativ: unbelebt wie Nominativ, belebt wie Genitiv<br>
+<b>feminin – die gute Nachricht:</b><br>
+Akkusativ <b>-ую/-юю</b>, und in <u>allen anderen</u> Fällen einheitlich <b>-ой/-ей</b>!
+<h4>Beispiele im Satz</h4>
+<i>Я чита́ю интере́сн<b>ую</b> кни́гу.</i> (Akk. f)<br>
+<i>Мы живём в ста́р<b>ом</b> до́ме.</i> (Präp. m)<br>
+<i>Он идёт с хоро́ш<b>им</b> дру́гом.</i> (Instr. m)<br>
+<i>Она́ помога́ет мла́дш<b>ему</b> бра́ту.</i> (Dat. m)
+<h4>Die и-Regel</h4>
+Nach <b>к, г, х, ж, ш, щ, ч</b> steht immer <b>и</b> statt ы: ру́сск<b>им</b>, хоро́ш<b>им</b>, больш<b>и́м</b>.
+<h4>Vorgehen</h4>
+Erst das Substantiv in den richtigen Fall setzen, dann dem Adjektiv „dieselbe Farbe" geben. Die Reihenfolge im Kopf: <b>Fall → Geschlecht → Endung</b>.`,
+
+kond:`<h4>Worum geht's?</h4>
+„Wenn …, dann …" und „ich würde …". Russisch unterscheidet streng zwischen dem, was <b>passieren kann</b>, und dem, was <b>nur gedacht</b> ist.
+<h4>1. Reale Bedingung: е́сли (ohne бы)</h4>
+Es kann wirklich passieren → im Hauptsatz steht das <b>Futur</b>:<br>
+<i><b>Е́сли</b> за́втра бу́дет со́лнце, мы <b>пойдём</b> гуля́ть.</i><br>
+(Wenn morgen die Sonne scheint, gehen wir spazieren.)
+<h4>2. Irreale Bedingung: е́сли бы … бы</h4>
+Nur vorgestellt → <b>beide</b> Satzteile mit бы, beide in der <b>Vergangenheitsform</b>:<br>
+<i><b>Е́сли бы</b> у меня́ бы́ло вре́мя, я <b>чита́л бы</b> бо́льше.</i><br>
+(Hätte ich Zeit, würde ich mehr lesen.)
+<h4>3. Einfaches „würde": бы + Vergangenheit</h4>
+<i>Я <b>купи́л бы</b> э́ту маши́ну.</i> = Ich würde dieses Auto kaufen.<br>
+Das бы kann vor oder nach dem Verb stehen – beides ist richtig.
+<h4>4. что́бы = damit / um zu</h4>
+• <b>Gleiches Subjekt</b> → что́бы + Infinitiv: <i>Что́бы хорошо́ говори́ть, на́до мно́го говори́ть.</i><br>
+• <b>Anderes Subjekt</b> → что́бы + Vergangenheitsform: <i>Я хочу́, <b>что́бы ты пришёл</b>.</i>
+<h4>Typische Fehler</h4>
+• „Е́сли бы бу́дет …" ✗ – nach е́сли бы steht immer die <b>Vergangenheit</b>.<br>
+• „Я хочу́, что́бы ты придёшь" ✗ → <b>что́бы ты пришёл</b> ✓ (auch wenn es Zukunft meint!).`
+};
+
 /* ================= Zustand ================= */
 let S={it:{},streak:0,lastDay:null,frzDay:null,days:{},tot:{r:0,w:0}};
 let storeMode='none';
@@ -900,7 +1323,8 @@ function renderItem(){
   const itype=it.type||tp.type; /* Aufgaben können den Themen-Typ überschreiben */
   cur={ref,tp,it,st,itype,answered:false,opts:null,goodIdx:-1,puz:null};
   let front='';
-  const chips='<div class="badges"><span class="chip">'+tp.icon+' '+esc(tp.t)+'</span>'+(st&&st.l===0?'<span class="chip k2">nochmal üben</span>':'')+'</div>';
+  const chips='<div class="badges"><span class="chip">'+tp.icon+' '+esc(tp.t)+'</span>'+(st&&st.l===0?'<span class="chip k2">nochmal üben</span>':'')+
+    (LESSONS[tp.id]?'<button class="rulebtn" onclick="showRule(\''+tp.id+'\')">❓ Regel</button>':'')+'</div>';
   if(itype==='gap'){
     const typing=st&&st.c>=2; /* gemeisterte Aufgaben werden getippt statt geklickt */
     front='<div class="sent">'+acc(esc(it.q)).replace('___','<span class="gapx">___</span>')+'</div>'+
@@ -1033,6 +1457,7 @@ function resolveItem(ok){
     '<div class="full">'+fullHtml()+' <button class="speak" onclick="speakCur()" title="Anhören">🔊</button></div>'+
     '<div class="de">'+esc(cur.it.de)+'</div>'+
     (cur.it.e?'<div class="expl">💡 '+esc(cur.it.e)+'</div>':'')+
+    (!ok&&LESSONS[cur.tp.id]?'<div class="fbrule">Unsicher, warum? <button onclick="showRule(\''+cur.tp.id+'\')">Regel zu „'+esc(cur.tp.t)+'“ ansehen →</button></div>':'')+
     '</div>'+
     '<div class="grade"><button class="'+(ok?'g-ok':'g-no')+'" onclick="nextItem()">Weiter'+(ok?'':'<small>kommt gleich nochmal</small>')+'</button></div>';
   speakCur();
@@ -1112,7 +1537,19 @@ function showTopic(tid){
     '<div class="sub" style="text-align:left;margin-top:12px;line-height:1.6">'+esc(tp.intro)+'</div>'+
     '<div class="sub" style="margin-top:10px">'+tp.items.length+' Aufgaben · '+p+' % gemeistert</div>'+
     '<button class="btn btn-primary" onclick="startTopic(\''+tid+'\')">Üben ('+(tp.type==='puz'?6:10)+' Aufgaben)</button><br>'+
-    '<button class="btn-ghost" onclick="renderHome()">Zurück</button></div>';
+    '<button class="btn-ghost" onclick="renderHome()">Zurück</button></div>'+
+    (LESSONS[tid]?'<div class="sect">So funktioniert’s</div><div class="lesson">'+LESSONS[tid]+'</div>':'');
+}
+function showRule(tid){
+  if(!LESSONS[tid])return;
+  const tp=TOPICS.find(t=>t.id===tid);
+  const d=document.createElement('div');
+  d.className='ovl';
+  d.onclick=e=>{if(e.target===d)d.remove()};
+  d.innerHTML='<div class="ovl-in"><div class="ovl-top"><b>'+tp.icon+' '+esc(tp.t)+'</b>'+
+    '<button class="ovl-x" onclick="this.closest(\'.ovl\').remove()">✕</button></div>'+
+    '<div class="lesson" style="margin-top:0">'+LESSONS[tid]+'</div></div>';
+  document.body.appendChild(d);
 }
 function renderStats(){
   const t=todayStr(),dT=S.days[t]||0;
@@ -1190,6 +1627,8 @@ function buildAppNav(cur){
 (function init(){
   $('#brandTitle').innerHTML=acc('ГРАММА́ТИКА');
   buildAppNav('gram');
+  $('#lessonList').innerHTML=TOPICS.filter(t=>LESSONS[t.id])
+    .map(t=>'<button class="btn-sm gray" style="margin:0" onclick="showRule(\''+t.id+'\')">'+t.icon+' '+esc(t.t)+'</button>').join('');
   initStore();
   load();
   $('#streakN').textContent=dispStreak();

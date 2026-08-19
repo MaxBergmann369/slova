@@ -204,6 +204,17 @@ nav{position:sticky;top:0;z-index:20;background:var(--paper);padding:12px 0 14px
 .kb-k{flex:1;background:var(--card);border:1px solid var(--frost);border-radius:7px;padding:9px 0;font-size:1rem;text-align:center;min-width:0}
 .kb-k:active{background:var(--gzhel-soft)}
 .kb-bs{flex:1.6;color:var(--kalina)}
+/* ---------- Silben-Modus (lange Wörter) ---------- */
+.syltiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}
+.syltile{background:var(--card);border:1.5px solid var(--frost);border-radius:10px;padding:11px 15px;font-family:var(--serif);font-weight:700;font-size:1.15rem}
+.syltile:active{transform:scale(.95)}
+.syltile.used{opacity:.22;pointer-events:none}
+.syltile.on{border-color:var(--gzhel);background:var(--gzhel-soft);color:var(--gzhel)}
+.sylbuilt{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center;margin-top:14px;background:var(--paper);border-radius:12px;padding:12px;min-height:56px}
+.sylhint{color:var(--ink-faint);font-size:.82rem}
+.sylline{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;align-items:baseline;margin:2px 0 8px;font-family:var(--serif);font-size:1.05rem;color:var(--ink-soft)}
+.sylline span{background:var(--gzhel-soft);color:var(--gzhel);border-radius:6px;padding:1px 7px;font-weight:700}
+.sylline i{color:var(--ink-faint);font-style:normal}
 .skiplink{display:block;margin:14px auto 0;color:var(--ink-faint);font-size:.8rem;font-weight:600;padding:6px 12px;border-radius:99px}
 .skiplink:hover{background:var(--paper);color:var(--ink-soft)}
 .chip.mode{background:var(--amber-soft);color:var(--amber)}
@@ -2540,7 +2551,7 @@ function spreadQ(q){ /* verhindert, dass dasselbe Wort zweimal direkt hintereina
 }
 function newWordPlan(w,cl){ /* 3 Durchgänge, leicht → schwer: Erkennen → Festigen → Produzieren */
   const p1=(sndOn()&&Math.random()<.35)?'audio':'mc';
-  const p2=(cl&&Math.random()<.5)?'clozeMC':'mcRev';
+  const p2=isLongWord(w)?'syl':((cl&&Math.random()<.5)?'clozeMC':'mcRev'); /* lange Wörter erst in Silben bauen */
   const p3=(cl&&Math.random()<.7)?'clozeType':'type'; /* Lücke + Tippen ist am schwersten → immer zuletzt */
   return[p1,p2,p3];
 }
@@ -2726,9 +2737,44 @@ function pickMode(w,p,cl){
     if(sndOn()&&w.e&&w.x)m.push('audioSent');
     if(S.set.mic!==false&&speechOK())m.push('speech');
   }
+  if(isLongWord(w))m.push('syl','syl'); /* lange Wörter: Silben-Puzzle als Brücke zum freien Tippen */
   return m[Math.floor(Math.random()*m.length)];
 }
-const MODE_LABEL={mc:'Bedeutung wählen',mcRev:'Übersetzen',type:'Schreiben',clozeMC:'Lückentext',clozeType:'Lückentext',audio:'Hören',audioSent:'Satz hören',speech:'Sprechen'};
+const MODE_LABEL={mc:'Bedeutung wählen',mcRev:'Übersetzen',type:'Schreiben',clozeMC:'Lückentext',clozeType:'Lückentext',audio:'Hören',audioSent:'Satz hören',speech:'Sprechen',syl:'Silben bauen'};
+/* ---- Silben: lange Wörter in sprechbare Häppchen zerlegen ---- */
+const VOWELS='аеёиоуыэюя';
+function isVow(ch){return VOWELS.indexOf(String(ch).toLowerCase().replace(/́/g,''))>=0}
+function syllables(word){
+  const raw=String(word);
+  const parts=[];let cur='';
+  const chars=[...raw];
+  let hasVow=false;
+  for(let i=0;i<chars.length;i++){
+    const ch=chars[i];
+    if(ch==='́'){cur+=ch;continue} /* Betonungszeichen klebt am Vokal */
+    if(isVow(ch)){
+      if(!hasVow){cur+=ch;hasVow=true;continue}
+      /* zweiter Vokal → vorher trennen: Konsonanten seit dem letzten Vokal aufteilen */
+      let buf='';
+      while(cur.length&&!isVow(cur[cur.length-1])&&cur[cur.length-1]!=='́'){
+        buf=cur[cur.length-1]+buf;cur=cur.slice(0,-1);
+      }
+      if(buf.length>=2){cur+=buf[0];buf=buf.slice(1)} /* bei 2+ Konsonanten bleibt einer vorne */
+      /* ь, ъ, й gehören immer zur vorigen Silbe (ско́ль-ко, nicht ско́л-ько) */
+      while(buf.length&&'ьъй'.indexOf(buf[0].toLowerCase())>=0){cur+=buf[0];buf=buf.slice(1)}
+      parts.push(cur);cur=buf+ch;hasVow=true;
+    }else cur+=ch;
+  }
+  if(cur){if(parts.length&&!hasVow)parts[parts.length-1]+=cur;else parts.push(cur)}
+  return parts.filter(Boolean);
+}
+const letterCount=w=>(String(w).replace(/́/g,'').match(/[А-Яа-яЁё]/g)||[]).length;
+function isLongWord(w){return w&&!/[ !?]/.test(w.r)&&letterCount(w.r)>=7}
+function sylHtml(w){ /* Silben-Ansicht für die Antwortkarte */
+  const s=syllables(w.r);
+  if(s.length<2)return '';
+  return '<div class="sylline">'+s.map(p=>'<span>'+acc(esc(p))+'</span>').join('<i>·</i>')+'</div>';
+}
 function sentDistractors(w,n){ /* Ablenker für Satz-Hör-Karten: Übersetzungen anderer Beispielsätze */
   const out=[],seen=new Set([w.x]);
   for(const o of shuffle(allWords().filter(o=>o.i!==w.i&&o.x&&o.e).slice())){
@@ -2747,6 +2793,7 @@ function modeForPass(w,st,cl){ /* Kartentyp für den nächsten Durchgang eines n
     if(cl)pool.push('clozeMC','clozeType');
     if(sndOn())pool.push('audio');
     if(sndOn()&&w.e&&w.x)pool.push('audioSent');
+    if(isLongWord(w))pool.push('syl');
     m=pool[Math.floor(Math.random()*pool.length)];
     if(m===st.last)m=pool[(pool.indexOf(m)+1)%pool.length];
   }
@@ -2799,6 +2846,7 @@ function familyHtml(w){ /* Wortfamilie: gleicher Stamm (5 Zeichen) – Wortbildu
 function answerBlock(w){
   return '<div class="cimgwrap" id="imgSlot" data-w="'+w.i+'"></div>'+
     '<div class="word" style="font-size:1.7rem;margin:2px 0 4px">'+acc(esc(w.r))+'</div>'+
+    (isLongWord(w)?sylHtml(w):'')+
     '<div class="trans">['+esc(w.t)+']</div>'+
     '<div class="mean">'+esc(w.d)+'</div>'+
     (w.e?'<div class="ex"><div class="ru">'+acc(esc(w.e))+' <button class="sp2" data-speak-ex data-i="'+w.i+'" title="Satz anhören">🔊</button></div><div class="de">'+esc(w.x)+'</div></div>':'')+
@@ -2854,6 +2902,14 @@ function renderCard(forceMode){
   }else if(mode==='clozeType'){
     front='<div class="cloze-sent">'+cl.html+'</div><div class="cloze-de">'+esc(w.x||'')+'</div>'+
       '<div class="qlabel">Schreib das fehlende Wort:</div>'+typeHtml();
+  }else if(mode==='syl'){
+    const sy=syllables(w.r);
+    cur.syl={parts:sy,picked:[],order:shuffle(sy.map((p,k)=>k))};
+    front='<div class="word-de">'+esc(w.d)+'</div>'+
+      '<div class="qlabel">Bau das Wort aus seinen Silben:</div>'+
+      '<div class="sylbuilt" id="sylBuilt"></div>'+
+      '<div class="syltiles" id="sylTiles">'+cur.syl.order.map(k=>'<button class="syltile" data-k="'+k+'">'+acc(esc(sy[k]))+'</button>').join('')+'</div>'+
+      '<div class="grade on grade1" style="margin-top:12px"><button class="g-k" id="sylCheck">Prüfen</button></div>';
   }else if(mode==='audio'){
     cur.opts=shuffle(distractors(w,'d',3).map(o=>o.d).concat([w.d]));
     cur.goodIdx=cur.opts.indexOf(w.d);
@@ -2900,8 +2956,40 @@ function renderCard(forceMode){
     $('#checkBtn').onclick=checkTyped;
     $('#typeInp').addEventListener('keydown',e=>{if(e.key==='Enter')checkTyped()});
   }
+  if(mode==='syl')wireSyl();
   if(mode==='audio')setTimeout(()=>speak(w.r),300);
   else if(mode==='audioSent')setTimeout(()=>speak(w.e),300);
+}
+function wireSyl(){
+  const upd=()=>{
+    const b=$('#sylBuilt');
+    if(!b)return;
+    b.innerHTML=cur.syl.picked.length
+      ?cur.syl.picked.map((k,pi)=>'<button class="syltile on" data-pi="'+pi+'">'+acc(esc(cur.syl.parts[k]))+'</button>').join('')
+      :'<span class="sylhint">Tippe die Silben in der richtigen Reihenfolge an …</span>';
+    document.querySelectorAll('#sylBuilt .syltile').forEach(x=>x.onclick=()=>{
+      if(cur.answered)return;
+      const k=cur.syl.picked.splice(+x.dataset.pi,1)[0];
+      const t=document.querySelector('#sylTiles .syltile[data-k="'+k+'"]');
+      if(t)t.classList.remove('used');
+      upd();
+    });
+  };
+  document.querySelectorAll('#sylTiles .syltile').forEach(b=>b.onclick=()=>{
+    if(cur.answered||b.classList.contains('used'))return;
+    b.classList.add('used');
+    cur.syl.picked.push(+b.dataset.k);
+    upd();
+    if(cur.syl.picked.length===cur.syl.parts.length)checkSyl();
+  });
+  $('#sylCheck').onclick=checkSyl;
+  upd();
+}
+function checkSyl(){
+  if(!cur||cur.answered||!cur.syl)return;
+  if(cur.syl.picked.length<cur.syl.parts.length)return;
+  const built=cur.syl.picked.map(k=>cur.syl.parts[k]).join('');
+  resolveCard(normRu(built)===normRu(cur.w.r));
 }
 function kbWire(){
   document.querySelectorAll('.kb-k').forEach(b=>b.onclick=()=>{
@@ -2947,6 +3035,18 @@ function resolveCard(ok,note){
     '<div class="answer on">'+answerBlock(cur.w)+'</div>'+btns;
   attachImg('imgSlot',cur.w.i);
   if(cur.mode!=='audio'&&cur.mode!=='audioSent'&&cur.mode!=='speech')speak(cur.w.r);
+  if(isLongWord(cur.w))setTimeout(()=>speakSlow(cur.w.r),1400); /* lange Wörter zusätzlich langsam */
+}
+function speakSlow(txt){ /* betont langsam – hilft beim Einprägen langer Wörter */
+  try{
+    if(!('speechSynthesis' in window))return;
+    if(!RU_VOICE)pickRuVoice();
+    if(VOICES_LOADED&&!RU_VOICE)return;
+    const u=new SpeechSynthesisUtterance(String(txt).replace(/́/g,''));
+    u.lang='ru-RU';u.rate=.55;
+    if(RU_VOICE)u.voice=RU_VOICE;
+    speechSynthesis.speak(u);
+  }catch(e){}
 }
 function skipAV(){ /* Hör-/Sprech-Karte gerade unpassend → stille Karte für dasselbe Wort */
   if(cur&&!cur.answered)renderCard(cur.p&&cur.p.b>=2?'type':'mc');
