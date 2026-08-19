@@ -91,6 +91,8 @@ nav.tabsbar{position:sticky;top:0;z-index:20;background:var(--paper);padding:12p
 .card{background:var(--card);border:1px solid var(--frost);border-radius:var(--radius);padding:24px 20px;box-shadow:0 1px 2px rgba(20,24,31,.04)}
 .badges{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;min-height:22px}
 .chip{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:99px;background:var(--rust-soft);color:var(--rust)}
+.chip.st0{background:#EEEAE4;color:var(--ink-soft)}
+.chip.st1{background:var(--birch-soft);color:var(--birch)}
 .word{font-family:var(--serif);font-weight:700;font-size:clamp(1.9rem,8vw,2.6rem);text-align:center;margin:16px 0 4px;line-height:1.15;overflow-wrap:anywhere}
 .word .acc{color:var(--rust)}
 .word-de{font-size:clamp(1.4rem,6vw,1.9rem);font-family:var(--serif);font-weight:700;text-align:center;margin:18px 0 6px}
@@ -1495,7 +1497,152 @@ const PACKS=[
  {q:'Кто вы́играл коро́ну?',qde:'Wer gewann die Krone?',o:['Пасифи́ка','Мэ́йбл','Ве́нди'],a:0},
  {q:'Что вы́брали подру́ги Мэ́йбл?',qde:'Wofür entschieden sich Mabels Freundinnen?',o:['оста́ться с ней','пойти́ на я́хту','уйти́ домо́й'],a:0},
  {q:'Что ди́ппер по́нял про свой план?',qde:'Was verstand Dipper über seinen Plan?',o:['его́ ну́жно вы́бросить','он был иде́ей ве́ка','его́ на́до допо́лнить'],a:0},
- {q:'Кто меша́л ди́пперу, в прямо́м смы́сле?',qde:'Wer stand Dipper im Weg – wörtlich?',o:['он сам','Ве́нди','дя́дя стен'],a:0}]}
+ {q:'Кто меша́л ди́пперу, в прямо́м смы́сле?',qde:'Wer stand Dipper im Weg – wörtlich?',o:['он сам','Ве́нди','дя́дя стен'],a:0}]},
+
+{id:'gf-8-1',ic:'🎪',t:'Folge 8 · Teil 1',tru:'День первопрохо́дцев · Teil 1',ep:'Staffel 1 · Folge 8',
+ url:'https://www.youtube.com/watch?v=4ya2MqMPWJE&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=37',
+ note:'Die Stadt feiert den Gründungstag im Kostüm von 1863 – und Pacifica macht Mabel vor allen lächerlich.',
+ words:[
+ {r:'про́бка',t:'PROP-ka',d:'Stau; Korken',e:'С каки́х пор здесь про́бки?',x:'Seit wann gibt es hier Staus?'},
+ {r:'пово́зка',t:'pa-WOS-ka',d:'Fuhrwerk, Kutsche',e:'Отку́да э́ти пово́зки?',x:'Woher kommen diese Kutschen?'},
+ {r:'сма́тываться',t:'SMA-ty-wat-sa',d:'abhauen, sich verdrücken',e:'На́до сма́тываться, пока́ не по́здно!',x:'Wir müssen abhauen, bevor es zu spät ist!'},
+ {r:'лову́шка',t:'la-WUSCH-ka',d:'Falle',e:'Мы в лову́шке!',x:'Wir sitzen in der Falle!'},
+ {r:'гря́зный',t:'GRJAS-nyj',d:'schmutzig, dreckig',e:'Несём гря́зное стекло́!',x:'Wir tragen schmutziges Glas!'},
+ {r:'первопрохо́дец',t:'pir-wa-pra-CHO-diz',d:'Pionier, Wegbereiter',e:'Сего́дня День первопрохо́дцев.',x:'Heute ist der Tag der Pioniere.'},
+ {r:'наряжа́ться',t:'na-ri-SCHAT-sa',d:'sich verkleiden, sich herausputzen',e:'Ка́ждый год все наряжа́ются.',x:'Jedes Jahr verkleiden sich alle.'},
+ {r:'основа́ние',t:'as-na-WA-ni-je',d:'Gründung; Grundlage',e:'Мы пра́зднуем день основа́ния го́рода.',x:'Wir feiern den Gründungstag der Stadt.'},
+ {r:'сверну́ть ше́ю',t:'swir-NUTJ SCHE-ju',d:'den Hals umdrehen',e:'Я тебе́ сейча́с ше́ю сверну́!',x:'Ich dreh dir gleich den Hals um!'},
+ {r:'произво́дство',t:'pra-is-WOTST-wa',d:'Herstellung, Produktion',e:'Вы смо́трите произво́дство свече́й.',x:'Sie sehen die Kerzenherstellung.'},
+ {r:'свеча́',t:'swi-TSCHA',d:'Kerze',e:'Здесь де́лают све́чи вручну́ю.',x:'Hier macht man Kerzen von Hand.'},
+ {r:'объяви́ть',t:'ab-ji-WITJ',d:'verkünden, erklären',e:'Я объявля́ю день откры́тым!',x:'Ich erkläre den Tag für eröffnet!'},
+ {r:'церемо́ния',t:'zy-ri-MO-ni-ja',d:'Zeremonie, Feier',e:'Начина́ется церемо́ния откры́тия.',x:'Die Eröffnungszeremonie beginnt.'},
+ {r:'торже́ственный',t:'tar-SCHEST-win-nyj',d:'feierlich',e:'Э́то торже́ственная церемо́ния.',x:'Das ist eine feierliche Zeremonie.'},
+ {r:'колоко́льчик',t:'ka-la-KOLJ-tschik',d:'Glöckchen',e:'У меня́ есть колоко́льчик!',x:'Ich habe ein Glöckchen!'},
+ {r:'кошелёк',t:'ka-schy-LJOK',d:'Geldbörse, Portemonnaie',e:'Поли́ция! Мой кошелёк!',x:'Polizei! Mein Portemonnaie!'},
+ {r:'основа́тель',t:'as-na-WA-tilj',d:'Gründer',e:'Я праправну́чка основа́теля го́рода.',x:'Ich bin die Ururenkelin des Stadtgründers.'},
+ {r:'бога́тый',t:'ba-GA-tyj',d:'reich',e:'Я о́чень бога́та.',x:'Ich bin sehr reich.'},
+ {r:'предста́виться',t:'prit-STA-wit-sa',d:'sich vorstellen',e:'Выходи́те сюда́ и предста́вьтесь!',x:'Kommt her und stellt euch vor!'},
+ {r:'вы́ступить',t:'WY-stu-pitj',d:'auftreten, vortragen',e:'Я о́чень хочу́ вы́ступить!',x:'Ich möchte unbedingt auftreten!'},
+ {r:'терпе́ть не мочь',t:'tir-PJETJ ni motsch',d:'nicht ausstehen können',e:'Вы друг дру́га терпе́ть не мо́жете.',x:'Ihr könnt euch nicht ausstehen.'},
+ {r:'прерыва́ть',t:'pri-ry-WATJ',d:'unterbrechen',e:'Извини́, что прерыва́ю.',x:'Entschuldige, dass ich unterbreche.'},
+ {r:'щено́к',t:'schtschi-NOK',d:'Welpe, junger Hund',e:'Э́то щено́к, игра́ющий в баскетбо́л?',x:'Ist das ein Welpe, der Basketball spielt?'},
+ {r:'посме́шище',t:'pas-MJE-schy-schtsche',d:'Gespött, Witzfigur',e:'Ты всегда́ тако́е посме́шище.',x:'Du bist immer so eine Witzfigur.'},
+ {r:'се́рьги',t:'SJERJ-gi',d:'Ohrringe',e:'Э́то у тебя́ в уша́х се́рьги?',x:'Sind das Ohrringe in deinen Ohren?'},
+ {r:'сты́дно',t:'STYD-na',d:'peinlich, beschämend',e:'Наве́рное, о́чень сты́дно.',x:'Das ist bestimmt sehr peinlich.'},
+ {r:'аплоди́ровать',t:'a-pla-DI-ra-watj',d:'applaudieren',e:'Дава́йте аплоди́ровать!',x:'Applaudieren wir!'},
+ {r:'столе́тие',t:'sta-LJE-ti-je',d:'Jahrhundert',e:'Полтора́ столе́тия наза́д здесь не́ было маши́н.',x:'Vor anderthalb Jahrhunderten gab es hier keine Autos.'}
+ ],
+ q:[
+ {q:'Како́й пра́здник в го́роде?',qde:'Welches Fest ist in der Stadt?',o:['День первопрохо́дцев','Но́вый год','день рожде́ния'],a:0},
+ {q:'Како́й год изобража́ют жи́тели?',qde:'Welches Jahr stellen die Bewohner dar?',o:['1863','1963','1763'],a:0},
+ {q:'Кем счита́ет себя́ Пасифи́ка?',qde:'Wofür hält sich Pacifica?',o:['праправну́чкой основа́теля','короле́вой','учи́тельницей'],a:0},
+ {q:'Что сде́лала Пасифи́ка с Мэ́йбл?',qde:'Was tat Pacifica mit Mabel?',o:['вы́смеяла её','помогла́ ей','подружи́лась'],a:0}]},
+
+{id:'gf-8-2',ic:'🔺',t:'Folge 8 · Teil 2',tru:'День первопрохо́дцев · Teil 2',ep:'Staffel 1 · Folge 8',
+ url:'https://www.youtube.com/watch?v=iyHCRs2yp0s&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=38',
+ note:'Dipper stößt auf ein altes Dokument – und Mabel knackt den Code, an dem alle anderen scheitern.',
+ words:[
+ {r:'меха́ник',t:'mi-CHA-nik',d:'Mechaniker',e:'Ты же меха́ник!',x:'Du bist doch Mechaniker!'},
+ {r:'совреме́нный',t:'sa-wri-MJEN-nyj',d:'modern, zeitgenössisch',e:'Э́то совреме́нное сло́во.',x:'Das ist ein modernes Wort.'},
+ {r:'нападе́ние',t:'na-pa-DJE-ni-je',d:'Angriff, Überfall',e:'У нас нападе́ние!',x:'Wir haben einen Überfall!'},
+ {r:'гражда́нский',t:'gra-SCHDAN-skij',d:'zivil, Zivilist-',e:'Нападе́ние на гражда́нского!',x:'Angriff auf einen Zivilisten!'},
+ {r:'вы́смеять',t:'WYS-mi-jatj',d:'auslachen, verspotten',e:'Пасифи́ка его́ вы́смеяла.',x:'Pacifica hat ihn ausgelacht.'},
+ {r:'разру́шить',t:'ras-RU-schytj',d:'zerstören',e:'Она́ всё разру́шила!',x:'Sie hat alles zerstört!'},
+ {r:'вну́чка',t:'WNUTSCH-ka',d:'Enkelin',e:'Она́ вну́чка основа́теля.',x:'Sie ist die Enkelin des Gründers.'},
+ {r:'поста́вить на ме́сто',t:'pas-TA-witj na MJES-ta',d:'in die Schranken weisen',e:'Пора́ поста́вить её на ме́сто!',x:'Zeit, sie in die Schranken zu weisen!'},
+ {r:'пра́дед',t:'PRA-dit',d:'Urgroßvater',e:'Я чита́л про её пра́деда.',x:'Ich habe über ihren Urgroßvater gelesen.'},
+ {r:'рассле́дование',t:'ras-SLJE-da-wa-ni-je',d:'Ermittlung, Untersuchung',e:'В моём рассле́довании я обнару́жил…',x:'In meiner Untersuchung entdeckte ich…'},
+ {r:'обнару́жить',t:'ab-na-RU-schytj',d:'entdecken, feststellen',e:'Я обнару́жил кое-что́ ва́жное.',x:'Ich habe etwas Wichtiges entdeckt.'},
+ {r:'расшифрова́ть',t:'ras-schyf-ra-WATJ',d:'entschlüsseln, dechiffrieren',e:'Не могу́ его́ расшифрова́ть.',x:'Ich kann es nicht entschlüsseln.'},
+ {r:'моше́нник',t:'ma-SCHEN-nik',d:'Betrüger, Schwindler',e:'Вся семья́ — моше́нники!',x:'Die ganze Familie sind Betrüger!'},
+ {r:'за́говор',t:'SA-ga-war',d:'Verschwörung, Komplott',e:'Э́то настоя́щий за́говор!',x:'Das ist eine echte Verschwörung!'},
+ {r:'разгада́ть',t:'ras-ga-DATJ',d:'lösen, entschlüsseln',e:'Е́сли я разгада́ю шифр…',x:'Wenn ich den Code knacke…'},
+ {r:'про́звище',t:'PROS-wi-schtsche',d:'Spitzname',e:'Ты не лю́бишь э́то про́звище.',x:'Du magst diesen Spitznamen nicht.'},
+ {r:'привыка́ть',t:'pri-wy-KATJ',d:'sich gewöhnen',e:'Я начина́ю привыка́ть.',x:'Ich gewöhne mich langsam daran.'},
+ {r:'ками́н',t:'ka-MIN',d:'Kamin',e:'Расска́зывай исто́рии у ками́на.',x:'Erzähl Geschichten am Kamin.'},
+ {r:'доказа́ть',t:'da-ka-SATJ',d:'beweisen',e:'Е́сли мы дока́жем, что он не был основа́телем…',x:'Wenn wir beweisen, dass er nicht der Gründer war…'},
+ {r:'треуго́льник',t:'tri-u-GOLJ-nik',d:'Dreieck',e:'Треуго́льник — алхими́ческий си́мвол огня́.',x:'Das Dreieck ist das alchemistische Zeichen für Feuer.'},
+ {r:'си́мвол',t:'SIM-wal',d:'Symbol, Zeichen',e:'Э́то дре́вний си́мвол.',x:'Das ist ein altes Symbol.'},
+ {r:'прогре́ть',t:'prag-RJETJ',d:'erwärmen, durchwärmen',e:'Прогре́в бума́гу, мы уви́дим посла́ние.',x:'Wenn wir das Papier erwärmen, sehen wir die Botschaft.'},
+ {r:'посла́ние',t:'pas-LA-ni-je',d:'Botschaft, Nachricht',e:'Мы раскро́ем посла́ние!',x:'Wir werden die Botschaft aufdecken!'},
+ {r:'прони́кнуть',t:'pra-NIK-nutj',d:'eindringen, hineingelangen',e:'Нам придётся прони́кнуть внутрь.',x:'Wir müssen hineingelangen.'},
+ {r:'ша́рик',t:'SCHA-rik',d:'Luftballon, Kügelchen',e:'Си́ний и ро́зовый ша́рики.',x:'Ein blauer und ein rosa Luftballon.'}
+ ],
+ q:[
+ {q:'Что нашёл ди́ппер?',qde:'Was fand Dipper?',o:['ста́рый докуме́нт','де́ньги','карти́ну'],a:0},
+ {q:'Кем, по его́ мне́нию, была́ семья́ Пасифи́ки?',qde:'Was war Pacificas Familie seiner Meinung nach?',o:['моше́нниками','геро́ями','основа́телями'],a:0},
+ {q:'Как раскры́ли посла́ние?',qde:'Wie wurde die Botschaft sichtbar?',o:['прогре́ли бума́гу','намочи́ли её','порва́ли её'],a:0},
+ {q:'Куда́ они́ реши́ли прони́кнуть?',qde:'Wo wollten sie eindringen?',o:['в истори́ческий музе́й','в шко́лу','в поли́цию'],a:0}]},
+
+{id:'gf-8-3',ic:'🏛️',t:'Folge 8 · Teil 3',tru:'День первопрохо́дцев · Teil 3',ep:'Staffel 1 · Folge 8',
+ url:'https://www.youtube.com/watch?v=J4UOgnXIsbo&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=39',
+ note:'Im Museum kommt die Wahrheit über den Stadtgründer ans Licht – und ein streng geheimer Film läuft an.',
+ words:[
+ {r:'спере́ть',t:'spi-RJETJ',d:'klauen, mitgehen lassen (Slang)',e:'Дава́й спере́м скеле́та!',x:'Lass uns das Skelett klauen!'},
+ {r:'подска́зка',t:'pat-SKAS-ka',d:'Hinweis, Tipp',e:'Сле́дующая подска́зка бу́дет здесь.',x:'Der nächste Hinweis wird hier sein.'},
+ {r:'библиоте́ка',t:'bib-li-a-TJE-ka',d:'Bibliothek',e:'Э́ти копы пришли́ в библиоте́ку не за кни́гами.',x:'Diese Cops kamen nicht wegen der Bücher in die Bibliothek.'},
+ {r:'жи́вопись',t:'SCHI-wa-pisj',d:'Malerei',e:'Я ду́мал, э́то абстра́ктная жи́вопись.',x:'Ich dachte, das wäre abstrakte Malerei.'},
+ {r:'зря',t:'srja',d:'umsonst, vergeblich',e:'Зна́чит, мы зря пришли́?',x:'Also sind wir umsonst gekommen?'},
+ {r:'снотво́рный',t:'snat-WOR-nyj',d:'einschläfernd, Schlaf-',e:'Э́то снотво́рные дро́тики.',x:'Das sind Betäubungspfeile.'},
+ {r:'дро́тик',t:'DRO-tik',d:'Wurfpfeil, Dart',e:'В него́ попа́ла па́рочка дро́тиков.',x:'Ihn trafen ein paar Pfeile.'},
+ {r:'клад',t:'klat',d:'Schatz, Fund',e:'Э́то настоя́щий клад секре́тов!',x:'Das ist ein wahrer Schatz an Geheimnissen!'},
+ {r:'легенда́рный',t:'li-gin-DAR-nyj',d:'legendär',e:'Легенда́рный основа́тель го́рода.',x:'Der legendäre Gründer der Stadt.'},
+ {r:'идио́т',t:'i-di-OT',d:'Idiot',e:'Он был моше́нником и идио́том.',x:'Er war ein Betrüger und ein Idiot.'},
+ {r:'газе́та',t:'ga-SJE-ta',d:'Zeitung',e:'Сто́ит э́тому попа́сть в газе́ты…',x:'Wenn das erst in die Zeitungen kommt…'},
+ {r:'и́стинный',t:'IS-tin-nyj',d:'wahr, wahrhaftig',e:'И́стинным основа́телем был друго́й челове́к.',x:'Der wahre Gründer war ein anderer.'},
+ {r:'национа́льный',t:'na-zy-a-NALJ-nyj',d:'national',e:'Э́то вопро́с национа́льной безопа́сности!',x:'Das ist eine Frage der nationalen Sicherheit!'},
+ {r:'различа́ть',t:'ras-li-TSCHATJ',d:'unterscheiden',e:'Я перестаю́ различа́ть цвета́.',x:'Ich kann die Farben nicht mehr unterscheiden.'},
+ {r:'до́ступ',t:'DOS-tup',d:'Zugang, Zutritt',e:'У вас есть до́ступ к секре́тной информа́ции.',x:'Sie haben Zugang zu geheimen Informationen.'},
+ {r:'секре́тный',t:'sik-RJET-nyj',d:'geheim',e:'Э́то секре́тная информа́ция.',x:'Das ist eine geheime Information.'},
+ {r:'съёмки',t:'SJOM-ki',d:'Dreharbeiten',e:'Как то́лько зако́нчатся съёмки…',x:'Sobald die Dreharbeiten zu Ende sind…'},
+ {r:'позо́рный',t:'pa-SOR-nyj',d:'schändlich, beschämend',e:'Э́то са́мый позо́рный секре́т.',x:'Das ist das beschämendste Geheimnis.'},
+ {r:'напра́вить',t:'na-PRA-witj',d:'lenken, richten auf',e:'Подска́зка напра́вит нас да́льше.',x:'Der Hinweis führt uns weiter.'}
+ ],
+ q:[
+ {q:'Куда́ ведёт сле́дующая подска́зка?',qde:'Wohin führt der nächste Hinweis?',o:['в библиоте́ку','домо́й','в лес'],a:0},
+ {q:'Кем был Натаниэ́ль но́ртвест на са́мом де́ле?',qde:'Wer war Nathaniel Northwest wirklich?',o:['моше́нником','геро́ем','учёным'],a:0},
+ {q:'Что нашли́ де́ти в музе́е?',qde:'Was fanden die Kinder im Museum?',o:['секре́тный фильм','де́ньги','ору́жие'],a:0},
+ {q:'Ско́лько люде́й име́ют до́ступ к секре́ту?',qde:'Wie viele Menschen haben Zugang zum Geheimnis?',o:['во́семь','сто','два'],a:0}]},
+
+{id:'gf-8-4',ic:'🥜',t:'Folge 8 · Teil 4',tru:'День первопрохо́дцев · Teil 4',ep:'Staffel 1 · Folge 8',
+ url:'https://www.youtube.com/watch?v=n1EAufWrr08&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=40',
+ note:'Die Geschichte des vergessenen Präsidenten – und Mabel beweist, dass „albern" manchmal genau richtig ist.',
+ words:[
+ {r:'репута́ция',t:'ri-pu-TA-zy-ja',d:'Ruf, Reputation',e:'Он завоева́л репута́цию са́мого глу́пого.',x:'Er erwarb sich den Ruf des Dümmsten.'},
+ {r:'война́',t:'waj-NA',d:'Krieg',e:'Он устро́ил войну́ из-за блино́в.',x:'Er zettelte einen Krieg wegen Pfannkuchen an.'},
+ {r:'назна́чить',t:'na-SNA-tschitj',d:'ernennen, bestimmen',e:'Он назна́чил младе́нцев в суд.',x:'Er ernannte Säuglinge ins Gericht.'},
+ {r:'младе́нец',t:'mla-DJE-niz',d:'Säugling, Baby',e:'Младе́нцы в Верхо́вном суде́!',x:'Säuglinge im Obersten Gerichtshof!'},
+ {r:'речь',t:'rjetsch',d:'Rede; Sprache',e:'Его́ речь была́ ужа́сной.',x:'Seine Rede war furchtbar.'},
+ {r:'положе́ние',t:'pa-la-SCHE-ni-je',d:'Lage, Situation',e:'Речь о положе́нии в стране́.',x:'Die Rede zur Lage der Nation.'},
+ {r:'опаса́ться',t:'a-pa-SAT-sa',d:'sich fürchten vor',e:'Всё, чего́ на́до опаса́ться…',x:'Alles, wovor man sich fürchten muss…'},
+ {r:'пау́к',t:'pa-UK',d:'Spinne',e:'Гига́нтские пауки́-людое́ды!',x:'Riesige menschenfressende Spinnen!'},
+ {r:'прогна́ть',t:'prag-NATJ',d:'vertreiben, verjagen',e:'Его́ прогна́ли из столи́цы.',x:'Man vertrieb ihn aus der Hauptstadt.'},
+ {r:'укры́ться',t:'uk-RYT-sa',d:'sich verstecken, Zuflucht suchen',e:'Он укры́лся в доли́не.',x:'Er versteckte sich im Tal.'},
+ {r:'доли́на',t:'da-LI-na',d:'Tal',e:'Он назва́л э́ту доли́ну Гра́вити Фолс.',x:'Er nannte dieses Tal Gravity Falls.'},
+ {r:'высота́',t:'wy-sa-TA',d:'Höhe',e:'Он упа́л с большо́й высоты́.',x:'Er fiel aus großer Höhe.'},
+ {r:'янта́рь',t:'jin-TARJ',d:'Bernstein',e:'Э́то что-то вро́де янтаря́.',x:'Das ist so etwas wie Bernstein.'},
+ {r:'глупе́ц',t:'glu-PJEZ',d:'Narr, Dummkopf',e:'Э́тот глупе́ц хоте́л жить ве́чно.',x:'Dieser Narr wollte ewig leben.'},
+ {r:'замурова́ть',t:'sa-mu-ra-WATJ',d:'einmauern, einschließen',e:'Он замурова́л себя́ в кусо́к.',x:'Er hat sich in einem Block eingeschlossen.'},
+ {r:'ара́хисовый',t:'a-RA-chi-sa-wyj',d:'Erdnuss-',e:'Ара́хисовый щербе́т поле́зен для здоро́вья!',x:'Erdnuss-Sorbet ist gesund!'},
+ {r:'обёртка',t:'a-BJORT-ka',d:'Verpackung, Bonbonpapier',e:'Я оста́вила след из обёрток.',x:'Ich hinterließ eine Spur aus Bonbonpapieren.'},
+ {r:'винова́т',t:'wi-na-WAT',d:'schuld',e:'Я во всём винова́та.',x:'Ich bin an allem schuld.'},
+ {r:'барахло́',t:'ba-rach-LO',d:'Kram, Plunder',e:'Отвезём вас и всё э́то барахло́.',x:'Wir bringen euch und den ganzen Kram weg.'},
+ {r:'страши́лка',t:'stra-SCHIL-ka',d:'Gruselgeschichte',e:'Я взял кни́жку со страши́лками.',x:'Ich habe ein Buch mit Gruselgeschichten mitgenommen.'},
+ {r:'плести́',t:'plis-TI',d:'flechten',e:'А я бу́ду плести́ брасле́тики.',x:'Und ich flechte Armbändchen.'},
+ {r:'освободи́ть',t:'as-wa-ba-DITJ',d:'befreien',e:'Ты освободи́ла меня́!',x:'Du hast mich befreit!'},
+ {r:'вверх нога́ми',t:'wwjerch na-GA-mi',d:'auf dem Kopf, verkehrt herum',e:'Ка́рта лежа́ла вверх нога́ми.',x:'Die Karte lag verkehrt herum.'},
+ {r:'взлома́ть',t:'wsla-MATJ',d:'knacken, aufbrechen',e:'Ты взлома́ла шифр!',x:'Du hast den Code geknackt!'},
+ {r:'я́щик',t:'JA-schtschik',d:'Kiste, Kasten',e:'Мы за́перты в деревя́нном я́щике.',x:'Wir sind in einer Holzkiste eingesperrt.'},
+ {r:'замо́к',t:'sa-MOK',d:'Schloss (zum Abschließen)',e:'Э́тот ключ открыва́ет все замки́.',x:'Dieser Schlüssel öffnet alle Schlösser.'},
+ {r:'закля́тый враг',t:'sak-LJA-tyj wrak',d:'Erzfeind',e:'Де́рево — мой закля́тый враг!',x:'Holz ist mein Erzfeind!'},
+ {r:'срабо́тать',t:'sra-BO-tatj',d:'funktionieren, klappen',e:'Не уве́рен, что э́то срабо́тает.',x:'Ich bin nicht sicher, ob das klappt.'},
+ {r:'отдохну́ть',t:'ad-dach-NUTJ',d:'sich ausruhen',e:'Мне ну́жно отдохну́ть.',x:'Ich muss mich ausruhen.'}
+ ],
+ q:[
+ {q:'Почему́ президе́нта прогна́ли?',qde:'Warum wurde der Präsident vertrieben?',o:['он был сли́шком глу́пым','он был бо́лен','он уе́хал сам'],a:0},
+ {q:'Как появи́лось назва́ние го́рода?',qde:'Wie entstand der Name der Stadt?',o:['он упа́л с большо́й высоты́','по и́мени реки́','его́ приду́мали де́ти'],a:0},
+ {q:'В чём он себя́ замурова́л?',qde:'Worin schloss er sich ein?',o:['в ара́хисовом щербе́те','в я́нтаре','в ка́мне'],a:0},
+ {q:'Что помогло́ Мэ́йбл взлома́ть шифр?',qde:'Was half Mabel, den Code zu knacken?',o:['её несерьёзность','кни́га','ка́рта'],a:0}]}
 ];
 
 /* ================= Zustand ================= */
@@ -1537,6 +1684,28 @@ function startPack(pid,mode){
   sess={pid,q:idx.slice(0,10),i:0,right:0,wrong:0,mode:mode||'mix'};
   renderCard();
 }
+/* ---- Mastery-Drill: üben, bis jedes Wort des Pakets sitzt ---- */
+const NEED=2; /* zwei richtige Antworten in verschiedenen Formaten */
+function startDrill(pid){
+  const p=packById(pid);
+  if(!p)return;
+  const st={};
+  p.words.forEach((w,k)=>{
+    const old=S.prog[wordKey(pid,k)];
+    st[k]={ok:old&&old.c>=NEED?NEED:0}; /* schon gemeisterte Wörter zählen mit */
+  });
+  const offen=p.words.map((w,k)=>k).filter(k=>st[k].ok<NEED);
+  if(!offen.length){ /* alles sitzt schon → als Auffrischung alles zurücksetzen */
+    p.words.forEach((w,k)=>{st[k].ok=0});
+    offen.push(...p.words.map((w,k)=>k));
+  }
+  sess={pid,drill:true,st,q:shuffle(offen),i:0,right:0,wrong:0,total:p.words.length};
+  renderCard();
+}
+function drillMastered(){
+  if(!sess||!sess.drill)return 0;
+  return Object.keys(sess.st).filter(k=>sess.st[k].ok>=NEED).length;
+}
 const KB_ROWS=['йцукенгшщзхъ','фывапролджэ','ячсмитьбюё'];
 function typeHtml(){
   return '<div class="type-row"><input id="typeInp" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="по-русски …"><button class="check-btn" id="checkBtn">Prüfen</button></div>'+
@@ -1553,7 +1722,11 @@ function renderCard(){
   const p=packById(sess.pid),k=sess.q[sess.i],w=p.words[k];
   const st=S.prog[wordKey(p.id,k)];
   let mode=sess.mode;
-  if(mode==='mix')mode=(st&&st.c>=2)?'type':(Math.random()<.5?'mc':'mcRev');
+  if(sess.drill){
+    /* erst erkennen (RU→DE), dann produzieren (DE→RU) */
+    mode=sess.st[k].ok===0?'mc':(Math.random()<.5?'mcRev':'type');
+  }
+  else if(mode==='mix')mode=(st&&st.c>=2)?'type':(Math.random()<.5?'mc':'mcRev');
   cur={p,k,w,mode,answered:false,opts:null,goodIdx:-1,optRu:(mode==='mcRev')};
   let front='';
   if(mode==='mc'){
@@ -1571,11 +1744,18 @@ function renderCard(){
   }else{
     front='<div class="word-de">'+esc(w.d)+'</div><div class="qlabel">Schreib es auf Russisch:</div>'+typeHtml();
   }
+  const mast=sess.drill?drillMastered():0;
+  const top=sess.drill
+    ?'<span class="cnt">✓ '+mast+' / '+sess.total+' sitzen</span>'+
+     '<div class="bar"><i style="width:'+Math.round(100*mast/sess.total)+'%"></i></div>'
+    :'<span class="cnt">'+(sess.i+1)+' / '+sess.q.length+'</span>'+
+     '<div class="bar"><i style="width:'+Math.round(100*sess.i/sess.q.length)+'%"></i></div>';
+  const chips='<span class="chip">'+p.ic+' '+esc(p.t)+'</span>'+
+    (sess.drill?'<span class="chip st'+sess.st[k].ok+'">'+(sess.st[k].ok===0?'neu':'✓ 1 / '+NEED)+'</span>':'');
   $('#view-packs').innerHTML=
-    '<div class="sess-top"><span class="cnt">'+(sess.i+1)+' / '+sess.q.length+'</span>'+
-    '<div class="bar"><i style="width:'+Math.round(100*sess.i/sess.q.length)+'%"></i></div>'+
+    '<div class="sess-top">'+top+
     '<button class="quit" onclick="quitSess()">Beenden</button></div>'+
-    '<div class="card"><div class="badges"><span class="chip">'+p.ic+' '+esc(p.t)+'</span></div>'+front+
+    '<div class="card"><div class="badges">'+chips+'</div>'+front+
     '<div id="fbZone"></div></div>';
   if(cur.opts){
     document.querySelectorAll('#view-packs .opt').forEach(b=>b.onclick=()=>{
@@ -1611,7 +1791,18 @@ function resolve(ok){
   cur.answered=true;
   const key=wordKey(cur.p.id,cur.k);
   const st=S.prog[key]||(S.prog[key]={c:0,w:0});
-  if(ok){st.c++;sess.right++}else{st.w++;st.c=0;sess.wrong++;sess.q.push(cur.k)}
+  if(sess.drill){
+    const d=sess.st[cur.k];
+    if(ok){
+      d.ok++;sess.right++;
+      if(d.ok>=NEED){st.c=Math.max(st.c,NEED)} /* gemeistert → zählt in den Paket-Fortschritt */
+      else sess.q.splice(Math.min(sess.i+3+Math.floor(Math.random()*3),sess.q.length),0,cur.k);
+    }else{
+      d.ok=0;st.w++;st.c=0;sess.wrong++;
+      sess.q.splice(Math.min(sess.i+2+Math.floor(Math.random()*2),sess.q.length),0,cur.k);
+    }
+  }
+  else if(ok){st.c++;sess.right++}else{st.w++;st.c=0;sess.wrong++;sess.q.push(cur.k)}
   const t=todayStr();S.days[t]=(S.days[t]||0)+1;
   save();
   const w=cur.w;
@@ -1631,9 +1822,10 @@ function nextCard(){
 function finishSess(){
   const p=packById(sess.pid);
   const tot=sess.right+sess.wrong,accy=tot?Math.round(100*sess.right/tot):100;
+  const war=sess.drill;
   $('#doneN').textContent=totalDone();
-  $('#view-packs').innerHTML='<div class="hero"><div class="done-mark">🎬</div>'+
-    '<div class="due-line">Runde geschafft!</div>'+
+  $('#view-packs').innerHTML='<div class="hero"><div class="done-mark">'+(war?'🏆':'🎬')+'</div>'+
+    '<div class="due-line">'+(war?'Alle Wörter sitzen!':'Runde geschafft!')+'</div>'+
     '<div class="sumgrid">'+
     '<div class="sumbox"><b>'+sess.right+'</b><span>richtig</span></div>'+
     '<div class="sumbox"><b>'+accy+' %</b><span>Trefferquote</span></div>'+
@@ -1747,10 +1939,12 @@ function showPack(pid){
   const steps=(p.url&&!seen)
     ?'<div class="sub" style="margin-top:14px;opacity:.5">Schritt 2 · Wörter üben &nbsp;·&nbsp; Schritt 3 · Fragen &nbsp;·&nbsp; Schritt 4 · nochmal ansehen</div>'
     :'<div class="ctrow">'+
-     '<button class="btn btn-primary" onclick="startPack(\''+p.id+'\')">'+(p.url?'Schritt 2 · Wörter üben':'Wörter üben')+'</button>'+
+     '<button class="btn btn-primary" onclick="startDrill(\''+p.id+'\')">'+(p.url?'Schritt 2 · ':'')+'Üben bis es sitzt</button>'+
      (p.q&&p.q.length?'<button class="btn-ghost" onclick="startQuiz(\''+p.id+'\')">🧠 Fragen ('+p.q.length+')</button>':'')+
      '</div>'+
+     '<div class="hint">Jedes Wort braucht 2 richtige Antworten in verschiedenen Formaten – erst erkennen, dann selbst schreiben. Falsch setzt das Wort zurück.</div>'+
      '<div class="ctrow">'+
+     '<button class="btn-ghost" onclick="startPack(\''+p.id+'\')">⚡ Schnellrunde (10 Karten)</button>'+
      '<button class="btn-ghost" onclick="showWords(\''+p.id+'\')">Wortliste ansehen</button>'+
      '<button class="btn-ghost" onclick="exportPack(\''+p.id+'\')">→ In СЛОВА́ importieren</button>'+
      '</div>';
