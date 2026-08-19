@@ -4253,6 +4253,11 @@ function checkTyped(){
   if(!inp||cur.answered)return;
   const v=normRu(inp.value);
   if(!v)return;
+  if(!/[а-яё]/i.test(inp.value)){ /* nur lateinisch getippt → Tastatur umschalten, nicht stumm bleiben */
+    inp.classList.add('inp-no');
+    setTimeout(()=>inp.classList.remove('inp-no'),600);
+    return;
+  }
   const ok=v===normRu(cur.w.r);
   inp.disabled=true;inp.classList.add(ok?'inp-ok':'inp-no');
   const kb=$('#kb');if(kb)kb.style.display='none';
@@ -4343,6 +4348,7 @@ function finishExam(p,accy){
       ?'<div class="sub" style="margin-top:14px">'+(nxt?'🔓 <b>Folge '+nxt+' ist jetzt frei.</b> Viel Spaß beim Schauen!':'Das war die letzte Folge, die es hier gibt.')+'</div>'
       :'<div class="sub" style="margin-top:14px">'+(schwach?schwach+' Wörter wackeln noch. ':'')+'Übe die Folge nochmal durch – die Prüfung nimmt beim nächsten Mal wieder deine schwächsten Wörter zuerst.</div>')+
     '<button class="btn btn-primary" onclick="'+(ok?'renderPacks()':'startDrill(\''+p.id+'\')')+'">'+(ok?'Weiter zur Übersicht':'Schwache Wörter üben')+'</button><br>'+
+    (p.q&&p.q.length?'<button class="btn-ghost" onclick="startQuiz(\''+p.id+'\')">🧠 Alle Fragen der Folge ('+p.q.length+')</button><br>':'')+
     '<button class="btn-ghost" onclick="startExam('+n+')">Prüfung wiederholen</button><br>'+
     '<button class="btn-ghost" onclick="showPack(\''+p.id+'\')">Zum Prüfungspaket</button></div>';
   sess=null;
