@@ -349,7 +349,8 @@ textarea#impBox,textarea#bakBox{width:100%;min-height:110px;border:1px solid var
 
   <div class="panel">
     <h3>Wörter importieren</h3>
-    <p class="hint">Alle 2000 Wörter sind fest eingebaut – der Trainer ist komplett! Über den Import kannst du trotzdem jederzeit eigene Wörter ergänzen (im JSON-Format, siehe grauer Beispieltext).</p>
+    <p class="hint">Alle 2000 Wörter sind fest eingebaut – der Trainer ist komplett! Über den Import kannst du trotzdem jederzeit eigene Wörter ergänzen (im JSON-Format, siehe grauer Beispieltext).<br>
+      Wörter aus СЕРИА́Л bringen ihren Lernstand mit: Was du dort schon gemeistert hast, startet hier nicht bei null, sondern direkt im passenden Wiederholungsabstand – und zählt nicht gegen dein Tageslimit für neue Wörter.</p>
     <textarea id="impBox" placeholder='[{"r":"стол","t":"stol","d":"Tisch","e":"Э́то мой стол.","x":"Das ist mein Tisch.","g":0}]'></textarea>
     <button class="btn-sm" id="impBtn">Importieren</button>
     <div class="msg" id="impMsg"></div>
@@ -3717,7 +3718,7 @@ $('#impBtn').onclick=()=>{
   try{
     const arr=JSON.parse(box.value);
     if(!Array.isArray(arr))throw new Error('kein Array');
-    let max=Math.max(...allWords().map(w=>w.i)),n=0;
+    let max=Math.max(...allWords().map(w=>w.i)),n=0,mit=0;
     const seen=new Set(allWords().map(w=>String(w.r).replace(/\u0301/g,'')));
     arr.forEach(o=>{
       if(!o||!o.r||!o.d)return;
@@ -3727,11 +3728,19 @@ $('#impBtn').onclick=()=>{
       const item={i:++max,r:String(o.r),t:String(o.t||''),d:String(o.d),e:String(o.e||''),x:String(o.x||''),g:+o.g||0};
       if(o.n)item.n=String(o.n);
       S.extras.push(item);n++;
+      /* Lernstand aus СЕРИА́Л übernehmen: was dort schon sitzt, startet hier nicht bei null */
+      const m=Math.min(4,+o.m||0);
+      if(m>0){
+        const b=m>=4?3:m>=2?2:1;
+        const iv=b===3?7:b===2?3:1;
+        S.prog[item.i]={b,iv,ez:2.5,d:addDays(iv),c:m,w:+o.mw||0};
+        mit++;
+      }
     });
     ASPECT=null; /* Aspekt-Index neu aufbauen, falls importierte Verben Paare vervollständigen */
     save(true);
     box.value='';
-    msg.textContent=n+' neue Wörter importiert ✓';
+    msg.textContent=n+' neue Wörter importiert ✓'+(mit?' · davon '+mit+' mit Lernstand aus СЕРИА́Л – die kommen erst später dran, nicht als neue Wörter.':'');
     msg.classList.add('ok');
   }catch(e){
     msg.textContent='Format nicht lesbar. Bitte eine JSON-Liste einfügen (siehe grauer Beispieltext).';
