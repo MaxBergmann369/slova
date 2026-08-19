@@ -134,6 +134,9 @@ nav.tabsbar{position:sticky;top:0;z-index:20;background:var(--paper);padding:12p
 .hear{background:var(--paper);border:1px solid var(--frost);border-radius:99px;padding:5px 11px;font-size:.88rem;font-family:var(--serif);font-weight:600}
 .hear:hover{background:var(--rust-soft);border-color:var(--rust)}
 .hear .acc{color:var(--rust)}
+.reg{display:inline-block;font-size:.64rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:99px;margin-top:6px;vertical-align:middle}
+.reg.slang{background:#FBF0D9;color:#8A6A12}
+.reg.grob{background:var(--kalina-soft);color:var(--kalina)}
 .q-ru{font-family:var(--serif);font-weight:700;font-size:1.3rem;text-align:center;margin-top:14px}
 .q-ru .acc{color:var(--rust)}
 .grade{display:grid;grid-template-columns:1fr;gap:8px;margin-top:14px}
@@ -2415,7 +2418,134 @@ const PACKS=[
  {q:'Куда́ попа́л дя́дя стен?',qde:'Wo landete Onkel Stan?',o:['на телешо́у','в больни́цу','домо́й'],a:0},
  {q:'Как Мэ́йбл поступа́ет с сотру́дниками?',qde:'Wie behandelt Mabel die Mitarbeiter?',o:['о́чень до́бро','о́чень стро́го','не обраща́ет внима́ния'],a:0},
  {q:'Что принёс ди́ппер?',qde:'Was brachte Dipper mit?',o:['настоя́щее существо́','подде́лку','фотогра́фию'],a:0},
- {q:'Что мо́жно уви́деть в глаза́х чуди́ща?',qde:'Was kann man in den Augen des Ungetüms sehen?',o:['свой кошма́р','бу́дущее','себя́'],a:0}]}
+ {q:'Что мо́жно уви́деть в глаза́х чуди́ща?',qde:'Was kann man in den Augen des Ungetüms sehen?',o:['свой кошма́р','бу́дущее','себя́'],a:0}]},
+
+{id:'gf-13-4',ic:'😤',t:'Folge 13 · Teil 4',tru:'Босс Мэ́йбл · Teil 4',ep:'Staffel 1 · Folge 13',
+ url:'https://www.youtube.com/watch?v=WNAR3f1lFmU&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=65',
+ note:'Mabels Güte kippt: Alle nutzen sie aus, und sie merkt, wie schwer es ist, Chefin zu sein.',
+ words:[
+ {r:'поку́пка',t:'pa-KUP-ka',d:'Kauf, Einkauf',e:'Спаси́бо за поку́пку!',x:'Danke für den Einkauf!'},
+ {r:'свести́ с ума́',t:'swis-TI s u-MA',d:'verrückt machen',e:'Я свела́ с ума́ двух челове́к!',x:'Ich habe zwei Leute verrückt gemacht!'},
+ {r:'постро́же',t:'pas-TRO-schy',d:'etwas strenger',e:'Мо́жет, ста́ть немно́го постро́же?',x:'Vielleicht etwas strenger werden?'},
+ {r:'дружелю́бный',t:'dru-schy-LJUB-nyj',d:'freundlich, umgänglich',e:'Будь дружелю́бной и позити́вной.',x:'Sei freundlich und positiv.'},
+ {r:'кле́тка',t:'KLJET-ka',d:'Käfig; Zelle',e:'Как он вы́брался из за́пертой кле́тки?',x:'Wie ist er aus dem verschlossenen Käfig gekommen?'},
+ {r:'переры́в',t:'pi-ri-RYF',d:'Pause',e:'Ты дала́ ему́ переры́в?',x:'Du hast ihm eine Pause gegeben?'},
+ {r:'передохну́ть',t:'pi-ri-dach-NUTJ',d:'verschnaufen, kurz ausruhen',e:'Передохни́ пять мину́т.',x:'Verschnauf fünf Minuten.'},
+ {r:'покло́нник',t:'pak-LON-nik',d:'Fan, Verehrer',e:'Ска́жете что-нибудь покло́нникам?',x:'Sagen Sie etwas zu Ihren Fans?'},
+ {r:'обли́ть',t:'ab-LITJ',d:'übergießen, begießen',e:'Его́ ну́жно обли́ть водо́й.',x:'Man muss ihn mit Wasser übergießen.'},
+ {r:'разнести́',t:'ras-nis-TI',d:'verwüsten, zerlegen',e:'Хорошо́, что он не успе́л всё разнести́.',x:'Gut, dass er nicht alles verwüsten konnte.'},
+ {r:'на исхо́де',t:'na is-CHO-di',d:'geht zu Ende, neigt sich',e:'Тре́тий день на исхо́де!',x:'Der dritte Tag neigt sich dem Ende!'},
+ {r:'бре́дить',t:'BRJE-ditj',d:'fantasieren, im Fieber reden',e:'Я бре́жу и́ли тут что-то измени́лось?',x:'Fantasiere ich, oder hat sich hier was verändert?'},
+ {r:'поспеши́ть',t:'pas-pi-SCHITJ',d:'sich beeilen',e:'Е́сли поспеши́м, успе́ем!',x:'Wenn wir uns beeilen, schaffen wir es!'},
+ {r:'ста́я',t:'STA-ja',d:'Rudel, Schwarm',e:'Я познако́мился с во́лчьей ста́ей.',x:'Ich habe ein Wolfsrudel kennengelernt.'},
+ {r:'воспита́ть',t:'was-pi-TATJ',d:'erziehen, aufziehen',e:'Они́ хотя́т воспита́ть меня́ как во́лка.',x:'Sie wollen mich wie einen Wolf aufziehen.'},
+ {r:'ло́гово',t:'LO-ga-wa',d:'Bau, Höhle (von Tieren)',e:'Мне пора́ в ло́гово.',x:'Ich muss in den Bau.'},
+ {r:'отплати́ть',t:'at-pla-TITJ',d:'vergelten, heimzahlen',e:'А вы мне так отплати́ли!',x:'Und ihr habt es mir so vergolten!'},
+ {r:'прико́л',t:'pri-KOL',d:'Scherz, Gag (Slang)',e:'От ва́ших прико́лов у меня́ я́зва!',x:'Von euren Scherzen kriege ich ein Geschwür!'},
+ {r:'я́зва',t:'JAS-wa',d:'Geschwür, Magengeschwür',e:'У меня́ ско́ро откро́ется я́зва.',x:'Ich kriege bald ein Magengeschwür.'},
+ {r:'паха́ть',t:'pa-CHATJ',d:'schuften, malochen (Slang)',e:'Я за всех вас паха́ла!',x:'Ich habe für euch alle geschuftet!'},
+ {r:'глазе́ть',t:'gla-SJETJ',d:'glotzen, gaffen',e:'Хва́тит стоя́ть и глазе́ть!',x:'Hört auf herumzustehen und zu glotzen!'},
+ {r:'слу́шаюсь',t:'SLU-scha-jusj',d:'jawohl, zu Befehl',e:'Слу́шаюсь, босс!',x:'Jawohl, Chef!'},
+ {r:'преврати́ться',t:'pri-wra-TIT-sa',d:'sich verwandeln in',e:'В кого́ я преврати́лась?',x:'In wen habe ich mich verwandelt?'},
+ {r:'благотвори́тельность',t:'bla-ga-twa-RI-tilj-nastj',d:'Wohltätigkeit',e:'Отда́ть всё на благотвори́тельность?',x:'Alles für Wohltätigkeit spenden?'},
+ {r:'удво́ить',t:'ud-WO-itj',d:'verdoppeln',e:'И́ли попыта́ться удво́ить вы́игрыш.',x:'Oder versuchen, den Gewinn zu verdoppeln.'}
+ ],
+ q:[
+ {q:'Что происхо́дит с сотру́дниками?',qde:'Was passiert mit den Mitarbeitern?',o:['они́ переста́ли рабо́тать','они́ рабо́тают лу́чше','они́ ушли́'],a:0},
+ {q:'Куда́ ушёл Зус?',qde:'Wohin ging Soos?',o:['к во́лчьей ста́е','домо́й','в магази́н'],a:0},
+ {q:'Как измени́лась Мэ́йбл?',qde:'Wie veränderte sich Mabel?',o:['ста́ла стро́гой, как дя́дя','ста́ла добре́е','не измени́лась'],a:0},
+ {q:'Ско́лько вре́мени оста́лось?',qde:'Wie viel Zeit blieb?',o:['семь часо́в','день','час'],a:0}]},
+
+{id:'gf-13-5',ic:'🏆',t:'Folge 13 · Teil 5',tru:'Босс Мэ́йбл · Teil 5',ep:'Staffel 1 · Folge 13',
+ url:'https://www.youtube.com/watch?v=ii2Qm2gHMqc&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=66',
+ note:'Das Finale der Wette – und ein Wort, das dem Onkel den ganzen Gewinn kostet.',
+ words:[
+ {r:'чемода́н',t:'tschi-ma-DAN',d:'Koffer',e:'Соберу́ чемода́н и пое́ду.',x:'Ich packe den Koffer und fahre.'},
+ {r:'безде́льник',t:'bis-DJELJ-nik',d:'Faulenzer, Nichtstuer',e:'Вре́мя — де́ньги, безде́льник!',x:'Zeit ist Geld, Faulenzer!'},
+ {r:'жа́ловаться',t:'SCHA-la-wat-sa',d:'sich beschweren',e:'Хо́чешь жа́ловаться?',x:'Willst du dich beschweren?'},
+ {r:'балда́',t:'bal-DA',d:'Dummkopf, Trottel (salopp)',e:'Приду́май что-нибудь, балда́!',x:'Lass dir was einfallen, du Trottel!'},
+ {r:'заме́на',t:'sa-MJE-na',d:'Ersatz, Austausch',e:'Де́ньги на заме́ну ме́бели.',x:'Geld für den Ersatz der Möbel.'},
+ {r:'ме́бель',t:'MJE-bilj',d:'Möbel',e:'Ме́бель придётся меня́ть.',x:'Die Möbel müssen ersetzt werden.'},
+ {r:'почи́нка',t:'pa-TSCHIN-ka',d:'Reparatur',e:'Де́ньги ушли́ на почи́нку.',x:'Das Geld ging für die Reparatur drauf.'},
+ {r:'обогна́ть',t:'a-bag-NATJ',d:'überholen, überflügeln',e:'На ско́лько ты нас обогна́л?',x:'Um wie viel hast du uns überholt?'},
+ {r:'отгада́ть',t:'ad-ga-DATJ',d:'erraten, lösen',e:'Вы не отгада́ли сло́во.',x:'Sie haben das Wort nicht erraten.'},
+ {r:'поня́тия не име́ть',t:'pa-NJA-ti-ja ni i-MJETJ',d:'keine Ahnung haben',e:'Я поня́тия не име́ла, как э́то тру́дно.',x:'Ich hatte keine Ahnung, wie schwer das ist.'},
+ {r:'ора́ть',t:'a-RATJ',d:'brüllen, schreien',e:'Пока́ я не начала́ ора́ть на люде́й.',x:'Bis ich anfing, Leute anzubrüllen.'},
+ {r:'проти́вно',t:'pra-TIW-na',d:'widerlich, zum Ekeln',e:'Аж проти́вно!',x:'Richtig widerlich!'},
+ {r:'блокно́т',t:'blak-NOT',d:'Notizblock',e:'Я записа́ла э́то в блокно́т!',x:'Ich habe das im Notizblock notiert!'},
+ {r:'уда́в',t:'u-DAF',d:'Boa, Riesenschlange',e:'Танцу́ю, как уда́в!',x:'Ich tanze wie eine Boa!'},
+ {r:'дубль',t:'dublj',d:'Take, Aufnahme',e:'Дубль три́дцать два!',x:'Take zweiunddreißig!'},
+ {r:'извини́тельный',t:'is-wi-NI-tilj-nyj',d:'Entschuldigungs-',e:'Извини́тельный та́нец!',x:'Der Entschuldigungstanz!'}
+ ],
+ q:[
+ {q:'Что дя́дя стен сде́лал с вы́игрышем?',qde:'Was tat Onkel Stan mit dem Gewinn?',o:['поста́вил всё на игру́','положи́л в банк','отда́л де́тям'],a:0},
+ {q:'Како́е сло́во он не отгада́л?',qde:'Welches Wort erriet er nicht?',o:['«пожа́луйста»','«спаси́бо»','«извини́те»'],a:0},
+ {q:'Кто победи́л в спо́ре?',qde:'Wer gewann die Wette?',o:['Мэ́йбл','дя́дя стен','никто́'],a:0},
+ {q:'Что поняла́ Мэ́йбл?',qde:'Was begriff Mabel?',o:['как тяжело́ быть бо́ссом','что она́ бога́та','что ей всё равно́'],a:0}]},
+
+{id:'gf-14-1',ic:'🕳️',t:'Folge 14 · Teil 1',tru:'Бездо́нная я́ма · Teil 1',ep:'Staffel 1 · Folge 14',
+ url:'https://www.youtube.com/watch?v=FRUKnsask_w&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=67',
+ note:'Alle fallen in ein scheinbar bodenloses Loch – und vertreiben sich die Zeit mit Geschichten.',
+ words:[
+ {r:'бездо́нный',t:'bis-DON-nyj',d:'bodenlos, abgrundtief',e:'Нет бо́лее бездо́нной я́мы.',x:'Es gibt keine bodenlosere Grube.'},
+ {r:'бе́здна',t:'BJES-dna',d:'Abgrund, Abgrundtiefe',e:'Потому́ что она́ — бе́здна.',x:'Weil sie ein Abgrund ist.'},
+ {r:'изба́виться',t:'is-BA-wit-sa',d:'loswerden, sich befreien von',e:'Что́бы изба́виться от нену́жных веще́й.',x:'Um unnötige Sachen loszuwerden.'},
+ {r:'нену́жный',t:'ni-NUSCH-nyj',d:'unnötig, überflüssig',e:'Вы́брось все нену́жные ве́щи.',x:'Wirf alle unnötigen Sachen weg.'},
+ {r:'вы́рытый',t:'WY-ry-tyj',d:'gegraben, ausgehoben',e:'Я́ма, вы́рытая в земле́.',x:'Eine in die Erde gegrabene Grube.'},
+ {r:'физи́чески',t:'fi-SI-tschis-ki',d:'physisch, körperlich',e:'Э́то физи́чески невозмо́жно!',x:'Das ist physisch unmöglich!'},
+ {r:'о́блако',t:'OB-la-ka',d:'Wolke',e:'Облака́ толка́ет како́й-то невиди́мка.',x:'Irgendein Unsichtbarer schiebt die Wolken.'},
+ {r:'толка́ть',t:'tal-KATJ',d:'schieben, stoßen',e:'Кто толка́ет облака́?',x:'Wer schiebt die Wolken?'},
+ {r:'в коне́чном ито́ге',t:'w ka-NJETSCH-nam i-TO-gi',d:'letzten Endes, schließlich',e:'В коне́чном ито́ге мы вернёмся.',x:'Letzten Endes kommen wir zurück.'},
+ {r:'оста́ток',t:'as-TA-tak',d:'Rest',e:'Оста́ток жи́зни в э́той я́ме!',x:'Den Rest des Lebens in dieser Grube!'},
+ {r:'за ка́дром',t:'sa KAD-ram',d:'aus dem Off, hinter der Kamera',e:'Моя́ исто́рия называ́ется «Го́лос за ка́дром».',x:'Meine Geschichte heißt „Stimme aus dem Off".'},
+ {r:'скро́мный',t:'SKROM-nyj',d:'bescheiden; taktvoll',e:'Э́то не скро́мный вопро́с.',x:'Das ist keine taktvolle Frage.'},
+ {r:'змея́',t:'smi-JA',d:'Schlange',e:'Меня́ укуси́ла змея́!',x:'Mich hat eine Schlange gebissen!'},
+ {r:'пискля́вый',t:'pisk-LJA-wyj',d:'piepsig, quiekend',e:'Тако́й пискля́вый голосо́к!',x:'So ein piepsiges Stimmchen!'},
+ {r:'голосо́к',t:'ga-la-SOK',d:'Stimmchen',e:'Твой голосо́к о́чень прико́льный.',x:'Dein Stimmchen ist echt witzig.'},
+ {r:'стыди́ться',t:'sty-DIT-sa',d:'sich schämen',e:'Тут не́чего стыди́ться!',x:'Da gibt es nichts, wofür man sich schämen müsste!'},
+ {r:'прико́льный',t:'pri-KOLJ-nyj',d:'witzig, lustig (Slang)',e:'Го́лос о́чень прико́льный!',x:'Die Stimme ist echt witzig!'},
+ {r:'лома́ться',t:'la-MAT-sa',d:'brechen (го́лос лома́ется = Stimmbruch)',e:'У тебя́ го́лос лома́ется.',x:'Du bist im Stimmbruch.'},
+ {r:'вздыха́ть',t:'wsdy-CHATJ',d:'seufzen',e:'Я да́же вздыха́ю по-дура́цки!',x:'Ich seufze sogar blöd!'},
+ {r:'нево́льно',t:'ni-WOLJ-na',d:'unwillkürlich, ungewollt',e:'Я нево́льно услы́шал.',x:'Ich habe unfreiwillig mitgehört.'},
+ {r:'изобрета́тель',t:'i-sab-ri-TA-tilj',d:'Erfinder',e:'Я ме́стный изобрета́тель.',x:'Ich bin der örtliche Erfinder.'},
+ {r:'плю́нуть',t:'PLJU-nutj',d:'spucken',e:'Заче́м вы плю́нули на ру́ку?',x:'Warum haben Sie auf die Hand gespuckt?'},
+ {r:'переу́лок',t:'pi-ri-U-lak',d:'Gasse, Seitenstraße',e:'Иди́ за мной в тёмный переу́лок.',x:'Komm mit mir in die dunkle Gasse.'},
+ {r:'миксту́ра',t:'miks-TU-ra',d:'Mixtur, Arznei',e:'Э́то миксту́ра, меня́ющая го́лос.',x:'Das ist eine Mixtur, die die Stimme verändert.'}
+ ],
+ q:[
+ {q:'Куда́ упа́ли ге́рои?',qde:'Wohin fielen die Helden?',o:['в бездо́нную я́му','в о́зеро','в пеще́ру'],a:0},
+ {q:'Заче́м они́ пришли́ к я́ме?',qde:'Warum kamen sie zur Grube?',o:['вы́бросить нену́жные ве́щи','иска́ть клад','гуля́ть'],a:0},
+ {q:'Что они́ де́лают в я́ме?',qde:'Was machen sie in der Grube?',o:['расска́зывают исто́рии','спят','крича́т'],a:0},
+ {q:'Над чем смею́тся над ди́ппером?',qde:'Worüber lacht man über Dipper?',o:['над его́ го́лосом','над его́ ша́пкой','над его́ ро́стом'],a:0}]},
+
+{id:'gf-14-2',ic:'🎙️',t:'Folge 14 · Teil 2',tru:'Бездо́нная я́ма · Teil 2',ep:'Staffel 1 · Folge 14',
+ url:'https://www.youtube.com/watch?v=wKi6WQ7BWtY&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=68',
+ note:'Dipper bekommt eine neue Stimme – und lernt, dass die eigene doch die beste ist.',
+ words:[
+ {r:'явля́ться',t:'jiw-LJAT-sa',d:'erscheinen; sein',e:'Я бу́ду явля́ться тебе́ в кошма́рах!',x:'Ich werde dir in Albträumen erscheinen!'},
+ {r:'вы́жить',t:'WY-schytj',d:'überleben',e:'Коне́чно, е́сли вы́живешь.',x:'Natürlich, wenn du überlebst.'},
+ {r:'жу́тко',t:'SCHUT-ka',d:'unheimlich, gruselig',e:'Э́то жу́тко и проти́вно!',x:'Das ist unheimlich und widerlich!'},
+ {r:'ди́ктор',t:'DIK-tar',d:'Ansager, Sprecher (Radio/TV)',e:'Ты говори́шь как ди́ктор из телеви́зора.',x:'Du sprichst wie ein Fernsehsprecher.'},
+ {r:'облада́тель',t:'ab-la-DA-tilj',d:'Besitzer, Inhaber',e:'Облада́тель круто́го го́лоса!',x:'Besitzer einer coolen Stimme!'},
+ {r:'хулига́н',t:'chu-li-GAN',d:'Rowdy, Störenfried',e:'Там телефо́нный хулига́н!',x:'Da ist ein Telefon-Störenfried!'},
+ {r:'изобрете́ние',t:'i-sab-ri-TJE-ni-je',d:'Erfindung',e:'Ва́ше изобрете́ние — чудо́вище!',x:'Ihre Erfindung ist ein Monstrum!'},
+ {r:'узна́ть',t:'us-NATJ',d:'erkennen; erfahren',e:'Со́бственная сестра́ меня́ не узна́ла!',x:'Meine eigene Schwester hat mich nicht erkannt!'},
+ {r:'зака́т',t:'sa-KAT',d:'Sonnenuntergang',e:'На зака́те верну́лся бы твой ста́рый го́лос.',x:'Bei Sonnenuntergang käme deine alte Stimme zurück.'},
+ {r:'смехотво́рный',t:'smi-chat-WOR-nyj',d:'lächerlich',e:'Мой смехотво́рный ста́рый го́лос.',x:'Meine lächerliche alte Stimme.'},
+ {r:'посвяща́ть',t:'pas-wi-SCHTSCHATJ',d:'widmen',e:'Э́тот реми́кс посвяща́ется бра́ту.',x:'Dieser Remix ist meinem Bruder gewidmet.'},
+ {r:'соверше́нный',t:'sa-wir-SCHEN-nyj',d:'vollkommen, perfekt',e:'Мой го́лос не соверше́нен, но он мой.',x:'Meine Stimme ist nicht perfekt, aber sie ist meine.'},
+ {r:'проби́рка',t:'pra-BIR-ka',d:'Reagenzglas',e:'Что бы́ло в э́той проби́рке?',x:'Was war in diesem Reagenzglas?'},
+ {r:'подтя́жки',t:'pat-TJASCH-ki',d:'Hosenträger',e:'Кто-нибудь ви́дел мои́ подтя́жки?',x:'Hat jemand meine Hosenträger gesehen?'},
+ {r:'крути́ться',t:'kru-TIT-sa',d:'sich drehen',e:'Дава́йте крути́ться!',x:'Lasst uns drehen!'},
+ {r:'клёвый',t:'KLJO-wyj',d:'cool, super (Slang)',e:'Клёвая исто́рия!',x:'Coole Geschichte!'},
+ {r:'меня́ть',t:'mi-NJATJ',d:'ändern, wechseln',e:'Я не хочу́ его́ меня́ть.',x:'Ich will sie nicht ändern.'},
+ {r:'сце́на',t:'SZE-na',d:'Bühne; Szene',e:'Он вы́шел на сце́ну.',x:'Er trat auf die Bühne.'}
+ ],
+ q:[
+ {q:'Что дал ди́пперу изобрета́тель?',qde:'Was gab der Erfinder Dipper?',o:['миксту́ру для го́лоса','фона́рик','кни́гу'],a:0},
+ {q:'Как ста́ла звуча́ть его́ речь?',qde:'Wie klang seine Sprache danach?',o:['как у ди́ктора','как у ребёнка','как ра́ньше'],a:0},
+ {q:'Кто его́ не узна́л?',qde:'Wer erkannte ihn nicht?',o:['со́бственная сестра́','дя́дя стен','Зус'],a:0},
+ {q:'Что ди́ппер реши́л в конце́?',qde:'Wie entschied sich Dipper am Ende?',o:['оста́вить свой го́лос','взять но́вый го́лос','молча́ть'],a:0}]}
 ];
 
 /* ================= Zustand ================= */
@@ -2430,6 +2560,20 @@ function load(){
   try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);S={...S,...d,prog:d.prog||{},days:d.days||{},extras:d.extras||[],watched:d.watched||{}}}}catch(e){}
 }
 function save(){if(storeMode==='local')try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+/* ---- Sprachebene: was man gefahrlos sagen kann und was nicht ----
+   slang = locker, nur unter Freunden/Gleichaltrigen · grob = besser nur verstehen, nicht benutzen */
+const REGISTER={};
+'чувак,тусовка,тусоваться,отвисать,кайфовать,кайфолом,втюриться,врубиться,отстой,потрясно,обалдеть,по барабану,круто,мотать отсюда,свалить,предки,прикол,прикольный,клёвый,зажигать,запросто,дружище,умник,смыться,сгодиться,влипать,оторваться,достать,пахать,глазеть,балда,бездельник,дурдом,спереть,зависнуть,реально,вкуснятина,всё путём,чушь,бред,перетрусить,струсить,сам напросился,ерунда,кафешка,пацан'
+ .split(',').forEach(w=>{REGISTER[w.replace(/́/g,'')]='slang'});
+'заткнись,дешёвка,попрошайка,вонючка,придурок,недоумок,болван,дурачок,безмозглый,мерзавец,гад,урод,слабак,размазня,карга,жулик,зануда,чёрт побери,плевать'
+ .split(',').forEach(w=>{REGISTER[w.replace(/́/g,'')]='grob'});
+function regOf(w){return REGISTER[String(w.r).replace(/́/g,'')]||''}
+function regBadge(w){
+  const r=regOf(w);
+  if(!r)return '';
+  return '<span class="reg '+r+'">'+(r==='grob'?'⚠ derb':'salopp')+'</span>';
+}
 
 /* ---- Redewendungen: feste Wendungen, die man nicht wörtlich übersetzen kann ---- */
 const IDIOMS=['держать себя в руках','взять под крыло','вешать нос','стереть в порошок','как на иголках',
@@ -2617,7 +2761,7 @@ function resolve(ok){
   $('#fbZone').innerHTML=
     '<div class="fb '+(ok?'fb-ok':'fb-no')+'">'+(ok?'✓ Richtig!':'✗ Nicht ganz.')+'</div>'+
     '<div class="answer"><div class="word" style="font-size:1.6rem;margin:2px 0 4px">'+acc(esc(w.r))+' '+sayBtn(w.r,'speak')+'</div>'+
-    '<div class="trans">['+esc(w.t)+']</div><div class="mean">'+esc(w.d)+'</div>'+
+    '<div class="trans">['+esc(w.t)+']</div><div class="mean">'+esc(w.d)+'</div>'+regBadge(w)+
     (w.e?'<div class="ex"><div class="ru">'+acc(esc(w.e))+' '+sayBtn(w.e)+'</div><div class="de">'+esc(w.x||'')+'</div></div>':'')+
     (cur.optRu?hearAll(cur.opts,'Alle Antwortmöglichkeiten anhören:'):'')+
     '</div><div class="grade"><button onclick="nextCard()">Weiter</button></div>';
@@ -2783,7 +2927,7 @@ function showWords(pid){
     p.words.map((w,k)=>{
       const st=S.prog[wordKey(p.id,k)];
       return '<div class="row"><div class="l"><div class="ru">'+acc(esc(w.r))+'</div>'+
-        '<div class="tr">['+esc(w.t||'')+']</div><div class="de">'+esc(w.d)+'</div>'+
+        '<div class="tr">['+esc(w.t||'')+']</div><div class="de">'+esc(w.d)+' '+regBadge(w)+'</div>'+
         (w.e?'<div class="de" style="margin-top:4px;font-style:italic">'+acc(esc(w.e))+' '+sayBtn(w.e)+'</div>':'')+
         '</div><div>'+(st&&st.c>=2?'<span style="color:var(--birch);font-weight:700">✓</span>':'')+'</div>'+
         sayBtn(w.r)+'</div>';
