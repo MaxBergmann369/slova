@@ -3862,6 +3862,7 @@ $('#impBtn').onclick=()=>{
       }
     });
     ASPECT=null; /* Aspekt-Index neu aufbauen, falls importierte Verben Paare vervollständigen */
+    _twinIdx=null; /* Zwillinge neu suchen: importierte Wörter können neue Verwechslungspaare bilden */
     save(true);
     box.value='';
     msg.textContent=n+' neue Wörter importiert ✓'+(mit?' · davon '+mit+' mit Lernstand aus СЕРИА́Л – die kommen erst später dran, nicht als neue Wörter.':'');
@@ -3914,7 +3915,7 @@ $('#bakLoad').onclick=()=>{
     S.lastDay=d.lastDay||null;
     S.nt=d.nt||{day:null,n:0};
     S.set={...S.set,...(d.set||{})};
-    if(Array.isArray(d.extras))S.extras=d.extras;
+    if(Array.isArray(d.extras)){S.extras=d.extras;ASPECT=null;_twinIdx=null}
     S.days=d.days||{};
     S.game={best:null,rounds:0,...(d.game||{})};
     S.abc={best:null,rounds:0,...(d.abc||{})};
