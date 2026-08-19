@@ -74,6 +74,13 @@ nav.tabsbar{position:sticky;top:0;z-index:20;background:var(--paper);padding:12p
 .pack .pbar{height:6px;background:var(--frost);border-radius:99px;overflow:hidden;margin-top:8px}
 .pack .pbar i{display:block;height:100%;background:var(--rust);border-radius:99px}
 .pack .pct{font-size:.75rem;font-weight:700;color:var(--rust);flex-shrink:0;font-variant-numeric:tabular-nums}
+.videobox{background:var(--rust-soft);border:1px solid #E5D3C0;border-radius:14px;padding:16px;margin-top:16px}
+.vb-t{font-weight:800;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--rust)}
+.vb-s{font-size:.86rem;color:var(--ink-soft);margin-top:6px;line-height:1.5}
+.videobox .btn-primary{margin-top:12px}
+.lnk{color:var(--rust);font-size:.82rem;font-weight:700;text-decoration:underline;padding:2px 4px}
+.vtag{font-size:.62rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:99px;background:var(--rust);color:#fff;vertical-align:middle;margin-left:4px}
+.vtag.seen{background:var(--birch-soft);color:var(--birch)}
 .ctrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .ctrow button{flex:1;min-width:120px;margin:0}
 .sess-top{display:flex;align-items:center;gap:12px;margin:4px 0 14px}
@@ -272,11 +279,134 @@ const PACKS=[
  {q:'Что близнецы́ нашли́ в лесу́?',qde:'Was fanden die Zwillinge im Wald?',o:['дневни́к','маши́ну','телефо́н'],a:0},
  {q:'Как сказа́ть «Vorsicht!» по-ру́сски?',qde:'Wie sagt man „Vorsicht!" auf Russisch?',o:['Осторо́жно!','Пожа́луйста!','Споко́йно!'],a:0},
  {q:'Что зна́чит «Нам нужна́ по́мощь»?',qde:'Was bedeutet „Нам нужна́ помощь"?',o:['Wir brauchen Hilfe','Wir haben Zeit','Wir sind müde'],a:0},
- {q:'Кто живёт в пеще́ре?',qde:'Wer lebt in der Höhle?',o:['чудо́вище','учи́тель','ба́бушка'],a:0}]}
+ {q:'Кто живёт в пеще́ре?',qde:'Wer lebt in der Höhle?',o:['чудо́вище','учи́тель','ба́бушка'],a:0}]},
+
+{id:'gf-1-1',ic:'🎬',t:'Folge 1 · Teil 1',tru:'Ло́вушка для тури́стов (1/4)',ep:'Staffel 1 · Folge 1',
+ url:'https://www.youtube.com/watch?v=w1fuNEUMUHI&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B',
+ note:'Die Zwillinge kommen in Gravity Falls an und ziehen zu ihrem Großonkel in die „Hütte der Wunder“.',
+ words:[
+ {r:'кани́кулы',t:'ka-NI-ku-ly',d:'Ferien',e:'Ле́тние кани́кулы начина́ются!',x:'Die Sommerferien fangen an!'},
+ {r:'о́тдых',t:'OT-dych',d:'Erholung, Ruhe',e:'Ле́то — вре́мя о́тдыха.',x:'Der Sommer ist die Zeit der Erholung.'},
+ {r:'развлече́ние',t:'ras-wli-TSCHE-ni-je',d:'Unterhaltung, Vergnügen',e:'В го́роде мно́го развлече́ний.',x:'In der Stadt gibt es viel Unterhaltung.'},
+ {r:'добро́ пожа́ловать',t:'da-BRO pa-SCHA-la-watj',d:'herzlich willkommen',e:'Добро́ пожа́ловать в наш дом!',x:'Willkommen in unserem Haus!'},
+ {r:'спаса́ться',t:'spa-SAT-sa',d:'sich retten, fliehen',e:'Мы спаса́емся от дождя́.',x:'Wir flüchten vor dem Regen.'},
+ {r:'огро́мный',t:'a-GROM-nyj',d:'riesig',e:'Э́то огро́мный дом!',x:'Das ist ein riesiges Haus!'},
+ {r:'объясни́ть',t:'ab-jis-NITJ',d:'erklären',e:'Сейча́с я вам всё объясню́.',x:'Ich erkläre euch jetzt alles.'},
+ {r:'приро́да',t:'pri-RO-da',d:'Natur',e:'Мы е́дем на приро́ду.',x:'Wir fahren raus in die Natur.'},
+ {r:'черда́к',t:'tschir-DAK',d:'Dachboden',e:'На чердаке́ мно́го ста́рых веще́й.',x:'Auf dem Dachboden sind viele alte Sachen.'},
+ {r:'хи́жина',t:'CHI-schy-na',d:'Hütte',e:'В лесу́ стои́т ма́ленькая хи́жина.',x:'Im Wald steht eine kleine Hütte.'},
+ {r:'чу́до',t:'TSCHU-da',d:'Wunder',e:'Э́то настоя́щее чу́до!',x:'Das ist ein echtes Wunder!'},
+ {r:'запреща́ть',t:'sa-pri-SCHTSCHATJ',d:'verbieten',e:'Здесь запреща́ют тро́гать това́ры.',x:'Hier ist es verboten, die Waren anzufassen.'},
+ {r:'ску́ка',t:'SKU-ka',d:'Langeweile',e:'Кака́я ску́ка!',x:'Was für eine Langeweile!'},
+ {r:'совпаде́ние',t:'saf-pa-DJE-ni-je',d:'Zufall',e:'Како́е совпаде́ние!',x:'Was für ein Zufall!'},
+ {r:'мечта́',t:'mitsch-TA',d:'Traum, Wunschtraum',e:'Э́то де́вочка мое́й мечты́.',x:'Das ist das Mädchen meiner Träume.'},
+ {r:'сомнева́ться',t:'sam-ni-WAT-sa',d:'zweifeln',e:'Ты мо́жешь сомнева́ться, но я ве́рю.',x:'Du kannst zweifeln, aber ich glaube daran.'},
+ {r:'указа́тель',t:'u-ka-SA-tilj',d:'Wegweiser, Schild',e:'На́до приби́ть э́ти указа́тели.',x:'Wir müssen diese Schilder annageln.'},
+ {r:'уво́лить',t:'u-WO-litj',d:'entlassen, kündigen',e:'На́до бы́ло вас уво́лить!',x:'Ich hätte euch entlassen sollen!'}
+ ],
+ q:[
+ {q:'Куда́ прие́хали близнецы́ на ле́то?',qde:'Wohin kamen die Zwillinge für den Sommer?',o:['в Гра́вити Фолс','в Москву́','на мо́ре'],a:0},
+ {q:'У кого́ они́ живу́т?',qde:'Bei wem wohnen sie?',o:['у двою́родного де́да','у ба́бушки','у дру́га'],a:0},
+ {q:'Что дя́дя сде́лал из свое́й хи́жины?',qde:'Was machte der Onkel aus seiner Hütte?',o:['туристи́ческий центр','шко́лу','магази́н'],a:0},
+ {q:'Где спит козёл?',qde:'Wo schläft der Ziegenbock?',o:['на посте́ли','на чердаке́','в лесу́'],a:0}]},
+
+{id:'gf-1-2',ic:'📓',t:'Folge 1 · Teil 2',tru:'Ло́вушка для тури́стов (2/4)',ep:'Staffel 1 · Folge 1',
+ url:'https://www.youtube.com/watch?v=UyskPh45hDE&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=2',
+ note:'Dipper findet im Wald das geheimnisvolle Tagebuch – und Mabel bringt einen sehr merkwürdigen Freund mit.',
+ words:[
+ {r:'следи́ть',t:'sli-DITJ',d:'beobachten, verfolgen',e:'Мне ка́жется, что за мной следя́т.',x:'Mir scheint, dass man mich beobachtet.'},
+ {r:'уку́с',t:'u-KUS',d:'Biss, Stich',e:'У меня́ уку́с комара́.',x:'Ich habe einen Mückenstich.'},
+ {r:'комар',t:'ka-MAR',d:'Mücke',e:'Ле́том в лесу́ мно́го комаро́в.',x:'Im Sommer gibt es viele Mücken im Wald.'},
+ {r:'береги́сь',t:'bi-ri-GISS',d:'pass auf!, hüte dich!',e:'Береги́сь, там опа́сно!',x:'Pass auf, dort ist es gefährlich!'},
+ {r:'ме́стный',t:'MJEST-nyj',d:'einheimisch, örtlich',e:'Ме́стные лю́ди зна́ют э́ту исто́рию.',x:'Die Einheimischen kennen diese Geschichte.'},
+ {r:'ска́зка',t:'SKAS-ka',d:'Märchen',e:'Э́то про́сто ска́зки!',x:'Das sind bloß Märchen!'},
+ {r:'изуча́ть',t:'i-su-TSCHATJ',d:'erforschen, studieren',e:'Я изуча́ю та́йны э́того городка́.',x:'Ich erforsche die Geheimnisse dieser Kleinstadt.'},
+ {r:'подозре́ние',t:'pa-da-SRJE-ni-je',d:'Verdacht',e:'Мои́ подозре́ния подтверди́лись.',x:'Mein Verdacht hat sich bestätigt.'},
+ {r:'спря́тать',t:'SPRJA-tatj',d:'verstecken',e:'Ну́жно спря́тать кни́гу.',x:'Ich muss das Buch verstecken.'},
+ {r:'доверя́ть',t:'da-wi-RJATJ',d:'vertrauen',e:'Здесь никому́ нельзя́ доверя́ть.',x:'Hier darf man niemandem vertrauen.'},
+ {r:'внеза́пно',t:'wni-SAP-na',d:'plötzlich',e:'Он внеза́пно исче́з.',x:'Er verschwand plötzlich.'},
+ {r:'исче́знуть',t:'is-TSCHES-nutj',d:'verschwinden',e:'Кни́га исче́зла.',x:'Das Buch ist verschwunden.'},
+ {r:'свида́ние',t:'swi-DA-ni-je',d:'Verabredung, Date',e:'У неё сего́дня свида́ние.',x:'Sie hat heute ein Date.'},
+ {r:'кла́дбище',t:'KLAD-bi-schtsche',d:'Friedhof',e:'Они́ встре́тились на кла́дбище.',x:'Sie trafen sich auf dem Friedhof.'},
+ {r:'кровь',t:'krowj',d:'Blut',e:'У тебя́ кровь идёт!',x:'Du blutest!'},
+ {r:'бле́дный',t:'BLJED-nyj',d:'blass',e:'У него́ о́чень бле́дная ко́жа.',x:'Er hat sehr blasse Haut.'},
+ {r:'ко́жа',t:'KO-scha',d:'Haut',e:'Ко́жа была́ холо́дная.',x:'Die Haut war kalt.'},
+ {r:'подро́сток',t:'pa-DROS-tak',d:'Teenager',e:'Их ча́сто пу́тают с подро́стками.',x:'Man verwechselt sie oft mit Teenagern.'},
+ {r:'опа́сный',t:'a-PAS-nyj',d:'gefährlich',e:'Береги́сь опа́сных созда́ний!',x:'Hüte dich vor gefährlichen Geschöpfen!'},
+ {r:'сходи́ть с ума́',t:'scha-DITJ s u-MA',d:'verrückt werden',e:'Я схожу́ с ума́!',x:'Ich werde verrückt!'}
+ ],
+ q:[
+ {q:'Ско́лько лет а́втор кни́ги изуча́ет городо́к?',qde:'Wie lange erforscht der Autor des Buches die Stadt?',o:['шесть лет','два го́да','де́сять лет'],a:0},
+ {q:'Что дя́дя стен ду́мает о мо́нстрах?',qde:'Was denkt Onkel Stan über die Monster?',o:['э́то то́лько ска́зки','они́ опа́сные','они́ до́брые'],a:0},
+ {q:'Где Мэ́йбл встре́тила Но́рмана?',qde:'Wo hat Mabel Norman getroffen?',o:['на кла́дбище','в шко́ле','в кафе́'],a:0},
+ {q:'Что напи́сано в кни́ге?',qde:'Was steht in dem Buch?',o:['никому́ не доверя́ть','всем помога́ть','мно́го чита́ть'],a:0}]},
+
+{id:'gf-1-3',ic:'🧟',t:'Folge 1 · Teil 3',tru:'Ло́вушка для тури́стов (3/4)',ep:'Staffel 1 · Folge 1',
+ url:'https://www.youtube.com/watch?v=WyxiNTFRIwg&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=3',
+ note:'Dipper ist überzeugt: Norman ist ein Zombie. Er sucht Beweise – und Mabel hat andere Sorgen.',
+ words:[
+ {r:'встреча́ться',t:'fstri-TSCHAT-sa',d:'sich treffen, zusammen sein',e:'Моя́ сестра́ встреча́ется с ним.',x:'Meine Schwester ist mit ihm zusammen.'},
+ {r:'подслу́шать',t:'pat-SLU-schatj',d:'belauschen',e:'Я неча́янно подслу́шал разгово́р.',x:'Ich habe das Gespräch zufällig belauscht.'},
+ {r:'пусто́й',t:'pus-TOJ',d:'leer',e:'Ко́мната была́ пуста́я.',x:'Das Zimmer war leer.'},
+ {r:'мозг',t:'mosk',d:'Gehirn',e:'Ско́лько мозго́в он съел?',x:'Wie viele Gehirne hat er gegessen?'},
+ {r:'чува́к',t:'tschu-WAK',d:'Kumpel, Alter (Slang)',e:'Чува́к, я тебе́ ве́рю!',x:'Alter, ich glaube dir!'},
+ {r:'замеча́ть',t:'sa-mi-TSCHATJ',d:'bemerken',e:'Я ча́сто замеча́ю необы́чное.',x:'Ich bemerke oft Ungewöhnliches.'},
+ {r:'необы́чный',t:'ni-a-BYTSCH-nyj',d:'ungewöhnlich',e:'Э́то необы́чный слу́чай.',x:'Das ist ein ungewöhnlicher Fall.'},
+ {r:'почтальо́н',t:'patsch-ta-LJON',d:'Briefträger',e:'Наш почтальо́н прихо́дит у́тром.',x:'Unser Briefträger kommt morgens.'},
+ {r:'оборо́тень',t:'a-ba-RO-tinj',d:'Werwolf',e:'Он наверняка́ оборо́тень!',x:'Er ist bestimmt ein Werwolf!'},
+ {r:'сумасше́дший',t:'su-mas-SCHED-schyj',d:'verrückt',e:'Лю́ди поду́мают, что ты сумасше́дший.',x:'Die Leute werden denken, du bist verrückt.'},
+ {r:'доказа́тельство',t:'da-ka-SA-tilj-stwa',d:'Beweis',e:'У меня́ нет доказа́тельств.',x:'Ich habe keine Beweise.'},
+ {r:'хва́тит',t:'CHWA-tit',d:'genug! Schluss!',e:'Хва́тит, пора́ поговори́ть.',x:'Genug, es ist Zeit zu reden.'},
+ {r:'целова́ться',t:'zy-la-WAT-sa',d:'sich küssen',e:'Они́ у́чатся целова́ться.',x:'Sie üben das Küssen.'},
+ {r:'шу́тка',t:'SCHUT-ka',d:'Witz, Scherz',e:'Э́то не смешна́я шу́тка.',x:'Das ist kein lustiger Witz.'},
+ {r:'щека́',t:'schtschi-KA',d:'Wange',e:'У него́ кровь на щеке́.',x:'Er hat Blut auf der Wange.'},
+ {r:'морга́ть',t:'mar-GATJ',d:'blinzeln',e:'Он совсе́м не морга́ет.',x:'Er blinzelt überhaupt nicht.'},
+ {r:'испо́ртить',t:'is-POR-titj',d:'verderben, kaputtmachen',e:'Не по́ртить мне свида́ние!',x:'Verdirb mir nicht das Date!'},
+ {r:'дура́цкий',t:'du-RAZ-kij',d:'blöd, dämlich',e:'Из-за како́й-то дура́цкой кни́жки!',x:'Wegen irgendeinem blöden Buch!'},
+ {r:'блестя́щий',t:'blis-TJA-schtschij',d:'glänzend, brillant',e:'Ты блестя́ще вы́глядишь!',x:'Du siehst glänzend aus!'}
+ ],
+ q:[
+ {q:'Кто пове́рил ди́пперу?',qde:'Wer glaubte Dipper?',o:['Зус','дя́дя стен','Мэ́йбл'],a:0},
+ {q:'Кем ди́ппер счита́ет Но́рмана?',qde:'Für was hält Dipper Norman?',o:['зо́мби','вампи́ром','оборо́тнем'],a:0},
+ {q:'Что ди́пперу ну́жно найти́?',qde:'Was muss Dipper finden?',o:['доказа́тельство','кни́гу','телефо́н'],a:0},
+ {q:'Когда́ у Мэ́йбл свида́ние?',qde:'Wann hat Mabel ihr Date?',o:['в пять часо́в','в семь часо́в','у́тром'],a:0}]},
+
+{id:'gf-1-4',ic:'🧙',t:'Folge 1 · Teil 4',tru:'Ло́вушка для тури́стов (4/4)',ep:'Staffel 1 · Folge 1',
+ url:'https://www.youtube.com/watch?v=7lXt2pZpnp0&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=4',
+ note:'Die Auflösung: Norman ist gar kein Zombie – sondern ein Haufen Gnome, die eine Königin suchen.',
+ words:[
+ {r:'постара́ться',t:'pas-ta-RAT-sa',d:'sich bemühen, versuchen',e:'Постара́йся меня́ поня́ть.',x:'Versuch mich zu verstehen.'},
+ {r:'присе́сть',t:'pri-SJESTJ',d:'sich (kurz) hinsetzen',e:'Мо́жет, прися́дешь?',x:'Willst du dich vielleicht setzen?'},
+ {r:'гном',t:'gnom',d:'Gnom, Zwerg',e:'Мы гно́мы, и мы и́щем короле́ву.',x:'Wir sind Gnome und suchen eine Königin.'},
+ {r:'короле́ва',t:'ka-ra-LJE-wa',d:'Königin',e:'Ты ста́нешь на́шей короле́вой.',x:'Du wirst unsere Königin.'},
+ {r:'согла́сна',t:'sa-GLAS-na',d:'einverstanden (weibl.)',e:'Ты согла́сна?',x:'Bist du einverstanden?'},
+ {r:'держи́сь',t:'dir-SCHISS',d:'halt durch!',e:'Держи́сь, я тебя́ спасу́!',x:'Halt durch, ich rette dich!'},
+ {r:'сопротивля́ться',t:'sa-pra-tiw-LJAT-sa',d:'sich wehren',e:'Чем бо́льше ты сопротивля́ешься, тем ху́же.',x:'Je mehr du dich wehrst, desto schlimmer.'},
+ {r:'отпусти́ть',t:'at-pus-TITJ',d:'loslassen',e:'Отпусти́те мою́ сестру́!',x:'Lasst meine Schwester los!'},
+ {r:'происходи́ть',t:'pra-is-cha-DITJ',d:'geschehen, passieren',e:'Что здесь происхо́дит?',x:'Was geht hier vor?'},
+ {r:'толпа́',t:'tal-PA',d:'Menge, Haufen',e:'Он оказа́лся толпо́й гно́мов.',x:'Er entpuppte sich als ein Haufen Gnome.'},
+ {r:'недоразуме́ние',t:'ni-da-ra-su-MJE-ni-je',d:'Missverständnis',e:'Э́то про́сто недоразуме́ние.',x:'Das ist nur ein Missverständnis.'},
+ {r:'безопа́сность',t:'bi-sa-PAS-nastj',d:'Sicherheit',e:'Она́ в безопа́сности.',x:'Sie ist in Sicherheit.'},
+ {r:'вы́йти за́муж',t:'WYJ-ti SA-musch',d:'heiraten (Frau)',e:'Она́ вы́йдет за́муж за него́.',x:'Sie wird ihn heiraten.'},
+ {r:'наве́ки',t:'na-WJE-ki',d:'für immer',e:'Наве́ки ста́нет на́шей короле́вой.',x:'Sie wird für immer unsere Königin.'},
+ {r:'останови́ть',t:'as-ta-na-WITJ',d:'aufhalten, stoppen',e:'Ты ду́маешь, что остано́вишь нас?',x:'Du denkst, du hältst uns auf?'},
+ {r:'могу́щественный',t:'ma-GU-schtschist-win-nyj',d:'mächtig',e:'Гно́мы — могу́щественная ра́са.',x:'Gnome sind eine mächtige Rasse.'},
+ {r:'пристегни́сь',t:'pri-stig-NISS',d:'schnall dich an!',e:'Пристегни́сь, мы е́дем!',x:'Schnall dich an, wir fahren!'},
+ {r:'пого́ня',t:'pa-GO-nja',d:'Verfolgung, Jagd',e:'Они́ пу́стятся в пого́ню.',x:'Sie werden die Verfolgung aufnehmen.'},
+ {r:'кро́шечный',t:'KRO-schitsch-nyj',d:'winzig',e:'У них таки́е кро́шечные но́жки!',x:'Sie haben so winzige Beinchen!'},
+ {r:'сообща́',t:'sa-ap-SCHTSCHA',d:'gemeinsam',e:'Де́йствуем сообща́!',x:'Wir handeln gemeinsam!'},
+ {r:'верну́ть',t:'wir-NUTJ',d:'zurückholen, zurückgeben',e:'Верни́ на́шу короле́ву!',x:'Gib unsere Königin zurück!'},
+ {r:'невозмо́жно',t:'ni-was-MOSCH-na',d:'unmöglich',e:'Невозмо́жно отвести́ взгляд.',x:'Man kann den Blick nicht abwenden.'}
+ ],
+ q:[
+ {q:'Кем на са́мом де́ле оказа́лся Но́рман?',qde:'Wer war Norman in Wirklichkeit?',o:['толпо́й гно́мов','зо́мби','вампи́ром'],a:0},
+ {q:'Кого́ и́щут гно́мы?',qde:'Wen suchen die Gnome?',o:['короле́ву','короля́','дру́га'],a:0},
+ {q:'Каки́е у гно́мов но́жки?',qde:'Was für Beinchen haben die Gnome?',o:['кро́шечные','дли́нные','си́льные'],a:0},
+ {q:'Что говоря́т гно́мы о себе́?',qde:'Was sagen die Gnome über sich selbst?',o:['мы могу́щественная ра́са','мы ма́ленькие и сла́бые','мы лю́ди'],a:0}]}
 ];
 
 /* ================= Zustand ================= */
-let S={prog:{},days:{},extras:[]};
+let S={prog:{},days:{},extras:[],watched:{}};
 let storeMode='none';
 function initStore(){
   try{const t='__ser_test';localStorage.setItem(t,'1');localStorage.removeItem(t);storeMode='local'}
@@ -284,7 +414,7 @@ function initStore(){
 }
 function load(){
   if(storeMode!=='local')return;
-  try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);S={...S,...d,prog:d.prog||{},days:d.days||{},extras:d.extras||[]}}}catch(e){}
+  try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);S={...S,...d,prog:d.prog||{},days:d.days||{},extras:d.extras||[],watched:d.watched||{}}}}catch(e){}
 }
 function save(){if(storeMode==='local')try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 
@@ -414,7 +544,10 @@ function finishSess(){
     '<div class="sumbox"><b>'+accy+' %</b><span>Trefferquote</span></div>'+
     '<div class="sumbox"><b>'+packProgress(p)+' %</b><span>Paket gelernt</span></div>'+
     '<div class="sumbox"><b>'+p.words.length+'</b><span>Wörter im Paket</span></div>'+
-    '</div><button class="btn btn-primary" onclick="startPack(\''+p.id+'\')">Nochmal üben</button><br>'+
+    '</div>'+
+    (p.url?'<div class="sub" style="margin-top:14px">Schritt 4: Schau dir die Folge <b>noch einmal</b> an – jetzt verstehst du mehr!</div>'+
+      '<button class="btn btn-primary" onclick="watchAndOpen(\''+p.id+'\')">▶ Folge nochmal ansehen</button><br>':'')+
+    '<button class="'+(p.url?'btn-ghost':'btn btn-primary')+'" onclick="startPack(\''+p.id+'\')">Nochmal üben</button><br>'+
     '<button class="btn-ghost" onclick="showPack(\''+p.id+'\')">Zum Paket</button></div>';
   sess=null;
 }
@@ -471,37 +604,65 @@ function renderPacks(){
     '<div class="sub">Üb die Wörter aus deinen Folgen – und schau sie danach nochmal. Kein Transkript, nur Vokabeln und Fragen.</div></div>'+
     '<div class="sect">Deine Pakete</div>';
   if(!ps.length)html+='<p class="hint">Noch keine Pakete. Unter „Mehr" kannst du eins einfügen.</p>';
+  let lastEp=null;
   ps.forEach(p=>{
+    if(p.ep&&p.ep!==lastEp){html+='<div class="sect" style="font-size:.95rem;margin:18px 0 8px">'+esc(p.ep)+'</div>';lastEp=p.ep}
     const pr=packProgress(p);
+    const badge=!p.url?'':(S.watched[p.id]?'<span class="vtag seen">✓ geschaut</span>':'<span class="vtag">▶ neu</span>');
     html+='<button class="pack" onclick="showPack(\''+p.id+'\')">'+
       '<span class="ic">'+(p.ic||'📺')+'</span>'+
-      '<span class="m"><span class="t">'+esc(p.t)+'</span>'+
+      '<span class="m"><span class="t">'+esc(p.t)+' '+badge+'</span>'+
       '<span class="s" style="display:block">'+esc(p.tru||'')+' · '+p.words.length+' Wörter</span>'+
       '<span class="pbar"><i style="width:'+pr+'%"></i></span></span>'+
       '<span class="pct">'+pr+' %</span></button>';
   });
   $('#view-packs').innerHTML=html;
 }
+function markWatched(pid){
+  S.watched[pid]=todayStr();
+  save();
+  showPack(pid);
+}
+function watchAndOpen(pid){
+  const p=packById(pid);
+  if(!p||!p.url)return;
+  window.open(p.url,'_blank','noopener');
+  markWatched(pid);
+}
 function showPack(pid){
   const p=packById(pid);
   if(!p){renderPacks();return}
   const pr=packProgress(p);
+  const seen=!!S.watched[p.id];
+  let video='';
+  if(p.url){
+    video=seen
+      ?'<div class="sub" style="margin-top:12px">✅ Folge angesehen'+(S.watched[p.id]?' am '+S.watched[p.id].split('-').reverse().join('.'):'')+
+        ' · <button class="lnk" onclick="watchAndOpen(\''+p.id+'\')">nochmal ansehen ↗</button></div>'
+      :'<div class="videobox"><div class="vb-t">Schritt 1 · Folge ansehen</div>'+
+        '<div class="vb-s">Schau dir die Folge auf YouTube an (ruhig mit Untertiteln) und komm dann hierher zurück.</div>'+
+        '<button class="btn btn-primary" onclick="watchAndOpen(\''+p.id+'\')">▶ Folge auf YouTube ansehen</button>'+
+        '<button class="lnk" style="display:block;margin:10px auto 0" onclick="markWatched(\''+p.id+'\')">Schon gesehen → weiter zu den Aufgaben</button></div>';
+  }
+  const steps=(p.url&&!seen)
+    ?'<div class="sub" style="margin-top:14px;opacity:.5">Schritt 2 · Wörter üben &nbsp;·&nbsp; Schritt 3 · Fragen &nbsp;·&nbsp; Schritt 4 · nochmal ansehen</div>'
+    :'<div class="ctrow">'+
+     '<button class="btn btn-primary" onclick="startPack(\''+p.id+'\')">'+(p.url?'Schritt 2 · Wörter üben':'Wörter üben')+'</button>'+
+     (p.q&&p.q.length?'<button class="btn-ghost" onclick="startQuiz(\''+p.id+'\')">🧠 Fragen ('+p.q.length+')</button>':'')+
+     '</div>'+
+     '<div class="ctrow">'+
+     '<button class="btn-ghost" onclick="showWords(\''+p.id+'\')">Wortliste ansehen</button>'+
+     '<button class="btn-ghost" onclick="exportPack(\''+p.id+'\')">→ In СЛОВА́ importieren</button>'+
+     '</div>';
   $('#view-packs').innerHTML=
     '<div class="hero"><div class="done-mark">'+(p.ic||'📺')+'</div>'+
     '<div class="due-line">'+esc(p.t)+'</div>'+
     '<div class="sub">'+acc(esc(p.tru||''))+'</div>'+
     (p.note?'<div class="sub" style="text-align:left;margin-top:12px">'+esc(p.note)+'</div>':'')+
     '<div class="sub" style="margin-top:10px">'+p.words.length+' Wörter · '+pr+' % gelernt</div>'+
-    '<div class="ctrow">'+
-    '<button class="btn btn-primary" onclick="startPack(\''+p.id+'\')">Wörter üben</button>'+
-    (p.q&&p.q.length?'<button class="btn-ghost" onclick="startQuiz(\''+p.id+'\')">🧠 Fragen ('+p.q.length+')</button>':'')+
-    '</div>'+
-    '<div class="ctrow">'+
-    '<button class="btn-ghost" onclick="showWords(\''+p.id+'\')">Wortliste ansehen</button>'+
-    '<button class="btn-ghost" onclick="exportPack(\''+p.id+'\')">→ In СЛОВА́ importieren</button>'+
-    '</div>'+
+    video+steps+
     '<div class="msg" id="expMsg"></div>'+
-    '<button class="btn-ghost" onclick="renderPacks()">Zurück</button></div>';
+    '<button class="btn-ghost" onclick="renderPacks()">Zurück zur Übersicht</button></div>';
 }
 function showWords(pid){
   const p=packById(pid);
@@ -590,7 +751,7 @@ $('#bakLoad').onclick=()=>{
   try{
     const d=JSON.parse($('#bakBox').value);
     if(!d||typeof d!=='object'||!d.prog)throw new Error('kein Backup');
-    S={prog:d.prog||{},days:d.days||{},extras:d.extras||[]};
+    S={prog:d.prog||{},days:d.days||{},extras:d.extras||[],watched:d.watched||{}};
     save();$('#doneN').textContent=totalDone();
     msg.textContent='Backup wiederhergestellt ✓';msg.classList.add('ok');
     renderPacks();tab('packs');
