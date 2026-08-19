@@ -126,6 +126,14 @@ nav.tabsbar{position:sticky;top:0;z-index:20;background:var(--paper);padding:12p
 .ex .ru .acc{color:var(--rust)}
 .ex .de{font-size:.86rem;color:var(--ink-soft);margin-top:3px}
 .sp2{color:var(--rust);font-size:1rem;padding:2px 6px;border-radius:8px}
+.sp2:hover{background:var(--rust-soft)}
+.hearall{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;margin-top:12px;padding-top:10px;border-top:1px dashed var(--frost)}
+.hearall span{font-size:.74rem;color:var(--ink-faint);font-weight:700;width:100%;text-align:center;margin-bottom:2px}
+.hear{background:var(--paper);border:1px solid var(--frost);border-radius:99px;padding:5px 11px;font-size:.88rem;font-family:var(--serif);font-weight:600}
+.hear:hover{background:var(--rust-soft);border-color:var(--rust)}
+.hear .acc{color:var(--rust)}
+.q-ru{font-family:var(--serif);font-weight:700;font-size:1.3rem;text-align:center;margin-top:14px}
+.q-ru .acc{color:var(--rust)}
 .grade{display:grid;grid-template-columns:1fr;gap:8px;margin-top:14px}
 .grade button{border-radius:12px;padding:13px 4px;font-weight:700;font-size:.95rem;color:#fff;background:var(--rust)}
 .row{background:var(--card);border:1px solid var(--frost);border-radius:12px;padding:11px 14px;margin-bottom:8px;display:flex;gap:12px;align-items:center}
@@ -236,6 +244,18 @@ function speak(txt){
   }catch(e){}
 }
 try{pickRuVoice();speechSynthesis.onvoiceschanged=pickRuVoice}catch(e){}
+/* Zentraler Anhören-Knopf: überall <button data-say="…">🔊</button> */
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-say]');
+  if(!b)return;
+  e.preventDefault();e.stopPropagation();
+  speak(b.dataset.say);
+});
+const sayBtn=(txt,cls)=>'<button class="'+(cls||'sp2')+'" data-say="'+esc(txt)+'" title="Anhören">🔊</button>';
+function hearAll(list,label){ /* Zeile zum Nachhören aller russischen Optionen */
+  return '<div class="hearall"><span>'+(label||'Alle anhören:')+'</span>'+
+    list.map(t=>'<button class="hear" data-say="'+esc(t)+'">🔊 '+acc(esc(t))+'</button>').join('')+'</div>';
+}
 
 /* ================= Wortpakete =================
    Jedes Paket: Wörter (r=russisch, t=Lautschrift, d=deutsch, e/x=eigener Beispielsatz)
@@ -1342,7 +1362,140 @@ const PACKS=[
  {q:'Заче́м дя́дя стен устра́ивает вечери́нку?',qde:'Wozu veranstaltet Onkel Stan eine Party?',o:['что́бы зарабо́тать','что́бы пра́здновать','для дете́й'],a:0},
  {q:'Кем хо́чет быть Зус на вечери́нке?',qde:'Was will Soos auf der Party sein?',o:['диджее́м','по́варом','охра́нником'],a:0},
  {q:'Где придётся рабо́тать ди́пперу?',qde:'Wo muss Dipper arbeiten?',o:['на ка́ссе','на ку́хне','у две́ри'],a:0},
- {q:'Что ди́ппер разрабо́тал?',qde:'Was hat Dipper ausgearbeitet?',o:['план на ве́чер','но́вую игру́','пе́сню'],a:0}]}
+ {q:'Что ди́ппер разрабо́тал?',qde:'Was hat Dipper ausgearbeitet?',o:['план на ве́чер','но́вую игру́','пе́сню'],a:0}]},
+
+{id:'gf-7-2',ic:'👯',t:'Folge 7 · Teil 2',tru:'Вечери́нка · Teil 2',ep:'Staffel 1 · Folge 7',
+ url:'https://www.youtube.com/watch?v=HAAG-5zgTuA&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=33',
+ note:'Mabel findet neue Freundinnen und kämpft um die Party-Krone – und Dipper entdeckt einen Kopierer im Keller.',
+ words:[
+ {r:'пункт',t:'punkt',d:'Punkt (einer Liste)',e:'Я вы́полню все пу́нкты пла́на.',x:'Ich erfülle alle Punkte des Plans.'},
+ {r:'помеша́ть',t:'pa-mi-SCHATJ',d:'hindern, stören',e:'Ничто́ мне не помеша́ет!',x:'Nichts wird mich aufhalten!'},
+ {r:'ма́рка',t:'MAR-ka',d:'Marke; Briefmarke',e:'Каку́ю ма́рку ты лю́бишь?',x:'Welche Marke magst du?'},
+ {r:'сро́чно',t:'SROTSCH-na',d:'dringend, sofort',e:'Сро́чно нужна́ но́вая те́ма!',x:'Wir brauchen dringend ein neues Thema!'},
+ {r:'зажига́ть',t:'sa-schy-GATJ',d:'abgehen, Stimmung machen (Slang)',e:'Кто кру́че зажига́ет?',x:'Wer macht die bessere Stimmung?'},
+ {r:'плечо́',t:'pli-TSCHO',d:'Schulter',e:'У тебя́ на плече́ сиди́т трито́н!',x:'Auf deiner Schulter sitzt ein Molch!'},
+ {r:'привяза́ть',t:'pri-wi-SATJ',d:'anbinden, festbinden',e:'Заче́м ты привяза́ла ви́лки к па́льцам?',x:'Warum hast du Gabeln an die Finger gebunden?'},
+ {r:'соверше́нствовать',t:'sa-wir-SCHEN-stwa-watj',d:'vervollkommnen, verbessern',e:'Я соверше́нствую свой органи́зм.',x:'Ich vervollkommne meinen Organismus.'},
+ {r:'органи́зм',t:'ar-ga-NISM',d:'Organismus, Körper',e:'Э́то поле́зно для органи́зма.',x:'Das ist gut für den Körper.'},
+ {r:'бли́зкий по ду́ху',t:'BLIS-kij pa DU-chu',d:'geistesverwandt',e:'Я нашла́ бли́зких по ду́ху!',x:'Ich habe Geistesverwandte gefunden!'},
+ {r:'коро́на',t:'ka-RO-na',d:'Krone',e:'Кто победи́т, тот полу́чит коро́ну.',x:'Wer gewinnt, bekommt die Krone.'},
+ {r:'голосова́ть',t:'ga-la-sa-WATJ',d:'abstimmen, wählen',e:'Бу́дем голосова́ть аплодисме́нтами.',x:'Wir stimmen mit Applaus ab.'},
+ {r:'аплодисме́нты',t:'a-pla-dis-MJEN-ty',d:'Applaus',e:'Ва́ши аплодисме́нты!',x:'Euren Applaus!'},
+ {r:'не по себе́',t:'ni pa si-BJE',d:'unwohl, mulmig',e:'Ря́дом с ней мне не по себе́.',x:'In ihrer Nähe fühle ich mich unwohl.'},
+ {r:'соревнова́ться',t:'sa-riw-na-WAT-sa',d:'sich messen, wetteifern',e:'Ну́жно посоревнова́ться!',x:'Wir müssen uns messen!'},
+ {r:'посме́ть',t:'pas-MJETJ',d:'wagen',e:'Кто посме́ет тяга́ться со мной?',x:'Wer wagt es, sich mit mir zu messen?'},
+ {r:'обня́ть',t:'ab-NJATJ',d:'umarmen',e:'Обними́ меня́!',x:'Umarme mich!'},
+ {r:'унижа́ть',t:'u-ni-SCHATJ',d:'demütigen, erniedrigen',e:'Они́ всегда́ нас унижа́ют.',x:'Sie demütigen uns immer.'},
+ {r:'набра́ть оборо́ты',t:'nab-RATJ a-ba-RO-ty',d:'Fahrt aufnehmen',e:'Вечери́нка набрала́ оборо́ты!',x:'Die Party hat Fahrt aufgenommen!'},
+ {r:'би́тва',t:'BIT-wa',d:'Schlacht, Kampf',e:'Би́тва за коро́ну начала́сь!',x:'Der Kampf um die Krone hat begonnen!'},
+ {r:'ата́ка',t:'a-TA-ka',d:'Angriff, Attacke',e:'Она́ идёт в ата́ку!',x:'Sie geht zum Angriff über!'},
+ {r:'раздво́ить',t:'rasd-WO-itj',d:'entzweien, verdoppeln',e:'Е́сли бы я мог раздво́иться!',x:'Wenn ich mich nur verdoppeln könnte!'},
+ {r:'копи́ровать',t:'ka-PI-ra-watj',d:'kopieren, nachmachen',e:'Хва́тит меня́ копи́ровать!',x:'Hör auf, mich nachzumachen!'},
+ {r:'ло́коть',t:'LO-katj',d:'Ellbogen',e:'Пря́мо ло́ктем!',x:'Direkt mit dem Ellbogen!'},
+ {r:'ревнова́ть',t:'riw-na-WATJ',d:'eifersüchtig sein',e:'Мы не ста́нем ревнова́ть друг дру́га.',x:'Wir werden nicht aufeinander eifersüchtig sein.'},
+ {r:'дра́ться',t:'DRAT-sa',d:'sich prügeln, kämpfen',e:'Мы обеща́ли не дра́ться.',x:'Wir haben versprochen, uns nicht zu prügeln.'}
+ ],
+ q:[
+ {q:'Кого́ Мэ́йбл нашла́ на вечери́нке?',qde:'Wen fand Mabel auf der Party?',o:['но́вых подру́г','дя́дю','Ве́нди'],a:0},
+ {q:'За что иду́т соревнова́ния?',qde:'Worum geht der Wettbewerb?',o:['за коро́ну','за де́ньги','за биле́ты'],a:0},
+ {q:'Как бу́дут выбира́ть победи́теля?',qde:'Wie wird der Sieger bestimmt?',o:['аплодисме́нтами','голосова́нием на бума́ге','жре́бием'],a:0},
+ {q:'Что ди́ппер нашёл?',qde:'Was fand Dipper?',o:['копирова́льную маши́ну','кни́гу','де́ньги'],a:0}]},
+
+{id:'gf-7-3',ic:'📄',t:'Folge 7 · Teil 3',tru:'Вечери́нка · Teil 3',ep:'Staffel 1 · Folge 7',
+ url:'https://www.youtube.com/watch?v=TJHJtw6gjjE&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=34',
+ note:'Aus einem Dipper werden mehrere – und der langsame Tanz rückt näher.',
+ words:[
+ {r:'смыть',t:'smytj',d:'abspülen, wegwaschen',e:'Ты всегда́ мо́жешь смыть меня́ водо́й.',x:'Du kannst mich jederzeit mit Wasser wegspülen.'},
+ {r:'ревни́вый',t:'riw-NI-wyj',d:'eifersüchtig',e:'Я ви́дел твои́ ревни́вые мы́сли.',x:'Ich habe deine eifersüchtigen Gedanken gesehen.'},
+ {r:'напа́рник',t:'na-PAR-nik',d:'Partner, Kompagnon',e:'Ты предлага́ешь мне его́ в напа́рники?',x:'Du schlägst ihn mir als Partner vor?'},
+ {r:'уро́д',t:'u-ROT',d:'Missgeburt, hässlicher Kerl',e:'Не обижа́й его́!',x:'Beleidige ihn nicht!'},
+ {r:'го́лос',t:'GO-las',d:'Stimme',e:'Пото́м го́лос слома́лся.',x:'Dann kam der Stimmbruch.'},
+ {r:'слома́ться',t:'sla-MAT-sa',d:'kaputtgehen, brechen',e:'Маши́на слома́лась.',x:'Die Maschine ist kaputtgegangen.'},
+ {r:'лиди́ровать',t:'li-DI-ra-watj',d:'in Führung liegen',e:'Пасифи́ка лиди́рует!',x:'Pacifica liegt in Führung!'},
+ {r:'владе́лец',t:'wla-DJE-lez',d:'Besitzer, Eigentümer',e:'Владе́льца кра́сного велосипе́да про́сят вы́йти.',x:'Der Besitzer des roten Fahrrads wird gebeten herauszukommen.'},
+ {r:'угоня́ть',t:'u-ga-NJATJ',d:'klauen (Fahrzeug)',e:'Ваш велосипе́д угоня́ют!',x:'Dein Fahrrad wird gerade geklaut!'},
+ {r:'то́чка',t:'TOTSCH-ka',d:'Punkt, Fleck',e:'Смотри́ — то́чка на стене́!',x:'Schau – ein Punkt an der Wand!'},
+ {r:'заме́тить',t:'sa-MJE-titj',d:'bemerken, entdecken',e:'Хорошо́, что я её заме́тил.',x:'Gut, dass ich ihn bemerkt habe.'},
+ {r:'враспло́х',t:'wras-PLOCH',d:'unvorbereitet (засти́гнуть ~ = überrumpeln)',e:'Чуть не засти́гла враспло́х!',x:'Fast hätte es mich überrumpelt!'},
+ {r:'моме́нт',t:'ma-MJENT',d:'Moment, Augenblick',e:'Моме́нт наста́л!',x:'Der Moment ist gekommen!'},
+ {r:'предлага́ть в напа́рники',t:'prid-la-GATJ w na-PAR-ni-ki',d:'als Partner vorschlagen',e:'Он предлага́ет его́ в напа́рники.',x:'Er schlägt ihn als Partner vor.'},
+ {r:'потанцева́ть',t:'pa-tan-zy-WATJ',d:'(eine Weile) tanzen',e:'Есть иде́я, как потанцева́ть с ней.',x:'Ich habe eine Idee, wie ich mit ihr tanzen kann.'}
+ ],
+ q:[
+ {q:'Как мо́жно изба́виться от ко́пии?',qde:'Wie wird man eine Kopie los?',o:['смыть водо́й','сжечь','порва́ть'],a:0},
+ {q:'Кто лиди́рует в соревнова́нии?',qde:'Wer führt im Wettbewerb?',o:['Пасифи́ка','Мэ́йбл','Ве́нди'],a:0},
+ {q:'Что объяви́ли на вечери́нке?',qde:'Was wurde auf der Party durchgesagt?',o:['что угоня́ют велосипе́д','что бу́дет пи́цца','что все иду́т домо́й'],a:0},
+ {q:'Како́й та́нец наста́л?',qde:'Welcher Tanz kam?',o:['ме́дленный','бы́стрый','наро́дный'],a:0}]},
+
+{id:'gf-7-4',ic:'🌴',t:'Folge 7 · Teil 4',tru:'Вечери́нка · Teil 4',ep:'Staffel 1 · Folge 7',
+ url:'https://www.youtube.com/watch?v=1FPHV4722wQ&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=35',
+ note:'Ein echtes Gespräch ganz ohne Plan – und plötzlich streiten sich alle Kopien darum, wer tanzen darf.',
+ words:[
+ {r:'купи́ться',t:'ku-PIT-sa',d:'darauf hereinfallen',e:'Ну коне́чно, он купи́лся!',x:'Na klar, er ist darauf reingefallen!'},
+ {r:'приглаше́ние',t:'pri-gla-SCHE-ni-je',d:'Einladung',e:'Идеа́льный моме́нт для приглаше́ния.',x:'Der perfekte Moment für die Einladung.'},
+ {r:'уда́ча',t:'u-DA-tscha',d:'Glück, Erfolg',e:'Пожела́й мне уда́чи!',x:'Wünsch mir Glück!'},
+ {r:'необита́емый',t:'ni-a-bi-TA-i-myj',d:'unbewohnt, einsam (Insel)',e:'А е́сли бы мы попа́ли на необита́емый о́стров?',x:'Und wenn wir auf einer einsamen Insel landen würden?'},
+ {r:'спо́рить',t:'SPO-ritj',d:'wetten; streiten',e:'Гото́ва спо́рить, что он смо́жет!',x:'Ich wette, er schafft das!'},
+ {r:'срыва́ть',t:'sry-WATJ',d:'abreißen, pflücken',e:'Тако́й высо́кий смо́жет срыва́ть коко́сы.',x:'So ein Großer kann Kokosnüsse pflücken.'},
+ {r:'коко́с',t:'ka-KOS',d:'Kokosnuss',e:'На о́строве мно́го коко́сов.',x:'Auf der Insel gibt es viele Kokosnüsse.'},
+ {r:'Больша́я Медве́дица',t:'balj-SCHA-ja mid-WJE-di-za',d:'Großer Bär (Sternbild)',e:'Э́то ковш Большо́й Медве́дицы.',x:'Das ist der Wagen des Großen Bären.'},
+ {r:'знак',t:'snak',d:'Zeichen',e:'А что, е́сли э́то знак?',x:'Und wenn das ein Zeichen ist?'},
+ {r:'и́збранный',t:'IS-bran-nyj',d:'auserwählt, der Auserwählte',e:'Э́то знак и́збранного!',x:'Das ist das Zeichen des Auserwählten!'},
+ {r:'отвлека́ть',t:'at-wli-KATJ',d:'ablenken',e:'Он уже́ пятна́дцать мину́т отвлека́ет Зу́са.',x:'Er lenkt Soos schon fünfzehn Minuten ab.'},
+ {r:'случа́йно',t:'slu-TSCHAJ-na',d:'zufällig, aus Versehen',e:'Я случа́йно встре́тил Ве́нди.',x:'Ich habe Wendy zufällig getroffen.'},
+ {r:'бред',t:'brjet',d:'Unsinn, Wahnsinn',e:'Э́то како́й-то бред!',x:'Das ist doch Unsinn!'},
+ {r:'сле́довать',t:'SLJE-da-watj',d:'folgen, sich richten nach',e:'Ты не хо́чешь сле́довать пла́ну?',x:'Du willst dich nicht an den Plan halten?'},
+ {r:'врать',t:'wratj',d:'lügen',e:'Мы все зна́ли, что врём.',x:'Wir wussten alle, dass wir lügen.'},
+ {r:'дыша́ть',t:'dy-SCHATJ',d:'atmen',e:'Здесь совсе́м не́чем дыша́ть!',x:'Hier bekommt man keine Luft!'},
+ {r:'во́здух',t:'WOS-duch',d:'Luft',e:'Там полно́ во́здуха.',x:'Dort gibt es genug Luft.'},
+ {r:'раскра́ска',t:'ras-KRAS-ka',d:'Malbuch',e:'Есть еда́ и де́тские раскра́ски.',x:'Es gibt Essen und Kindermalbücher.'},
+ {r:'изоли́ровать',t:'i-sa-LI-ra-watj',d:'isolieren, abschotten',e:'Тепе́рь настоя́щий ди́ппер изоли́рован.',x:'Jetzt ist der echte Dipper isoliert.'},
+ {r:'рассужда́ть',t:'ra-suschd-ATJ',d:'urteilen, argumentieren',e:'Е́сли рассужда́ть логи́чески…',x:'Wenn man logisch argumentiert…'},
+ {r:'ве́ский аргуме́нт',t:'WJES-kij ar-gu-MJENT',d:'gewichtiges Argument',e:'Э́то ве́ский аргуме́нт.',x:'Das ist ein gewichtiges Argument.'},
+ {r:'мла́дший',t:'MLAT-schij',d:'jüngerer, jüngster',e:'Я са́мый мла́дший из вас.',x:'Ich bin der Jüngste von euch.'},
+ {r:'меньшинство́',t:'minj-schynst-WO',d:'Minderheit',e:'Ты в меньшинстве́!',x:'Du bist in der Minderheit!'},
+ {r:'иденти́чный',t:'i-din-TITSCH-nyj',d:'identisch, völlig gleich',e:'Мы иденти́чны вне́шне и вну́тренне.',x:'Wir sind äußerlich und innerlich identisch.'},
+ {r:'вне́шне',t:'WNJESCH-ni',d:'äußerlich',e:'Вне́шне мы одина́ковые.',x:'Äußerlich sind wir gleich.'}
+ ],
+ q:[
+ {q:'О чём ди́ппер и Ве́нди поговори́ли?',qde:'Worüber sprachen Dipper und Wendy?',o:['о необита́емом о́строве','о шко́ле','о рабо́те'],a:0},
+ {q:'Что они́ уви́дели на не́бе?',qde:'Was sahen sie am Himmel?',o:['Большу́ю Медве́дицу','луну́','самолёт'],a:0},
+ {q:'Что ди́ппер по́нял?',qde:'Was begriff Dipper?',o:['что план не ну́жен','что на́до уйти́','что он оши́бся'],a:0},
+ {q:'О чём спо́рят ко́пии?',qde:'Worüber streiten die Kopien?',o:['кто бу́дет танцева́ть','кто пойдёт домо́й','кто са́мый у́мный'],a:0}]},
+
+{id:'gf-7-5',ic:'👑',t:'Folge 7 · Teil 5',tru:'Вечери́нка · Teil 5',ep:'Staffel 1 · Folge 7',
+ url:'https://www.youtube.com/watch?v=hNDL1QVKI3g&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=36',
+ note:'Die Krone wird vergeben, Mabel entdeckt, was Freundschaft wert ist – und Tyrone verabschiedet sich.',
+ words:[
+ {r:'подвести́ ито́ги',t:'pad-wis-TI i-TO-gi',d:'Bilanz ziehen, auswerten',e:'Ещё одна́ пе́сня — и подведём ито́ги.',x:'Noch ein Lied – dann ziehen wir Bilanz.'},
+ {r:'состяза́ние',t:'sas-ti-SA-ni-je',d:'Wettkampf, Wettbewerb',e:'Э́то бы́ло че́стное состяза́ние.',x:'Das war ein fairer Wettkampf.'},
+ {r:'удово́льствие',t:'u-da-WOLJ-stwi-je',d:'Vergnügen, Freude',e:'Я получи́ла удово́льствие!',x:'Ich hatte meinen Spaß!'},
+ {r:'газиро́вка',t:'ga-si-ROF-ka',d:'Limonade, Sprudel',e:'Мо́жет, вы́пьем по газиро́вке?',x:'Vielleicht trinken wir eine Limo?'},
+ {r:'измери́тель',t:'is-mi-RI-tilj',d:'Messgerät',e:'Включа́ем измери́тель шу́ма!',x:'Wir schalten den Lärmmesser ein!'},
+ {r:'шум',t:'schum',d:'Lärm, Geräusch',e:'Ско́лько шу́ма!',x:'Was für ein Lärm!'},
+ {r:'уча́стница',t:'u-TSCHAST-ni-za',d:'Teilnehmerin',e:'Сле́дующая уча́стница!',x:'Die nächste Teilnehmerin!'},
+ {r:'победи́тель',t:'pa-bi-DI-tilj',d:'Sieger, Gewinner',e:'У нас есть победи́тель!',x:'Wir haben einen Sieger!'},
+ {r:'я́хта',t:'JACH-ta',d:'Jacht',e:'Жду всех на на́шей я́хте!',x:'Ich erwarte alle auf unserer Jacht!'},
+ {r:'разочарова́ть',t:'ra-sa-tscha-ra-WATJ',d:'enttäuschen',e:'Прости́те, что разочарова́ла.',x:'Entschuldigt, dass ich euch enttäuscht habe.'},
+ {r:'пропусти́ть',t:'pra-pus-TITJ',d:'verpassen; durchlassen',e:'Тогда́ мы пропу́стим ночёвку.',x:'Dann verpassen wir die Übernachtung.'},
+ {r:'ночёвка',t:'na-TSCHOF-ka',d:'Übernachtung',e:'Мы отпроси́лись у мам на ночёвку.',x:'Wir haben von unseren Müttern die Erlaubnis zum Übernachten.'},
+ {r:'отпроси́ться',t:'at-pra-SIT-sa',d:'sich freistellen lassen, um Erlaubnis bitten',e:'Я отпроси́лся у роди́телей.',x:'Ich habe meine Eltern um Erlaubnis gebeten.'},
+ {r:'журна́л',t:'schur-NAL',d:'Zeitschrift, Magazin',e:'У меня́ есть де́вичьи журна́лы!',x:'Ich habe Mädchenzeitschriften!'},
+ {r:'весели́ться',t:'wi-si-LIT-sa',d:'sich amüsieren, feiern',e:'Бу́дем весели́ться всю ночь!',x:'Wir feiern die ganze Nacht!'},
+ {r:'вы́бросить',t:'WY-bra-sitj',d:'wegwerfen',e:'План ну́жно вы́бросить.',x:'Den Plan muss man wegwerfen.'},
+ {r:'в прямо́м смы́сле',t:'w pri-MOM SMYS-li',d:'im wörtlichen Sinne',e:'Я сам себе́ меша́ю — в прямо́м смы́сле!',x:'Ich stehe mir selbst im Weg – im wörtlichen Sinne!'},
+ {r:'сглупи́ть',t:'sglu-PITJ',d:'eine Dummheit machen',e:'Вот я сглупи́л!',x:'Da habe ich eine Dummheit gemacht!'},
+ {r:'сла́вно',t:'SLAW-na',d:'herrlich, prima',e:'Я сла́вно пожи́л.',x:'Ich hatte ein schönes Leben.'},
+ {r:'размазня́',t:'ras-mas-NJA',d:'Schlappschwanz, Weichei',e:'Не веди́ себя́ как размазня́!',x:'Benimm dich nicht wie ein Weichei!'},
+ {r:'ра́ди',t:'RA-di',d:'um … willen, für',e:'Ра́ди меня́, ла́дно?',x:'Mir zuliebe, ja?'},
+ {r:'еди́нственный',t:'i-DIN-stwin-nyj',d:'einziger',e:'Ты еди́нственный, кто меня́ понима́л.',x:'Du warst der Einzige, der mich verstanden hat.'},
+ {r:'популя́рность',t:'pa-pu-LJAR-nastj',d:'Beliebtheit, Popularität',e:'Ну и что, что у нас нет популя́рности?',x:'Na und, dass wir nicht beliebt sind?'}
+ ],
+ q:[
+ {q:'Кто вы́играл коро́ну?',qde:'Wer gewann die Krone?',o:['Пасифи́ка','Мэ́йбл','Ве́нди'],a:0},
+ {q:'Что вы́брали подру́ги Мэ́йбл?',qde:'Wofür entschieden sich Mabels Freundinnen?',o:['оста́ться с ней','пойти́ на я́хту','уйти́ домо́й'],a:0},
+ {q:'Что ди́ппер по́нял про свой план?',qde:'Was verstand Dipper über seinen Plan?',o:['его́ ну́жно вы́бросить','он был иде́ей ве́ка','его́ на́до допо́лнить'],a:0},
+ {q:'Кто меша́л ди́пперу, в прямо́м смы́сле?',qde:'Wer stand Dipper im Weg – wörtlich?',o:['он сам','Ве́нди','дя́дя стен'],a:0}]}
 ];
 
 /* ================= Zustand ================= */
@@ -1401,7 +1554,7 @@ function renderCard(){
   const st=S.prog[wordKey(p.id,k)];
   let mode=sess.mode;
   if(mode==='mix')mode=(st&&st.c>=2)?'type':(Math.random()<.5?'mc':'mcRev');
-  cur={p,k,w,mode,answered:false,opts:null,goodIdx:-1};
+  cur={p,k,w,mode,answered:false,opts:null,goodIdx:-1,optRu:(mode==='mcRev')};
   let front='';
   if(mode==='mc'){
     cur.opts=shuffle(distract(p,k,'d',3).concat([w.d]));
@@ -1413,7 +1566,8 @@ function renderCard(){
     cur.opts=shuffle(distract(p,k,'r',3).concat([w.r]));
     cur.goodIdx=cur.opts.indexOf(w.r);
     front='<div class="word-de">'+esc(w.d)+'</div><div class="qlabel">Wie heißt das auf Russisch?</div>'+
-      '<div class="opts">'+cur.opts.map((o,i)=>'<button class="opt opt-ru" data-k="'+i+'">'+acc(esc(o))+'</button>').join('')+'</div>';
+      '<div class="opts">'+cur.opts.map((o,i)=>'<button class="opt opt-ru" data-k="'+i+'">'+acc(esc(o))+'</button>').join('')+'</div>'+
+      '<div class="hint" style="text-align:center;margin-top:8px">Nach dem Antworten kannst du alle Varianten anhören.</div>';
   }else{
     front='<div class="word-de">'+esc(w.d)+'</div><div class="qlabel">Schreib es auf Russisch:</div>'+typeHtml();
   }
@@ -1463,9 +1617,10 @@ function resolve(ok){
   const w=cur.w;
   $('#fbZone').innerHTML=
     '<div class="fb '+(ok?'fb-ok':'fb-no')+'">'+(ok?'✓ Richtig!':'✗ Nicht ganz.')+'</div>'+
-    '<div class="answer"><div class="word" style="font-size:1.6rem;margin:2px 0 4px">'+acc(esc(w.r))+'</div>'+
+    '<div class="answer"><div class="word" style="font-size:1.6rem;margin:2px 0 4px">'+acc(esc(w.r))+' '+sayBtn(w.r,'speak')+'</div>'+
     '<div class="trans">['+esc(w.t)+']</div><div class="mean">'+esc(w.d)+'</div>'+
-    (w.e?'<div class="ex"><div class="ru">'+acc(esc(w.e))+' <button class="sp2" onclick="speak(cur.w.e)">🔊</button></div><div class="de">'+esc(w.x||'')+'</div></div>':'')+
+    (w.e?'<div class="ex"><div class="ru">'+acc(esc(w.e))+' '+sayBtn(w.e)+'</div><div class="de">'+esc(w.x||'')+'</div></div>':'')+
+    (cur.optRu?hearAll(cur.opts,'Alle Antwortmöglichkeiten anhören:'):'')+
     '</div><div class="grade"><button onclick="nextCard()">Weiter</button></div>';
   speak(w.r);
 }
@@ -1508,10 +1663,11 @@ function renderQuiz(){
     '<div class="sess-top"><span class="cnt">Frage '+(quiz.i+1)+' / '+p.q.length+'</span>'+
     '<div class="bar"><i style="width:'+Math.round(100*quiz.i/p.q.length)+'%"></i></div>'+
     '<button class="quit" onclick="quiz=null;showPack(\''+p.id+'\')">Beenden</button></div>'+
-    '<div class="card"><div class="word" style="font-size:1.4rem">'+acc(esc(q.q))+'</div>'+
+    '<div class="card"><div class="word" style="font-size:1.4rem">'+acc(esc(q.q))+' '+sayBtn(q.q,'speak')+'</div>'+
     '<div class="qlabel">'+esc(q.qde)+'</div>'+
     '<div class="opts">'+opts.map((e,k)=>'<button class="opt opt-ru" data-k="'+k+'">'+acc(esc(e.o))+'</button>').join('')+'</div>'+
     '<div id="fbZone"></div></div>';
+  setTimeout(()=>speak(q.q),250); /* Frage wird vorgelesen */
   document.querySelectorAll('#view-packs .opt').forEach(b=>b.onclick=()=>{
     if(quiz.answered)return;
     quiz.answered=true;
@@ -1520,8 +1676,12 @@ function renderQuiz(){
     if(!ok)b.classList.add('wrong');
     if(ok)quiz.right++;
     const t=todayStr();S.days[t]=(S.days[t]||0)+1;save();
+    const richtig=opts.find(e=>e.ok).o;
     $('#fbZone').innerHTML='<div class="fb '+(ok?'fb-ok':'fb-no')+'">'+(ok?'✓ Richtig!':'✗ Nicht ganz.')+'</div>'+
+      '<div class="answer" style="padding-top:10px"><div class="q-ru">'+acc(esc(richtig))+' '+sayBtn(richtig,'speak')+'</div>'+
+      hearAll(opts.map(e=>e.o),'Alle Antworten anhören:')+'</div>'+
       '<div class="grade"><button onclick="nextQ()">Weiter</button></div>';
+    speak(richtig);
   });
 }
 function nextQ(){
@@ -1612,9 +1772,9 @@ function showWords(pid){
       const st=S.prog[wordKey(p.id,k)];
       return '<div class="row"><div class="l"><div class="ru">'+acc(esc(w.r))+'</div>'+
         '<div class="tr">['+esc(w.t||'')+']</div><div class="de">'+esc(w.d)+'</div>'+
-        (w.e?'<div class="de" style="margin-top:4px;font-style:italic">'+acc(esc(w.e))+'</div>':'')+
+        (w.e?'<div class="de" style="margin-top:4px;font-style:italic">'+acc(esc(w.e))+' '+sayBtn(w.e)+'</div>':'')+
         '</div><div>'+(st&&st.c>=2?'<span style="color:var(--birch);font-weight:700">✓</span>':'')+'</div>'+
-        '<button class="sp2" onclick="speak(\''+String(w.r).replace(/'/g,'')+'\')">🔊</button></div>';
+        sayBtn(w.r)+'</div>';
     }).join('')+
     '<button class="btn-ghost" onclick="tab(\'packs\');showPack(\''+p.id+'\')">Zurück zum Paket</button>';
 }
@@ -1641,7 +1801,7 @@ function renderListe(){
       return '<div class="row"><div class="l"><div class="ru">'+acc(esc(w.r))+'</div>'+
         '<div class="tr">['+esc(w.t||'')+']</div><div class="de">'+esc(w.d)+'</div></div>'+
         '<div>'+(st&&st.c>=2?'<span style="color:var(--birch);font-weight:700">✓</span>':'')+'</div>'+
-        '<button class="sp2" onclick="speak(\''+String(w.r).replace(/'/g,'')+'\')">🔊</button></div>';
+        sayBtn(w.r)+'</div>';
     }).join('');
   });
   $('#view-liste').innerHTML=html;
