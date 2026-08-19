@@ -2788,6 +2788,26 @@ function syllables(word){
 }
 const letterCount=w=>(String(w).replace(/́/g,'').match(/[А-Яа-яЁё]/g)||[]).length;
 function isLongWord(w){return w&&!/[ !?]/.test(w.r)&&letterCount(w.r)>=7}
+/* Silben-Puzzle: die richtigen Silben plus ein paar falsche aus anderen Wörtern.
+   Ohne falsche Silben löst man das Puzzle durch Ausschluss, ohne das Wort zu können. */
+function sylTiles(w,parts){
+  const bad=new Set(parts.map(s=>s.replace(/́/g,'').toLowerCase()));
+  const avg=parts.reduce((a,s)=>a+s.replace(/́/g,'').length,0)/parts.length;
+  const pool=[],seen=new Set();
+  const src=shuffle(allWords().slice()).slice(0,140);
+  src.forEach(o=>{
+    if(/[ !?-]/.test(o.r))return;
+    syllables(o.r).forEach(s=>{
+      const k=s.replace(/́/g,'').toLowerCase();
+      if(bad.has(k)||seen.has(k)||k.length<2)return;
+      seen.add(k);pool.push(s);
+    });
+  });
+  pool.sort((a,b)=>Math.abs(a.replace(/́/g,'').length-avg)-Math.abs(b.replace(/́/g,'').length-avg));
+  const n=parts.length<=3?2:3;
+  const fake=shuffle(pool.slice(0,Math.max(n,n*3))).slice(0,n);   /* aus den ähnlichsten zufällig wählen */
+  return shuffle(parts.concat(fake));
+}
 function sylHtml(w){ /* Silben-Ansicht für die Antwortkarte */
   const s=syllables(w.r);
   if(s.length<2)return '';
@@ -2930,11 +2950,12 @@ function renderCard(forceMode){
       '<div class="qlabel">Schreib das fehlende Wort:</div>'+typeHtml();
   }else if(mode==='syl'){
     const sy=syllables(w.r);
-    cur.syl={parts:sy,picked:[],order:shuffle(sy.map((p,k)=>k))};
+    const tiles=sylTiles(w,sy);
+    cur.syl={parts:tiles,need:sy.length,picked:[],order:tiles.map((p,k)=>k)};
     front='<div class="word-de">'+esc(w.d)+'</div>'+
-      '<div class="qlabel">Bau das Wort aus seinen Silben:</div>'+
+      '<div class="qlabel">Bau das Wort aus den Silben – nicht alle gehören dazu:</div>'+
       '<div class="sylbuilt" id="sylBuilt"></div>'+
-      '<div class="syltiles" id="sylTiles">'+cur.syl.order.map(k=>'<button class="syltile" data-k="'+k+'">'+acc(esc(sy[k]))+'</button>').join('')+'</div>'+
+      '<div class="syltiles" id="sylTiles">'+cur.syl.order.map(k=>'<button class="syltile" data-k="'+k+'">'+acc(esc(tiles[k]))+'</button>').join('')+'</div>'+
       '<div class="grade on grade1" style="margin-top:12px"><button class="g-k" id="sylCheck">Prüfen</button></div>';
   }else if(mode==='audio'){
     cur.opts=shuffle(distractors(w,'d',3).map(o=>o.d).concat([w.d]));
@@ -3008,14 +3029,14 @@ function wireSyl(){
     b.classList.add('used');
     cur.syl.picked.push(+b.dataset.k);
     upd();
-    if(cur.syl.picked.length===cur.syl.parts.length)checkSyl();
+    if(cur.syl.picked.length===cur.syl.need)checkSyl();
   });
   $('#sylCheck').onclick=checkSyl;
   upd();
 }
 function checkSyl(){
   if(!cur||cur.answered||!cur.syl)return;
-  if(cur.syl.picked.length<cur.syl.parts.length)return;
+  if(cur.syl.picked.length<cur.syl.need)return;
   const built=cur.syl.picked.map(k=>cur.syl.parts[k]).join('');
   resolveCard(normRu(built)===normRu(cur.w.r));
 }

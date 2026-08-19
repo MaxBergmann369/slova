@@ -3888,6 +3888,29 @@ function isLongWord(w){
   const plain=String(w.r).replace(/́/g,'');
   return !/\s|-/.test(plain)&&plain.length>=9&&syllables(w.r).length>=3;
 }
+function sylOK(w){
+  const plain=String(w.r).replace(/́/g,'');
+  return !/\s|-/.test(plain)&&plain.length>=6&&syllables(w.r).length>=2;
+}
+/* Silben-Puzzle: richtige Silben plus falsche aus anderen Wörtern.
+   Ohne falsche Silben löst man das Puzzle durch Ausschluss, ohne das Wort zu können. */
+function sylTiles(p,parts){
+  const bad=new Set(parts.map(s=>s.replace(/́/g,'').toLowerCase()));
+  const avg=parts.reduce((a,s)=>a+s.replace(/́/g,'').length,0)/parts.length;
+  const pool=[],seen=new Set();
+  const src=shuffle(p.words.slice()).slice(0,80);
+  src.forEach(o=>{
+    if(/\s|-/.test(o.r))return;
+    syllables(o.r).forEach(s=>{
+      const k=s.replace(/́/g,'').toLowerCase();
+      if(bad.has(k)||seen.has(k)||k.length<2)return;
+      seen.add(k);pool.push(s);
+    });
+  });
+  pool.sort((a,b)=>Math.abs(a.replace(/́/g,'').length-avg)-Math.abs(b.replace(/́/g,'').length-avg));
+  const n=parts.length<=3?2:3;
+  return shuffle(parts.concat(shuffle(pool.slice(0,n*3)).slice(0,n)));
+}
 function formsBox(w){
   const f=IDIOM_FORMS[String(w.r).replace(/́/g,'')];
   if(!f)return '';
@@ -4144,7 +4167,7 @@ function renderCard(){
     if(sess.st[k].ok===1&&isLongWord(w)&&Math.random()<.6)mode='syl';
   }
   else if(mode==='mix')mode=(st&&st.c>=2)?(Math.random()<.6?'type':'mcRev'):(Math.random()<.5?'mc':'mcRev');
-  if(mode==='type'&&isLongWord(w)&&Math.random()<.5)mode='syl';
+  if(mode==='type'&&sylOK(w)&&Math.random()<(isLongWord(w)?.6:.3))mode='syl';
   cur={p,k,w,mode,answered:false,opts:null,goodIdx:-1,optRu:(mode==='mcRev')};
   let front='';
   if(mode==='mc'){
@@ -4159,11 +4182,13 @@ function renderCard(){
       optsHtml(' opt-ru')+
       '<div class="hint" style="text-align:center;margin-top:8px">Nach dem Antworten kannst du alle Varianten anhören.</div>';
   }else if(mode==='syl'){
-    cur.syl=syllables(w.r);
+    const parts=syllables(w.r);
+    cur.tiles=sylTiles(p,parts);
+    cur.need=parts.length;
     cur.pick=[];
-    front='<div class="word-de">'+esc(w.d)+'</div><div class="qlabel">Setz das Wort aus den Silben zusammen:</div>'+
+    front='<div class="word-de">'+esc(w.d)+'</div><div class="qlabel">Setz das Wort aus den Silben zusammen – nicht alle gehören dazu:</div>'+
       '<div class="sylbuilt" id="sylBuilt">·</div>'+
-      '<div class="syls" id="sylPool">'+shuffle(cur.syl.map((s,i)=>({s,i}))).map(o=>'<button class="syl" data-s="'+o.i+'">'+acc(esc(o.s))+'</button>').join('')+'</div>'+
+      '<div class="syls" id="sylPool">'+cur.tiles.map((s,i)=>'<button class="syl" data-s="'+i+'">'+acc(esc(s))+'</button>').join('')+'</div>'+
       '<div class="type-row" style="justify-content:center"><button class="btn-ghost" id="sylUndo">⌫ zurück</button><button class="check-btn" id="sylCheck">Prüfen</button></div>';
   }else{
     front='<div class="word-de">'+esc(w.d)+'</div><div class="qlabel">Schreib es auf Russisch:</div>'+typeHtml();
@@ -4193,13 +4218,13 @@ function renderCard(){
     });
   }else if(cur.mode==='syl'){
     const draw=()=>{
-      $('#sylBuilt').textContent=cur.pick.length?cur.pick.map(i=>cur.syl[i]).join(''):'·';
+      $('#sylBuilt').textContent=cur.pick.length?cur.pick.map(i=>cur.tiles[i]).join(''):'·';
       document.querySelectorAll('#sylPool .syl').forEach(b=>{b.disabled=cur.pick.indexOf(+b.dataset.s)>=0;});
     };
     document.querySelectorAll('#sylPool .syl').forEach(b=>b.onclick=()=>{
       if(cur.answered)return;
       cur.pick.push(+b.dataset.s);draw();
-      if(cur.pick.length===cur.syl.length)checkSyl();
+      if(cur.pick.length===cur.need)checkSyl();
     });
     $('#sylUndo').onclick=()=>{if(cur.answered)return;cur.pick.pop();draw()};
     $('#sylCheck').onclick=checkSyl;
@@ -4214,8 +4239,8 @@ function renderCard(){
   }
 }
 function checkSyl(){
-  if(!cur||cur.answered)return;
-  const built=cur.pick.map(i=>cur.syl[i]).join('');
+  if(!cur||cur.answered||cur.pick.length<cur.need)return;
+  const built=cur.pick.map(i=>cur.tiles[i]).join('');
   const ok=normRu(built)===normRu(cur.w.r);
   document.querySelectorAll('#sylPool .syl').forEach(b=>b.disabled=true);
   const bl=$('#sylBuilt');if(bl)bl.classList.add(ok?'inp-ok':'inp-no');
