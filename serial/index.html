@@ -137,6 +137,13 @@ nav.tabsbar{position:sticky;top:0;z-index:20;background:var(--paper);padding:12p
 .reg{display:inline-block;font-size:.64rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:99px;margin-top:6px;vertical-align:middle}
 .reg.slang{background:#FBF0D9;color:#8A6A12}
 .reg.grob{background:var(--kalina-soft);color:var(--kalina)}
+.forms{margin-top:10px;background:var(--rust-soft);border-radius:10px;padding:10px 12px;text-align:left}
+.forms .ft{font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--rust);margin-bottom:6px}
+.forms .fr{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px;padding:3px 0;border-top:1px solid rgba(0,0,0,.05)}
+.forms .fr:first-of-type{border-top:none}
+.forms .fru{font-family:var(--serif);font-weight:700;font-size:.95rem}
+.forms .fru .acc{color:var(--rust)}
+.forms .fde{font-size:.78rem;color:var(--ink-soft);width:100%}
 .q-ru{font-family:var(--serif);font-weight:700;font-size:1.3rem;text-align:center;margin-top:14px}
 .q-ru .acc{color:var(--rust)}
 .grade{display:grid;grid-template-columns:1fr;gap:8px;margin-top:14px}
@@ -2960,7 +2967,117 @@ const PACKS=[
  {q:'Кому́ стэн отда́л ключ в конце́?',qde:'Wem gab Stan am Ende den Schlüssel?',o:['никому́ — они́ оста́лись вме́сте','ди́пперу','Мэ́йбл'],a:0},
  {q:'Что де́лает ковёр, е́сли по нему́ походи́ть?',qde:'Was macht der Teppich, wenn man darüber läuft?',o:['меня́ет тела́','де́лает неви́димым','ничего́'],a:0},
  {q:'Как зус доби́лся бо́льшей зарпла́ты?',qde:'Wie bekam Soos mehr Gehalt?',o:['но́вым ме́тодом перегово́ров','он попроси́л ве́жливо','он уво́лился'],a:0},
- {q:'Почему́ прие́хала поли́ция?',qde:'Warum kam die Polizei?',o:['из-за гро́мкого сме́ха','из-за кра́жи','из-за пожа́ра'],a:0}]}
+ {q:'Почему́ прие́хала поли́ция?',qde:'Warum kam die Polizei?',o:['из-за гро́мкого сме́ха','из-за кра́жи','из-за пожа́ра'],a:0}]},
+
+{id:'gf-16-5',ic:'🔑',t:'Folge 16 · Teil 5',tru:'Мир ме́жду близнеца́ми',ep:'Staffel 1 · Folge 16',
+ url:'https://www.youtube.com/watch?v=j1QbLGAerU8&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=81',
+ note:'Warum Dipper wirklich ausziehen wollte – und warum am Ende keiner den Schlüssel braucht.',
+ words:[
+ {r:'престу́пник',t:'pris-TUP-nik',d:'Verbrecher, Straftäter',e:'Идём лови́ть престу́пников!',x:'Gehen wir Verbrecher fangen!'},
+ {r:'посиде́лки',t:'pa-ssi-DJEL-ki',d:'gemütliches Beisammensein',e:'Ты ста́ла устра́ивать посиде́лки с подру́жками.',x:'Du hast angefangen, dich mit deinen Freundinnen zu treffen.'},
+ {r:'пери́од',t:'pi-RI-at',d:'Periode, Phase',e:'У меня́ сейча́с тру́дный пери́од.',x:'Ich habe gerade eine schwierige Phase.'},
+ {r:'тру́дный',t:'TRUD-nyj',d:'schwierig, schwer',e:'Э́то был тру́дный день.',x:'Das war ein schwieriger Tag.'},
+ {r:'чу́вствовать себя́',t:'TSCHUST-wa-watj ssi-BJA',d:'sich fühlen',e:'Ты чу́вствуешь себя́ неуклю́жим.',x:'Du fühlst dich unbeholfen.'},
+ {r:'приду́мывать',t:'pri-DU-my-watj',d:'sich ausdenken, erfinden',e:'Ра́ньше мы всегда́ что́-то приду́мывали.',x:'Früher haben wir uns immer etwas ausgedacht.'},
+ {r:'верну́ться на круги́ своя́',t:'wir-NUT-sa na kru-GI swa-JA',d:'wieder beim Alten sein',e:'Ка́жется, всё верну́лось на круги́ своя́.',x:'Es scheint, alles ist wieder beim Alten.'},
+ {r:'де́душка',t:'DJE-dusch-ka',d:'Opa, Großvater',e:'Иди́те домо́й, де́душка.',x:'Gehen Sie nach Hause, Opa.'},
+ {r:'мужи́к',t:'mu-SCHIK',d:'Kerl, Mann',e:'Вот так мужи́к на свое́й террито́рии!',x:'So ein Kerl auf seinem eigenen Gebiet!'},
+ {r:'террито́рия',t:'ti-ri-TO-ri-ja',d:'Gebiet, Territorium',e:'Э́то моя́ террито́рия.',x:'Das ist mein Gebiet.'},
+ {r:'старьё',t:'star-JO',d:'alter Kram, Gerümpel',e:'Что ты сде́лаешь с э́тим старьём?',x:'Was machst du mit diesem alten Kram?'},
+ {r:'поскоре́е',t:'pas-ka-RJE-je',d:'möglichst schnell',e:'Я поскоре́е изба́влюсь от него́.',x:'Ich werde es möglichst schnell los.'},
+ {r:'ключ',t:'KLJUTSCH',d:'Schlüssel',e:'Ключ мне бо́льше не ну́жен.',x:'Ich brauche den Schlüssel nicht mehr.'},
+ {r:'отве́т',t:'at-WJET',d:'Antwort',e:'Мой отве́т — да.',x:'Meine Antwort ist ja.'},
+ {r:'измени́ться',t:'is-mi-NIT-sa',d:'sich verändern',e:'Почему́ ты так измени́лся?',x:'Warum hast du dich so verändert?'},
+ {r:'втыка́ть',t:'fty-KATJ',d:'kapieren, schnallen',e:'Я что́-то не втыка́ю.',x:'Ich kapiere das irgendwie nicht.'},
+ {r:'разо́чек',t:'ra-SO-tschik',d:'ein einziges Mal',e:'Ну хоть разо́чек!',x:'Na, wenigstens ein einziges Mal!'},
+ {r:'поцелова́ться',t:'pa-zy-la-WAT-sa',d:'sich küssen',e:'Дава́й поцелу́емся!',x:'Lass uns küssen!'},
+ {r:'до́брой но́чи',t:'DOB-raj NO-tschi',d:'Gute Nacht',e:'До́брой но́чи, Мэ́йбл.',x:'Gute Nacht, Mabel.'}
+ ],
+ q:[
+ {q:'Почему́ ди́ппер хоте́л свою́ ко́мнату?',qde:'Warum wollte Dipper ein eigenes Zimmer?',o:['он чу́вствовал себя́ забы́тым','он люби́л тишину́','ему́ бы́ло те́сно'],a:0},
+ {q:'Кому́ доста́лась но́вая ко́мната?',qde:'Wer bekam am Ende das neue Zimmer?',o:['зусу — как ко́мната о́тдыха','ди́пперу','Мэ́йбл'],a:0},
+ {q:'Что сде́лали с ковро́м?',qde:'Was passierte mit dem Teppich?',o:['от него́ изба́вились','его́ помы́ли','его́ спря́тали'],a:0},
+ {q:'Кто оста́лся свиньёй до́льше всех?',qde:'Wer blieb am längsten ein Schwein?',o:['зус','дя́дя стэн','Кэ́нди'],a:0}]},
+
+{id:'gf-17-1',ic:'▶️',t:'Folge 17 · Teil 1',tru:'Безу́мные фана́тки · Teil 1',ep:'Staffel 1 · Folge 17',watchOnly:true,
+ url:'https://www.youtube.com/watch?v=tXv7wnSlDSs&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=82',
+ note:'Für diesen Teil stellt YouTube kein Transkript bereit – deshalb gibt es hier nur den Video-Link, damit deine Folge lückenlos bleibt. Schau ihn vor Teil 2 an.',
+ words:[],q:[]},
+
+{id:'gf-17-2',ic:'🎤',t:'Folge 17 · Teil 2',tru:'Мальчи́ковая гру́ппа',ep:'Staffel 1 · Folge 17',
+ url:'https://www.youtube.com/watch?v=s6_3acDBhoA&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=83',
+ note:'Mabel will ihre Lieblingsband sehen, Dipper glaubt an Gehirnwäsche – und hinter der Bühne steht ein Käfig.',
+ words:[
+ {r:'восхище́ние',t:'wass-chi-SCHTSCHE-ni-je',d:'Begeisterung, Bewunderung',e:'Покажи́те, как вы бежи́те от восхище́ния!',x:'Zeigt, wie ihr vor Begeisterung rennt!'},
+ {r:'распро́дан',t:'ras-PRO-dan',d:'ausverkauft',e:'Все биле́ты распро́даны.',x:'Alle Tickets sind ausverkauft.'},
+ {r:'тушёнка',t:'tu-SCHON-ka',d:'Dosenfleisch, Eintopfkonserve',e:'У него́ по́лный подва́л тушёнки.',x:'Er hat einen Keller voll Dosenfleisch.'},
+ {r:'загото́вки',t:'sa-ga-TOF-ki',d:'Vorräte, Eingemachtes',e:'Э́то загото́вки на коне́ц све́та.',x:'Das sind die Vorräte für den Weltuntergang.'},
+ {r:'суета́',t:'ssu-i-TA',d:'Hektik, Getue',e:'Что за суета́?',x:'Was soll die Hektik?'},
+ {r:'не́рвный',t:'NJERW-nyj',d:'nervös, nervlich',e:'Ты сего́дня не́рвнее, чем обы́чно.',x:'Du bist heute nervöser als sonst.'},
+ {r:'промы́ть мозги́',t:'pra-MYTJ mas-GI',d:'einer Gehirnwäsche unterziehen',e:'Он промы́л ей мозги́ свое́й му́зыкой.',x:'Er hat ihr mit seiner Musik das Gehirn gewaschen.'},
+ {r:'забега́ловка',t:'sa-bi-GA-laf-ka',d:'Imbissbude, Kneipe',e:'Мы сиде́ли в на́шей забега́ловке.',x:'Wir saßen in unserer Stammkneipe.'},
+ {r:'гадёныш',t:'ga-DJO-nysch',d:'kleiner Mistkerl',e:'Э́тот гадёныш на́чал игра́ть свою́ му́зыку.',x:'Dieser kleine Mistkerl fing an, seine Musik zu spielen.'},
+ {r:'моргну́ть',t:'marg-NUTJ',d:'blinzeln, zwinkern',e:'Я и моргну́ть не успе́л.',x:'Ich konnte nicht mal blinzeln.'},
+ {r:'докопа́ться до и́стины',t:'da-ka-PAT-sa da IS-ti-ny',d:'der Wahrheit auf den Grund gehen',e:'Мы должны́ докопа́ться до и́стины.',x:'Wir müssen der Wahrheit auf den Grund gehen.'},
+ {r:'до дна́',t:'da DNA',d:'bis auf den Grund, ex',e:'Снача́ла я допью́ ба́нку до дна.',x:'Zuerst trinke ich die Dose leer.'},
+ {r:'фальши́вка',t:'falj-SCHIF-ka',d:'Fälschung, Fake',e:'Мальчи́ковые гру́ппы — не фальши́вка.',x:'Boygroups sind keine Fälschung.'},
+ {r:'клони́рование',t:'kla-NI-ra-wa-ni-je',d:'Klonen',e:'Э́то ка́псулы для клони́рования.',x:'Das sind Kapseln zum Klonen.'},
+ {r:'хомячо́к',t:'cha-mi-TSCHOK',d:'Hamster',e:'Э́то огро́мная кле́тка для хомячко́в.',x:'Das ist ein riesiger Hamsterkäfig.'},
+ {r:'надува́ть губу́',t:'na-du-WATJ gu-BU',d:'schmollen, eine Schnute ziehen',e:'Почему́ ты не надува́ешь губу́?',x:'Warum schmollst du nicht?'},
+ {r:'поведе́ние',t:'pa-wi-DJE-ni-je',d:'Verhalten, Benehmen',e:'Вам должно́ быть сты́дно за своё поведе́ние.',x:'Ihr solltet euch für euer Verhalten schämen.'},
+ {r:'собра́т',t:'sab-RAT',d:'Artgenosse, Mitbruder',e:'Вас легко́ замени́ть ва́шими собра́тьями.',x:'Man kann euch leicht durch eure Artgenossen ersetzen.'},
+ {r:'танцева́ть',t:'tan-zy-WATJ',d:'tanzen',e:'А ну-ка танцу́й!',x:'Los, tanz!'},
+ {r:'прояви́ть',t:'pra-i-WITJ',d:'zeigen, an den Tag legen',e:'Прояви́ уваже́ние!',x:'Zeig Respekt!'},
+ {r:'нарыва́ться',t:'na-ry-WAT-sa',d:'Ärger suchen, es drauf anlegen',e:'Не нарыва́йся!',x:'Leg dich nicht mit mir an!'},
+ {r:'взорва́ться',t:'wsar-WAT-sa',d:'explodieren, platzen',e:'Мои́ мозги́ сейча́с взорву́тся!',x:'Mein Gehirn explodiert gleich!'},
+ {r:'толстя́к',t:'tal-STJAK',d:'Dicker, dicker Kerl',e:'Кто был э́тот стра́шный толстя́к?',x:'Wer war dieser furchtbare Dicke?'},
+ {r:'ге́нная инжене́рия',t:'GJEN-na-ja in-schi-NJE-ri-ja',d:'Gentechnik',e:'Он созда́л нас с по́мощью ге́нной инжене́рии.',x:'Er hat uns mit Gentechnik erschaffen.'},
+ {r:'жесто́кий',t:'schis-TO-kij',d:'grausam, hart',e:'Э́то дово́льно жесто́ко.',x:'Das ist ziemlich grausam.'},
+ {r:'пере́чить',t:'pi-RJE-tschitj',d:'widersprechen, sich widersetzen',e:'Ему́ нельзя́ пере́чить.',x:'Man darf ihm nicht widersprechen.'}
+ ],
+ q:[
+ {q:'Куда́ хоте́ли попа́сть Мэ́йбл и подру́ги?',qde:'Wohin wollten Mabel und ihre Freundinnen?',o:['на конце́рт','в кино́','в бассе́йн'],a:0},
+ {q:'Во что ве́рит дя́дя стэн?',qde:'Woran glaubt Onkel Stan?',o:['му́зыка промыва́ет мозги́','му́зыка поле́зна','му́зыки не существу́ет'],a:0},
+ {q:'Где живу́т чле́ны гру́ппы?',qde:'Wo leben die Bandmitglieder?',o:['в огро́мной кле́тке','в оте́ле','в авто́бусе'],a:0},
+ {q:'Как их созда́ли?',qde:'Wie wurden sie erschaffen?',o:['ге́нной инжене́рией','их наняли́','они́ бра́тья'],a:0}]},
+
+{id:'gf-17-3',ic:'💿',t:'Folge 17 · Teil 3',tru:'Скры́тое посла́ние',ep:'Staffel 1 · Folge 17',
+ url:'https://www.youtube.com/watch?v=a7rDK1DLn6w&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=84',
+ note:'Die Band versteckt sich in der Hütte, Dipper sucht die geheime Botschaft in der Platte – und findet sie fast.',
+ words:[
+ {r:'му́дрый',t:'MUD-ryj',d:'weise, klug',e:'Э́то о́чень му́драя мысль.',x:'Das ist ein sehr weiser Gedanke.'},
+ {r:'положи́ться',t:'pa-la-SCHIT-sa',d:'sich verlassen auf',e:'Положи́сь на меня́!',x:'Verlass dich auf mich!'},
+ {r:'тёлка',t:'TJOL-ka',d:'Tussi, Weib (abwertend)',e:'Ты что, назва́л меня́ тёлкой?',x:'Hast du mich etwa Tussi genannt?'},
+ {r:'ра́зум',t:'RA-sum',d:'Verstand, Vernunft',e:'Му́зыка — э́то контро́ль над ра́зумом.',x:'Musik ist Kontrolle über den Verstand.'},
+ {r:'прислу́шаться',t:'pris-LU-schat-sa',d:'genau hinhören; auf jemanden hören',e:'Е́сли прислу́шаться, ты услы́шишь посла́ние.',x:'Wenn man genau hinhört, hört man die Botschaft.'},
+ {r:'заме́длить',t:'sa-MJED-litj',d:'verlangsamen',e:'Ну́жно заме́длить проигрыва́ние.',x:'Man muss die Wiedergabe verlangsamen.'},
+ {r:'пласти́нка',t:'plas-TIN-ka',d:'Schallplatte',e:'Дай сюда́ пласти́нку!',x:'Gib die Schallplatte her!'},
+ {r:'лечи́ть',t:'li-TSCHITJ',d:'heilen, behandeln',e:'Мы тебя́ пока́ ле́чим.',x:'Wir behandeln dich erst mal.'},
+ {r:'тащи́ть',t:'ta-SCHTSCHITJ',d:'schleppen, ziehen',e:'Продолжа́ем тащи́ть су́мку.',x:'Wir schleppen die Tasche weiter.'},
+ {r:'гастро́ли',t:'gas-TRO-li',d:'Tournee, Gastspiel',e:'Стра́нный у вас гастро́льный авто́бус.',x:'Ihr habt einen seltsamen Tourbus.'},
+ {r:'пита́тельный',t:'pi-TA-tilj-nyj',d:'nahrhaft, Nähr-',e:'Где пита́тельные тру́бки?',x:'Wo sind die Nährschläuche?'},
+ {r:'зверёк',t:'swi-RJOK',d:'kleines Tier, Tierchen',e:'Я хочу́ скака́ть как лесно́й зверёк.',x:'Ich will hüpfen wie ein Waldtierchen.'},
+ {r:'клочо́к',t:'kla-TSCHOK',d:'Fetzen, Büschel',e:'Я нашёл доро́гу по клочка́м воло́с.',x:'Ich fand den Weg anhand der Haarbüschel.'},
+ {r:'вне́шность',t:'WNJESCH-nastj',d:'Äußeres, Aussehen',e:'Па́рни с идеа́льной вне́шностью.',x:'Jungs mit perfektem Aussehen.'},
+ {r:'переверну́ть',t:'pi-ri-wir-NUTJ',d:'umdrehen, auf den Kopf stellen',e:'Я переверну́ весь го́род.',x:'Ich stelle die ganze Stadt auf den Kopf.'},
+ {r:'небезопа́сно',t:'ni-bis-a-PASS-na',d:'nicht sicher, gefährlich',e:'Па́рни, тут небезопа́сно.',x:'Jungs, hier ist es nicht sicher.'},
+ {r:'привя́зываться',t:'pri-WJA-sy-wat-sa',d:'sich anhängen, ans Herz wachsen',e:'Не на́до к ним привя́зываться.',x:'Wir sollten uns nicht an sie gewöhnen.'},
+ {r:'коси́чка',t:'ka-SSITSCH-ka',d:'Zöpfchen',e:'Она́ заплела́ ему́ коси́чки.',x:'Sie hat ihm Zöpfchen geflochten.'},
+ {r:'реа́льность',t:'ri-ALJ-nastj',d:'Realität, Wirklichkeit',e:'Бежи́м пода́льше от реа́льности.',x:'Fliehen wir weit weg von der Realität.'},
+ {r:'потра́тить',t:'pat-RA-titj',d:'ausgeben, aufwenden',e:'Я потра́тил це́лый день.',x:'Ich habe einen ganzen Tag aufgewendet.'},
+ {r:'перенести́',t:'pi-ri-nis-TI',d:'übertragen; verschieben',e:'Я перенёс за́пись на пласти́нку.',x:'Ich habe die Aufnahme auf Platte übertragen.'},
+ {r:'плева́ться',t:'pli-WAT-sa',d:'spucken, prusten',e:'Гото́вься плева́ться газиро́вкой!',x:'Mach dich bereit, die Limo auszuprusten!'},
+ {r:'гипно́з',t:'gip-NOS',d:'Hypnose',e:'Зна́чит, э́то всё-таки гипно́з.',x:'Also ist es doch Hypnose.'},
+ {r:'смотрова́я площа́дка',t:'sma-tra-WA-ja pla-SCHTSCHAT-ka',d:'Aussichtspunkt',e:'Гото́в е́хать на смотрову́ю площа́дку?',x:'Bereit, zum Aussichtspunkt zu fahren?'},
+ {r:'кату́шка',t:'ka-TUSCH-ka',d:'Spule, Rolle',e:'Он чуть не съел кату́шку со ско́тчем.',x:'Er hätte fast die Klebebandrolle gegessen.'},
+ {r:'скотч',t:'SKOTSCH',d:'Klebeband, Tesa',e:'Дай мне скотч, пожа́луйста.',x:'Gib mir bitte das Klebeband.'},
+ {r:'успоко́ить',t:'us-pa-KO-itj',d:'beruhigen',e:'Вро́де удало́сь их успоко́ить.',x:'Wir konnten sie wohl beruhigen.'}
+ ],
+ q:[
+ {q:'Кому́ помога́ют Мэ́йбл и подру́ги?',qde:'Wem helfen Mabel und ihre Freundinnen?',o:['мальчи́ковой гру́ппе','дя́де стэ́ну','ди́пперу'],a:0},
+ {q:'Что де́лает ди́ппер с пласти́нкой?',qde:'Was macht Dipper mit der Schallplatte?',o:['замедля́ет проигрыва́ние','лома́ет её','дари́т её'],a:0},
+ {q:'Нашёл ли он скры́тое посла́ние?',qde:'Fand er die versteckte Botschaft?',o:['нет, там ничего́ не́ было','да, сра́зу','да, но по́здно'],a:0},
+ {q:'Кто и́щет гру́ппу повсю́ду?',qde:'Wer sucht die Band überall?',o:['их продю́сер','поли́ция','дя́дя стэн'],a:0}]}
 ];
 
 /* ================= Zustand ================= */
@@ -2979,9 +3096,9 @@ function save(){if(storeMode==='local')try{localStorage.setItem(KEY,JSON.stringi
 /* ---- Sprachebene: was man gefahrlos sagen kann und was nicht ----
    slang = locker, nur unter Freunden/Gleichaltrigen · grob = besser nur verstehen, nicht benutzen */
 const REGISTER={};
-'чувак,тусовка,тусоваться,отвисать,кайфовать,кайфолом,втюриться,врубиться,отстой,потрясно,обалдеть,по барабану,круто,мотать отсюда,свалить,предки,прикол,прикольный,клёвый,зажигать,запросто,дружище,умник,смыться,сгодиться,влипать,оторваться,достать,пахать,глазеть,балда,бездельник,дурдом,спереть,зависнуть,реально,вкуснятина,всё путём,чушь,бред,перетрусить,струсить,сам напросился,ерунда,кафешка,пацан,вырубить,надурить,газовать,здоровяк,жирный,воришка,прикинь,таскать,стащить,убираться,спальник,беситься,тусовщица,угробить,девчачий,закидоны,голышом,молодчина,детка,подлиза,ныть'
+'чувак,тусовка,тусоваться,отвисать,кайфовать,кайфолом,втюриться,врубиться,отстой,потрясно,обалдеть,по барабану,круто,мотать отсюда,свалить,предки,прикол,прикольный,клёвый,зажигать,запросто,дружище,умник,смыться,сгодиться,влипать,оторваться,достать,пахать,глазеть,балда,бездельник,дурдом,спереть,зависнуть,реально,вкуснятина,всё путём,чушь,бред,перетрусить,струсить,сам напросился,ерунда,кафешка,пацан,вырубить,надурить,газовать,здоровяк,жирный,воришка,прикинь,таскать,стащить,убираться,спальник,беситься,тусовщица,угробить,девчачий,закидоны,голышом,молодчина,детка,подлиза,ныть,втыкать,мужик,забегаловка,нарываться,разочек'
  .split(',').forEach(w=>{REGISTER[w.replace(/́/g,'')]='slang'});
-'заткнись,дешёвка,попрошайка,вонючка,придурок,недоумок,болван,дурачок,безмозглый,мерзавец,гад,урод,слабак,размазня,карга,жулик,зануда,чёрт побери,плевать,заткнуться,старпёр,тупой'
+'заткнись,дешёвка,попрошайка,вонючка,придурок,недоумок,болван,дурачок,безмозглый,мерзавец,гад,урод,слабак,размазня,карга,жулик,зануда,чёрт побери,плевать,заткнуться,старпёр,тупой,гадёныш,толстяк,тёлка'
  .split(',').forEach(w=>{REGISTER[w.replace(/́/g,'')]='grob'});
 function regOf(w){return REGISTER[String(w.r).replace(/́/g,'')]||''}
 function regBadge(w){
@@ -3012,7 +3129,75 @@ const IDIOMS=['держать себя в руках','взять под кры�
 'во имя','искажать','смысл жизни','в ходе','чувство юмора','понятия не иметь','на исходе','свести с ума',
 'пышать жаром','принять на работу','отыграться','превзойти','разучиться','наткнуться',
 'ходить по краю','ради любви','искусственное дыхание','во сне',
-'последняя капля','перегибать палку','волшебная палочка'];
+'последняя капля','перегибать палку','волшебная палочка',
+'вернуться на круги своя','промыть мозги','докопаться до истины','надувать губу','до дна','положиться'];
+/* ---- Wie sich eine Wendung im Satz verändert ----
+   Redewendungen stehen im Wörterbuch im Infinitiv, im Gespräch hörst du sie aber
+   konjugiert, im Befehl oder in der Vergangenheit. Hier stehen die Formen, die
+   wirklich vorkommen – jeweils: normale Aussage · Befehl/Verneinung · Vergangenheit. */
+const IDIOM_FORMS={
+'перегибать палку':['Ты перегиба́ешь па́лку.|Du überspannst den Bogen.','Не перегиба́й па́лку!|Übertreib es nicht!','Он перегну́л па́лку.|Er hat den Bogen überspannt.'],
+'держать себя в руках':['Я держу́ себя́ в рука́х.|Ich beherrsche mich.','Держи́ себя́ в рука́х!|Reiß dich zusammen!','Она́ не удержа́ла себя́ в рука́х.|Sie hat sich nicht beherrscht.'],
+'вешать нос':['Ты ве́чно ве́шаешь нос.|Du lässt ständig den Kopf hängen.','Не ве́шай нос!|Kopf hoch!','Он совсе́м пове́сил нос.|Er hat völlig den Kopf hängen lassen.'],
+'взять под крыло':['Он берёт нови́чка под крыло́.|Er nimmt den Neuen unter seine Fittiche.','Возьми́ её под крыло́.|Nimm sie unter deine Fittiche.','Дя́дя взял нас под крыло́.|Der Onkel nahm uns unter seine Fittiche.'],
+'стереть в порошок':['Я сотру́ тебя́ в порошо́к!|Ich mache dich zu Staub!','Не стира́й его́ в порошо́к.|Mach ihn nicht fertig.','Он стёр сопе́рника в порошо́к.|Er hat den Gegner zermalmt.'],
+'как на иголках':['Я как на иго́лках.|Ich sitze wie auf Nadeln.','Не сиди́ как на иго́лках.|Sitz nicht da wie auf Nadeln.','Она́ была́ как на иго́лках.|Sie saß wie auf Nadeln.'],
+'разбить сердце':['Ты разбива́ешь мне се́рдце.|Du brichst mir das Herz.','Не разбива́й ему́ се́рдце.|Brich ihm nicht das Herz.','Она́ разби́ла ему́ се́рдце.|Sie hat ihm das Herz gebrochen.'],
+'искушать судьбу':['Ты искуша́ешь судьбу́.|Du forderst das Schicksal heraus.','Не искуша́й судьбу́!|Fordere das Schicksal nicht heraus!','Мы искуси́ли судьбу́.|Wir haben das Schicksal herausgefordert.'],
+'набрать обороты':['Ве́чер набира́ет оборо́ты.|Der Abend nimmt Fahrt auf.','Дава́й набира́ть оборо́ты!|Legen wir einen Zahn zu!','Всё бы́стро набра́ло оборо́ты.|Alles nahm schnell Fahrt auf.'],
+'поставить на место':['Она́ ста́вит его́ на ме́сто.|Sie weist ihn in die Schranken.','Поста́вь его́ на ме́сто!|Weise ihn in die Schranken!','Мэ́йбл поста́вила его́ на ме́сто.|Mabel hat ihn in die Schranken gewiesen.'],
+'сделать вид':['Он де́лает вид, что не слы́шит.|Er tut so, als würde er nichts hören.','Не де́лай вид, что тебе́ всё равно́.|Tu nicht so, als wäre es dir egal.','Я сде́лал вид, что сплю.|Ich tat so, als würde ich schlafen.'],
+'закатить истерику':['Она́ ка́ждый раз зака́тывает исте́рику.|Sie macht jedes Mal eine Szene.','То́лько не закати́ исте́рику!|Mach bloß keine Szene!','Он закати́л исте́рику.|Er machte eine Szene.'],
+'плевать':['Мне плева́ть.|Das ist mir egal.','Плюнь на э́то!|Vergiss es einfach!','Ему́ бы́ло плева́ть.|Es war ihm egal.'],
+'в ударе':['Я сего́дня в уда́ре.|Ich bin heute in Topform.','Будь в уда́ре!|Sei in Topform!','Он был в уда́ре.|Er war in Topform.'],
+'понизить планку':['Ты понижа́ешь пла́нку.|Du senkst die Ansprüche.','Не понижа́й пла́нку!|Senk deine Ansprüche nicht!','Она́ пони́зила пла́нку.|Sie hat ihre Ansprüche gesenkt.'],
+'терпеть не мочь':['Я терпе́ть не могу́ ждать.|Ich kann Warten nicht ausstehen.','Он терпе́ть не мо́жет э́ту му́зыку.|Er kann diese Musik nicht ausstehen.','Она́ терпе́ть не могла́ его́.|Sie konnte ihn nicht ausstehen.'],
+'свернуть шею':['Я тебе́ ше́ю сверну́!|Ich dreh dir den Hals um!','Не сверни́ себе́ ше́ю.|Brich dir nicht den Hals.','Он чуть не сверну́л ше́ю.|Er hätte sich fast den Hals gebrochen.'],
+'обращать внимание':['Я не обраща́ю внима́ния.|Ich beachte es nicht.','Не обраща́й внима́ния!|Achte nicht darauf!','Она́ не обрати́ла внима́ния.|Sie hat es nicht beachtet.'],
+'убивать время':['Мы про́сто убива́ем вре́мя.|Wir schlagen nur die Zeit tot.','Не убива́й вре́мя зря.|Vertrödle die Zeit nicht.','Он уби́л весь ве́чер.|Er hat den ganzen Abend vertrödelt.'],
+'не по себе':['Мне здесь не по себе́.|Mir ist hier unwohl.','Тебе́ не по себе́?|Ist dir unwohl?','Ему́ бы́ло не по себе́.|Ihm war unwohl.'],
+'сходить с ума':['Я схожу́ с ума́!|Ich werde verrückt!','Не сходи́ с ума́!|Dreh nicht durch!','Она́ сошла́ с ума́ от ра́дости.|Sie ist vor Freude durchgedreht.'],
+'свести с ума':['Ты сво́дишь меня́ с ума́.|Du machst mich verrückt.','Не своди́ его́ с ума́.|Mach ihn nicht verrückt.','Она́ свела́ его́ с ума́.|Sie hat ihn verrückt gemacht.'],
+'давить на жалость':['Он всегда́ да́вит на жа́лость.|Er drückt immer auf die Tränendrüse.','Не дави́ на жа́лость!|Drück nicht auf die Tränendrüse!','Она́ дави́ла на жа́лость.|Sie drückte auf die Tränendrüse.'],
+'совершать ошибки':['Все соверша́ют оши́бки.|Alle machen Fehler.','Не бо́йся соверша́ть оши́бки.|Hab keine Angst, Fehler zu machen.','Я соверши́л большу́ю оши́бку.|Ich habe einen großen Fehler gemacht.'],
+'нарушить закон':['Ты наруша́ешь зако́н.|Du brichst das Gesetz.','Не наруша́й зако́н!|Brich das Gesetz nicht!','Они́ нару́шили зако́н.|Sie haben das Gesetz gebrochen.'],
+'брать трубку':['Она́ не берёт тру́бку.|Sie geht nicht ans Telefon.','Возьми́ тру́бку!|Geh ans Telefon!','Он взял тру́бку сра́зу.|Er ging sofort ans Telefon.'],
+'не в духе':['Он сего́дня не в ду́хе.|Er ist heute schlecht gelaunt.','Ты не в ду́хе?|Bist du schlecht gelaunt?','Я была́ не в ду́хе.|Ich war schlecht gelaunt.'],
+'побить рекорд':['Мы побьём реко́рд.|Wir werden den Rekord brechen.','Побе́й свой реко́рд!|Brich deinen Rekord!','Он поби́л реко́рд.|Er hat den Rekord gebrochen.'],
+'подвести':['Я тебя́ не подведу́.|Ich lasse dich nicht im Stich.','Не подведи́ меня́!|Lass mich nicht hängen!','Ты меня́ подвёл.|Du hast mich im Stich gelassen.'],
+'купиться':['Он ве́чно ку́пится на э́то.|Er fällt immer darauf herein.','Не купи́сь на его́ слова́!|Fall nicht auf seine Worte herein!','Она́ купи́лась на обма́н.|Sie ist auf den Betrug hereingefallen.'],
+'смыться':['Я смыва́юсь отсю́да.|Ich mache mich hier vom Acker.','Дава́й смо́емся!|Hauen wir ab!','Они́ смы́лись с деньга́ми.|Sie sind mit dem Geld abgehauen.'],
+'влюбиться':['Я влюбля́юсь в неё.|Ich verliebe mich in sie.','Не влюби́сь сли́шком бы́стро.|Verlieb dich nicht zu schnell.','Он влюби́лся в неё сра́зу.|Er verliebte sich sofort in sie.'],
+'добиться':['Я добью́сь своего́.|Ich werde es erreichen.','Добе́йся своего́!|Erreiche dein Ziel!','Она́ доби́лась успе́ха.|Sie hat Erfolg erreicht.'],
+'по барабану':['Мне всё по бараба́ну.|Mir ist alles schnuppe.','Тебе́ что, по бараба́ну?|Ist es dir etwa egal?','Ему́ бы́ло по бараба́ну.|Ihm war es schnuppe.'],
+'зайти слишком далеко':['Ты захо́дишь сли́шком далеко́.|Du gehst zu weit.','Не заходи́ сли́шком далеко́!|Geh nicht zu weit!','Э́то зашло́ сли́шком далеко́.|Das ist zu weit gegangen.'],
+'сбить с пути':['Он сбива́ет меня́ с пути́.|Er bringt mich vom Weg ab.','Не дай сбить себя́ с пути́.|Lass dich nicht vom Weg abbringen.','Друзья́ сби́ли его́ с пути́.|Die Freunde brachten ihn vom Weg ab.'],
+'влипать':['Я ве́чно влипа́ю в исто́рии.|Ich gerate ständig in Schwierigkeiten.','Не влипа́й в исто́рии!|Geh keinen Ärger suchen!','Мы вли́пли по-кру́пному.|Wir sind übel reingeraten.'],
+'струсить':['Ты тру́сишь.|Du kneifst.','Не струсь!|Kneif nicht!','Он стру́сил в после́дний моме́нт.|Er hat im letzten Moment gekniffen.'],
+'преодолеть':['Мы преодолева́ем страх.|Wir überwinden die Angst.','Преодоле́й себя́!|Überwinde dich!','Она́ преодоле́ла все тру́дности.|Sie hat alle Schwierigkeiten überwunden.'],
+'ходить по краю':['Ты хо́дишь по кра́ю.|Du bewegst dich auf dünnem Eis.','Не ходи́ по кра́ю!|Reiz dein Glück nicht!','Он всегда́ ходи́л по кра́ю.|Er lebte immer riskant.'],
+'последняя капля':['Э́то после́дняя ка́пля.|Das bringt das Fass zum Überlaufen.','Не будь после́дней ка́плей.|Sei nicht der Tropfen zu viel.','Э́то была́ после́дняя ка́пля.|Das war der letzte Tropfen.'],
+'вести себя':['Он ведёт себя́ стра́нно.|Er benimmt sich seltsam.','Веди́ себя́ хорошо́!|Benimm dich!','Они́ вели́ себя́ ужа́сно.|Sie haben sich furchtbar benommen.'],
+'торопиться':['Я о́чень тороплю́сь.|Ich habe es sehr eilig.','Не торопи́сь!|Immer mit der Ruhe!','Она́ торопи́лась домо́й.|Sie hatte es eilig, nach Hause zu kommen.'],
+'относиться':['Как ты отно́сишься к э́тому?|Wie stehst du dazu?','Относи́сь к нему́ с уваже́нием.|Behandle ihn mit Respekt.','Он хорошо́ ко мне относи́лся.|Er hat mich gut behandelt.'],
+'наткнуться':['Я ча́сто натыка́юсь на него́.|Ich laufe ihm oft über den Weg.','Не наткни́сь на дя́дю!|Lauf nicht dem Onkel in die Arme!','Она́ наткну́лась на пра́вду.|Sie stieß auf die Wahrheit.'],
+'понятия не иметь':['Я поня́тия не име́ю.|Ich habe keine Ahnung.','Ты поня́тия не име́ешь, о чём говори́шь.|Du hast keine Ahnung, wovon du redest.','Он поня́тия не име́л.|Er hatte keine Ahnung.'],
+'промыть мозги':['Он промыва́ет ей мозги́.|Er wäscht ihr das Gehirn.','Не промыва́й мне мозги́!|Wasch mir nicht das Gehirn!','Ему́ промы́ли мозги́.|Ihm wurde das Gehirn gewaschen.'],
+'докопаться до истины':['Я докопа́юсь до и́стины.|Ich werde der Wahrheit auf den Grund gehen.','Дава́й дока́пываться до и́стины!|Gehen wir der Sache auf den Grund!','Они́ докопа́лись до и́стины.|Sie sind der Wahrheit auf den Grund gegangen.'],
+'надувать губу':['Он ве́чно надува́ет губу́.|Er schmollt ständig.','Не надува́й губу́!|Schmoll nicht!','Она́ наду́ла губу́.|Sie hat geschmollt.'],
+'вернуться на круги своя':['Всё возвраща́ется на круги́ своя́.|Alles kehrt zum Alten zurück.','Пусть всё вернётся на круги́ своя́.|Möge alles wieder beim Alten sein.','Всё верну́лось на круги́ своя́.|Alles war wieder beim Alten.'],
+'положиться':['Я на тебя́ полага́юсь.|Ich verlasse mich auf dich.','Положи́сь на меня́!|Verlass dich auf mich!','Он положи́лся на друзе́й.|Er hat sich auf die Freunde verlassen.'],
+'до дна':['Пьём до дна!|Auf ex!','Допе́й до дна.|Trink aus.','Он вы́пил всё до дна.|Er hat alles ausgetrunken.'],
+'чувствовать себя':['Я чу́вствую себя́ хорошо́.|Ich fühle mich gut.','Чу́вствуй себя́ как до́ма!|Fühl dich wie zu Hause!','Он чу́вствовал себя́ неуклю́жим.|Er fühlte sich unbeholfen.']
+};
+function formsBox(w){
+  const f=IDIOM_FORMS[String(w.r).replace(/́/g,'')];
+  if(!f)return '';
+  return '<div class="forms"><div class="ft">So verändert sie sich im Satz</div>'+
+    f.map(s=>{const p=s.split('|');
+      return '<div class="fr"><span class="fru">'+acc(esc(p[0]))+'</span>'+sayBtn(p[0])+
+        '<span class="fde">'+esc(p[1])+'</span></div>';}).join('')+'</div>';
+}
 function idiomPack(){
   const want=new Set(IDIOMS);
   const words=[],seen=new Set();
@@ -3182,6 +3367,7 @@ function resolve(ok){
     '<div class="answer"><div class="word" style="font-size:1.6rem;margin:2px 0 4px">'+acc(esc(w.r))+' '+sayBtn(w.r,'speak')+'</div>'+
     '<div class="trans">['+esc(w.t)+']</div><div class="mean">'+esc(w.d)+'</div>'+regBadge(w)+
     (w.e?'<div class="ex"><div class="ru">'+acc(esc(w.e))+' '+sayBtn(w.e)+'</div><div class="de">'+esc(w.x||'')+'</div></div>':'')+
+    formsBox(w)+
     (cur.optRu?hearAll(cur.opts,'Alle Antwortmöglichkeiten anhören:'):'')+
     '</div><div class="grade"><button onclick="nextCard()">Weiter</button></div>';
   speak(w.r);
@@ -3348,6 +3534,7 @@ function showWords(pid){
       return '<div class="row"><div class="l"><div class="ru">'+acc(esc(w.r))+'</div>'+
         '<div class="tr">['+esc(w.t||'')+']</div><div class="de">'+esc(w.d)+' '+regBadge(w)+'</div>'+
         (w.e?'<div class="de" style="margin-top:4px;font-style:italic">'+acc(esc(w.e))+' '+sayBtn(w.e)+'</div>':'')+
+        formsBox(w)+
         '</div><div>'+(st&&st.c>=2?'<span style="color:var(--birch);font-weight:700">✓</span>':'')+'</div>'+
         sayBtn(w.r)+'</div>';
     }).join('')+
