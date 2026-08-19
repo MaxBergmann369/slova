@@ -137,6 +137,12 @@ nav.tabsbar{position:sticky;top:0;z-index:20;background:var(--paper);padding:12p
 .reg{display:inline-block;font-size:.64rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:99px;margin-top:6px;vertical-align:middle}
 .reg.slang{background:#FBF0D9;color:#8A6A12}
 .reg.grob{background:var(--kalina-soft);color:var(--kalina)}
+.lockbox{background:var(--card);border:1px dashed var(--frost);border-radius:var(--radius);padding:18px;text-align:center;margin-bottom:8px}
+.lockbox .lk-t{font-family:var(--serif);font-weight:700;font-size:1.05rem}
+.lockbox .lk-s{font-size:.82rem;color:var(--ink-soft);margin:6px 0 12px;line-height:1.6}
+.lockbox .lk-h{font-size:.72rem;color:var(--ink-faint);margin-top:10px}
+.gate-row{display:flex;align-items:center;gap:10px;font-size:.86rem;font-weight:600;cursor:pointer;margin-top:4px}
+.gate-row input{width:18px;height:18px;accent-color:var(--rust)}
 .forms{margin-top:10px;background:var(--rust-soft);border-radius:10px;padding:10px 12px;text-align:left}
 .forms .ft{font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--rust);margin-bottom:6px}
 .forms .fr{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px;padding:3px 0;border-top:1px solid rgba(0,0,0,.05)}
@@ -200,6 +206,12 @@ textarea{width:100%;min-height:110px;border:1px solid var(--frost);border-radius
       <b>2.</b> Danach das passende Wortpaket hier üben (5 Minuten reichen).<br>
       <b>3.</b> Dieselbe Folge nochmal schauen – du wirst überrascht sein, wie viel mehr du verstehst.<br>
       <b>4.</b> Mit „In СЛОВА́ importieren“ wandern die Wörter in deinen normalen Vokabeltrainer und kommen dort automatisch zur Wiederholung.</p>
+  </div>
+  <div class="panel">
+    <h3>Folgen-Sperre</h3>
+    <p class="hint" style="margin-top:0">Nach jeder Folge gibt es ein Gesamtpaket mit allen Wörtern der Folge. Erst wenn du dessen Prüfung bestehst (25 Karten, ab 85 %), wird die nächste Folge freigeschaltet. Was du schon angefangen hast, bleibt immer offen.</p>
+    <label class="gate-row"><input type="checkbox" id="gateChk"><span>Nächste Folge erst nach bestandener Prüfung</span></label>
+    <div class="msg" id="gateMsg"></div>
   </div>
   <div class="panel">
     <h3>Neues Paket anlegen</h3>
@@ -3077,11 +3089,146 @@ const PACKS=[
  {q:'Кому́ помога́ют Мэ́йбл и подру́ги?',qde:'Wem helfen Mabel und ihre Freundinnen?',o:['мальчи́ковой гру́ппе','дя́де стэ́ну','ди́пперу'],a:0},
  {q:'Что де́лает ди́ппер с пласти́нкой?',qde:'Was macht Dipper mit der Schallplatte?',o:['замедля́ет проигрыва́ние','лома́ет её','дари́т её'],a:0},
  {q:'Нашёл ли он скры́тое посла́ние?',qde:'Fand er die versteckte Botschaft?',o:['нет, там ничего́ не́ было','да, сра́зу','да, но по́здно'],a:0},
- {q:'Кто и́щет гру́ппу повсю́ду?',qde:'Wer sucht die Band überall?',o:['их продю́сер','поли́ция','дя́дя стэн'],a:0}]}
+ {q:'Кто и́щет гру́ппу повсю́ду?',qde:'Wer sucht die Band überall?',o:['их продю́сер','поли́ция','дя́дя стэн'],a:0}]},
+
+{id:'gf-17-4',ic:'📻',t:'Folge 17 · Teil 4',tru:'Пе́сня Ро́би',ep:'Staffel 1 · Folge 17',
+ url:'https://www.youtube.com/watch?v=IL_EEOAuhjc&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=85',
+ note:'Der Produzent sitzt im Gefängnis, Mabel will die Jungs behalten – und Wendy erfährt, wer das Lied wirklich geschrieben hat.',
+ words:[
+ {r:'воспомина́ние',t:'wass-pa-mi-NA-ni-je',d:'Erinnerung',e:'Каки́е прекра́сные воспомина́ния!',x:'Was für schöne Erinnerungen!'},
+ {r:'шоки́рован',t:'scha-KI-ra-wan',d:'schockiert',e:'Весь мир был шоки́рован но́востью.',x:'Die ganze Welt war von der Nachricht schockiert.'},
+ {r:'отсу́тствие',t:'at-SSUTST-wi-je',d:'Fehlen, Abwesenheit',e:'Его́ арестова́ли за отсу́тствие но́мера.',x:'Er wurde wegen des fehlenden Kennzeichens verhaftet.'},
+ {r:'номерно́й знак',t:'na-mir-NOJ SNAK',d:'Nummernschild, Kennzeichen',e:'Кто́-то спёр мой номерно́й знак.',x:'Jemand hat mein Nummernschild geklaut.'},
+ {r:'суд',t:'SSUT',d:'Gericht, Prozess',e:'Он ждёт дня суда́ в тюрьме́.',x:'Er wartet im Gefängnis auf den Gerichtstag.'},
+ {r:'спеши́ть',t:'spi-SCHITJ',d:'sich beeilen, eilen',e:'Дава́йте не бу́дем спеши́ть.',x:'Lasst uns nichts überstürzen.'},
+ {r:'враньё',t:'wran-JO',d:'Lüge, Geschwätz',e:'Э́то всё враньё!',x:'Das ist alles gelogen!'},
+ {r:'корми́ть',t:'kar-MITJ',d:'füttern, ernähren',e:'Она́ ко́рмит нас пи́ццей.',x:'Sie füttert uns mit Pizza.'},
+ {r:'преда́тельница',t:'pri-DA-tilj-ni-za',d:'Verräterin',e:'Ты преда́тельница!',x:'Du bist eine Verräterin!'},
+ {r:'обезу́меть',t:'a-bi-SU-mitj',d:'den Verstand verlieren',e:'Мэ́йбл совсе́м обезу́мела.',x:'Mabel hat völlig den Verstand verloren.'},
+ {r:'заплета́ть',t:'sap-li-TATJ',d:'flechten',e:'Дава́йте заплета́ть коси́чки!',x:'Lasst uns Zöpfe flechten!'},
+ {r:'предупреди́ть',t:'pri-dup-ri-DITJ',d:'warnen, Bescheid geben',e:'Ну́жно предупреди́ть Ве́нди.',x:'Wir müssen Wendy warnen.'},
+ {r:'благода́рность',t:'bla-ga-DAR-nastj',d:'Dankbarkeit, Dank',e:'Э́та пе́сня — на́ша благода́рность.',x:'Dieses Lied ist unser Dank.'},
+ {r:'объя́тие',t:'ab-JA-ti-je',d:'Umarmung',e:'Э́то объя́тие для души́.',x:'Das ist eine Umarmung für die Seele.'},
+ {r:'выгоня́ть',t:'wy-ga-NJATJ',d:'hinauswerfen, vertreiben',e:'Девчо́нок на́до выгоня́ть.',x:'Mädchen muss man rauswerfen.'},
+ {r:'нело́вко',t:'ni-LOF-ka',d:'unangenehm, peinlich',e:'Я чу́вствую себя́ как-то нело́вко.',x:'Mir ist das irgendwie unangenehm.'},
+ {r:'фен',t:'FJEN',d:'Föhn, Haartrockner',e:'Она́ де́ржит фен, пока́ мы поём.',x:'Sie hält den Föhn, während wir singen.'},
+ {r:'погла́дить',t:'pag-LA-ditj',d:'bügeln; streicheln',e:'Она́ погла́дила мою́ руба́шку.',x:'Sie hat mein Hemd gebügelt.'},
+ {r:'бара́нка',t:'ba-RAN-ka',d:'Lenkrad; Brotkringel',e:'Он це́лый день кру́тит бара́нку.',x:'Er sitzt den ganzen Tag am Lenkrad.'},
+ {r:'суро́вый',t:'ssu-RO-wyj',d:'streng, hart',e:'Он был жа́дный и о́чень суро́вый.',x:'Er war geizig und sehr streng.'},
+ {r:'бу́сы',t:'BU-ssy',d:'Perlenkette, Perlen',e:'Ты дала́ нам бу́сы.',x:'Du hast uns Perlenketten gegeben.'},
+ {r:'взя́ться',t:'WSJAT-sa',d:'herkommen; sich an etwas machen',e:'Отку́да э́то взяло́сь?',x:'Wo kommt das denn her?'},
+ {r:'совра́ть',t:'saw-RATJ',d:'lügen, flunkern',e:'Ла́дно, я действи́тельно совра́л.',x:'Okay, ich habe tatsächlich gelogen.'}
+ ],
+ q:[
+ {q:'За что арестова́ли продю́сера?',qde:'Wofür wurde der Produzent verhaftet?',o:['за отсу́тствие но́мера','за кра́жу','за обма́н'],a:0},
+ {q:'Что Мэ́йбл сказа́ла мальчи́кам?',qde:'Was sagte Mabel den Jungs?',o:['что они́ не свобо́дны','что они́ свобо́дны','ничего́'],a:0},
+ {q:'Чья на са́мом де́ле э́та пе́сня?',qde:'Wessen Lied ist es in Wahrheit?',o:['друго́й гру́ппы','Ро́би','Ве́нди'],a:0},
+ {q:'Что сде́лала Ве́нди?',qde:'Was tat Wendy?',o:['она́ бро́сила Ро́би','она́ прости́ла его́','она́ уе́хала'],a:0}]},
+
+{id:'gf-17-5',ic:'🕊️',t:'Folge 17 · Teil 5',tru:'Свобо́да',ep:'Staffel 1 · Folge 17',
+ url:'https://www.youtube.com/watch?v=JmRjJx9u6Bg&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=86',
+ note:'Mabel lässt die Band frei – und lernt dabei, dass Loslassen auch Liebe ist.',
+ words:[
+ {r:'совлада́ть',t:'saw-la-DATJ',d:'bewältigen, Herr werden über',e:'Он не мо́жет совлада́ть с инструме́нтом.',x:'Er kann das Instrument nicht bändigen.'},
+ {r:'инструме́нт',t:'in-stru-MJENT',d:'Instrument, Werkzeug',e:'Како́й инструме́нт ты игра́ешь?',x:'Welches Instrument spielst du?'},
+ {r:'издева́ться',t:'is-di-WAT-sa',d:'sich lustig machen, verhöhnen',e:'Ты что, издева́ешься?',x:'Willst du mich verarschen?'},
+ {r:'поко́й',t:'pa-KOJ',d:'Ruhe, Frieden',e:'Оста́вьте меня́ в поко́е!',x:'Lasst mich in Ruhe!'},
+ {r:'уте́шить',t:'u-TJE-schitj',d:'trösten',e:'Мо́жет, тебя́ э́то уте́шит.',x:'Vielleicht tröstet dich das.'},
+ {r:'зо́лото',t:'SO-la-ta',d:'Gold',e:'Скоре́е закопа́й зо́лото!',x:'Vergrab schnell das Gold!'},
+ {r:'защища́ться',t:'sa-schtschi-SCHTSCHAT-sa',d:'sich verteidigen, sich wehren',e:'Тепе́рь я гото́ва защища́ться.',x:'Jetzt bin ich bereit, mich zu wehren.'},
+ {r:'прости́ть',t:'pras-TITJ',d:'verzeihen, vergeben',e:'Вы смо́жете меня́ прости́ть?',x:'Könnt ihr mir verzeihen?'},
+ {r:'дру́жба',t:'DRUSCH-ba',d:'Freundschaft',e:'Дру́жба восстано́влена!',x:'Die Freundschaft ist wiederhergestellt!'},
+ {r:'восстанови́ть',t:'wass-sta-na-WITJ',d:'wiederherstellen',e:'Мы восстано́вим на́шу дру́жбу.',x:'Wir stellen unsere Freundschaft wieder her.'},
+ {r:'кру́глый',t:'KRUG-lyj',d:'rund',e:'Что э́то за кру́глый жёлтый шар?',x:'Was ist das für eine runde gelbe Kugel?'},
+ {r:'ку́ча',t:'KU-tscha',d:'Haufen, Menge',e:'Что э́то за зелёные ку́чи?',x:'Was sind das für grüne Haufen?'},
+ {r:'протяну́ть',t:'pra-ti-NUTJ',d:'durchhalten; reichen',e:'Они́ и неде́ли не протя́нут.',x:'Die halten keine Woche durch.'},
+ {r:'ста́лкиваться',t:'STAL-ki-wat-sa',d:'zusammenstoßen, begegnen',e:'Мы ча́сто ста́лкиваемся в го́роде.',x:'Wir laufen uns oft in der Stadt über den Weg.'},
+ {r:'смазли́вый',t:'smas-LI-wyj',d:'süßlich hübsch, aufgehübscht',e:'Э́ти смазли́вые па́рни ве́чно здесь.',x:'Diese aufgehübschten Typen sind ständig hier.'},
+ {r:'ры́ться',t:'RYT-sa',d:'wühlen, kramen',e:'Они́ ро́ются в мое́й помо́йке.',x:'Sie wühlen in meinem Müll.'},
+ {r:'помо́йка',t:'pa-MOJ-ka',d:'Müllplatz, Mülltonne',e:'Не рои́сь в помо́йке!',x:'Wühl nicht im Müll!'},
+ {r:'устаре́ть',t:'us-ta-RJETJ',d:'veralten, aus der Mode kommen',e:'Мы ещё не устаре́ли!',x:'Wir sind noch nicht von gestern!'},
+ {r:'со всех но́г',t:'sa fssjech NOK',d:'so schnell die Beine tragen',e:'Беги́те отсю́да со всех ног!',x:'Rennt hier weg, so schnell ihr könnt!'}
+ ],
+ q:[
+ {q:'Что Мэ́йбл сде́лала в конце́?',qde:'Was tat Mabel am Ende?',o:['отпусти́ла гру́ппу','спря́тала гру́ппу','прода́ла гру́ппу'],a:0},
+ {q:'Чего́ мальчи́ки никогда́ не ви́дели?',qde:'Was hatten die Jungs nie gesehen?',o:['со́лнце и приро́ду','го́род','мо́ре'],a:0},
+ {q:'Что предлага́ет дя́дя стэн Ве́нди?',qde:'Was schlägt Onkel Stan Wendy vor?',o:['сыгра́ть в бо́улинг','пое́хать домо́й','купи́ть зо́лото'],a:0},
+ {q:'Как до́лго проживу́т мальчи́ки на свобо́де?',qde:'Wie lange überleben die Jungs in Freiheit?',o:['и неде́ли не протя́нут','о́чень до́лго','всю жизнь'],a:0}]},
+
+{id:'gf-18-1',ic:'🦖',t:'Folge 18 · Teil 1',tru:'Пу́хля пропа́л',ep:'Staffel 1 · Folge 18',
+ url:'https://www.youtube.com/watch?v=Lk8V2-BQKHk&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=87',
+ note:'Stan will das Schwein aus dem Haus, Dipper und Soos jagen ein Monster im Wald – und dann verschwindet Waddles.',
+ words:[
+ {r:'подгото́вка',t:'pad-ga-TOF-ka',d:'Vorbereitung, Training',e:'Э́то часть подгото́вки.',x:'Das ist Teil der Vorbereitung.'},
+ {r:'аккура́тно',t:'a-ku-RAT-na',d:'vorsichtig, sorgfältig',e:'Аккура́тно, не урони́!',x:'Vorsichtig, lass es nicht fallen!'},
+ {r:'прокля́тие',t:'prak-LJA-ti-je',d:'Fluch; Verdammt!',e:'Прокля́тие, я почти́ дошёл!',x:'Verdammt, ich war fast da!'},
+ {r:'доложи́ть',t:'da-la-SCHITJ',d:'melden, Bericht erstatten',e:'Об э́том ну́жно доложи́ть бо́ссу.',x:'Das muss man dem Boss melden.'},
+ {r:'прокати́ться',t:'pra-ka-TIT-sa',d:'eine Runde fahren',e:'И́ли мо́жно прокати́ться на маши́не.',x:'Oder man dreht eine Runde mit dem Auto.'},
+ {r:'фли́гель',t:'FLI-gilj',d:'Nebengebäude, Anbau',e:'Вы уви́дите знамени́тый фли́гель.',x:'Sie werden den berühmten Anbau sehen.'},
+ {r:'экску́рсия',t:'eks-KUR-ssi-ja',d:'Führung, Ausflug',e:'Все вопро́сы в конце́ экску́рсии.',x:'Alle Fragen am Ende der Führung.'},
+ {r:'присмотре́ться',t:'pris-mat-RJET-sa',d:'genau hinsehen',e:'Е́сли присмотре́ться, ты уви́дишь его́.',x:'Wenn man genau hinsieht, sieht man ihn.'},
+ {r:'распоряже́ние',t:'ras-pa-ri-SCHE-ni-je',d:'Verfügung; Anordnung',e:'Дом в на́шем распоряже́нии!',x:'Das Haus steht uns zur Verfügung!'},
+ {r:'обнима́ться',t:'ab-ni-MAT-sa',d:'sich umarmen, kuscheln',e:'Дава́й обнима́ться!',x:'Lass uns kuscheln!'},
+ {r:'поду́шка',t:'pa-DUSCH-ka',d:'Kissen',e:'Я целу́ю поду́шку с лицо́м.',x:'Ich küsse ein Kissen mit einem Gesicht drauf.'},
+ {r:'жева́ть',t:'schi-WATJ',d:'kauen',e:'Не жуй мою́ штани́ну!',x:'Kau nicht an meinem Hosenbein!'},
+ {r:'штани́на',t:'schta-NI-na',d:'Hosenbein',e:'Он схвати́л меня́ за штани́ну.',x:'Er packte mich am Hosenbein.'},
+ {r:'подстерега́ть',t:'pat-sti-ri-GATJ',d:'auflauern, lauern',e:'Там его́ подстерега́ют опа́сности.',x:'Dort lauern Gefahren auf ihn.'},
+ {r:'броди́ть',t:'bra-DITJ',d:'umherstreifen, wandern',e:'В лесу́ бро́дят хи́щники.',x:'Im Wald streifen Raubtiere umher.'},
+ {r:'хи́щник',t:'CHISCHTSCH-nik',d:'Raubtier, Raubtierart',e:'Хи́щники о́чень опа́сны.',x:'Raubtiere sind sehr gefährlich.'},
+ {r:'свини́на',t:'swi-NI-na',d:'Schweinefleisch',e:'Есть люби́тели свини́ны.',x:'Es gibt Liebhaber von Schweinefleisch.'},
+ {r:'есте́ственно',t:'is-TJEST-win-na',d:'natürlich, selbstverständlich',e:'Э́то соверше́нно есте́ственно.',x:'Das ist völlig natürlich.'},
+ {r:'член семьи́',t:'TSCHLJEN ssim-JI',d:'Familienmitglied',e:'Он член семьи́!',x:'Er ist ein Familienmitglied!'},
+ {r:'брать приме́р',t:'BRATJ pri-MJER',d:'sich ein Beispiel nehmen',e:'Нам на́до брать с него́ приме́р.',x:'Wir sollten uns ein Beispiel an ihm nehmen.'},
+ {r:'снести́ кры́шу',t:'snis-TI KRY-schu',d:'das Dach abreißen; durchdrehen',e:'Оно́ снесло́ кры́шу у маши́ны.',x:'Es hat das Dach des Autos abgerissen.'},
+ {r:'геро́й',t:'gi-ROJ',d:'Held',e:'Мы ста́нем геро́ями!',x:'Wir werden Helden!'},
+ {r:'отгоня́ть',t:'at-ga-NJATJ',d:'verscheuchen, abwehren',e:'Бу́дем отгоня́ть их па́лками.',x:'Wir werden sie mit Stöcken verscheuchen.'},
+ {r:'смола́',t:'sma-LA',d:'Harz, Pech',e:'Смола́ всегда́ така́я ли́пкая?',x:'Ist Harz immer so klebrig?'},
+ {r:'ли́пкий',t:'LIP-kij',d:'klebrig',e:'У меня́ ру́ки ли́пкие.',x:'Meine Hände sind klebrig.'},
+ {r:'верёвка',t:'wi-RJOF-ka',d:'Seil, Schnur',e:'Он заде́нет верёвку и включи́т ка́меру.',x:'Er streift das Seil und löst die Kamera aus.'},
+ {r:'заде́ть',t:'sa-DJETJ',d:'streifen, berühren; kränken',e:'Не заде́нь ла́мпу!',x:'Streif die Lampe nicht!'},
+ {r:'роня́ть',t:'ra-NJATJ',d:'fallen lassen',e:'Надое́ло всё вре́мя роня́ть ребёнка.',x:'Ich habe es satt, ständig das Baby fallen zu lassen.'}
+ ],
+ q:[
+ {q:'Почему́ дя́дя стэн хо́чет вы́гнать пу́хлю?',qde:'Warum will Onkel Stan Waddles rauswerfen?',o:['он валя́ется в гря́зи','он гро́мкий','он ест мно́го'],a:0},
+ {q:'Что де́лают ди́ппер и зус в лесу́?',qde:'Was machen Dipper und Soos im Wald?',o:['фотографи́руют чудо́вище','и́щут грибы́','гуля́ют'],a:0},
+ {q:'Что снесло́ кры́шу у маши́ны?',qde:'Was riss das Dach des Autos ab?',o:['неизве́стное существо́','де́рево','ве́тер'],a:0},
+ {q:'Что говори́т Мэ́йбл о пу́хле?',qde:'Was sagt Mabel über Waddles?',o:['он член семьи́','он про́сто свинья́','он ей надое́л'],a:0}]},
+
+{id:'gf-18-2',ic:'🐖',t:'Folge 18 · Teil 2',tru:'Птеродакти́ль',ep:'Staffel 1 · Folge 18',
+ url:'https://www.youtube.com/watch?v=rcjyIVScpeA&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=88',
+ note:'Stan gibt sein Wort, das Foto zeigt einen Flügel – und ein Pterodaktylus entführt Waddles.',
+ words:[
+ {r:'навяза́ть',t:'na-wi-SATJ',d:'viel stricken; aufdrängen',e:'Я навяза́ла ему́ кучу сви́теров.',x:'Ich habe ihm einen Haufen Pullover gestrickt.'},
+ {r:'присмотре́ть',t:'pris-mat-RJETJ',d:'aufpassen auf, hüten',e:'Присмотри́ пока́ за пу́хлей.',x:'Pass solange auf Waddles auf.'},
+ {r:'па́ртия',t:'PAR-ti-ja',d:'Ladung, Partie; Partei',e:'Я жду большу́ю па́ртию тури́стов.',x:'Ich erwarte eine große Ladung Touristen.'},
+ {r:'дармое́д',t:'dar-ma-JET',d:'Schmarotzer, Nichtsnutz',e:'Он ме́лкий жи́рный дармое́д.',x:'Er ist ein kleiner fetter Schmarotzer.'},
+ {r:'дать сло́во',t:'DATJ SLO-wa',d:'sein Wort geben, versprechen',e:'Ла́дно, даю́ сло́во.',x:'Gut, ich gebe dir mein Wort.'},
+ {r:'проявля́ть',t:'pra-iw-LJATJ',d:'entwickeln (Film); zeigen',e:'Я пошёл проявля́ть плёнку.',x:'Ich gehe den Film entwickeln.'},
+ {r:'единоро́г',t:'ji-di-na-ROK',d:'Einhorn',e:'Я покажу́ вам единоро́га.',x:'Ich zeige euch ein Einhorn.'},
+ {r:'крыло́',t:'kry-LO',d:'Flügel',e:'Да э́то же крыло́!',x:'Das ist ja ein Flügel!'},
+ {r:'вы́мереть',t:'WY-mi-ritj',d:'aussterben',e:'Все диноза́вры вы́мерли давно́.',x:'Alle Dinosaurier sind längst ausgestorben.'},
+ {r:'диноза́вр',t:'di-na-SAWR',d:'Dinosaurier',e:'Э́то был настоя́щий диноза́вр!',x:'Das war ein echter Dinosaurier!'},
+ {r:'па́уза',t:'PAU-sa',d:'Pause',e:'Ага́, нело́вкая па́уза.',x:'Aha, eine peinliche Pause.'},
+ {r:'сли́вки',t:'SLIF-ki',d:'Sahne, Rahm',e:'Я пои́л его́ са́мыми жи́рными сли́вками.',x:'Ich habe ihn mit der fettesten Sahne gefüttert.'},
+ {r:'мо́рда',t:'MOR-da',d:'Schnauze, Maul',e:'Он уда́рил его́ пря́мо по мо́рде.',x:'Er schlug ihm direkt auf die Schnauze.'},
+ {r:'нече́стно',t:'ni-TSCHESS-na',d:'unfair, unehrlich',e:'Он игра́л нече́стно.',x:'Er hat unfair gespielt.'},
+ {r:'поря́дочный',t:'pa-RJA-datsch-nyj',d:'anständig, rechtschaffen',e:'Я же поря́дочный челове́к!',x:'Ich bin doch ein anständiger Mensch!'},
+ {r:'я́щерица',t:'JA-schtschi-ri-za',d:'Eidechse',e:'Диноза́вры — про́сто больши́е я́щерицы.',x:'Dinosaurier sind einfach große Eidechsen.'},
+ {r:'сметь',t:'SMJETJ',d:'wagen, sich erlauben',e:'Никто́ не сме́ет обижа́ть мою́ сестру́!',x:'Niemand darf es wagen, meine Schwester zu kränken!'},
+ {r:'пои́ть',t:'pa-ITJ',d:'zu trinken geben, tränken',e:'Я пои́л его́ сли́вками ка́ждый день.',x:'Ich gab ihm jeden Tag Sahne zu trinken.'},
+ {r:'вызыва́ть',t:'wy-sy-WATJ',d:'rufen, herbeirufen; auslösen',e:'Нас вызыва́ют, побежа́ли!',x:'Wir werden gerufen, los!'},
+ {r:'обра́доваться',t:'ab-RA-da-wat-sa',d:'sich freuen',e:'Прости́, я про́сто обра́довался.',x:'Entschuldige, ich habe mich einfach gefreut.'},
+ {r:'подозри́тельный',t:'pa-da-SRI-tilj-nyj',d:'verdächtig, misstrauisch',e:'И я во́все не подозри́тельный!',x:'Und ich bin überhaupt nicht verdächtig!'}
+ ],
+ q:[
+ {q:'Что пообеща́л дя́дя стэн?',qde:'Was versprach Onkel Stan?',o:['не выгоня́ть пу́хлю','купи́ть щенка́','убра́ть дом'],a:0},
+ {q:'Что бы́ло на фотогра́фии?',qde:'Was war auf dem Foto?',o:['крыло́','де́рево','ничего́'],a:0},
+ {q:'Кто забра́л пу́хлю?',qde:'Wer nahm Waddles mit?',o:['птеродакти́ль','во́лки','тури́сты'],a:0},
+ {q:'Что реши́ли ди́ппер и стэн?',qde:'Was beschlossen Dipper und Stan?',o:['спасти́ пу́хлю ра́ди Мэ́йбл','ждать до́ма','купи́ть но́вую свинью́'],a:0}]}
 ];
 
 /* ================= Zustand ================= */
-let S={prog:{},days:{},extras:[],watched:{}};
+let S={prog:{},days:{},extras:[],watched:{},exam:{},gate:true};
 let storeMode='none';
 function initStore(){
   try{const t='__ser_test';localStorage.setItem(t,'1');localStorage.removeItem(t);storeMode='local'}
@@ -3089,16 +3236,17 @@ function initStore(){
 }
 function load(){
   if(storeMode!=='local')return;
-  try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);S={...S,...d,prog:d.prog||{},days:d.days||{},extras:d.extras||[],watched:d.watched||{}}}}catch(e){}
+  try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);S={...S,...d,prog:d.prog||{},days:d.days||{},extras:d.extras||[],watched:d.watched||{},
+    exam:d.exam||{},gate:d.gate!==false}}}catch(e){}
 }
 function save(){if(storeMode==='local')try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 
 /* ---- Sprachebene: was man gefahrlos sagen kann und was nicht ----
    slang = locker, nur unter Freunden/Gleichaltrigen · grob = besser nur verstehen, nicht benutzen */
 const REGISTER={};
-'чувак,тусовка,тусоваться,отвисать,кайфовать,кайфолом,втюриться,врубиться,отстой,потрясно,обалдеть,по барабану,круто,мотать отсюда,свалить,предки,прикол,прикольный,клёвый,зажигать,запросто,дружище,умник,смыться,сгодиться,влипать,оторваться,достать,пахать,глазеть,балда,бездельник,дурдом,спереть,зависнуть,реально,вкуснятина,всё путём,чушь,бред,перетрусить,струсить,сам напросился,ерунда,кафешка,пацан,вырубить,надурить,газовать,здоровяк,жирный,воришка,прикинь,таскать,стащить,убираться,спальник,беситься,тусовщица,угробить,девчачий,закидоны,голышом,молодчина,детка,подлиза,ныть,втыкать,мужик,забегаловка,нарываться,разочек'
+'чувак,тусовка,тусоваться,отвисать,кайфовать,кайфолом,втюриться,врубиться,отстой,потрясно,обалдеть,по барабану,круто,мотать отсюда,свалить,предки,прикол,прикольный,клёвый,зажигать,запросто,дружище,умник,смыться,сгодиться,влипать,оторваться,достать,пахать,глазеть,балда,бездельник,дурдом,спереть,зависнуть,реально,вкуснятина,всё путём,чушь,бред,перетрусить,струсить,сам напросился,ерунда,кафешка,пацан,вырубить,надурить,газовать,здоровяк,жирный,воришка,прикинь,таскать,стащить,убираться,спальник,беситься,тусовщица,угробить,девчачий,закидоны,голышом,молодчина,детка,подлиза,ныть,втыкать,мужик,забегаловка,нарываться,разочек,враньё,баранка,смазливый,помойка'
  .split(',').forEach(w=>{REGISTER[w.replace(/́/g,'')]='slang'});
-'заткнись,дешёвка,попрошайка,вонючка,придурок,недоумок,болван,дурачок,безмозглый,мерзавец,гад,урод,слабак,размазня,карга,жулик,зануда,чёрт побери,плевать,заткнуться,старпёр,тупой,гадёныш,толстяк,тёлка'
+'заткнись,дешёвка,попрошайка,вонючка,придурок,недоумок,болван,дурачок,безмозглый,мерзавец,гад,урод,слабак,размазня,карга,жулик,зануда,чёрт побери,плевать,заткнуться,старпёр,тупой,гадёныш,толстяк,тёлка,дармоед'
  .split(',').forEach(w=>{REGISTER[w.replace(/́/g,'')]='grob'});
 function regOf(w){return REGISTER[String(w.r).replace(/́/g,'')]||''}
 function regBadge(w){
@@ -3130,7 +3278,8 @@ const IDIOMS=['держать себя в руках','взять под кры�
 'пышать жаром','принять на работу','отыграться','превзойти','разучиться','наткнуться',
 'ходить по краю','ради любви','искусственное дыхание','во сне',
 'последняя капля','перегибать палку','волшебная палочка',
-'вернуться на круги своя','промыть мозги','докопаться до истины','надувать губу','до дна','положиться'];
+'вернуться на круги своя','промыть мозги','докопаться до истины','надувать губу','до дна','положиться',
+'со всех ног','дать слово','брать пример','снести крышу','покой'];
 /* ---- Wie sich eine Wendung im Satz verändert ----
    Redewendungen stehen im Wörterbuch im Infinitiv, im Gespräch hörst du sie aber
    konjugiert, im Befehl oder in der Vergangenheit. Hier stehen die Formen, die
@@ -3188,7 +3337,13 @@ const IDIOM_FORMS={
 'вернуться на круги своя':['Всё возвраща́ется на круги́ своя́.|Alles kehrt zum Alten zurück.','Пусть всё вернётся на круги́ своя́.|Möge alles wieder beim Alten sein.','Всё верну́лось на круги́ своя́.|Alles war wieder beim Alten.'],
 'положиться':['Я на тебя́ полага́юсь.|Ich verlasse mich auf dich.','Положи́сь на меня́!|Verlass dich auf mich!','Он положи́лся на друзе́й.|Er hat sich auf die Freunde verlassen.'],
 'до дна':['Пьём до дна!|Auf ex!','Допе́й до дна.|Trink aus.','Он вы́пил всё до дна.|Er hat alles ausgetrunken.'],
-'чувствовать себя':['Я чу́вствую себя́ хорошо́.|Ich fühle mich gut.','Чу́вствуй себя́ как до́ма!|Fühl dich wie zu Hause!','Он чу́вствовал себя́ неуклю́жим.|Er fühlte sich unbeholfen.']
+'чувствовать себя':['Я чу́вствую себя́ хорошо́.|Ich fühle mich gut.','Чу́вствуй себя́ как до́ма!|Fühl dich wie zu Hause!','Он чу́вствовал себя́ неуклю́жим.|Er fühlte sich unbeholfen.'],
+'дать слово':['Я даю́ тебе́ сло́во.|Ich gebe dir mein Wort.','Дай сло́во, что придёшь!|Versprich, dass du kommst!','Он дал сло́во и сдержа́л его́.|Er gab sein Wort und hielt es.'],
+'брать пример':['Я беру́ с неё приме́р.|Ich nehme mir ein Beispiel an ihr.','Бери́ с него́ приме́р!|Nimm dir ein Beispiel an ihm!','Он взял приме́р с бра́та.|Er nahm sich ein Beispiel an seinem Bruder.'],
+'со всех ног':['Он бежи́т со всех ног.|Er rennt, so schnell er kann.','Беги́ отсю́да со всех ног!|Renn hier weg, so schnell du kannst!','Мы бежа́ли со всех ног.|Wir rannten, so schnell wir konnten.'],
+'снести крышу':['От э́того сно́сит кры́шу.|Davon dreht man durch.','Не сноси́ мне кры́шу!|Mach mich nicht verrückt!','Ему́ снесло́ кры́шу от ра́дости.|Vor Freude drehte er völlig durch.'],
+'покой':['Мне ну́жен поко́й.|Ich brauche Ruhe.','Оста́вь меня́ в поко́е!|Lass mich in Ruhe!','Его́ оста́вили в поко́е.|Man ließ ihn in Ruhe.'],
+'обижаться':['Я не обижа́юсь.|Ich bin nicht beleidigt.','Не обижа́йся!|Nimm es mir nicht übel!','Она́ оби́делась на меня́.|Sie war mir böse.']
 };
 function formsBox(w){
   const f=IDIOM_FORMS[String(w.r).replace(/́/g,'')];
@@ -3210,9 +3365,77 @@ function idiomPack(){
     note:'Alle festen Wendungen aus deinen Folgen an einem Ort – die Ausdrücke, die man nicht wörtlich übersetzen kann. Wächst automatisch mit jeder neuen Folge mit.',
     words,q:[]};
 }
+/* ================= Folgen-Prüfung & Freischaltung =================
+   Nach jeder Folge gibt es ein Gesamtpaket über alle Teile. Erst wenn diese
+   Prüfung sitzt, wird die nächste Folge freigeschaltet – so bleibt nichts liegen.
+   Abschaltbar unter „Mehr", und was du schon angefangen hast, wird nie nachträglich gesperrt. */
+const EXAM_PASS=85, EXAM_CARDS=25;
+function folgeNum(p){const m=/Folge\s+(\d+)/.exec((p&&p.ep)||'');return m?+m[1]:0}
+function folgeList(){
+  const m={};
+  PACKS.forEach(p=>{const n=folgeNum(p);if(n)(m[n]=m[n]||[]).push(p)});
+  return m;
+}
+const _examCache={};
+function examOf(n){
+  if(_examCache[n]!==undefined)return _examCache[n];
+  const list=folgeList()[n];
+  let out=null;
+  if(list){
+    const words=[],seen=new Set(),q=[];
+    list.forEach(p=>{
+      p.words.forEach(w=>{const k=w.r.replace(/́/g,'');if(!seen.has(k)){seen.add(k);words.push(w)}});
+      (p.q||[]).forEach(x=>q.push(x));
+    });
+    if(words.length>=20)out={id:'exam-'+n,ic:'🎓',t:'Prüfung · Folge '+n,tru:'Экза́мен по '+n+'-й се́рии',
+      ep:list[0].ep,exam:n,words,q,
+      note:'Alle Wörter aus Folge '+n+' an einem Ort. Bestehe die Prüfung ('+EXAM_CARDS+' Karten, mindestens '+EXAM_PASS+' % richtig), um Folge '+(n+1)+' freizuschalten.'};
+  }
+  _examCache[n]=out;
+  return out;
+}
+function examDone(n){return !!(S.exam&&S.exam[n]&&S.exam[n].passed)}
+function folgeTouched(n){
+  const g=folgeList()[n]||[];
+  return g.some(p=>S.watched[p.id]||p.words.some((w,k)=>S.prog[wordKey(p.id,k)]));
+}
+function maxTouched(){
+  let mx=0;
+  Object.keys(folgeList()).map(Number).forEach(n=>{if(folgeTouched(n)&&n>mx)mx=n});
+  return mx;
+}
+function folgeLocked(n){
+  if(!S.gate)return false;
+  const nums=Object.keys(folgeList()).map(Number).sort((a,b)=>a-b);
+  const i=nums.indexOf(n);
+  if(i<=0)return false;
+  if(n<=maxTouched())return false; /* schon angefangen → nie nachträglich sperren */
+  return !examDone(nums[i-1]);
+}
+function prevFolge(n){
+  const nums=Object.keys(folgeList()).map(Number).sort((a,b)=>a-b);
+  const i=nums.indexOf(n);
+  return i>0?nums[i-1]:0;
+}
+function lockBox(n){
+  const pv=prevFolge(n),ex=examOf(pv);
+  return '<div class="lockbox"><div class="lk-t">🔒 Folge '+n+' ist noch zu</div>'+
+    '<div class="lk-s">Erst sitzen die Wörter aus Folge '+pv+', dann geht es weiter. '+
+    (ex?'Die Prüfung sind '+EXAM_CARDS+' Karten aus allen Teilen – ab '+EXAM_PASS+' % ist sie bestanden.':'')+'</div>'+
+    (ex?'<button class="btn btn-primary" onclick="showPack(\'exam-'+pv+'\')">🎓 Zur Prüfung Folge '+pv+'</button>':'')+
+    '<div class="lk-h">Keine Lust auf Sperren? Unter „Mehr" kannst du sie ausschalten.</div></div>';
+}
 function allPacks(){
   const v=idiomPack();
-  return (v?[v]:[]).concat(PACKS).concat(S.extras);
+  const out=[];
+  let curN=0;
+  PACKS.forEach(p=>{
+    const n=folgeNum(p);
+    if(curN&&n!==curN){const e=examOf(curN);if(e)out.push(e)}
+    out.push(p);curN=n;
+  });
+  if(curN){const e=examOf(curN);if(e)out.push(e)}
+  return (v?[v]:[]).concat(out).concat(S.extras);
 }
 function packById(id){return allPacks().find(p=>p.id===id)}
 const wordKey=(pid,k)=>pid+':'+k;
@@ -3223,7 +3446,7 @@ function packProgress(p){
   return Math.round(100*m/p.words.length);
 }
 function totalDone(){
-  return allPacks().filter(p=>packProgress(p)>=100).length;
+  return allPacks().filter(p=>!p.exam&&packProgress(p)>=100).length;
 }
 
 /* ================= Übung ================= */
@@ -3238,6 +3461,19 @@ function startPack(pid,mode){
     return((sa?sa.c:0)+Math.random())-((sb?sb.c:0)+Math.random());
   });
   sess={pid,q:idx.slice(0,10),i:0,right:0,wrong:0,mode:mode||'mix'};
+  renderCard();
+}
+/* ---- Prüfung: Querschnitt durch eine ganze Folge, schwache Wörter zuerst ---- */
+function startExam(n){
+  const p=examOf(n);
+  if(!p)return;
+  const idx=p.words.map((w,k)=>k);
+  idx.sort((a,b)=>{
+    const sa=S.prog[wordKey(p.id,a)],sb=S.prog[wordKey(p.id,b)];
+    /* nie geübt zählt als schwach, damit die Prüfung wirklich prüft */
+    return((sa?sa.c:0)+Math.random()*1.5)-((sb?sb.c:0)+Math.random()*1.5);
+  });
+  sess={pid:p.id,exam:n,q:idx.slice(0,EXAM_CARDS),i:0,right:0,wrong:0,mode:'mix',cards:Math.min(EXAM_CARDS,idx.length)};
   renderCard();
 }
 /* ---- Mastery-Drill: üben, bis jedes Wort des Pakets sitzt ---- */
@@ -3381,6 +3617,7 @@ function finishSess(){
   const tot=sess.right+sess.wrong,accy=tot?Math.round(100*sess.right/tot):100;
   const war=sess.drill;
   $('#doneN').textContent=totalDone();
+  if(sess.exam){finishExam(p,accy);return}
   $('#view-packs').innerHTML='<div class="hero"><div class="done-mark">'+(war?'🏆':'🎬')+'</div>'+
     '<div class="due-line">'+(war?'Alle Wörter sitzen!':'Runde geschafft!')+'</div>'+
     '<div class="sumgrid">'+
@@ -3393,6 +3630,29 @@ function finishSess(){
       '<button class="btn btn-primary" onclick="watchAndOpen(\''+p.id+'\')">▶ Folge nochmal ansehen</button><br>':'')+
     '<button class="'+(p.url?'btn-ghost':'btn btn-primary')+'" onclick="startPack(\''+p.id+'\')">Nochmal üben</button><br>'+
     '<button class="btn-ghost" onclick="showPack(\''+p.id+'\')">Zum Paket</button></div>';
+  sess=null;
+}
+function finishExam(p,accy){
+  const n=sess.exam,ok=accy>=EXAM_PASS;
+  const nxt=Object.keys(folgeList()).map(Number).sort((a,b)=>a-b).find(x=>x>n);
+  const alt=S.exam[n]||{};
+  S.exam[n]={passed:ok||alt.passed?(alt.passed||todayStr()):'',best:Math.max(accy,alt.best||0),tries:(alt.tries||0)+1};
+  save();
+  const schwach=Object.keys(S.prog).filter(k=>k.indexOf(p.id+':')===0&&S.prog[k].w>0&&S.prog[k].c<2).length;
+  $('#view-packs').innerHTML='<div class="hero"><div class="done-mark">'+(ok?'🎓':'📚')+'</div>'+
+    '<div class="due-line">'+(ok?'Folge '+n+' bestanden!':'Noch nicht ganz')+'</div>'+
+    '<div class="sumgrid">'+
+    '<div class="sumbox"><b>'+accy+' %</b><span>diesmal</span></div>'+
+    '<div class="sumbox"><b>'+EXAM_PASS+' %</b><span>nötig</span></div>'+
+    '<div class="sumbox"><b>'+sess.right+'</b><span>richtig</span></div>'+
+    '<div class="sumbox"><b>'+S.exam[n].best+' %</b><span>dein Bestwert</span></div>'+
+    '</div>'+
+    (ok
+      ?'<div class="sub" style="margin-top:14px">'+(nxt?'🔓 <b>Folge '+nxt+' ist jetzt frei.</b> Viel Spaß beim Schauen!':'Das war die letzte Folge, die es hier gibt.')+'</div>'
+      :'<div class="sub" style="margin-top:14px">'+(schwach?schwach+' Wörter wackeln noch. ':'')+'Übe die Folge nochmal durch – die Prüfung nimmt beim nächsten Mal wieder deine schwächsten Wörter zuerst.</div>')+
+    '<button class="btn btn-primary" onclick="'+(ok?'renderPacks()':'startDrill(\''+p.id+'\')')+'">'+(ok?'Weiter zur Übersicht':'Schwache Wörter üben')+'</button><br>'+
+    '<button class="btn-ghost" onclick="startExam('+n+')">Prüfung wiederholen</button><br>'+
+    '<button class="btn-ghost" onclick="showPack(\''+p.id+'\')">Zum Prüfungspaket</button></div>';
   sess=null;
 }
 function quitSess(){sess=null;renderPacks()}
@@ -3453,9 +3713,17 @@ function renderPacks(){
     '<div class="sub">Üb die Wörter aus deinen Folgen – und schau sie danach nochmal. Kein Transkript, nur Vokabeln und Fragen.</div></div>'+
     '<div class="sect">Deine Pakete</div>';
   if(!ps.length)html+='<p class="hint">Noch keine Pakete. Unter „Mehr" kannst du eins einfügen.</p>';
-  let lastEp=null;
+  let lastEp=null,skipN=0;
   ps.forEach(p=>{
-    if(p.ep&&p.ep!==lastEp){html+='<div class="sect" style="font-size:.95rem;margin:18px 0 8px">'+esc(p.ep)+'</div>';lastEp=p.ep}
+    const fn=folgeNum(p);
+    if(p.ep&&p.ep!==lastEp){
+      html+='<div class="sect" style="font-size:.95rem;margin:18px 0 8px">'+esc(p.ep)+
+        (fn&&examDone(fn)?' <span class="vtag seen">🎓 bestanden</span>':'')+'</div>';
+      lastEp=p.ep;
+      skipN=(fn&&folgeLocked(fn))?fn:0;
+      if(skipN)html+=lockBox(fn);
+    }
+    if(skipN&&fn===skipN)return;
     const pr=packProgress(p);
     const badge=!p.url?'':(S.watched[p.id]?'<span class="vtag seen">✓ geschaut</span>':'<span class="vtag">▶ neu</span>');
     html+='<button class="pack" onclick="showPack(\''+p.id+'\')">'+
@@ -3492,6 +3760,32 @@ function showPack(pid){
         '<div class="vb-s">Schau dir die Folge auf YouTube an (ruhig mit Untertiteln) und komm dann hierher zurück.</div>'+
         '<button class="btn btn-primary" onclick="watchAndOpen(\''+p.id+'\')">▶ Folge auf YouTube ansehen</button>'+
         '<button class="lnk" style="display:block;margin:10px auto 0" onclick="markWatched(\''+p.id+'\')">Schon gesehen → weiter zu den Aufgaben</button></div>';
+  }
+  if(p.exam){ /* Gesamtpaket einer Folge + Freischalt-Prüfung */
+    const n=p.exam,st=S.exam[n]||{};
+    const nxt=Object.keys(folgeList()).map(Number).sort((a,b)=>a-b).find(x=>x>n);
+    $('#view-packs').innerHTML=
+      '<div class="hero"><div class="done-mark">'+(st.passed?'🎓':'📚')+'</div>'+
+      '<div class="due-line">'+esc(p.t)+'</div>'+
+      '<div class="sub">'+acc(esc(p.tru||''))+'</div>'+
+      '<div class="sub" style="text-align:left;margin-top:12px">'+esc(p.note)+'</div>'+
+      '<div class="sumgrid">'+
+      '<div class="sumbox"><b>'+p.words.length+'</b><span>Wörter der Folge</span></div>'+
+      '<div class="sumbox"><b>'+pr+' %</b><span>davon sitzen</span></div>'+
+      '<div class="sumbox"><b>'+(st.best||0)+' %</b><span>Bestwert</span></div>'+
+      '<div class="sumbox"><b>'+(st.tries||0)+'</b><span>Versuche</span></div>'+
+      '</div>'+
+      (st.passed?'<div class="sub" style="margin-top:12px">✅ Bestanden am '+st.passed.split('-').reverse().join('.')+(nxt?' · Folge '+nxt+' ist frei':'')+'</div>':'')+
+      '<div class="ctrow">'+
+      '<button class="btn btn-primary" onclick="startExam('+n+')">🎓 Prüfung starten ('+EXAM_CARDS+' Karten)</button>'+
+      '<button class="btn-ghost" onclick="startDrill(\''+p.id+'\')">Alle Wörter üben, bis sie sitzen</button>'+
+      '</div><div class="ctrow">'+
+      (p.q&&p.q.length?'<button class="btn-ghost" onclick="startQuiz(\''+p.id+'\')">🧠 Alle Fragen ('+p.q.length+')</button>':'')+
+      '<button class="btn-ghost" onclick="showWords(\''+p.id+'\')">Wortliste ansehen</button>'+
+      '<button class="btn-ghost" onclick="exportPack(\''+p.id+'\')">→ In СЛОВА́ importieren</button>'+
+      '</div><div class="msg" id="expMsg"></div>'+
+      '<button class="btn-ghost" onclick="renderPacks()">Zurück zur Übersicht</button></div>';
+    return;
   }
   if(!p.words.length){ /* Ansehen-only: kein Training, nur Video */
     $('#view-packs').innerHTML=
@@ -3618,7 +3912,8 @@ $('#bakLoad').onclick=()=>{
   try{
     const d=JSON.parse($('#bakBox').value);
     if(!d||typeof d!=='object'||!d.prog)throw new Error('kein Backup');
-    S={prog:d.prog||{},days:d.days||{},extras:d.extras||[],watched:d.watched||{}};
+    S={prog:d.prog||{},days:d.days||{},extras:d.extras||[],watched:d.watched||{},
+       exam:d.exam||{},gate:d.gate!==false};
     save();$('#doneN').textContent=totalDone();
     msg.textContent='Backup wiederhergestellt ✓';msg.classList.add('ok');
     renderPacks();tab('packs');
@@ -3645,10 +3940,18 @@ function buildAppNav(cur){
     :'<a href="'+(isWeb?a[1]:a[2])+'">'+acc(a[0])+'</a>').join('');
 }
 
+$('#gateChk').onchange=e=>{
+  S.gate=e.target.checked;save();
+  $('#gateMsg').textContent=S.gate?'Sperre aktiv – Folgen schalten sich nach der Prüfung frei.':'Sperre aus – alle Folgen sind offen.';
+  $('#gateMsg').className='msg ok';
+  renderPacks();
+};
+
 (function init(){
   $('#brandTitle').innerHTML=acc('СЕРИА́Л');
   initStore();load();
   buildAppNav('serial');
+  $('#gateChk').checked=S.gate!==false;
   $('#doneN').textContent=totalDone();
   renderPacks();
 })();
