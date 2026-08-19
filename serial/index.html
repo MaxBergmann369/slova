@@ -246,6 +246,12 @@ textarea{width:100%;min-height:110px;border:1px solid var(--frost);border-radius
     <div class="msg" id="gateMsg"></div>
   </div>
   <div class="panel">
+    <h3>Umgangssprache</h3>
+    <p class="hint" style="margin-top:0">Blendet <b>saloppe</b> und <b>derbe</b> Ausdrücke aus dem Paket „Redewendungen“ aus. In den Folgenpaketen bleiben sie stehen – dort gehören sie zur Handlung –, aber du musst sie nicht als Wendungen mitlernen, solange dir das Neutrale wichtiger ist.</p>
+    <label class="gate-row"><input type="checkbox" id="slangChk"><span>Saloppe &amp; derbe Wendungen ausblenden</span></label>
+    <div class="msg" id="slangMsg"></div>
+  </div>
+  <div class="panel">
     <h3>Erst denken, dann aufdecken</h3>
     <p class="hint" style="margin-top:0">Bei Auswahlfragen bleiben die vier Möglichkeiten zuerst verdeckt. Du beantwortest die Karte im Kopf und deckst dann auf. Das verhindert, dass du die Lösung nur wiedererkennst, statt sie zu wissen – der Unterschied zwischen „kommt mir bekannt vor“ und „kann ich sagen“.</p>
     <label class="gate-row"><input type="checkbox" id="recallChk"><span>Antwortmöglichkeiten erst nach dem Aufdecken zeigen</span></label>
@@ -350,7 +356,7 @@ const PACKS=[
  {r:'пеще́ра',t:'pi-SCHTSCHE-ra',d:'Höhle',e:'Мы нашли́ пеще́ру в лесу́.',x:'Wir fanden eine Höhle im Wald.'},
  {r:'сокро́вище',t:'sa-KRO-wi-schtsche',d:'Schatz',e:'Ка́рта пока́зывает, где сокро́вище.',x:'Die Karte zeigt, wo der Schatz ist.'},
  {r:'существо́',t:'su-schtschist-WO',d:'Lebewesen, Kreatur',e:'Э́то существо́ говори́т!',x:'Diese Kreatur spricht!'},
- {r:'волше́бство',t:'wal-schib-STWO',d:'Zauberei',e:'Он ве́рит в волше́бство.',x:'Er glaubt an Zauberei.'},
+ {r:'волшебство́',t:'wal-schib-STWO',d:'Zauberei',e:'Он ве́рит в волшебство́.',x:'Er glaubt an Zauberei.'},
  {r:'невероя́тно',t:'ni-wi-ra-JAT-na',d:'unglaublich',e:'Невероя́тно! Как ты э́то сде́лал?',x:'Unglaublich! Wie hast du das gemacht?'},
  {r:'смея́ться',t:'smi-JAT-sa',d:'lachen',e:'Все смея́лись над его́ шу́ткой.',x:'Alle lachten über seinen Witz.'},
  {r:'шу́тка',t:'SCHUT-ka',d:'Witz, Scherz',e:'Э́то была́ то́лько шу́тка.',x:'Das war nur ein Scherz.'},
@@ -3661,7 +3667,7 @@ const PACKS=[
 ];
 
 /* ================= Zustand ================= */
-let S={prog:{},days:{},extras:[],watched:{},exam:{},gate:true,recall:true};
+let S={prog:{},days:{},extras:[],watched:{},exam:{},gate:true,recall:true,noSlang:false};
 let storeMode='none';
 function initStore(){
   try{const t='__ser_test';localStorage.setItem(t,'1');localStorage.removeItem(t);storeMode='local'}
@@ -3670,7 +3676,7 @@ function initStore(){
 function load(){
   if(storeMode!=='local')return;
   try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);S={...S,...d,prog:d.prog||{},days:d.days||{},extras:d.extras||[],watched:d.watched||{},
-    exam:d.exam||{},gate:d.gate!==false,recall:d.recall!==false}}}catch(e){}
+    exam:d.exam||{},gate:d.gate!==false,recall:d.recall!==false,noSlang:!!d.noSlang}}}catch(e){}
 }
 function save(){if(storeMode==='local')try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 /* Wörter, die vor der Auffrischung gemeistert wurden, holen wir nach – aber
@@ -4019,13 +4025,18 @@ function formsBox(w){
 function idiomPack(){
   const want=new Set(IDIOMS);
   const words=[],seen=new Set();
+  let weg=0;
   PACKS.concat(S.extras).forEach(p=>p.words.forEach(w=>{
     const k=w.r.replace(/́/g,'');
-    if(want.has(k)&&!seen.has(k)){seen.add(k);words.push(w)}
+    if(!want.has(k)||seen.has(k))return;
+    seen.add(k);
+    if(S.noSlang&&regOf(w)){weg++;return}   /* Umgangssprache erst mal weglassen */
+    words.push(w);
   }));
   if(!words.length)return null;
   return{id:'idioms',ic:'💬',t:'Redewendungen & feste Wendungen',tru:'Усто́йчивые выраже́ния',
-    note:'Alle festen Wendungen aus deinen Folgen an einem Ort – die Ausdrücke, die man nicht wörtlich übersetzen kann. Wächst automatisch mit jeder neuen Folge mit.',
+    note:'Alle festen Wendungen aus deinen Folgen an einem Ort – die Ausdrücke, die man nicht wörtlich übersetzen kann. Wächst automatisch mit jeder neuen Folge mit.'+
+      (weg?' · Zurzeit sind '+weg+' saloppe und derbe Wendungen ausgeblendet (umschaltbar unter „Mehr“).':''),
     words,q:[]};
 }
 /* ================= Folgen-Prüfung & Freischaltung =================
@@ -4038,6 +4049,23 @@ const EXAM_PASS=85, EXAM_CARDS=25;
    in einer eigenen kleinen Geschichte wieder auf. Kein Serientext – selbst geschrieben,
    angelehnt an die Handlung, damit die Bilder aus der Folge tragen. */
 const STORIES={
+'gf-basis':{t:'Ле́то, лес и одна́ кни́га',
+ ru:['Ле́том близнецы́ прие́хали к дя́де. Здесь был то́лько лес, ста́рый дом и о́чень мно́го ти́шины.',
+ 'В лесу́ они́ нашли́ кни́гу — чей-то ста́рый дневни́к. В нём был шифр, и ка́ждая страни́ца обеща́ла но́вую зага́дку.',
+ '«Здесь напи́сано про чудо́вище и про сокро́вище», — сказа́л брат. Сестра́ смея́лась и говори́ла, что э́то шу́тка.',
+ 'Но но́чью они́ уви́дели в лесу́ стра́нное существо́, спря́тались за де́рево и побежа́ли домо́й. «Осторо́жно! — крича́л брат. — Тут опа́сность!»',
+ 'У́тром они́ ста́ли иска́ть да́льше и нашли́ вход в пеще́ру. Внутри́ не́ было ни при́зрака, ни волшебства́ — там сиде́ло ма́ленькое существо́ и то́же боя́лось.',
+ 'Они́ позва́ли на по́мощь дя́дю и спасли́ его́. Сокро́вища они́ не нашли́, зато́ у них бы́ло невероя́тное приключе́ние — и одна́ та́йна, в кото́рую тепе́рь ве́рят о́ба.'],
+ de:['Im Sommer kamen die Zwillinge zum Onkel. Hier gab es nur Wald, ein altes Haus und sehr viel Stille.',
+ 'Im Wald fanden sie ein Buch – irgendjemandes altes Tagebuch. Darin stand eine Geheimschrift, und jede Seite versprach ein neues Rätsel.',
+ '„Hier steht etwas über ein Ungeheuer und über einen Schatz", sagte der Bruder. Die Schwester lachte und sagte, das sei ein Witz.',
+ 'Aber nachts sahen sie im Wald ein seltsames Wesen, versteckten sich hinter einem Baum und rannten nach Hause. „Vorsicht!", rief der Bruder. „Hier ist Gefahr!"',
+ 'Am Morgen suchten sie weiter und fanden den Eingang zu einer Höhle. Drinnen war weder ein Gespenst noch Zauberei – dort saß ein kleines Wesen und hatte selbst Angst.',
+ 'Sie holten den Onkel zu Hilfe und retteten es. Einen Schatz fanden sie nicht, dafür hatten sie ein unglaubliches Abenteuer – und ein Geheimnis, an das nun beide glauben.'],
+ q:[{q:'К кому́ прие́хали близнецы́?',qde:'Zu wem kamen die Zwillinge?',o:['к дя́де','к ба́бушке','к друзья́м'],a:0},
+ {q:'Что они́ нашли́ в лесу́?',qde:'Was fanden sie im Wald?',o:['ста́рый дневни́к','сокро́вище','ка́рту'],a:0},
+ {q:'Кто сиде́л в пеще́ре?',qde:'Wer saß in der Höhle?',o:['ма́ленькое существо́','при́зрак','чудо́вище'],a:0},
+ {q:'Нашли́ ли они́ сокро́вище?',qde:'Fanden sie den Schatz?',o:['нет, но бы́ло приключе́ние','да, большо́е','да, ма́ленькое'],a:0}]},
 1:{t:'Пе́рвое ле́то в хи́жине',
  ru:['Ле́том близнецо́в отпра́вили к дя́де — в ста́рую хи́жину, где живёт ску́ка и па́хнет пы́лью.',
  'В пе́рвый же день брат нашёл в лесу́ дневни́к. В нём бы́ло напи́сано: «Не доверя́й никому́».',
@@ -4521,27 +4549,31 @@ function finishRefresh(){
 }
 /* ---- Kurzgeschichte lesen, dann prüfen ---- */
 let storyDe=false;
-function showStory(n,withDe){
-  const st=STORIES[n];
+function storyBack(key){return /^\d+$/.test(key)?('exam-'+key):key}
+function showStory(key,withDe){
+  key=String(key);
+  const st=STORIES[key];
   if(!st)return;
   if(withDe!==undefined)storyDe=withDe;
+  const back=storyBack(key);
+  const zielPack=packById(back);
   tab('packs');
   $('#view-packs').innerHTML=
     '<div class="hero" style="text-align:left"><div class="done-mark" style="text-align:center">📖</div>'+
     '<div class="due-line" style="text-align:center">'+acc(esc(st.t))+' '+sayBtn(st.t,'speak')+'</div>'+
-    '<div class="sub" style="text-align:center">Folge '+n+' · alle Wörter kennst du schon</div>'+
+    '<div class="sub" style="text-align:center">'+(/^\d+$/.test(key)?'Folge '+key:esc(zielPack?zielPack.t:''))+' · alle Wörter kennst du schon</div>'+
     '<div class="story">'+st.ru.map((s,i)=>
       '<p class="sp">'+acc(esc(s))+' '+sayBtn(s)+
       (storyDe?'<span class="sde">'+esc(st.de[i])+'</span>':'')+'</p>').join('')+'</div>'+
     '<div class="ctrow">'+
-    '<button class="btn-ghost" onclick="showStory('+n+','+(storyDe?'false':'true')+')">'+(storyDe?'Übersetzung ausblenden':'Übersetzung einblenden')+'</button>'+
-    '<button class="btn-ghost" onclick="hearAllStory('+n+')">🔊 Ganze Geschichte hören</button>'+
+    '<button class="btn-ghost" onclick="showStory(\''+key+'\','+(storyDe?'false':'true')+')">'+(storyDe?'Übersetzung ausblenden':'Übersetzung einblenden')+'</button>'+
+    '<button class="btn-ghost" onclick="hearAllStory(\''+key+'\')">🔊 Ganze Geschichte hören</button>'+
     '</div>'+
-    '<button class="btn btn-primary" onclick="startQuiz(\'exam-'+n+'\',STORIES['+n+'].q)">🧠 Fragen zur Geschichte ('+st.q.length+')</button><br>'+
-    '<button class="btn-ghost" onclick="showPack(\'exam-'+n+'\')">Zurück zum Prüfungspaket</button></div>';
+    '<button class="btn btn-primary" onclick="startQuiz(\''+back+'\',STORIES[\''+key+'\'].q,\''+key+'\')">🧠 Fragen zur Geschichte ('+st.q.length+')</button><br>'+
+    '<button class="btn-ghost" onclick="showPack(\''+back+'\')">Zurück zum Paket</button></div>';
 }
-function hearAllStory(n){
-  const st=STORIES[n];
+function hearAllStory(key){
+  const st=STORIES[String(key)];
   if(!st)return;
   let i=0;
   const go=()=>{if(i>=st.ru.length)return;speak(st.ru[i]);i++;setTimeout(go,Math.max(3000,st.ru[i-1].length*90))};
@@ -4902,11 +4934,11 @@ function quitSess(){sess=null;renderPacks()}
 
 /* ================= Verständnisfragen ================= */
 let quiz=null;
-function startQuiz(pid,qs){
+function startQuiz(pid,qs,storyKey){
   const p=packById(pid);
   const list=qs||(p&&p.q);
   if(!list||!list.length)return;
-  quiz={pid,i:0,right:0,answered:false,qs:list,story:!!qs};
+  quiz={pid,i:0,right:0,answered:false,qs:list,story:!!qs,storyKey:storyKey||null};
   renderQuiz();
 }
 function renderQuiz(){
@@ -4941,14 +4973,14 @@ function nextQ(){
   const p=packById(quiz.pid);
   quiz.answered=false;quiz.i++;
   if(quiz.i>=quiz.qs.length){
-    const r=quiz.right,n=quiz.qs.length,warStory=quiz.story,fn=p.exam;
+    const r=quiz.right,n=quiz.qs.length,warStory=quiz.story,sk=quiz.storyKey;
     quiz=null;
     if(warStory){
       $('#view-packs').innerHTML='<div class="hero"><div class="done-mark">📖</div>'+
         '<div class="due-line">'+r+' / '+n+' richtig</div>'+
         '<div class="sub" style="margin-top:12px">Zusammenhängender Text ist das, was Einzelwörter zu Sprache macht. Lies die Geschichte ruhig noch einmal – beim zweiten Mal geht sie viel flüssiger.</div>'+
-        '<button class="btn btn-primary" onclick="showStory('+fn+')">📖 Geschichte nochmal lesen</button><br>'+
-        '<button class="btn-ghost" onclick="showPack(\''+p.id+'\')">Zum Prüfungspaket</button></div>';
+        (sk?'<button class="btn btn-primary" onclick="showStory(\''+sk+'\')">📖 Geschichte nochmal lesen</button><br>':'')+
+        '<button class="btn-ghost" onclick="showPack(\''+p.id+'\')">Zum Paket</button></div>';
       return;
     }
     $('#view-packs').innerHTML='<div class="hero"><div class="done-mark">🧠</div>'+
@@ -5039,7 +5071,7 @@ function showPack(pid){
       '<div class="sumbox"><b>'+(st.tries||0)+'</b><span>Versuche</span></div>'+
       '</div>'+
       (st.passed?'<div class="sub" style="margin-top:12px">✅ Bestanden am '+st.passed.split('-').reverse().join('.')+(nxt?' · Folge '+nxt+' ist frei':'')+'</div>':'')+
-      (p.story?'<button class="btn btn-primary" onclick="showStory('+n+')">📖 Kurzgeschichte zur Folge</button><br>':'')+
+      (p.story?'<button class="btn btn-primary" onclick="showStory(\''+n+'\')">📖 Kurzgeschichte zur Folge</button><br>':'')+
       '<div class="ctrow">'+
       '<button class="'+(p.story?'btn-ghost':'btn btn-primary')+'" onclick="startExam('+n+')">🎓 Prüfung starten ('+EXAM_CARDS+' Karten)</button>'+
       '<button class="btn-ghost" onclick="startDrill(\''+p.id+'\')">Alle Wörter üben, bis sie sitzen</button>'+
@@ -5068,6 +5100,7 @@ function showPack(pid){
      (p.q&&p.q.length?'<button class="btn-ghost" onclick="startQuiz(\''+p.id+'\')">🧠 Fragen ('+p.q.length+')</button>':'')+
      '</div>'+
      '<div class="hint">Jedes Wort braucht 2 richtige Antworten in verschiedenen Formaten – erst erkennen, dann selbst schreiben. Falsch setzt das Wort zurück.</div>'+
+     (STORIES[p.id]?'<div class="ctrow"><button class="btn btn-primary" onclick="showStory(\''+p.id+'\')">📖 Kurzgeschichte zu diesem Paket</button></div>':'')+
      '<div class="ctrow">'+
      '<button class="btn-ghost" onclick="startPack(\''+p.id+'\')">⚡ Schnellrunde (10 Karten)</button>'+
      '<button class="btn-ghost" onclick="showWords(\''+p.id+'\')">Wortliste ansehen</button>'+
@@ -5226,6 +5259,12 @@ $('#gateChk').onchange=e=>{
   renderPacks();
 };
 
+$('#slangChk').onchange=e=>{
+  S.noSlang=e.target.checked;save();
+  $('#slangMsg').textContent=S.noSlang?'Saloppe und derbe Wendungen sind ausgeblendet.':'Alle Wendungen sind sichtbar.';
+  $('#slangMsg').className='msg ok';
+  renderPacks();
+};
 $('#recallChk').onchange=e=>{
   S.recall=e.target.checked;save();
   $('#recallMsg').textContent=S.recall?'An – du antwortest erst selbst.':'Aus – die Möglichkeiten stehen sofort da.';
@@ -5238,6 +5277,7 @@ $('#recallChk').onchange=e=>{
   buildAppNav('serial');
   $('#gateChk').checked=S.gate!==false;
   $('#recallChk').checked=S.recall!==false;
+  $('#slangChk').checked=!!S.noSlang;
   migrateRotation();
   $('#doneN').textContent=totalDone();
   renderPacks();
