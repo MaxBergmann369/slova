@@ -1741,7 +1741,8 @@ function buildAppNav(cur){
     ['СЕГО́ДНЯ','/slova/heute/','heute-dashboard.html','heute'],
     ['СЛОВА́','/slova/','russisch-vokabeltrainer.html','slova'],
     ['ГРАММА́ТИКА','/slova/grammatik/','grammatik-trainer.html','gram'],
-    ['СКА́ЗКИ','/slova/skazki/','skazki-lese-app.html','skazki']];
+    ['СКА́ЗКИ','/slova/skazki/','skazki-lese-app.html','skazki'],
+    ['СЕРИА́Л','/slova/serial/','serial-app.html','serial']];
   document.getElementById('appnav').innerHTML=APPS.map(a=>a[3]===cur
     ?'<a class="cur">'+acc(a[0])+'</a>'
     :'<a href="'+(isWeb?a[1]:a[2])+'">'+acc(a[0])+'</a>').join('');

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>СЕРИА́Л · Serien-Vokabeln</title>
+<meta name="theme-color" content="#A8541B">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23A8541B'/%3E%3Ctext x='50' y='70' font-size='52' text-anchor='middle'%3E%F0%9F%93%BA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --rust:#A8541B;          /* Tagebuch-Braun: Serien-App */
+  --rust-deep:#7E3D12;
+  --rust-soft:#F6EADF;
+  --gold:#C08A2E;
+  --ink:#14181F;
+  --ink-soft:#4A5261;
+  --ink-faint:#8A93A5;
+  --paper:#F8F5F1;
+  --card:#FFFFFF;
+  --frost:#E8DFD5;
+  --birch:#2F7D5B;--birch-soft:#E3F1EA;
+  --kalina:#C0392B;--kalina-soft:#F9E9E6;
+  --radius:16px;
+  --serif:"Playfair Display",Georgia,serif;
+  --sans:"Inter",-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height:100vh;line-height:1.5}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;touch-action:manipulation}
+input{font-family:inherit;font-size:1rem;color:var(--ink)}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:600px;margin:0 auto;padding:0 16px 96px}
+header{padding:22px 0 6px;display:flex;align-items:flex-end;justify-content:space-between}
+.brand h1{font-family:var(--serif);font-weight:800;font-size:1.8rem;letter-spacing:.5px;line-height:1}
+.brand h1 .acc{color:var(--rust)}
+.brand p{font-size:.78rem;color:var(--ink-faint);font-weight:500;margin-top:4px}
+.streak{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--frost);border-radius:999px;padding:7px 14px;font-weight:700;font-size:.9rem}
+.appnav{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.appnav a{font-size:.72rem;font-weight:700;padding:4px 11px;border-radius:99px;color:var(--ink-faint);background:var(--card);border:1px solid var(--frost)}
+.appnav a.cur{background:var(--rust);color:#fff;border-color:transparent}
+.notice{background:#FBF0D9;border:1px solid #E8D9B4;color:#6B4A08;border-radius:12px;padding:10px 14px;font-size:.82rem;margin:10px 0;display:none}
+nav.tabsbar{position:sticky;top:0;z-index:20;background:var(--paper);padding:12px 0 14px}
+.tabs{display:flex;background:var(--card);border:1px solid var(--frost);border-radius:14px;padding:4px;gap:4px}
+.tabs button{flex:1;padding:9px 4px;border-radius:10px;font-weight:600;font-size:.86rem;color:var(--ink-soft)}
+.tabs button.on{background:var(--rust);color:#fff}
+@media (max-width:430px){.tabs button{font-size:.76rem;padding:8px 1px}.wrap{padding:0 10px 96px}.card{padding:20px 14px}}
+.view{display:none}
+.view.on{display:block;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.hero{background:var(--card);border:1px solid var(--frost);border-radius:var(--radius);padding:24px 20px;text-align:center;margin-top:6px}
+.hero .due-line{font-family:var(--serif);font-size:1.35rem;font-weight:700;line-height:1.3}
+.hero .due-line b{color:var(--rust)}
+.hero .sub{color:var(--ink-soft);font-size:.9rem;margin-top:8px}
+.btn{display:inline-block;border-radius:12px;padding:14px 26px;font-weight:700;font-size:1rem}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--rust);color:#fff;margin-top:16px}
+.btn-primary:hover{background:var(--rust-deep)}
+.btn-ghost{background:none;color:var(--rust);font-size:.88rem;margin-top:10px;padding:8px 14px;border-radius:10px}
+.btn-ghost:hover{background:var(--rust-soft)}
+.done-mark{font-size:2.4rem;margin-bottom:8px}
+.sect{font-family:var(--serif);font-weight:700;font-size:1.15rem;margin:22px 0 10px}
+.pack{background:var(--card);border:1px solid var(--frost);border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;gap:14px;align-items:center;width:100%;text-align:left}
+.pack:active{transform:scale(.99)}
+.pack .ic{font-size:1.5rem;flex-shrink:0}
+.pack .m{flex:1;min-width:0}
+.pack .t{font-family:var(--serif);font-weight:700;font-size:1.03rem}
+.pack .s{font-size:.78rem;color:var(--ink-soft);margin-top:1px}
+.pack .pbar{height:6px;background:var(--frost);border-radius:99px;overflow:hidden;margin-top:8px}
+.pack .pbar i{display:block;height:100%;background:var(--rust);border-radius:99px}
+.pack .pct{font-size:.75rem;font-weight:700;color:var(--rust);flex-shrink:0;font-variant-numeric:tabular-nums}
+.ctrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.ctrow button{flex:1;min-width:120px;margin:0}
+.sess-top{display:flex;align-items:center;gap:12px;margin:4px 0 14px}
+.sess-top .cnt{font-size:.8rem;font-weight:700;color:var(--ink-faint);white-space:nowrap}
+.bar{flex:1;height:6px;background:var(--frost);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--rust);border-radius:99px;transition:width .25s}
+.quit{color:var(--ink-faint);font-size:.8rem;font-weight:600;padding:4px 8px}
+.card{background:var(--card);border:1px solid var(--frost);border-radius:var(--radius);padding:24px 20px;box-shadow:0 1px 2px rgba(20,24,31,.04)}
+.badges{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;min-height:22px}
+.chip{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:99px;background:var(--rust-soft);color:var(--rust)}
+.word{font-family:var(--serif);font-weight:700;font-size:clamp(1.9rem,8vw,2.6rem);text-align:center;margin:16px 0 4px;line-height:1.15;overflow-wrap:anywhere}
+.word .acc{color:var(--rust)}
+.word-de{font-size:clamp(1.4rem,6vw,1.9rem);font-family:var(--serif);font-weight:700;text-align:center;margin:18px 0 6px}
+.qlabel{text-align:center;font-size:.85rem;color:var(--ink-soft);font-weight:600;margin-top:12px}
+.speak{display:block;margin:2px auto 0;color:var(--rust);font-size:1.25rem;padding:6px 12px;border-radius:99px}
+.speak:hover{background:var(--rust-soft)}
+.opts{display:grid;gap:8px;margin-top:12px}
+.opt{background:var(--paper);border:1.5px solid var(--frost);border-radius:12px;padding:13px 14px;font-weight:600;font-size:1rem;text-align:center}
+.opt.opt-ru{font-family:var(--serif);font-size:1.12rem}
+.opt:hover{border-color:var(--rust)}
+.opt.right{background:var(--birch-soft);border-color:var(--birch);color:var(--birch)}
+.opt.wrong{background:var(--kalina-soft);border-color:var(--kalina);color:var(--kalina)}
+.opt:disabled{cursor:default}
+.type-row{display:flex;gap:8px;margin-top:12px}
+#typeInp{flex:1;min-width:0;border:1.5px solid var(--frost);border-radius:12px;padding:12px 14px;font-size:1.15rem;background:var(--card)}
+#typeInp:focus{outline:2px solid var(--rust);border-color:transparent}
+#typeInp.inp-ok{border-color:var(--birch);background:var(--birch-soft)}
+#typeInp.inp-no{border-color:var(--kalina);background:var(--kalina-soft)}
+.check-btn{background:var(--rust);color:#fff;border-radius:12px;padding:0 18px;font-weight:700}
+.kb{margin-top:10px}
+.kb-row{display:flex;gap:3px;margin-top:3px}
+.kb-k{flex:1;background:var(--card);border:1px solid var(--frost);border-radius:7px;padding:9px 0;font-size:1rem;text-align:center;min-width:0}
+.kb-k:active{background:var(--rust-soft)}
+.kb-bs{flex:1.6;color:var(--kalina)}
+.fb{border-radius:10px;padding:10px 14px;font-weight:700;margin-top:14px;text-align:center}
+.fb-ok{background:var(--birch-soft);color:var(--birch)}
+.fb-no{background:var(--kalina-soft);color:var(--kalina)}
+.answer{border-top:1px dashed var(--frost);margin-top:14px;padding-top:14px;text-align:center}
+.trans{font-family:var(--mono);font-size:.9rem;color:var(--rust);font-weight:600}
+.mean{font-size:1.25rem;font-weight:700;margin-top:6px}
+.ex{margin-top:14px;background:var(--paper);border-radius:10px;padding:12px 14px;text-align:left}
+.ex .ru{font-size:1.02rem;font-weight:600}
+.ex .ru .acc{color:var(--rust)}
+.ex .de{font-size:.86rem;color:var(--ink-soft);margin-top:3px}
+.sp2{color:var(--rust);font-size:1rem;padding:2px 6px;border-radius:8px}
+.grade{display:grid;grid-template-columns:1fr;gap:8px;margin-top:14px}
+.grade button{border-radius:12px;padding:13px 4px;font-weight:700;font-size:.95rem;color:#fff;background:var(--rust)}
+.row{background:var(--card);border:1px solid var(--frost);border-radius:12px;padding:11px 14px;margin-bottom:8px;display:flex;gap:12px;align-items:center}
+.row .l{flex:1;min-width:0}
+.row .ru{font-family:var(--serif);font-weight:700;font-size:1.08rem}
+.row .ru .acc{color:var(--rust)}
+.row .tr{font-family:var(--mono);font-size:.72rem;color:var(--ink-faint)}
+.row .de{font-size:.85rem;color:var(--ink-soft);margin-top:1px}
+.sumgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.sumbox{background:var(--paper);border-radius:12px;padding:14px}
+.sumbox b{font-size:1.5rem;font-family:var(--serif);display:block}
+.sumbox span{font-size:.76rem;color:var(--ink-soft);font-weight:600}
+.panel{background:var(--card);border:1px solid var(--frost);border-radius:var(--radius);padding:18px;margin-top:12px}
+.panel h3{font-family:var(--serif);font-size:1.05rem;margin-bottom:10px}
+.hint{font-size:.78rem;color:var(--ink-faint);margin-top:8px;line-height:1.6}
+.hint code{font-family:var(--mono);background:var(--paper);padding:1px 5px;border-radius:5px;font-size:.72rem}
+textarea{width:100%;min-height:110px;border:1px solid var(--frost);border-radius:10px;padding:10px;font-family:var(--mono);font-size:.75rem;background:var(--paper);resize:vertical}
+.btn-sm{background:var(--rust);color:#fff;border-radius:10px;padding:10px 18px;font-weight:700;font-size:.86rem;margin-top:10px}
+.btn-sm.gray{background:#EEEAE4;color:var(--ink-soft)}
+.btn-sm.danger{background:var(--kalina-soft);color:var(--kalina)}
+.msg{font-size:.8rem;font-weight:600;margin-top:8px;min-height:1em}
+.msg.ok{color:var(--birch)}.msg.err{color:var(--kalina)}
+.foot{text-align:center;color:var(--ink-faint);font-size:.72rem;margin-top:26px;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="brand">
+    <h1 id="brandTitle">СЕРИА́Л</h1>
+    <p>Vokabeln aus Serien &amp; Videos · lernen, was du wirklich hörst</p>
+  </div>
+  <div class="streak"><span>📺</span><span id="doneN">0</span></div>
+</header>
+<div class="appnav" id="appnav"></div>
+<div class="notice" id="storeNotice"></div>
+
+<nav class="tabsbar"><div class="tabs">
+  <button data-tab="packs" class="on">Pakete</button>
+  <button data-tab="liste">Wörter</button>
+  <button data-tab="mehr">Mehr</button>
+</div></nav>
+
+<section class="view on" id="view-packs"></section>
+<section class="view" id="view-liste"></section>
+<section class="view" id="view-mehr">
+  <div class="panel">
+    <h3>So funktioniert’s</h3>
+    <p class="hint" style="font-size:.85rem;color:var(--ink-soft)">
+      <b>1.</b> Folge auf Russisch schauen – ruhig mit Untertiteln, ruhig eine Folge, die du schon kennst.<br>
+      <b>2.</b> Danach das passende Wortpaket hier üben (5 Minuten reichen).<br>
+      <b>3.</b> Dieselbe Folge nochmal schauen – du wirst überrascht sein, wie viel mehr du verstehst.<br>
+      <b>4.</b> Mit „In СЛОВА́ importieren“ wandern die Wörter in deinen normalen Vokabeltrainer und kommen dort automatisch zur Wiederholung.</p>
+  </div>
+  <div class="panel">
+    <h3>Neues Paket anlegen</h3>
+    <p class="hint" style="margin-top:0">Schick mir das Transkript einer Folge – ich baue daraus ein Wortpaket mit Beispielsätzen und Fragen. Eigene Pakete kannst du auch selbst einfügen (JSON, siehe Beispiel).</p>
+    <textarea id="impBox" placeholder='[{"id":"gf-1","t":"Folge 1","tru":"Се́рия 1","words":[{"r":"дневни́к","t":"dniw-NIK","d":"Tagebuch","e":"Я нашёл ста́рый дневни́к.","x":"Ich habe ein altes Tagebuch gefunden."}]}]'></textarea>
+    <button class="btn-sm" id="impBtn">Paket importieren</button>
+    <div class="msg" id="impMsg"></div>
+  </div>
+  <div class="panel">
+    <h3>Backup</h3>
+    <textarea id="bakBox" placeholder="Hier erscheint dein Backup."></textarea>
+    <button class="btn-sm" id="bakMake">Backup erstellen &amp; kopieren</button>
+    <button class="btn-sm gray" id="bakLoad">Backup wiederherstellen</button>
+    <div class="msg" id="bakMsg"></div>
+  </div>
+  <div class="panel">
+    <h3>Daten</h3>
+    <button class="btn-sm danger" id="resetBtn">Fortschritt zurücksetzen</button>
+    <div class="msg" id="dataMsg"></div>
+  </div>
+  <p class="foot">СЕРИА́Л enthält nur Vokabeln, eigene Beispielsätze und Fragen – keine Dialoge oder Transkripte aus den Serien selbst.</p>
+</section>
+
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const KEY='russisch-serial-v1';
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const acc=s=>s.replace(/([А-Яа-яЁё]́)/g,'<span class="acc">$1</span>');
+const normRu=s=>String(s).toLowerCase().replace(/́/g,'').replace(/ё/g,'е').replace(/[^а-я\- ]/g,'').replace(/\s+/g,' ').trim();
+const pad=n=>String(n).padStart(2,'0');
+const dstr=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const todayStr=()=>dstr(new Date());
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a}
+
+/* ---------- Sprachausgabe ---------- */
+let RU_VOICE=null,VOICES_LOADED=false;
+function pickRuVoice(){
+  try{
+    const vs=speechSynthesis.getVoices()||[];
+    if(vs.length)VOICES_LOADED=true;
+    RU_VOICE=vs.find(v=>v.lang&&v.lang.toLowerCase().replace('_','-').indexOf('ru')===0)||vs.find(v=>/russian|русск/i.test(v.name||''))||null;
+  }catch(e){}
+}
+function speak(txt){
+  try{
+    if(!('speechSynthesis' in window))return;
+    if(!RU_VOICE)pickRuVoice();
+    if(VOICES_LOADED&&!RU_VOICE)return;
+    const u=new SpeechSynthesisUtterance(String(txt).replace(/́/g,''));
+    u.lang='ru-RU';u.rate=.85;
+    if(RU_VOICE)u.voice=RU_VOICE;
+    speechSynthesis.cancel();speechSynthesis.resume();speechSynthesis.speak(u);
+  }catch(e){}
+}
+try{pickRuVoice();speechSynthesis.onvoiceschanged=pickRuVoice}catch(e){}
+
+/* ================= Wortpakete =================
+   Jedes Paket: Wörter (r=russisch, t=Lautschrift, d=deutsch, e/x=eigener Beispielsatz)
+   + q = Verständnisfragen auf Russisch. Enthält bewusst keine Serien-Dialoge. */
+const PACKS=[
+{id:'gf-basis',ic:'🌲',t:'Gravity Falls · Grundwortschatz',tru:'Мир Гра́вити Фолз',
+ note:'Die Wörter, die in fast jeder Folge vorkommen – Wald, Geheimnisse, Monster, Familie. Ideal, bevor du mit dem Schauen anfängst.',
+ words:[
+ {r:'дневни́к',t:'dniw-NIK',d:'Tagebuch',e:'В лесу́ он нашёл ста́рый дневни́к.',x:'Im Wald fand er ein altes Tagebuch.'},
+ {r:'та́йна',t:'TAJ-na',d:'Geheimnis',e:'Э́то на́ша та́йна.',x:'Das ist unser Geheimnis.'},
+ {r:'зага́дка',t:'sa-GAT-ka',d:'Rätsel',e:'Кто разга́дает э́ту зага́дку?',x:'Wer löst dieses Rätsel?'},
+ {r:'лес',t:'ljes',d:'Wald',e:'Ле́том мы гуля́ем в лесу́.',x:'Im Sommer spazieren wir im Wald.'},
+ {r:'ле́то',t:'LJE-ta',d:'Sommer',e:'Э́то бы́ло стра́нное ле́то.',x:'Das war ein seltsamer Sommer.'},
+ {r:'близнецы́',t:'blis-ni-ZY',d:'Zwillinge',e:'Брат и сестра́ — близнецы́.',x:'Bruder und Schwester sind Zwillinge.'},
+ {r:'дя́дя',t:'DJA-dja',d:'Onkel',e:'Наш дя́дя живёт в лесу́.',x:'Unser Onkel wohnt im Wald.'},
+ {r:'стра́нный',t:'STRAN-nyj',d:'seltsam, merkwürdig',e:'Како́й стра́нный звук!',x:'Was für ein seltsames Geräusch!'},
+ {r:'чудо́вище',t:'tschu-DO-wi-schtsche',d:'Ungeheuer, Monster',e:'В пеще́ре живёт чудо́вище.',x:'In der Höhle lebt ein Ungeheuer.'},
+ {r:'при́зрак',t:'PRIS-rak',d:'Geist, Gespenst',e:'Ты ве́ришь в при́зраков?',x:'Glaubst du an Gespenster?'},
+ {r:'приключе́ние',t:'pri-kljut-SCHE-ni-je',d:'Abenteuer',e:'Э́то бы́ло на́ше пе́рвое приключе́ние.',x:'Das war unser erstes Abenteuer.'},
+ {r:'иска́ть',t:'is-KATJ',d:'suchen',e:'Мы до́лго иска́ли отве́т.',x:'Wir suchten lange nach der Antwort.'},
+ {r:'найти́',t:'na-TI',d:'finden',e:'Наконе́ц мы нашли́ вы́ход.',x:'Endlich fanden wir den Ausgang.'},
+ {r:'пря́таться',t:'PRJA-tat-sa',d:'sich verstecken',e:'Не пря́чься, я тебя́ ви́жу!',x:'Versteck dich nicht, ich sehe dich!'},
+ {r:'боя́ться',t:'ba-JAT-sa',d:'Angst haben',e:'Я не бою́сь темноты́.',x:'Ich habe keine Angst vor der Dunkelheit.'},
+ {r:'опа́сность',t:'a-PAS-nastj',d:'Gefahr',e:'Здесь опа́сность!',x:'Hier ist Gefahr!'},
+ {r:'спасти́',t:'spas-TI',d:'retten',e:'Он спас свою́ сестру́.',x:'Er rettete seine Schwester.'},
+ {r:'по́мощь',t:'PO-maschtsch',d:'Hilfe',e:'Нам нужна́ по́мощь!',x:'Wir brauchen Hilfe!'},
+ {r:'осторо́жно',t:'as-ta-ROSCH-na',d:'Vorsicht, vorsichtig',e:'Осторо́жно, там темно́!',x:'Vorsicht, dort ist es dunkel!'},
+ {r:'шифр',t:'schifr',d:'Geheimschrift, Code',e:'В конце́ ка́ждой се́рии есть шифр.',x:'Am Ende jeder Folge gibt es einen Code.'},
+ {r:'кни́га',t:'KNI-ga',d:'Buch',e:'В кни́ге бы́ли стра́нные рису́нки.',x:'In dem Buch waren seltsame Zeichnungen.'},
+ {r:'пеще́ра',t:'pi-SCHTSCHE-ra',d:'Höhle',e:'Мы нашли́ пеще́ру в лесу́.',x:'Wir fanden eine Höhle im Wald.'},
+ {r:'сокро́вище',t:'sa-KRO-wi-schtsche',d:'Schatz',e:'Ка́рта пока́зывает, где сокро́вище.',x:'Die Karte zeigt, wo der Schatz ist.'},
+ {r:'существо́',t:'su-schtschist-WO',d:'Lebewesen, Kreatur',e:'Э́то существо́ говори́т!',x:'Diese Kreatur spricht!'},
+ {r:'волше́бство',t:'wal-schib-STWO',d:'Zauberei',e:'Он ве́рит в волше́бство.',x:'Er glaubt an Zauberei.'},
+ {r:'невероя́тно',t:'ni-wi-ra-JAT-na',d:'unglaublich',e:'Невероя́тно! Как ты э́то сде́лал?',x:'Unglaublich! Wie hast du das gemacht?'},
+ {r:'смея́ться',t:'smi-JAT-sa',d:'lachen',e:'Все смея́лись над его́ шу́ткой.',x:'Alle lachten über seinen Witz.'},
+ {r:'шу́тка',t:'SCHUT-ka',d:'Witz, Scherz',e:'Э́то была́ то́лько шу́тка.',x:'Das war nur ein Scherz.'},
+ {r:'бежа́ть',t:'bi-SCHATJ',d:'rennen',e:'Бежи́м отсю́да!',x:'Lass uns hier abhauen!'},
+ {r:'ве́рить',t:'WJE-ritj',d:'glauben',e:'Ты мне не ве́ришь?',x:'Glaubst du mir nicht?'}
+ ],
+ q:[
+ {q:'Что близнецы́ нашли́ в лесу́?',qde:'Was fanden die Zwillinge im Wald?',o:['дневни́к','маши́ну','телефо́н'],a:0},
+ {q:'Как сказа́ть «Vorsicht!» по-ру́сски?',qde:'Wie sagt man „Vorsicht!" auf Russisch?',o:['Осторо́жно!','Пожа́луйста!','Споко́йно!'],a:0},
+ {q:'Что зна́чит «Нам нужна́ по́мощь»?',qde:'Was bedeutet „Нам нужна́ помощь"?',o:['Wir brauchen Hilfe','Wir haben Zeit','Wir sind müde'],a:0},
+ {q:'Кто живёт в пеще́ре?',qde:'Wer lebt in der Höhle?',o:['чудо́вище','учи́тель','ба́бушка'],a:0}]}
+];
+
+/* ================= Zustand ================= */
+let S={prog:{},days:{},extras:[]};
+let storeMode='none';
+function initStore(){
+  try{const t='__ser_test';localStorage.setItem(t,'1');localStorage.removeItem(t);storeMode='local'}
+  catch(e){storeMode='none';const n=$('#storeNotice');n.textContent='Hinweis: Hier kann nichts gespeichert werden – der Fortschritt gilt nur für diese Sitzung.';n.style.display='block'}
+}
+function load(){
+  if(storeMode!=='local')return;
+  try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);S={...S,...d,prog:d.prog||{},days:d.days||{},extras:d.extras||[]}}}catch(e){}
+}
+function save(){if(storeMode==='local')try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+function allPacks(){return PACKS.concat(S.extras)}
+function packById(id){return allPacks().find(p=>p.id===id)}
+const wordKey=(pid,k)=>pid+':'+k;
+function packProgress(p){
+  let m=0;
+  p.words.forEach((w,k)=>{const st=S.prog[wordKey(p.id,k)];if(st&&st.c>=2)m++});
+  return Math.round(100*m/p.words.length);
+}
+function totalDone(){
+  return allPacks().filter(p=>packProgress(p)>=100).length;
+}
+
+/* ================= Übung ================= */
+let sess=null,cur=null;
+function startPack(pid,mode){
+  const p=packById(pid);
+  if(!p)return;
+  const idx=p.words.map((w,k)=>k);
+  /* schwache Wörter zuerst */
+  idx.sort((a,b)=>{
+    const sa=S.prog[wordKey(pid,a)],sb=S.prog[wordKey(pid,b)];
+    return((sa?sa.c:0)+Math.random())-((sb?sb.c:0)+Math.random());
+  });
+  sess={pid,q:idx.slice(0,10),i:0,right:0,wrong:0,mode:mode||'mix'};
+  renderCard();
+}
+const KB_ROWS=['йцукенгшщзхъ','фывапролджэ','ячсмитьбюё'];
+function typeHtml(){
+  return '<div class="type-row"><input id="typeInp" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="по-русски …"><button class="check-btn" id="checkBtn">Prüfen</button></div>'+
+    '<div class="kb" id="kb">'+KB_ROWS.map((row,ri)=>'<div class="kb-row">'+row.split('').map(ch=>'<button type="button" class="kb-k" data-ch="'+ch+'">'+ch+'</button>').join('')+(ri===2?'<button type="button" class="kb-k kb-bs" data-bs="1">⌫</button>':'')+'</div>').join('')+'</div>';
+}
+function distract(p,k,field,n){
+  const self=p.words[k][field];
+  const pool=shuffle(p.words.filter((w,j)=>j!==k).map(w=>w[field]));
+  const out=[],seen=new Set([self]);
+  for(const v of pool){if(seen.has(v))continue;seen.add(v);out.push(v);if(out.length>=n)break}
+  return out;
+}
+function renderCard(){
+  const p=packById(sess.pid),k=sess.q[sess.i],w=p.words[k];
+  const st=S.prog[wordKey(p.id,k)];
+  let mode=sess.mode;
+  if(mode==='mix')mode=(st&&st.c>=2)?'type':(Math.random()<.5?'mc':'mcRev');
+  cur={p,k,w,mode,answered:false,opts:null,goodIdx:-1};
+  let front='';
+  if(mode==='mc'){
+    cur.opts=shuffle(distract(p,k,'d',3).concat([w.d]));
+    cur.goodIdx=cur.opts.indexOf(w.d);
+    front='<div class="word">'+acc(esc(w.r))+'</div><button class="speak" onclick="speak(cur.w.r)">🔊</button>'+
+      '<div class="qlabel">Was bedeutet das?</div>'+
+      '<div class="opts">'+cur.opts.map((o,i)=>'<button class="opt" data-k="'+i+'">'+esc(o)+'</button>').join('')+'</div>';
+  }else if(mode==='mcRev'){
+    cur.opts=shuffle(distract(p,k,'r',3).concat([w.r]));
+    cur.goodIdx=cur.opts.indexOf(w.r);
+    front='<div class="word-de">'+esc(w.d)+'</div><div class="qlabel">Wie heißt das auf Russisch?</div>'+
+      '<div class="opts">'+cur.opts.map((o,i)=>'<button class="opt opt-ru" data-k="'+i+'">'+acc(esc(o))+'</button>').join('')+'</div>';
+  }else{
+    front='<div class="word-de">'+esc(w.d)+'</div><div class="qlabel">Schreib es auf Russisch:</div>'+typeHtml();
+  }
+  $('#view-packs').innerHTML=
+    '<div class="sess-top"><span class="cnt">'+(sess.i+1)+' / '+sess.q.length+'</span>'+
+    '<div class="bar"><i style="width:'+Math.round(100*sess.i/sess.q.length)+'%"></i></div>'+
+    '<button class="quit" onclick="quitSess()">Beenden</button></div>'+
+    '<div class="card"><div class="badges"><span class="chip">'+p.ic+' '+esc(p.t)+'</span></div>'+front+
+    '<div id="fbZone"></div></div>';
+  if(cur.opts){
+    document.querySelectorAll('#view-packs .opt').forEach(b=>b.onclick=()=>{
+      if(cur.answered)return;
+      const ok=+b.dataset.k===cur.goodIdx;
+      document.querySelectorAll('#view-packs .opt').forEach(x=>{x.disabled=true;if(+x.dataset.k===cur.goodIdx)x.classList.add('right')});
+      if(!ok)b.classList.add('wrong');
+      resolve(ok);
+    });
+  }else{
+    document.querySelectorAll('.kb-k').forEach(b=>b.onclick=()=>{
+      const inp=$('#typeInp');
+      if(!inp||inp.disabled)return;
+      if(b.dataset.bs)inp.value=inp.value.slice(0,-1);else inp.value+=b.dataset.ch;
+    });
+    $('#checkBtn').onclick=checkTyped;
+    $('#typeInp').addEventListener('keydown',e=>{if(e.key==='Enter')checkTyped()});
+  }
+}
+function checkTyped(){
+  const inp=$('#typeInp');
+  if(!inp||cur.answered)return;
+  const v=normRu(inp.value);
+  if(!v)return;
+  const ok=v===normRu(cur.w.r);
+  inp.disabled=true;inp.classList.add(ok?'inp-ok':'inp-no');
+  const kb=$('#kb');if(kb)kb.style.display='none';
+  const cb=$('#checkBtn');if(cb)cb.style.display='none';
+  resolve(ok);
+}
+function resolve(ok){
+  if(!cur||cur.answered)return;
+  cur.answered=true;
+  const key=wordKey(cur.p.id,cur.k);
+  const st=S.prog[key]||(S.prog[key]={c:0,w:0});
+  if(ok){st.c++;sess.right++}else{st.w++;st.c=0;sess.wrong++;sess.q.push(cur.k)}
+  const t=todayStr();S.days[t]=(S.days[t]||0)+1;
+  save();
+  const w=cur.w;
+  $('#fbZone').innerHTML=
+    '<div class="fb '+(ok?'fb-ok':'fb-no')+'">'+(ok?'✓ Richtig!':'✗ Nicht ganz.')+'</div>'+
+    '<div class="answer"><div class="word" style="font-size:1.6rem;margin:2px 0 4px">'+acc(esc(w.r))+'</div>'+
+    '<div class="trans">['+esc(w.t)+']</div><div class="mean">'+esc(w.d)+'</div>'+
+    (w.e?'<div class="ex"><div class="ru">'+acc(esc(w.e))+' <button class="sp2" onclick="speak(cur.w.e)">🔊</button></div><div class="de">'+esc(w.x||'')+'</div></div>':'')+
+    '</div><div class="grade"><button onclick="nextCard()">Weiter</button></div>';
+  speak(w.r);
+}
+function nextCard(){
+  sess.i++;
+  if(sess.i>=sess.q.length)finishSess();else renderCard();
+}
+function finishSess(){
+  const p=packById(sess.pid);
+  const tot=sess.right+sess.wrong,accy=tot?Math.round(100*sess.right/tot):100;
+  $('#doneN').textContent=totalDone();
+  $('#view-packs').innerHTML='<div class="hero"><div class="done-mark">🎬</div>'+
+    '<div class="due-line">Runde geschafft!</div>'+
+    '<div class="sumgrid">'+
+    '<div class="sumbox"><b>'+sess.right+'</b><span>richtig</span></div>'+
+    '<div class="sumbox"><b>'+accy+' %</b><span>Trefferquote</span></div>'+
+    '<div class="sumbox"><b>'+packProgress(p)+' %</b><span>Paket gelernt</span></div>'+
+    '<div class="sumbox"><b>'+p.words.length+'</b><span>Wörter im Paket</span></div>'+
+    '</div><button class="btn btn-primary" onclick="startPack(\''+p.id+'\')">Nochmal üben</button><br>'+
+    '<button class="btn-ghost" onclick="showPack(\''+p.id+'\')">Zum Paket</button></div>';
+  sess=null;
+}
+function quitSess(){sess=null;renderPacks()}
+
+/* ================= Verständnisfragen ================= */
+let quiz=null;
+function startQuiz(pid){
+  const p=packById(pid);
+  if(!p||!p.q||!p.q.length)return;
+  quiz={pid,i:0,right:0,answered:false};
+  renderQuiz();
+}
+function renderQuiz(){
+  const p=packById(quiz.pid),q=p.q[quiz.i];
+  const opts=shuffle(q.o.map((o,k)=>({o,ok:k===q.a})));
+  $('#view-packs').innerHTML=
+    '<div class="sess-top"><span class="cnt">Frage '+(quiz.i+1)+' / '+p.q.length+'</span>'+
+    '<div class="bar"><i style="width:'+Math.round(100*quiz.i/p.q.length)+'%"></i></div>'+
+    '<button class="quit" onclick="quiz=null;showPack(\''+p.id+'\')">Beenden</button></div>'+
+    '<div class="card"><div class="word" style="font-size:1.4rem">'+acc(esc(q.q))+'</div>'+
+    '<div class="qlabel">'+esc(q.qde)+'</div>'+
+    '<div class="opts">'+opts.map((e,k)=>'<button class="opt opt-ru" data-k="'+k+'">'+acc(esc(e.o))+'</button>').join('')+'</div>'+
+    '<div id="fbZone"></div></div>';
+  document.querySelectorAll('#view-packs .opt').forEach(b=>b.onclick=()=>{
+    if(quiz.answered)return;
+    quiz.answered=true;
+    const ok=opts[+b.dataset.k].ok;
+    document.querySelectorAll('#view-packs .opt').forEach(x=>{x.disabled=true;if(opts[+x.dataset.k].ok)x.classList.add('right')});
+    if(!ok)b.classList.add('wrong');
+    if(ok)quiz.right++;
+    const t=todayStr();S.days[t]=(S.days[t]||0)+1;save();
+    $('#fbZone').innerHTML='<div class="fb '+(ok?'fb-ok':'fb-no')+'">'+(ok?'✓ Richtig!':'✗ Nicht ganz.')+'</div>'+
+      '<div class="grade"><button onclick="nextQ()">Weiter</button></div>';
+  });
+}
+function nextQ(){
+  const p=packById(quiz.pid);
+  quiz.answered=false;quiz.i++;
+  if(quiz.i>=p.q.length){
+    const r=quiz.right,n=p.q.length;
+    quiz=null;
+    $('#view-packs').innerHTML='<div class="hero"><div class="done-mark">🧠</div>'+
+      '<div class="due-line">'+r+' / '+n+' richtig</div>'+
+      '<button class="btn btn-primary" onclick="showPack(\''+p.id+'\')">Zurück zum Paket</button></div>';
+  }else renderQuiz();
+}
+
+/* ================= Ansichten ================= */
+function renderPacks(){
+  sess=null;quiz=null;
+  const ps=allPacks();
+  let html='<div class="hero"><div class="due-line">Was hast du <b>geschaut</b>?</div>'+
+    '<div class="sub">Üb die Wörter aus deinen Folgen – und schau sie danach nochmal. Kein Transkript, nur Vokabeln und Fragen.</div></div>'+
+    '<div class="sect">Deine Pakete</div>';
+  if(!ps.length)html+='<p class="hint">Noch keine Pakete. Unter „Mehr" kannst du eins einfügen.</p>';
+  ps.forEach(p=>{
+    const pr=packProgress(p);
+    html+='<button class="pack" onclick="showPack(\''+p.id+'\')">'+
+      '<span class="ic">'+(p.ic||'📺')+'</span>'+
+      '<span class="m"><span class="t">'+esc(p.t)+'</span>'+
+      '<span class="s" style="display:block">'+esc(p.tru||'')+' · '+p.words.length+' Wörter</span>'+
+      '<span class="pbar"><i style="width:'+pr+'%"></i></span></span>'+
+      '<span class="pct">'+pr+' %</span></button>';
+  });
+  $('#view-packs').innerHTML=html;
+}
+function showPack(pid){
+  const p=packById(pid);
+  if(!p){renderPacks();return}
+  const pr=packProgress(p);
+  $('#view-packs').innerHTML=
+    '<div class="hero"><div class="done-mark">'+(p.ic||'📺')+'</div>'+
+    '<div class="due-line">'+esc(p.t)+'</div>'+
+    '<div class="sub">'+acc(esc(p.tru||''))+'</div>'+
+    (p.note?'<div class="sub" style="text-align:left;margin-top:12px">'+esc(p.note)+'</div>':'')+
+    '<div class="sub" style="margin-top:10px">'+p.words.length+' Wörter · '+pr+' % gelernt</div>'+
+    '<div class="ctrow">'+
+    '<button class="btn btn-primary" onclick="startPack(\''+p.id+'\')">Wörter üben</button>'+
+    (p.q&&p.q.length?'<button class="btn-ghost" onclick="startQuiz(\''+p.id+'\')">🧠 Fragen ('+p.q.length+')</button>':'')+
+    '</div>'+
+    '<div class="ctrow">'+
+    '<button class="btn-ghost" onclick="showWords(\''+p.id+'\')">Wortliste ansehen</button>'+
+    '<button class="btn-ghost" onclick="exportPack(\''+p.id+'\')">→ In СЛОВА́ importieren</button>'+
+    '</div>'+
+    '<div class="msg" id="expMsg"></div>'+
+    '<button class="btn-ghost" onclick="renderPacks()">Zurück</button></div>';
+}
+function showWords(pid){
+  const p=packById(pid);
+  tab('liste');
+  $('#view-liste').innerHTML='<div class="sect">'+(p.ic||'📺')+' '+esc(p.t)+'</div>'+
+    p.words.map((w,k)=>{
+      const st=S.prog[wordKey(p.id,k)];
+      return '<div class="row"><div class="l"><div class="ru">'+acc(esc(w.r))+'</div>'+
+        '<div class="tr">['+esc(w.t||'')+']</div><div class="de">'+esc(w.d)+'</div>'+
+        (w.e?'<div class="de" style="margin-top:4px;font-style:italic">'+acc(esc(w.e))+'</div>':'')+
+        '</div><div>'+(st&&st.c>=2?'<span style="color:var(--birch);font-weight:700">✓</span>':'')+'</div>'+
+        '<button class="sp2" onclick="speak(\''+String(w.r).replace(/'/g,'')+'\')">🔊</button></div>';
+    }).join('')+
+    '<button class="btn-ghost" onclick="tab(\'packs\');showPack(\''+p.id+'\')">Zurück zum Paket</button>';
+}
+async function exportPack(pid){
+  const p=packById(pid);
+  const json=JSON.stringify(p.words.map(w=>({r:w.r,t:w.t||'',d:w.d,e:w.e||'',x:w.x||''})));
+  let ok=false;
+  try{await navigator.clipboard.writeText(json);ok=true}catch(e){}
+  const m=$('#expMsg');
+  if(m){
+    m.className='msg ok';
+    m.innerHTML=ok
+      ?'✓ Kopiert! Jetzt in СЛОВА́ → Mehr → „Wörter importieren“ einfügen.'
+      :'<textarea style="min-height:80px">'+esc(json)+'</textarea><div class="hint">Text markieren, kopieren und in СЛОВА́ → Mehr → Wörter importieren einfügen.</div>';
+  }
+}
+function renderListe(){
+  const ps=allPacks();
+  let html='<div class="sect">Alle Wörter</div>';
+  ps.forEach(p=>{
+    html+='<div class="sect" style="font-size:.95rem">'+(p.ic||'📺')+' '+esc(p.t)+'</div>';
+    html+=p.words.map((w,k)=>{
+      const st=S.prog[wordKey(p.id,k)];
+      return '<div class="row"><div class="l"><div class="ru">'+acc(esc(w.r))+'</div>'+
+        '<div class="tr">['+esc(w.t||'')+']</div><div class="de">'+esc(w.d)+'</div></div>'+
+        '<div>'+(st&&st.c>=2?'<span style="color:var(--birch);font-weight:700">✓</span>':'')+'</div>'+
+        '<button class="sp2" onclick="speak(\''+String(w.r).replace(/'/g,'')+'\')">🔊</button></div>';
+    }).join('');
+  });
+  $('#view-liste').innerHTML=html;
+}
+
+/* ================= Tabs & Mehr ================= */
+function tab(name){
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='view-'+name));
+  if(name==='packs'&&!sess&&!quiz)renderPacks();
+  if(name==='liste')renderListe();
+}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>tab(b.dataset.tab));
+
+$('#impBtn').onclick=()=>{
+  const msg=$('#impMsg');msg.className='msg';
+  try{
+    const arr=JSON.parse($('#impBox').value);
+    if(!Array.isArray(arr))throw new Error('kein Array');
+    let n=0;
+    arr.forEach(o=>{
+      if(!o||!o.id||!Array.isArray(o.words)||!o.words.length)return;
+      const exists=allPacks().findIndex(p=>p.id===o.id);
+      const pack={id:String(o.id),ic:o.ic||'📺',t:String(o.t||o.id),tru:String(o.tru||''),note:String(o.note||''),
+        words:o.words.filter(w=>w&&w.r&&w.d).map(w=>({r:String(w.r),t:String(w.t||''),d:String(w.d),e:String(w.e||''),x:String(w.x||'')})),
+        q:Array.isArray(o.q)?o.q:[]};
+      if(exists>=0&&exists>=PACKS.length)S.extras[exists-PACKS.length]=pack;
+      else S.extras.push(pack);
+      n++;
+    });
+    save();
+    $('#impBox').value='';
+    msg.textContent=n+' Paket(e) importiert ✓';msg.classList.add('ok');
+    renderPacks();tab('packs');
+  }catch(e){msg.textContent='Format nicht lesbar – bitte JSON einfügen (siehe grauer Beispieltext).';msg.classList.add('err')}
+};
+$('#bakMake').onclick=async()=>{
+  const data=JSON.stringify({v:1,...S});
+  $('#bakBox').value=data;
+  let copied=false;
+  try{await navigator.clipboard.writeText(data);copied=true}catch(e){$('#bakBox').select()}
+  $('#bakMsg').textContent=copied?'Backup erstellt und kopiert ✓':'Backup erstellt – bitte manuell kopieren.';
+  $('#bakMsg').className='msg ok';
+};
+$('#bakLoad').onclick=()=>{
+  const msg=$('#bakMsg');msg.className='msg';
+  try{
+    const d=JSON.parse($('#bakBox').value);
+    if(!d||typeof d!=='object'||!d.prog)throw new Error('kein Backup');
+    S={prog:d.prog||{},days:d.days||{},extras:d.extras||[]};
+    save();$('#doneN').textContent=totalDone();
+    msg.textContent='Backup wiederhergestellt ✓';msg.classList.add('ok');
+    renderPacks();tab('packs');
+  }catch(e){msg.textContent='Das sieht nicht wie ein Backup aus.';msg.classList.add('err')}
+};
+$('#resetBtn').onclick=()=>{
+  if(!confirm('Wirklich den Serien-Fortschritt löschen? (Importierte Pakete bleiben)'))return;
+  S.prog={};S.days={};save();
+  $('#doneN').textContent=totalDone();
+  $('#dataMsg').textContent='Fortschritt zurückgesetzt.';$('#dataMsg').className='msg ok';
+  renderPacks();tab('packs');
+};
+
+function buildAppNav(cur){
+  const isWeb=location.protocol!=='file:';
+  const APPS=[
+    ['СЕГО́ДНЯ','/slova/heute/','heute-dashboard.html','heute'],
+    ['СЛОВА́','/slova/','russisch-vokabeltrainer.html','slova'],
+    ['ГРАММА́ТИКА','/slova/grammatik/','grammatik-trainer.html','gram'],
+    ['СКА́ЗКИ','/slova/skazki/','skazki-lese-app.html','skazki'],
+    ['СЕРИА́Л','/slova/serial/','serial-app.html','serial']];
+  document.getElementById('appnav').innerHTML=APPS.map(a=>a[3]===cur
+    ?'<a class="cur">'+acc(a[0])+'</a>'
+    :'<a href="'+(isWeb?a[1]:a[2])+'">'+acc(a[0])+'</a>').join('');
+}
+
+(function init(){
+  $('#brandTitle').innerHTML=acc('СЕРИА́Л');
+  initStore();load();
+  buildAppNav('serial');
+  $('#doneN').textContent=totalDone();
+  renderPacks();
+})();
+
+/* Offline-Modus */
+if('serviceWorker' in navigator&&location.protocol==='https:'){
+  try{navigator.serviceWorker.register('/slova/sw.js')}catch(e){}
+}
+</script>
+</body>
+</html>
