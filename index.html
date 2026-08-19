@@ -2528,11 +2528,16 @@ function newAllowance(){
   return Math.max(0,S.set.npd-S.nt.n);
 }
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a}
+function freshPool(n){
+  /* Selbst importierte Wörter (z.B. aus СЕРИА́Л) kommen zuerst – sie sind bewusst gewählt.
+     Danach die nächsten ungelernten Frequenzwörter, damit der Schwierigkeitsgrad passt. */
+  const mine=S.extras.filter(w=>!S.prog[w.i]).map(w=>w.i);
+  const base=VOCAB.filter(w=>!S.prog[w.i]).sort((a,b)=>a.i-b.i).slice(0,n).map(w=>w.i);
+  return shuffle(mine).concat(shuffle(base));
+}
 function buildQueue(){
   const due=allWords().filter(w=>isDue(w.i)).map(w=>w.i);
-  /* Neue Wörter: zufällig aus den nächsten 120 ungelernten, damit der Schwierigkeitsgrad grob passt */
-  const pool=allWords().filter(w=>!S.prog[w.i]).sort((a,b)=>a.i-b.i).slice(0,120).map(w=>w.i);
-  const fresh=shuffle(pool).slice(0,newAllowance());
+  const fresh=freshPool(120).slice(0,newAllowance());
   return{due,fresh};
 }
 function startSession(ids){ /* Problemwörter/Wiederholungen: eine Karte pro Wort */
@@ -2565,8 +2570,8 @@ function startDaily(){
   });
   /* Nachschub-Pool: Wörter, die du schon kanntest, zählen nicht ins Tageslimit – dafür rückt ein neues nach */
   const inSess=new Set(fresh);
-  const pool=allWords().filter(w=>!S.prog[w.i]&&!inSess.has(w.i)).sort((a,b)=>a.i-b.i).slice(0,150).map(w=>w.i);
-  sess={q:spreadQ(shuffle(entries)),i:0,stats:{right:0,wrong:0},done:new Set(),words,knownN:0,learnedN:0,pool:shuffle(pool)};
+  const pool=freshPool(150).filter(id=>!inSess.has(id));
+  sess={q:spreadQ(shuffle(entries)),i:0,stats:{right:0,wrong:0},done:new Set(),words,knownN:0,learnedN:0,pool};
   renderCard();
 }
 function injectReplacement(){ /* gekonntes Wort verbraucht keinen Slot → neues Wort rückt in die Session nach */
@@ -3441,10 +3446,9 @@ function startRadio(src){
   else if(src==='prob')ids=shuffle(allWords().filter(w=>isProblem(S.prog[w.i])).map(w=>w.i));
   else if(src==='mix'){
     /* Schlau gemischt: gewichtete gelernte Wörter + 30 neue zum Reinhören */
-    const fresh=shuffle(allWords().filter(w=>!S.prog[w.i]).slice(0,100).map(w=>w.i)).slice(0,30);
-    ids=deDupeAdjacent(shuffle(radioWeighted().concat(fresh)));
+    ids=deDupeAdjacent(shuffle(radioWeighted().concat(freshPool(100).slice(0,30))));
   }
-  else ids=shuffle(allWords().filter(w=>!S.prog[w.i]).slice(0,150).map(w=>w.i)); /* neue: zufällig aus den nächsten 150 */
+  else ids=freshPool(150); /* neue: eigene Importe zuerst, dann die nächsten Frequenzwörter */
   if(!ids.length)ids=shuffle(allWords().slice(0,100).map(w=>w.i));
   const sentEl=$('#radioSent');
   radio={q:ids,i:0,playing:true,sent:sentEl?sentEl.checked:true,count:0,src};
