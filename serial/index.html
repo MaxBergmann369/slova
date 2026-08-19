@@ -4314,9 +4314,13 @@ function finishSess(){
     '<div class="sumbox"><b>'+packProgress(p)+' %</b><span>Paket gelernt</span></div>'+
     '<div class="sumbox"><b>'+p.words.length+'</b><span>Wörter im Paket</span></div>'+
     '</div>'+
-    (p.url?'<div class="sub" style="margin-top:14px">Schritt 4: Schau dir die Folge <b>noch einmal</b> an – jetzt verstehst du mehr!</div>'+
-      '<button class="btn btn-primary" onclick="watchAndOpen(\''+p.id+'\')">▶ Folge nochmal ansehen</button><br>':'')+
-    '<button class="'+(p.url?'btn-ghost':'btn btn-primary')+'" onclick="startPack(\''+p.id+'\')">Nochmal üben</button><br>'+
+    (war?'':'<div class="hint" style="text-align:left;margin-top:12px">Ein Wort zählt erst als gelernt, wenn du es zweimal in <b>verschiedenen</b> Formaten richtig hattest – dafür ist „Üben bis es sitzt“ da. Eine Schnellrunde allein bewegt den Balken deshalb kaum.</div>')+
+    (p.q&&p.q.length
+      ?'<div class="sub" style="margin-top:14px">Nächster Schritt: die Verständnisfragen zur Folge.</div>'+
+       '<button class="btn btn-primary" onclick="startQuiz(\''+p.id+'\')">🧠 Weiter zu den Fragen ('+p.q.length+')</button><br>'
+      :'')+
+    (p.url?'<button class="btn-ghost" onclick="watchAndOpen(\''+p.id+'\')">▶ Folge nochmal ansehen</button><br>':'')+
+    '<button class="btn-ghost" onclick="startPack(\''+p.id+'\')">Nochmal üben</button><br>'+
     '<button class="btn-ghost" onclick="showPack(\''+p.id+'\')">Zum Paket</button></div>';
   sess=null;
 }
@@ -4389,7 +4393,10 @@ function nextQ(){
     quiz=null;
     $('#view-packs').innerHTML='<div class="hero"><div class="done-mark">🧠</div>'+
       '<div class="due-line">'+r+' / '+n+' richtig</div>'+
-      '<button class="btn btn-primary" onclick="showPack(\''+p.id+'\')">Zurück zum Paket</button></div>';
+      (p.url?'<div class="sub" style="margin-top:12px">Letzter Schritt: Schau dir die Folge <b>noch einmal</b> an – jetzt verstehst du deutlich mehr.</div>'+
+        '<button class="btn btn-primary" onclick="watchAndOpen(\''+p.id+'\')">▶ Folge nochmal ansehen</button><br>':'')+
+      '<button class="'+(p.url?'btn-ghost':'btn btn-primary')+'" onclick="showPack(\''+p.id+'\')">Zurück zum Paket</button><br>'+
+      '<button class="btn-ghost" onclick="renderPacks()">Zur Übersicht</button></div>';
   }else renderQuiz();
 }
 
