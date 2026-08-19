@@ -137,6 +137,19 @@ nav.tabsbar{position:sticky;top:0;z-index:20;background:var(--paper);padding:12p
 .reg{display:inline-block;font-size:.64rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:99px;margin-top:6px;vertical-align:middle}
 .reg.slang{background:#FBF0D9;color:#8A6A12}
 .reg.grob{background:var(--kalina-soft);color:var(--kalina)}
+.story{background:var(--card);border:1px solid var(--frost);border-radius:12px;padding:16px 18px;margin:14px 0;text-align:left}
+.story .sp{font-size:1.05rem;line-height:1.85;margin-bottom:12px;overflow-wrap:anywhere}
+.story .sp .acc{color:var(--rust)}
+.story .sde{display:block;font-size:.82rem;color:var(--ink-faint);line-height:1.6;margin-top:2px}
+.confbox{background:#FBF0D9;border:1px solid #E8D9B4;border-radius:var(--radius);padding:18px;text-align:center;margin:12px 0 4px}
+.confbox .lk-t{font-family:var(--serif);font-weight:700;font-size:1.05rem;color:#8A6A12}
+.confbox .lk-s{font-size:.82rem;color:var(--ink-soft);margin:6px 0 12px;line-height:1.6}
+.twin{margin-top:10px;background:#FBF0D9;border-radius:10px;padding:10px 12px;text-align:left}
+.twin .ft{font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#8A6A12;margin-bottom:6px}
+.twin .tw{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;padding:3px 0}
+.twin .tw b{font-family:var(--serif);font-size:1.08rem}
+.twin .tw b u{text-decoration:none;background:var(--kalina);color:#fff;border-radius:4px;padding:0 2px}
+.twin .tw span{font-size:.82rem;color:var(--ink-soft)}
 .srsbox{background:var(--birch-soft);border:1px solid var(--birch);border-radius:var(--radius);padding:18px;text-align:center;margin:12px 0 4px}
 .srsbox .lk-t{font-family:var(--serif);font-weight:700;font-size:1.05rem;color:var(--birch)}
 .srsbox .lk-s{font-size:.82rem;color:var(--ink-soft);margin:6px 0 12px;line-height:1.6}
@@ -3862,6 +3875,90 @@ function bausteine(w){
   }
   return '';
 }
+/* ---- Verwechslungspaare -------------------------------------------------------
+   Wörter, die sich in ein bis zwei Buchstaben unterscheiden, verwechselt man nicht
+   durch zu wenig Wiederholung, sondern weil man sie nie nebeneinander gesehen hat.
+   Deshalb: Zwillinge finden, gegenüberstellen, Unterschied markieren. */
+function editDist(a,b,max){
+  if(Math.abs(a.length-b.length)>max)return max+1;
+  const m=[];
+  for(let i=0;i<=a.length;i++)m[i]=[i];
+  for(let j=0;j<=b.length;j++)m[0][j]=j;
+  for(let i=1;i<=a.length;i++){
+    let best=99;
+    for(let j=1;j<=b.length;j++){
+      m[i][j]=Math.min(m[i-1][j]+1,m[i][j-1]+1,m[i-1][j-1]+(a[i-1]===b[j-1]?0:1));
+      if(m[i][j]<best)best=m[i][j];
+    }
+    if(best>max)return max+1;   /* diese Zeile ist schon zu weit weg → abbrechen */
+  }
+  return m[a.length][b.length];
+}
+let _pairCache=null;
+function confPairs(){
+  if(_pairCache)return _pairCache;
+  const list=[],seen=new Set();
+  allPacks().forEach(p=>{
+    if(p.exam)return;                       /* Prüfungspakete sind Kopien */
+    p.words.forEach((w,k)=>{
+      const key=w.r.replace(/́/g,'').toLowerCase();
+      if(seen.has(key)||/\s|-/.test(key)||key.length<5)return;
+      seen.add(key);list.push({pid:p.id,k,w,key});
+    });
+  });
+  const byLen={};
+  list.forEach(o=>{(byLen[o.key.length]=byLen[o.key.length]||[]).push(o)});
+  const out=[];
+  list.forEach(a=>{
+    for(let L=a.key.length-2;L<=a.key.length+2;L++){
+      (byLen[L]||[]).forEach(b=>{
+        if(b.key<=a.key)return;             /* jedes Paar nur einmal */
+        if(a.key[0]!==b.key[0]&&a.key.slice(-2)!==b.key.slice(-2))return;
+        const d=editDist(a.key,b.key,2);
+        if(d<=2)out.push({a,b,d});
+      });
+    }
+  });
+  _pairCache=out;
+  return out;
+}
+let _twinIdx=null;
+function twinIndex(){
+  if(_twinIdx)return _twinIdx;
+  _twinIdx={};
+  confPairs().forEach(p=>{
+    (_twinIdx[p.a.key]=_twinIdx[p.a.key]||[]).push({o:p.b,d:p.d});
+    (_twinIdx[p.b.key]=_twinIdx[p.b.key]||[]).push({o:p.a,d:p.d});
+  });
+  return _twinIdx;
+}
+function wordSeen(o){const st=S.prog[wordKey(o.pid,o.k)];return !!(st&&(st.c>0||st.w>0))}
+function livePairs(){return confPairs().filter(p=>wordSeen(p.a)&&wordSeen(p.b))}
+/* Unterschied zweier Wörter markieren: gemeinsamer Anfang und gemeinsames Ende weg,
+   der Rest ist genau das, worauf du achten musst. */
+function markDiff(orig,other){
+  const a=String(orig).replace(/́/g,'').toLowerCase(),b=String(other).replace(/́/g,'').toLowerCase();
+  let p=0;while(p<a.length&&p<b.length&&a[p]===b[p])p++;
+  let s=0;while(s<a.length-p&&s<b.length-p&&a[a.length-1-s]===b[b.length-1-s])s++;
+  const from=p,to=a.length-s;
+  let idx=0,out='';
+  for(const ch of String(orig)){
+    if(ch==='́'){out+=ch;continue}
+    out+=(idx>=from&&idx<to)?'<u>'+esc(ch)+'</u>':esc(ch);
+    idx++;
+  }
+  return out;
+}
+function twinBox(w){
+  const key=String(w.r).replace(/́/g,'').toLowerCase();
+  const c=(twinIndex()[key]||[]).filter(t=>wordSeen(t.o));
+  if(!c.length)return '';
+  c.sort((x,y)=>x.d-y.d);
+  const t=c[0].o;
+  return '<div class="twin"><div class="ft">⚠ Verwechslungsgefahr</div>'+
+    '<div class="tw"><b>'+markDiff(w.r,t.w.r)+'</b><span>'+esc(w.d)+'</span></div>'+
+    '<div class="tw"><b>'+markDiff(t.w.r,w.r)+'</b><span>'+esc(t.w.d)+'</span>'+sayBtn(t.w.r)+'</div></div>';
+}
 /* ---- Silben: lange Wörter in Häppchen statt 14 Buchstaben am Stück ---- */
 const isVow=ch=>'аеёиоуыэюяАЕЁИОУЫЭЮЯ'.indexOf(ch)>=0;
 function syllables(word){
@@ -3936,6 +4033,63 @@ function idiomPack(){
    Prüfung sitzt, wird die nächste Folge freigeschaltet – so bleibt nichts liegen.
    Abschaltbar unter „Mehr", und was du schon angefangen hast, wird nie nachträglich gesperrt. */
 const EXAM_PASS=85, EXAM_CARDS=25;
+/* ---- Kurzgeschichten ----------------------------------------------------------
+   Zusammenhängender Text schlägt Einzelwörter: hier tauchen die Vokabeln einer Folge
+   in einer eigenen kleinen Geschichte wieder auf. Kein Serientext – selbst geschrieben,
+   angelehnt an die Handlung, damit die Bilder aus der Folge tragen. */
+const STORIES={
+18:{t:'Пропа́вшая свинья́',
+ ru:['Одна́жды у́тром хозя́ин заме́тил, что свинья́ пропа́ла. На полу́ лежа́ла кра́сная ни́тка, и она́ вела́ пря́мо в лес.',
+ 'Ма́льчик и его́ друг пошли́ по ни́тке. В лесу́ бро́дят хи́щники, и там их подстерега́ли опа́сности, но они́ не останови́лись.',
+ 'Они́ нашли́ ста́рую ша́хту. Земля́ была́ ли́пкая от смолы́, а во́здух па́хнул как аккумуля́тор.',
+ 'Вдруг что́-то огро́мное ворва́лось в пеще́ру. Друг споткну́лся и урони́л фона́рь. Ста́ло темно́.',
+ '«Не ссо́рьтесь и не робе́йте», — сказа́л ма́льчик. — «Мы найдём её го́лыми рука́ми, е́сли на́до».',
+ 'И они́ нашли́. Свинья́ была́ жива́, гря́зная и о́чень голо́дная. Дя́дя ничего́ не сказа́л, но в тот ве́чер он до́лго сиде́л ря́дом с ней.'],
+ de:['Eines Morgens bemerkte der Besitzer, dass das Schwein verschwunden war. Auf dem Boden lag ein roter Faden, und er führte direkt in den Wald.',
+ 'Der Junge und sein Freund folgten dem Faden. Im Wald streifen Raubtiere umher, und dort lauerten Gefahren auf sie, aber sie hielten nicht an.',
+ 'Sie fanden ein altes Bergwerk. Die Erde war klebrig von Harz, und die Luft roch wie eine Autobatterie.',
+ 'Plötzlich stürmte etwas Riesiges in die Höhle. Der Freund stolperte und ließ die Lampe fallen. Es wurde dunkel.',
+ '„Streitet euch nicht und seid nicht zaghaft", sagte der Junge. „Wir finden sie notfalls mit bloßen Händen."',
+ 'Und sie fanden sie. Das Schwein lebte, war dreckig und sehr hungrig. Der Onkel sagte nichts, aber an dem Abend saß er lange neben ihm.'],
+ q:[{q:'Что лежа́ло на полу́?',qde:'Was lag auf dem Boden?',o:['кра́сная ни́тка','фона́рь','смола́'],a:0},
+ {q:'Куда́ вела́ ни́тка?',qde:'Wohin führte der Faden?',o:['в лес','в го́род','в дом'],a:0},
+ {q:'Чем па́хнул во́здух в ша́хте?',qde:'Wonach roch die Luft im Bergwerk?',o:['как аккумуля́тор','как цветы́','как еда́'],a:0},
+ {q:'Кака́я была́ свинья́, когда́ её нашли́?',qde:'Wie war das Schwein, als sie es fanden?',o:['жива́я и голо́дная','мёртвая','весёлая'],a:0}]},
+19:{t:'Челове́к, кото́рый спал',
+ ru:['У ста́рого хозя́ина был сейф, а код от се́йфа он храни́л не на бума́ге, а в свое́й голове́. Он счита́л, что э́то са́мый надёжный тайни́к.',
+ 'Одна́жды но́чью в его́ ра́зум прони́к кто́-то чужо́й. Э́то бы́ло существо́ без те́ла, кото́рое обеща́ло всё и не жела́ло никому́ добра́.',
+ 'В голове́ ста́рика бы́ли ты́сячи двере́й. За ка́ждой — одно́ воспомина́ние: шко́льный двор, оте́ц, боксёрская се́кция, пе́рвая побе́да.',
+ 'Де́ти вошли́ вслед за чужи́м. Они́ ви́дели, как ма́ленький ма́льчик пла́чет во дворе́, и по́няли, почему́ ста́рик тако́й стро́гий.',
+ '«Он не придира́ется, — сказа́ла сестра́. — Он закаля́ет тебя́, что́бы ты мог дать сда́чи».',
+ 'Чужо́й хоте́л ко́д, но получи́л то́лько во́здух. В чужо́й голове́ побежда́ет тот, у кого́ бо́льше воображе́ния.'],
+ de:['Der alte Besitzer hatte einen Safe, und den Code bewahrte er nicht auf Papier auf, sondern in seinem Kopf. Er hielt das für das sicherste Versteck.',
+ 'Eines Nachts drang ein Fremder in seinen Verstand ein. Es war ein Wesen ohne Körper, das alles versprach und es mit niemandem gut meinte.',
+ 'Im Kopf des Alten gab es tausend Türen. Hinter jeder eine Erinnerung: der Schulhof, der Vater, der Boxverein, der erste Sieg.',
+ 'Die Kinder gingen dem Fremden hinterher. Sie sahen einen kleinen Jungen auf dem Hof weinen und verstanden, warum der Alte so streng ist.',
+ '„Er nörgelt nicht an dir herum", sagte die Schwester. „Er härtet dich ab, damit du zurückschlagen kannst."',
+ 'Der Fremde wollte den Code, bekam aber nur Luft. In einem fremden Kopf gewinnt der mit der größeren Vorstellungskraft.'],
+ q:[{q:'Где храни́лся код от се́йфа?',qde:'Wo wurde der Safe-Code aufbewahrt?',o:['в голове́','в дневнике́','в се́йфе'],a:0},
+ {q:'Что бы́ло за ка́ждой две́рью?',qde:'Was war hinter jeder Tür?',o:['воспомина́ние','ко́мната','челове́к'],a:0},
+ {q:'Почему́ ста́рик тако́й стро́гий?',qde:'Warum ist der Alte so streng?',o:['он закаля́ет ма́льчика','он его́ не лю́бит','он всегда́ тако́й'],a:0},
+ {q:'Кто побежда́ет в чужо́й голове́?',qde:'Wer gewinnt in einem fremden Kopf?',o:['у кого́ бо́льше воображе́ния','кто сильне́е','кто ста́рше'],a:0}]},
+20:{t:'Ле́то, кото́рое не ко́нчилось',
+ ru:['В то у́тро семья́ оста́лась без до́ма. Оди́н челове́к с прия́тной улы́бкой отжа́л у них всё и объяви́л себя́ хозя́ином.',
+ '«Мне не́чем прокорми́ть сто́лько ртов», — сказа́л дя́дя и купи́л де́тям биле́ты на авто́бус.',
+ 'Но де́ти не собира́лись сдава́ться. У них бы́ло преиму́щество: они́ зна́ли, что тот челове́к — фальши́вка.',
+ 'На зака́те за авто́бусом погна́лся гига́нтский ро́бот. Води́тель кри́кнул: «Держи́тесь!» — и все поня́ли, что де́ло серьёзное.',
+ 'Ма́льчик победи́л ро́бота без вся́кой кни́ги, го́лыми рука́ми. Он ду́мал, что вся его́ хра́брость была́ из дневника́, а она́ была́ его́ со́бственная.',
+ 'Ве́чером ста́рый дом сно́ва откры́лся. Ничего́ не измени́лось: те же пя́тна на потолке́, та же свинья́ на полу́. И э́то бы́ло лу́чшее, что могло́ случи́ться.'],
+ de:['An jenem Morgen stand die Familie ohne Zuhause da. Ein Mann mit angenehmem Lächeln hatte ihnen alles abgenommen und sich zum Besitzer erklärt.',
+ '„Ich kann nicht so viele Mäuler stopfen", sagte der Onkel und kaufte den Kindern Busfahrkarten.',
+ 'Aber die Kinder wollten nicht aufgeben. Sie hatten einen Vorteil: Sie wussten, dass dieser Mann eine Fälschung war.',
+ 'Bei Sonnenuntergang verfolgte ein gigantischer Roboter den Bus. Der Fahrer rief: „Haltet euch fest!" – und alle begriffen, dass es ernst war.',
+ 'Der Junge besiegte den Roboter ganz ohne Buch, mit bloßen Händen. Er hatte geglaubt, sein ganzer Mut käme aus dem Tagebuch – dabei war er sein eigener.',
+ 'Am Abend öffnete das alte Haus wieder. Nichts hatte sich verändert: dieselben Flecken an der Decke, dasselbe Schwein auf dem Boden. Und das war das Beste, was passieren konnte.'],
+ q:[{q:'Что случи́лось с семьёй у́тром?',qde:'Was passierte der Familie am Morgen?',o:['они́ оста́лись без до́ма','они́ уе́хали','они́ разбогате́ли'],a:0},
+ {q:'Что купи́л дя́дя де́тям?',qde:'Was kaufte der Onkel den Kindern?',o:['биле́ты на авто́бус','но́вый дом','еду́'],a:0},
+ {q:'Как ма́льчик победи́л ро́бота?',qde:'Wie besiegte der Junge den Roboter?',o:['го́лыми рука́ми','с по́мощью кни́ги','он не победи́л'],a:0},
+ {q:'Что измени́лось в до́ме в конце́?',qde:'Was hatte sich am Ende im Haus verändert?',o:['ничего́','всё','то́лько ме́бель'],a:0}]}
+};
 function folgeNum(p){const m=/Folge\s+(\d+)/.exec((p&&p.ep)||'');return m?+m[1]:0}
 function folgeList(){
   const m={};
@@ -3954,7 +4108,7 @@ function examOf(n){
       (p.q||[]).forEach(x=>q.push(x));
     });
     if(words.length>=20)out={id:'exam-'+n,ic:'🎓',t:'Prüfung · Folge '+n,tru:'Экза́мен по '+n+'-й се́рии',
-      ep:list[0].ep,exam:n,words,q,
+      ep:list[0].ep,exam:n,words,q,story:STORIES[n]||null,
       note:'Alle Wörter aus Folge '+n+' an einem Ort. Bestehe die Prüfung ('+EXAM_CARDS+' Karten, mindestens '+EXAM_PASS+' % richtig), um Folge '+(n+1)+' freizuschalten.'};
   }
   _examCache[n]=out;
@@ -4075,6 +4229,108 @@ function finishRefresh(){
     '<div class="sub" style="margin-top:14px">Was du hier konntest, kommt erst in ein paar Tagen wieder. Was du vergessen hast, schon morgen.</div>'+
     (rest?'<button class="btn btn-primary" onclick="startRefresh()">Weiter auffrischen</button><br>':'')+
     '<button class="btn-ghost" onclick="renderPacks()">Zurück zur Übersicht</button></div>';
+}
+/* ---- Kurzgeschichte lesen, dann prüfen ---- */
+let storyDe=false;
+function showStory(n,withDe){
+  const st=STORIES[n];
+  if(!st)return;
+  if(withDe!==undefined)storyDe=withDe;
+  tab('packs');
+  $('#view-packs').innerHTML=
+    '<div class="hero" style="text-align:left"><div class="done-mark" style="text-align:center">📖</div>'+
+    '<div class="due-line" style="text-align:center">'+acc(esc(st.t))+' '+sayBtn(st.t,'speak')+'</div>'+
+    '<div class="sub" style="text-align:center">Folge '+n+' · alle Wörter kennst du schon</div>'+
+    '<div class="story">'+st.ru.map((s,i)=>
+      '<p class="sp">'+acc(esc(s))+' '+sayBtn(s)+
+      (storyDe?'<span class="sde">'+esc(st.de[i])+'</span>':'')+'</p>').join('')+'</div>'+
+    '<div class="ctrow">'+
+    '<button class="btn-ghost" onclick="showStory('+n+','+(storyDe?'false':'true')+')">'+(storyDe?'Übersetzung ausblenden':'Übersetzung einblenden')+'</button>'+
+    '<button class="btn-ghost" onclick="hearAllStory('+n+')">🔊 Ganze Geschichte hören</button>'+
+    '</div>'+
+    '<button class="btn btn-primary" onclick="startQuiz(\'exam-'+n+'\',STORIES['+n+'].q)">🧠 Fragen zur Geschichte ('+st.q.length+')</button><br>'+
+    '<button class="btn-ghost" onclick="showPack(\'exam-'+n+'\')">Zurück zum Prüfungspaket</button></div>';
+}
+function hearAllStory(n){
+  const st=STORIES[n];
+  if(!st)return;
+  let i=0;
+  const go=()=>{if(i>=st.ru.length)return;speak(st.ru[i]);i++;setTimeout(go,Math.max(3000,st.ru[i-1].length*90))};
+  go();
+}
+/* ---- Verwechslungs-Trainer: die zwei Ähnlichen direkt gegeneinander ---- */
+let conf=null;
+function startConf(){
+  const pairs=livePairs();
+  if(!pairs.length){renderPacks();return}
+  const use=shuffle(pairs.slice()).slice(0,10);
+  const cards=[];
+  use.forEach(p=>{cards.push({a:p.a,b:p.b,ru:true});cards.push({a:p.b,b:p.a,ru:false})});
+  conf={q:shuffle(cards),i:0,right:0,wrong:0,answered:false};
+  tab('packs');renderConf();
+}
+function confFiller(card,ru){
+  const pool=livePairs().map(p=>ru?p.a:p.b).filter(o=>o.key!==card.a.key&&o.key!==card.b.key);
+  const pick=shuffle(pool).slice(0,1)[0];
+  return pick?(ru?pick.w.r:pick.w.d):null;
+}
+function renderConf(){
+  const c=conf.q[conf.i];
+  conf.answered=false;
+  const richtig=c.ru?c.a.w.r:c.a.w.d;
+  const falsch=c.ru?c.b.w.r:c.b.w.d;
+  const fill=confFiller(c,c.ru);
+  const opts=shuffle([richtig,falsch].concat(fill?[fill]:[]));
+  conf.opts=opts;conf.good=richtig;
+  $('#view-packs').innerHTML=
+    '<div class="sess-top"><span class="cnt">'+(conf.i+1)+' / '+conf.q.length+'</span>'+
+    '<div class="bar"><i style="width:'+Math.round(100*conf.i/conf.q.length)+'%"></i></div>'+
+    '<button class="quit" onclick="conf=null;renderPacks()">Beenden</button></div>'+
+    '<div class="card"><div class="badges"><span class="chip">🔀 Verwechslungspaar</span></div>'+
+    (c.ru
+      ?'<div class="word-de">'+esc(c.a.w.d)+'</div><div class="qlabel">Welches Wort ist das?</div>'
+      :'<div class="word">'+acc(esc(c.a.w.r))+'</div><button class="speak" onclick="speak(conf.q[conf.i].a.w.r)">🔊</button><div class="qlabel">Was bedeutet das?</div>')+
+    '<div class="opts">'+opts.map((o,i)=>'<button class="opt'+(c.ru?' opt-ru':'')+'" data-k="'+i+'">'+(c.ru?acc(esc(o)):esc(o))+'</button>').join('')+'</div>'+
+    '<div id="fbZone"></div></div>';
+  document.querySelectorAll('#view-packs .opt').forEach(b=>b.onclick=()=>{
+    if(conf.answered)return;
+    conf.answered=true;
+    const ok=opts[+b.dataset.k]===richtig;
+    document.querySelectorAll('#view-packs .opt').forEach(x=>{x.disabled=true;if(opts[+x.dataset.k]===richtig)x.classList.add('right')});
+    if(!ok)b.classList.add('wrong');
+    if(ok)conf.right++;else{conf.wrong++;conf.q.push(c)}
+    const t=todayStr();S.days[t]=(S.days[t]||0)+1;
+    /* verwechselt → beide Wörter zurück in die Auffrischung */
+    if(!ok)[c.a,c.b].forEach(o=>{const st=S.prog[wordKey(o.pid,o.k)];if(st&&st.rd){st.iv=1;st.rd=addDays(1)}});
+    save();
+    $('#fbZone').innerHTML='<div class="fb '+(ok?'fb-ok':'fb-no')+'">'+(ok?'✓ Richtig!':'✗ Genau die Verwechslung.')+'</div>'+
+      '<div class="answer"><div class="twin" style="margin-top:0">'+
+      '<div class="ft">Der Unterschied</div>'+
+      '<div class="tw"><b>'+markDiff(c.a.w.r,c.b.w.r)+'</b><span>'+esc(c.a.w.d)+'</span>'+sayBtn(c.a.w.r)+'</div>'+
+      '<div class="tw"><b>'+markDiff(c.b.w.r,c.a.w.r)+'</b><span>'+esc(c.b.w.d)+'</span>'+sayBtn(c.b.w.r)+'</div></div>'+
+      (c.a.w.e?'<div class="ex"><div class="ru">'+acc(esc(c.a.w.e))+' '+sayBtn(c.a.w.e)+'</div><div class="de">'+esc(c.a.w.x||'')+'</div></div>':'')+
+      (c.b.w.e?'<div class="ex"><div class="ru">'+acc(esc(c.b.w.e))+' '+sayBtn(c.b.w.e)+'</div><div class="de">'+esc(c.b.w.x||'')+'</div></div>':'')+
+      '</div><div class="grade"><button onclick="nextConf()">Weiter</button></div>';
+    speak(c.a.w.r);
+  });
+}
+function nextConf(){
+  conf.i++;
+  if(conf.i>=conf.q.length){
+    const r=conf.right,w=conf.wrong;conf=null;
+    $('#doneN').textContent=totalDone();
+    $('#view-packs').innerHTML='<div class="hero"><div class="done-mark">🔀</div>'+
+      '<div class="due-line">Verwechslungen geklärt!</div>'+
+      '<div class="sumgrid">'+
+      '<div class="sumbox"><b>'+r+'</b><span>richtig</span></div>'+
+      '<div class="sumbox"><b>'+w+'</b><span>verwechselt</span></div>'+
+      '<div class="sumbox"><b>'+livePairs().length+'</b><span>Paare gesamt</span></div>'+
+      '<div class="sumbox"><b>'+dueRefs().length+'</b><span>Auffrischung fällig</span></div>'+
+      '</div>'+
+      '<div class="sub" style="margin-top:14px">Was du hier verwechselt hast, kommt morgen in der Auffrischung wieder.</div>'+
+      '<button class="btn btn-primary" onclick="startConf()">Noch eine Runde</button><br>'+
+      '<button class="btn-ghost" onclick="renderPacks()">Zurück zur Übersicht</button></div>';
+  }else renderConf();
 }
 /* ---- Prüfung: Querschnitt durch eine ganze Folge, schwache Wörter zuerst ---- */
 function startExam(n){
@@ -4295,7 +4551,7 @@ function resolve(ok){
     '<div class="answer"><div class="word" style="font-size:1.6rem;margin:2px 0 4px">'+acc(esc(w.r))+' '+sayBtn(w.r,'speak')+'</div>'+
     '<div class="trans">['+esc(w.t)+']</div><div class="mean">'+esc(w.d)+'</div>'+regBadge(w)+
     (w.e?'<div class="ex"><div class="ru">'+acc(esc(w.e))+' '+sayBtn(w.e)+'</div><div class="de">'+esc(w.x||'')+'</div></div>':'')+
-    bausteine(w)+formsBox(w)+
+    twinBox(w)+bausteine(w)+formsBox(w)+
     (cur.optRu?hearAll(cur.opts,'Alle Antwortmöglichkeiten anhören:'):'')+
     '</div><div class="grade"><button onclick="nextCard()">Weiter</button></div>';
   speak(w.r);
@@ -4357,18 +4613,19 @@ function quitSess(){sess=null;renderPacks()}
 
 /* ================= Verständnisfragen ================= */
 let quiz=null;
-function startQuiz(pid){
+function startQuiz(pid,qs){
   const p=packById(pid);
-  if(!p||!p.q||!p.q.length)return;
-  quiz={pid,i:0,right:0,answered:false};
+  const list=qs||(p&&p.q);
+  if(!list||!list.length)return;
+  quiz={pid,i:0,right:0,answered:false,qs:list,story:!!qs};
   renderQuiz();
 }
 function renderQuiz(){
-  const p=packById(quiz.pid),q=p.q[quiz.i];
+  const p=packById(quiz.pid),q=quiz.qs[quiz.i];
   const opts=shuffle(q.o.map((o,k)=>({o,ok:k===q.a})));
   $('#view-packs').innerHTML=
-    '<div class="sess-top"><span class="cnt">Frage '+(quiz.i+1)+' / '+p.q.length+'</span>'+
-    '<div class="bar"><i style="width:'+Math.round(100*quiz.i/p.q.length)+'%"></i></div>'+
+    '<div class="sess-top"><span class="cnt">Frage '+(quiz.i+1)+' / '+quiz.qs.length+'</span>'+
+    '<div class="bar"><i style="width:'+Math.round(100*quiz.i/quiz.qs.length)+'%"></i></div>'+
     '<button class="quit" onclick="quiz=null;showPack(\''+p.id+'\')">Beenden</button></div>'+
     '<div class="card"><div class="word" style="font-size:1.4rem">'+acc(esc(q.q))+' '+sayBtn(q.q,'speak')+'</div>'+
     '<div class="qlabel">'+esc(q.qde)+'</div>'+
@@ -4394,9 +4651,17 @@ function renderQuiz(){
 function nextQ(){
   const p=packById(quiz.pid);
   quiz.answered=false;quiz.i++;
-  if(quiz.i>=p.q.length){
-    const r=quiz.right,n=p.q.length;
+  if(quiz.i>=quiz.qs.length){
+    const r=quiz.right,n=quiz.qs.length,warStory=quiz.story,fn=p.exam;
     quiz=null;
+    if(warStory){
+      $('#view-packs').innerHTML='<div class="hero"><div class="done-mark">📖</div>'+
+        '<div class="due-line">'+r+' / '+n+' richtig</div>'+
+        '<div class="sub" style="margin-top:12px">Zusammenhängender Text ist das, was Einzelwörter zu Sprache macht. Lies die Geschichte ruhig noch einmal – beim zweiten Mal geht sie viel flüssiger.</div>'+
+        '<button class="btn btn-primary" onclick="showStory('+fn+')">📖 Geschichte nochmal lesen</button><br>'+
+        '<button class="btn-ghost" onclick="showPack(\''+p.id+'\')">Zum Prüfungspaket</button></div>';
+      return;
+    }
     $('#view-packs').innerHTML='<div class="hero"><div class="done-mark">🧠</div>'+
       '<div class="due-line">'+r+' / '+n+' richtig</div>'+
       (p.url?'<div class="sub" style="margin-top:12px">Letzter Schritt: Schau dir die Folge <b>noch einmal</b> an – jetzt verstehst du deutlich mehr.</div>'+
@@ -4412,6 +4677,10 @@ function renderPacks(){
   const ps=allPacks();
   let html='<div class="hero"><div class="due-line">Was hast du <b>geschaut</b>?</div>'+
     '<div class="sub">Üb die Wörter aus deinen Folgen – und schau sie danach nochmal. Kein Transkript, nur Vokabeln und Fragen.</div></div>';
+  const cp=livePairs().length;
+  if(cp>=3)html+='<div class="confbox"><div class="lk-t">🔀 '+cp+' Wortpaare, die man leicht verwechselt</div>'+
+    '<div class="lk-s">Wörter aus deinem Training, die sich in ein bis zwei Buchstaben unterscheiden. Hier stehen sie direkt nebeneinander – der einzige Weg, sie auseinanderzuhalten.</div>'+
+    '<button class="btn btn-primary" onclick="startConf()">Verwechslungen üben</button></div>';
   const due=dueRefs().length;
   if(due)html+='<div class="srsbox"><div class="lk-t">🔁 '+due+' Wörter sind zur Auffrischung fällig</div>'+
     '<div class="lk-s">Die hattest du schon. Heute entscheidet sich, ob sie wirklich sitzen – wer sie jetzt kann, sieht sie erst in ein paar Tagen wieder.</div>'+
@@ -4481,8 +4750,9 @@ function showPack(pid){
       '<div class="sumbox"><b>'+(st.tries||0)+'</b><span>Versuche</span></div>'+
       '</div>'+
       (st.passed?'<div class="sub" style="margin-top:12px">✅ Bestanden am '+st.passed.split('-').reverse().join('.')+(nxt?' · Folge '+nxt+' ist frei':'')+'</div>':'')+
+      (p.story?'<button class="btn btn-primary" onclick="showStory('+n+')">📖 Kurzgeschichte zur Folge</button><br>':'')+
       '<div class="ctrow">'+
-      '<button class="btn btn-primary" onclick="startExam('+n+')">🎓 Prüfung starten ('+EXAM_CARDS+' Karten)</button>'+
+      '<button class="'+(p.story?'btn-ghost':'btn btn-primary')+'" onclick="startExam('+n+')">🎓 Prüfung starten ('+EXAM_CARDS+' Karten)</button>'+
       '<button class="btn-ghost" onclick="startDrill(\''+p.id+'\')">Alle Wörter üben, bis sie sitzen</button>'+
       '</div><div class="ctrow">'+
       (p.q&&p.q.length?'<button class="btn-ghost" onclick="startQuiz(\''+p.id+'\')">🧠 Alle Fragen ('+p.q.length+')</button>':'')+

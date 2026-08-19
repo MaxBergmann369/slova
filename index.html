@@ -181,6 +181,12 @@ nav{position:sticky;top:0;z-index:20;background:var(--paper);padding:12px 0 14px
 /* ---------- Aktive Karten (MC, Tippen, Lücke, Hören, Sprechen) ---------- */
 .qlabel{text-align:center;font-size:.85rem;color:var(--ink-soft);font-weight:600;margin-top:12px}
 .opts{display:grid;gap:8px;margin-top:12px}
+.twin{margin-top:12px;background:#FBF0D9;border-radius:10px;padding:10px 12px;text-align:left}
+.twin .ft{font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#8A6A12;margin-bottom:6px}
+.twin .tw{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;padding:3px 0}
+.twin .tw b{font-family:var(--serif);font-size:1.08rem}
+.twin .tw b u{text-decoration:none;background:var(--kalina);color:#fff;border-radius:4px;padding:0 2px}
+.twin .tw span{font-size:.82rem;color:var(--ink-soft)}
 .recallbox{text-align:center;margin-top:16px;padding:16px;background:var(--paper);border-radius:12px}
 .recallbox .rc-h{font-size:.84rem;color:var(--ink-soft);font-weight:600;margin-bottom:10px}
 .recallbox button{margin:0}
@@ -2732,12 +2738,16 @@ function distractors(w,field,n){
   }
   scored.sort((a,b)=>a.s-b.s);
   const seen=new Set([self]),out=[];
+  /* gelernter Zwilling kommt immer mit in die Auswahl – genau daran entscheidet sich,
+     ob du das Wort kennst oder nur seine Form wiedererkennst */
+  const tw=learnedTwin(w);
+  if(tw){const on=norm(tw);if(on&&on!==self){seen.add(on);out.push(tw)}}
   for(const e of scored){
     if(seen.has(e.on))continue;
     seen.add(e.on);out.push(e.o);
     if(out.length>=n)break;
   }
-  return out;
+  return out.slice(0,n);
 }
 function pickMode(w,p,cl){
   const known=!!p&&p.b>=2;
@@ -2788,6 +2798,75 @@ function syllables(word){
 }
 const letterCount=w=>(String(w).replace(/́/g,'').match(/[А-Яа-яЁё]/g)||[]).length;
 function isLongWord(w){return w&&!/[ !?]/.test(w.r)&&letterCount(w.r)>=7}
+/* ---- Verwechslungs-Zwillinge --------------------------------------------------
+   Wörter, die sich in ein bis zwei Buchstaben unterscheiden, trennt man nur, wenn
+   man sie nebeneinander sieht. Sobald beide gelernt sind, wird der Zwilling zum
+   Ablenker in der Auswahl – und steht danach im Antwortfeld gegenüber. */
+function editDist(a,b,max){
+  if(Math.abs(a.length-b.length)>max)return max+1;
+  const m=[];
+  for(let i=0;i<=a.length;i++)m[i]=[i];
+  for(let j=0;j<=b.length;j++)m[0][j]=j;
+  for(let i=1;i<=a.length;i++){
+    let best=99;
+    for(let j=1;j<=b.length;j++){
+      m[i][j]=Math.min(m[i-1][j]+1,m[i][j-1]+1,m[i-1][j-1]+(a[i-1]===b[j-1]?0:1));
+      if(m[i][j]<best)best=m[i][j];
+    }
+    if(best>max)return max+1;
+  }
+  return m[a.length][b.length];
+}
+let _twinIdx=null;
+function twinIndex(){
+  if(_twinIdx)return _twinIdx;
+  _twinIdx={};
+  const list=[],seen=new Set();
+  allWords().forEach(w=>{
+    const key=normRu(w.r);
+    if(!key||seen.has(key)||/[ -]/.test(key)||key.length<5)return;
+    seen.add(key);list.push({w,key});
+  });
+  const byLen={};
+  list.forEach(o=>{(byLen[o.key.length]=byLen[o.key.length]||[]).push(o)});
+  list.forEach(a=>{
+    for(let L=a.key.length-2;L<=a.key.length+2;L++){
+      (byLen[L]||[]).forEach(b=>{
+        if(b.key<=a.key)return;
+        if(a.key[0]!==b.key[0]&&a.key.slice(-2)!==b.key.slice(-2))return;
+        if(editDist(a.key,b.key,2)>2)return;
+        (_twinIdx[a.w.i]=_twinIdx[a.w.i]||[]).push(b.w);
+        (_twinIdx[b.w.i]=_twinIdx[b.w.i]||[]).push(a.w);
+      });
+    }
+  });
+  return _twinIdx;
+}
+function learnedTwin(w){
+  const t=(twinIndex()[w.i]||[]).filter(o=>{const p=S.prog[o.i];return p&&(p.c>0||p.w>0)});
+  return t.length?t[0]:null;
+}
+function markDiff(orig,other){
+  const a=normRu(orig),b=normRu(other);
+  let p=0;while(p<a.length&&p<b.length&&a[p]===b[p])p++;
+  let s=0;while(s<a.length-p&&s<b.length-p&&a[a.length-1-s]===b[b.length-1-s])s++;
+  const from=p,to=a.length-s;
+  let idx=0,out='';
+  for(const ch of String(orig)){
+    if(ch==='́'){out+=ch;continue}
+    out+=(idx>=from&&idx<to)?'<u>'+esc(ch)+'</u>':esc(ch);
+    idx++;
+  }
+  return out;
+}
+function twinBox(w){
+  const t=learnedTwin(w);
+  if(!t)return '';
+  return '<div class="twin"><div class="ft">⚠ Verwechslungsgefahr</div>'+
+    '<div class="tw"><b>'+markDiff(w.r,t.r)+'</b><span>'+esc(w.d)+'</span></div>'+
+    '<div class="tw"><b>'+markDiff(t.r,w.r)+'</b><span>'+esc(t.d)+'</span>'+
+    '<button class="sp2" data-speak-raw="'+esc(t.r)+'">🔊</button></div></div>';
+}
 /* Silben-Puzzle: die richtigen Silben plus ein paar falsche aus anderen Wörtern.
    Ohne falsche Silben löst man das Puzzle durch Ausschluss, ohne das Wort zu können. */
 function sylTiles(w,parts){
@@ -2897,7 +2976,7 @@ function answerBlock(w){
     '<div class="mean">'+esc(w.d)+'</div>'+
     (w.e?'<div class="ex"><div class="ru">'+acc(esc(w.e))+' <button class="sp2" data-speak-ex data-i="'+w.i+'" title="Satz anhören">🔊</button></div><div class="de">'+esc(w.x)+'</div></div>':'')+
     (w.n?'<div class="note">'+esc(w.n)+'</div>':'')+
-    aspectHtml(w)+familyHtml(w)+
+    twinBox(w)+aspectHtml(w)+familyHtml(w)+
     '<div id="mnemSlot">'+mnemHtml(w.i)+'</div>';
 }
 function mnemHtml(id){ /* Eselsbrücke: selbst formuliert = Keyword-Methode + Generation Effect */
@@ -3750,6 +3829,8 @@ function tab(name){
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>tab(b.dataset.tab));
 
 document.addEventListener('click',e=>{
+  const raw=e.target.closest('[data-speak-raw]');
+  if(raw){speak(raw.dataset.speakRaw);return}
   const b=e.target.closest('[data-speak],[data-speak-ex]');
   if(!b)return;
   const w=byId(+b.dataset.i);
