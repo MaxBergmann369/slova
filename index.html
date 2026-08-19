@@ -181,6 +181,9 @@ nav{position:sticky;top:0;z-index:20;background:var(--paper);padding:12px 0 14px
 /* ---------- Aktive Karten (MC, Tippen, Lücke, Hören, Sprechen) ---------- */
 .qlabel{text-align:center;font-size:.85rem;color:var(--ink-soft);font-weight:600;margin-top:12px}
 .opts{display:grid;gap:8px;margin-top:12px}
+.recallbox{text-align:center;margin-top:16px;padding:16px;background:var(--paper);border-radius:12px}
+.recallbox .rc-h{font-size:.84rem;color:var(--ink-soft);font-weight:600;margin-bottom:10px}
+.recallbox button{margin:0}
 .opt{background:var(--paper);border:1.5px solid var(--frost);border-radius:12px;padding:13px 14px;font-weight:600;font-size:1rem;text-align:center;transition:border-color .1s}
 .opt:hover{border-color:var(--gzhel)}
 .opt.opt-ru{font-family:var(--serif);font-size:1.15rem}
@@ -327,6 +330,8 @@ textarea#impBox,textarea#bakBox{width:100%;min-height:110px;border:1px solid var
       <select id="setSnd"><option value="1">An</option><option value="0">Aus</option></select></div>
     <div class="setrow"><label>Sprech-Karten (Mikrofon)</label>
       <select id="setMic"><option value="1">An</option><option value="0">Aus</option></select></div>
+    <div class="setrow"><label>Erst denken, dann aufdecken<br><small style="color:var(--ink-faint);font-weight:500">Auswahlmöglichkeiten bleiben zuerst verdeckt – so merkst du, ob du das Wort wirklich kannst oder nur wiedererkennst.</small></label>
+      <select id="setRecall"><option value="1">An</option><option value="0">Aus</option></select></div>
   </div>
 
   <div class="panel">
@@ -2715,7 +2720,14 @@ function distractors(w,field,n){
     if(o.i===w.i)continue;
     const on=norm(o);
     if(!on||on===self)continue;
-    const s=(/^[A-ZÄÖÜ]/.test(String(o.d).trim())===isNoun?0:6)+Math.abs(String(field==='d'?o.d:o.r).length-len)+Math.random()*4;
+    /* je ähnlicher der Ablenker, desto weniger hilft reines Wiedererkennen:
+       gleiche Wortart, ähnliche Länge, gleicher Anfang, gleiche Endung */
+    const a=self,b=on;
+    let i=0;while(i<Math.min(a.length,b.length)&&a[i]===b[i])i++;
+    let e=0;while(e<Math.min(a.length,b.length)&&a[a.length-1-e]===b[b.length-1-e])e++;
+    const s=(/^[A-ZÄÖÜ]/.test(String(o.d).trim())===isNoun?0:8)
+      +Math.abs(String(field==='d'?o.d:o.r).length-len)
+      -i*3-e*2+Math.random()*3;
     scored.push({o,s,on});
   }
   scored.sort((a,b)=>a.s-b.s);
@@ -2812,8 +2824,16 @@ function typeHtml(){
   return '<div class="type-row"><input id="typeInp" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="по-русски …"><button class="check-btn" id="checkBtn">Prüfen</button></div>'+
     '<div class="kb" id="kb">'+KB_ROWS.map((row,ri)=>'<div class="kb-row">'+row.split('').map(ch=>'<button type="button" class="kb-k" data-ch="'+ch+'">'+ch+'</button>').join('')+(ri===2?'<button type="button" class="kb-k kb-bs" data-bs="1">⌫</button>':'')+'</div>').join('')+'</div>';
 }
+/* Erst selbst antworten, dann aufdecken: sonst erkennt man die Lösung nur an den
+   Möglichkeiten wieder, statt sie zu wissen. Abschaltbar unter Einstellungen. */
+function recallOn(){return S.set.recall!==false}
 function optsHtml(opts,ru){
-  return '<div class="opts">'+opts.map((t,k)=>'<button class="opt'+(ru?' opt-ru':'')+'" data-k="'+k+'">'+(ru?acc(esc(t)):esc(t))+'</button>').join('')+'</div>';
+  const inner=opts.map((t,k)=>'<button class="opt'+(ru?' opt-ru':'')+'" data-k="'+k+'">'+(ru?acc(esc(t)):esc(t))+'</button>').join('');
+  if(!recallOn())return '<div class="opts">'+inner+'</div>';
+  return '<div class="recallbox" id="recallBox">'+
+    '<div class="rc-h">Antworte erst selbst – laut oder im Kopf.</div>'+
+    '<button class="btn btn-primary" id="revealBtn" type="button">Antwortmöglichkeiten zeigen</button></div>'+
+    '<div class="opts" id="optsBox" style="display:none">'+inner+'</div>';
 }
 /* ---- Aspektpaare: als Paar zeigen, getrennt abfragen ---- */
 const ASPECT_RAW=[['де́лать','сде́лать'],['говори́ть','сказа́ть'],['чита́ть','прочита́ть'],['писа́ть','написа́ть'],['смотре́ть','посмотре́ть'],['слу́шать','послу́шать'],['покупа́ть','купи́ть'],['брать','взять'],['дава́ть','дать'],['начина́ть','нача́ть'],['зака́нчивать','зако́нчить'],['открыва́ть','откры́ть'],['закрыва́ть','закры́ть'],['понима́ть','поня́ть'],['отвеча́ть','отве́тить'],['спра́шивать','спроси́ть'],['помога́ть','помо́чь'],['ждать','подожда́ть'],['есть','съесть'],['пить','вы́пить'],['учи́ть','вы́учить'],['гото́вить','пригото́вить'],['плати́ть','заплати́ть'],['звони́ть','позвони́ть'],['встреча́ть','встре́тить'],['пока́зывать','показа́ть'],['расска́зывать','рассказа́ть'],['находи́ть','найти́'],['теря́ть','потеря́ть'],['забыва́ть','забы́ть'],['вспомина́ть','вспо́мнить'],['реша́ть','реши́ть'],['мыть','помы́ть'],['убира́ть','убра́ть'],['отдыха́ть','отдохну́ть'],['ви́деть','уви́деть'],['слы́шать','услы́шать'],['ду́мать','поду́мать'],['игра́ть','сыгра́ть'],['ста́вить','поста́вить'],['класть','положи́ть'],['получа́ть','получи́ть'],['посыла́ть','посла́ть'],['приглаша́ть','пригласи́ть'],['объясня́ть','объясни́ть'],['проверя́ть','прове́рить'],['выбира́ть','вы́брать'],['меня́ть','поменя́ть'],['продава́ть','прода́ть'],['возвраща́ться','верну́ться'],['станови́ться','стать'],['остава́ться','оста́ться'],['про́бовать','попро́бовать'],['зака́зывать','заказа́ть'],['изуча́ть','изучи́ть'],['повторя́ть','повтори́ть'],['переводи́ть','перевести́'],['узнава́ть','узна́ть'],['улыба́ться','улыбну́ться']];
@@ -2946,6 +2966,8 @@ function renderCard(forceMode){
     '<div class="card"><div class="badges">'+chips.join('')+'</div>'+front+
     '<div id="fbZone"></div></div>';
   if(cur.opts){
+    const rv=$('#revealBtn');
+    if(rv)rv.onclick=()=>{$('#recallBox').style.display='none';$('#optsBox').style.display='';};
     document.querySelectorAll('#view-lernen .opt').forEach(b=>b.onclick=()=>{
       if(cur.answered)return;
       const k=+b.dataset.k,ok=k===cur.goodIdx;
@@ -3844,6 +3866,8 @@ function buildAppNav(cur){
   $('#setSnd').onchange=e=>{S.set.snd=e.target.value==='1';save()};
   $('#setMic').value=S.set.mic===false?'0':'1';
   $('#setMic').onchange=e=>{S.set.mic=e.target.value==='1';save()};
+  $('#setRecall').value=S.set.recall===false?'0':'1';
+  $('#setRecall').onchange=e=>{S.set.recall=e.target.value==='1';save()};
   $('#voiceStatus').innerHTML=voiceStatusText();
   $('#voiceTest').onclick=()=>{pickRuVoice();$('#voiceStatus').innerHTML=voiceStatusText();speak('Привет! Как дела?')};
   imgcLoad();
