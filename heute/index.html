@@ -20,6 +20,7 @@
   --gzhel:#2B4C9B;--gzhel-soft:#E7EDF9;
   --mala:#1E7A63;--mala-soft:#E2F1EC;
   --sliva:#6D4B9E;--sliva-soft:#EEE8F7;
+  --rust:#A8501E;--rust-soft:#F6E7DD;
   --amber:#B9790F;
   --radius:16px;
   --serif:"Playfair Display",Georgia,serif;
@@ -50,11 +51,13 @@ header{padding:22px 0 6px}
 .app.a1 .dot{background:var(--gzhel-soft)}
 .app.a2 .dot{background:var(--mala-soft)}
 .app.a3 .dot{background:var(--sliva-soft)}
+.app.a4 .dot{background:var(--rust-soft)}
 .app .m{flex:1;min-width:0}
 .app .t{font-family:var(--serif);font-weight:700;font-size:1.1rem}
 .app.a1 .t{color:var(--gzhel)}
 .app.a2 .t{color:var(--mala)}
 .app.a3 .t{color:var(--sliva)}
+.app.a4 .t{color:var(--rust)}
 .app .s{font-size:.8rem;color:var(--ink-soft);margin-top:2px}
 .app .n{text-align:right;flex-shrink:0}
 .app .n b{font-family:var(--serif);font-size:1.6rem;display:block;line-height:1.1}
@@ -142,16 +145,22 @@ function render(){
   const sl=readKey('russisch-trainer-v1');
   const gr=readKey('russisch-grammatik-v1');
   const sk=readKey('russisch-skazki-v1');
+  const se=readKey('russisch-serial-v1');
   const dSl=sl&&sl.days?(sl.days[t]||0):0;
   const dGr=gr&&gr.days?(gr.days[t]||0):0;
   const dSk=sk&&sk.days?(sk.days[t]||0):0;
-  $('#totToday').textContent=dSl+dGr+dSk;
-  const u=unionDays([sl,gr,sk]);
+  const dSe=se&&se.days?(se.days[t]||0):0;
+  $('#totToday').textContent=dSl+dGr+dSk+dSe;
+  const u=unionDays([sl,gr,sk,se]);
   $('#comboStreak').textContent=comboStreak(u);
   /* App-Karten */
   const slWords=sl&&sl.prog?Object.keys(sl.prog).length:0;
   const grDone=gr&&gr.tot?(gr.tot.r+gr.tot.w):0;
   const skRead=sk&&sk.read?Object.keys(sk.read).length:0;
+  const seWords=se&&se.prog?Object.keys(se.prog).length:0;
+  /* fällige Auffrischungen: Wörter, deren Wiederholungsdatum erreicht ist */
+  let seDue=0;
+  if(se&&se.prog)Object.keys(se.prog).forEach(k=>{const p=se.prog[k];if(p&&p.rd&&p.rd<=t)seDue++});
   $('#appGrid').innerHTML=
     '<a class="app a1" href="'+appLink('/slova/','russisch-vokabeltrainer.html')+'">'+
     '<span class="dot">📘</span><span class="m"><span class="t">'+acc('СЛОВА́')+'</span>'+
@@ -164,7 +173,11 @@ function render(){
     '<a class="app a3" href="'+appLink('/slova/skazki/','skazki-lese-app.html')+'">'+
     '<span class="dot">📖</span><span class="m"><span class="t">'+acc('СКА́ЗКИ')+'</span>'+
     '<span class="s" style="display:block">'+(sk?skRead+' Geschichten gelesen':'Noch nicht gestartet – tippe hier!')+'</span></span>'+
-    '<span class="n"><b>'+dSk+'</b><span>Fragen heute</span></span></a>';
+    '<span class="n"><b>'+dSk+'</b><span>Fragen heute</span></span></a>'+
+    '<a class="app a4" href="'+appLink('/slova/serial/','serial-app.html')+'">'+
+    '<span class="dot">📺</span><span class="m"><span class="t">'+acc('СЕРИА́Л')+'</span>'+
+    '<span class="s" style="display:block">'+(se?seWords+' Wörter im Training'+(seDue?' · 🔁 '+seDue+' fällig':''):'Noch nicht gestartet – tippe hier!')+'</span></span>'+
+    '<span class="n"><b>'+dSe+'</b><span>Karten heute</span></span></a>';
   /* Wochen-Balken (letzte 7 Tage) */
   const days=[];
   for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(d)}

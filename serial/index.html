@@ -154,6 +154,13 @@ nav.tabsbar{position:sticky;top:0;z-index:20;background:var(--paper);padding:12p
 .confbox{background:#FBF0D9;border:1px solid #E8D9B4;border-radius:var(--radius);padding:18px;text-align:center;margin:12px 0 4px}
 .confbox .lk-t{font-family:var(--serif);font-weight:700;font-size:1.05rem;color:#8A6A12}
 .confbox .lk-s{font-size:.82rem;color:var(--ink-soft);margin:6px 0 12px;line-height:1.6}
+.rdef{margin-top:10px;background:var(--card);border:1px solid var(--frost);border-radius:10px;padding:8px 12px;text-align:left}
+.rdef summary{cursor:pointer;font-size:.76rem;font-weight:800;letter-spacing:.04em;color:var(--rust);list-style:none}
+.rdef summary::-webkit-details-marker{display:none}
+.rdef[open] summary{margin-bottom:6px}
+.rdb{font-family:var(--serif);font-size:1rem;line-height:1.6}
+.rdb .acc{color:var(--rust)}
+.rdb .rdde{display:block;font-family:var(--sans);font-size:.78rem;color:var(--ink-faint);margin-top:4px}
 .twin{margin-top:10px;background:#FBF0D9;border-radius:10px;padding:10px 12px;text-align:left}
 .twin .ft{font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#8A6A12;margin-bottom:6px}
 .twin .tw{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;padding:3px 0}
@@ -3536,6 +3543,134 @@ const PACKS=[
  {q:'Что бы́ло у гедео́на как план Б?',qde:'Was war Gideons Plan B?',o:['динами́т','поли́ция','ничего́'],a:0},
  {q:'Кому́ тепе́рь принадлежи́т хи́жина?',qde:'Wem gehört die Hütte jetzt?',o:['гедео́ну','стэ́ну','ди́пперу'],a:0}]},
 
+{id:'gf-21-1',ic:'🎪',t:'Folge 21 · Teil 1',tru:'Откры́тие хи́жины',ep:'Staffel 2 · Folge 21',
+ url:'https://www.youtube.com/watch?v=aCMD2xujt2Q&list=PLtf1rsGS9MZJZYCooH2BU2yTOAA2h5-h6',
+ note:'Staffel 2 beginnt: etwas Großes im Keller, die Hütte öffnet wieder – und Dipper merkt, dass der Sommer halb vorbei ist.',
+ words:[
+ {r:'всплеск',t:'FSPLJESK',d:'Ausschlag, plötzlicher Anstieg',e:'Смотри́, сно́ва всплеск!',x:'Schau, wieder ein Ausschlag!',rd:'ре́зкий скачо́к, кото́рый ви́ден на прибо́ре'},
+ {r:'ко́смос',t:'KOSS-mass',d:'Weltraum, Kosmos',e:'Отку́да он — из ко́смоса?',x:'Woher kommt er – aus dem Weltraum?',rd:'простра́нство за преде́лами Земли́'},
+ {r:'вое́нный',t:'wa-JEN-nyj',d:'militärisch, Militär-',e:'Э́то с вое́нной ба́зы.',x:'Das kommt von einer Militärbasis.',rd:'свя́занный с а́рмией'},
+ {r:'проти́вник',t:'pra-TIW-nik',d:'Gegner, Widersacher',e:'Э́то ба́за проти́вника.',x:'Das ist die Basis des Gegners.',rd:'тот, кто про́тив тебя́'},
+ {r:'обновлённый',t:'ab-naw-LJON-nyj',d:'erneuert, renoviert',e:'Приве́тствую на откры́тии обновлённой хи́жины!',x:'Willkommen zur Eröffnung der erneuerten Hütte!',rd:'ста́вший сно́ва как но́вый'},
+ {r:'в гу́ще собы́тий',t:'w GU-schtsche sa-BY-tij',d:'mittendrin im Geschehen',e:'Я то́же хочу́ быть в гу́ще собы́тий.',x:'Ich will auch mittendrin sein.',rd:'в са́мом це́нтре того́, что происхо́дит'},
+ {r:'спецэффе́кты',t:'spez-e-FJEK-ty',d:'Spezialeffekte',e:'У нас бу́дут свет, му́зыка и спецэффе́кты.',x:'Wir haben Licht, Musik und Spezialeffekte.',rd:'иску́сственные эффе́кты в шо́у и́ли в кино́'},
+ {r:'выступле́ние',t:'wy-stup-LJE-ni-je',d:'Auftritt, Darbietung',e:'Ве́чером бу́дет выступле́ние на́шей гру́ппы.',x:'Am Abend gibt es einen Auftritt unserer Band.',rd:'когда́ кто́-то поёт и́ли игра́ет пе́ред людьми́'},
+ {r:'подписа́ться',t:'pat-pi-SAT-sa',d:'sich verpflichten; unterschreiben',e:'Я на э́то не подпи́сывался!',x:'Dafür habe ich mich nicht gemeldet!',rd:'согласи́ться уча́ствовать в чём-то'},
+ {r:'дочита́ть',t:'da-tschi-TATJ',d:'zu Ende lesen',e:'Я его́ да́же не дочита́л.',x:'Ich habe es nicht mal zu Ende gelesen.',rd:'прочита́ть кни́гу до са́мого конца́'},
+ {r:'наполови́ну',t:'na-pa-la-WI-nu',d:'zur Hälfte, halb',e:'Ле́то уже́ наполови́ну прошло́.',x:'Der Sommer ist schon halb vorbei.',rd:'на полови́ну, на пятьдеся́т проце́нтов'},
+ {r:'прибли́зиться',t:'pri-BLI-sit-sa',d:'sich nähern, näher kommen',e:'Я ни на шаг не прибли́зился к разга́дке.',x:'Ich bin der Lösung keinen Schritt näher gekommen.',rd:'стать бли́же к чему́-то'},
+ {r:'разга́дка',t:'ras-GAT-ka',d:'Lösung (eines Rätsels)',e:'Где же разга́дка э́той та́йны?',x:'Wo ist die Lösung dieses Geheimnisses?',rd:'отве́т на зага́дку'},
+ {r:'а́втор',t:'AF-tar',d:'Autor, Verfasser',e:'Кто а́втор э́того дневника́?',x:'Wer ist der Autor dieses Tagebuchs?',rd:'тот, кто написа́л кни́гу и́ли текст'},
+ {r:'остальны́е',t:'as-talj-NY-je',d:'die übrigen, die anderen',e:'А где остальны́е дневники́?',x:'Und wo sind die übrigen Tagebücher?',rd:'все други́е, кото́рые оста́лись'},
+ {r:'име́ть в виду́',t:'i-MJETJ w wi-DU',d:'meinen, im Sinn haben',e:'Что он име́л в виду́?',x:'Was hat er gemeint?',rd:'ду́мать об одно́м, когда́ говори́шь'},
+ {r:'я́вно',t:'JAW-na',d:'offensichtlich, eindeutig',e:'Я́вно происхо́дит что́-то ва́жное.',x:'Offensichtlich passiert etwas Wichtiges.',rd:'так, что э́то ви́дно всем'},
+ {r:'под но́сом',t:'pad NO-ssam',d:'direkt vor der Nase',e:'Э́то пря́мо у нас под но́сом.',x:'Das ist direkt vor unserer Nase.',rd:'совсе́м ря́дом, но незаме́тно'},
+ {r:'валя́ть дурака́',t:'wa-LJATJ du-ra-KA',d:'herumalbern, Zeit vertrödeln',e:'Пора́ прекрати́ть валя́ть дурака́.',x:'Es ist Zeit, mit dem Herumalbern aufzuhören.',rd:'ничего́ не де́лать и то́лько шути́ть'},
+ {r:'суть',t:'SSUTJ',d:'Kern, Wesentliches',e:'Ну́жно дойти́ до са́мой су́ти.',x:'Wir müssen der Sache auf den Grund gehen.',rd:'са́мое гла́вное в де́ле'}
+ ],
+ q:[
+ {q:'Что открыва́ется в нача́ле?',qde:'Was wird am Anfang eröffnet?',o:['обновлённая хи́жина чуде́с','музе́й','магази́н'],a:0},
+ {q:'Что ди́ппер про́сит у дя́ди?',qde:'Worum bittet Dipper seinen Onkel?',o:['верну́ть дневни́к','де́ньги','маши́ну'],a:0},
+ {q:'Ско́лько ле́та уже́ прошло́?',qde:'Wie viel vom Sommer ist schon vorbei?',o:['наполови́ну','всё','ничего́'],a:0},
+ {q:'Что реши́л ди́ппер?',qde:'Was beschloss Dipper?',o:['дойти́ до су́ти та́йны','сда́ться','уе́хать'],a:0}]},
+
+{id:'gf-21-2',ic:'🕵️',t:'Folge 21 · Teil 2',tru:'Аге́нты в го́роде',ep:'Staffel 2 · Folge 21',
+ url:'https://www.youtube.com/watch?v=-mxYMpqJNdc&list=PLtf1rsGS9MZJZYCooH2BU2yTOAA2h5-h6&index=2',
+ note:'Zwei Regierungsagenten untersuchen die Stadt – und Dipper glaubt, endlich Verbündete gefunden zu haben.',
+ words:[
+ {r:'перечита́ть',t:'pi-ri-tschi-TATJ',d:'noch einmal lesen',e:'Ты перечита́л дневни́к миллио́н раз.',x:'Du hast das Tagebuch millionenmal wieder gelesen.',rd:'прочита́ть ещё раз то, что уже́ чита́л'},
+ {r:'па́зл',t:'PASL',d:'Puzzle',e:'Для э́того па́зла не хвата́ет одно́й дета́ли.',x:'Für dieses Puzzle fehlt ein Teil.',rd:'игра́ из мно́гих ма́леньких часте́й'},
+ {r:'дета́ль',t:'di-TALJ',d:'Teil, Einzelheit',e:'Не хвата́ет всего́ одно́й дета́ли.',x:'Es fehlt nur ein einziges Teil.',rd:'ма́ленькая часть чего́-то большо́го'},
+ {r:'ко́довое сло́во',t:'KO-da-wa-je SLO-wa',d:'Codewort',e:'Како́е ко́довое сло́во ну́жно крича́ть?',x:'Welches Codewort muss man rufen?',rd:'та́йное сло́во, кото́рое зна́ют то́лько свои́'},
+ {r:'прави́тельство',t:'pra-WI-tiljst-wa',d:'Regierung',e:'Э́то лю́ди из прави́тельства.',x:'Das sind Leute von der Regierung.',rd:'те, кто управля́ет страно́й'},
+ {r:'госслу́жба',t:'gass-SLUSCH-ba',d:'Staatsdienst, Behörde',e:'Они́ рабо́тают в госслу́жбе.',x:'Sie arbeiten im Staatsdienst.',rd:'рабо́та на госуда́рство'},
+ {r:'брело́к',t:'bri-LOK',d:'Schlüsselanhänger',e:'У нас есть брело́ки и сувени́ры.',x:'Wir haben Schlüsselanhänger und Souvenirs.',rd:'ма́ленькая ве́щь, кото́рую ве́шают на ключи́'},
+ {r:'сувени́р',t:'ssu-wi-NIR',d:'Souvenir, Andenken',e:'Тури́сты покупа́ют сувени́ры.',x:'Touristen kaufen Souvenirs.',rd:'вещь на па́мять из путеше́ствия'},
+ {r:'врождённый',t:'wrasch-DJON-nyj',d:'angeboren',e:'У меня́ ре́дкая врождённая патоло́гия.',x:'Ich habe eine seltene angeborene Störung.',rd:'тако́й, с кото́рым челове́к роди́лся'},
+ {r:'воспринима́ть',t:'wass-pri-ni-MATJ',d:'wahrnehmen, auffassen',e:'Я не спосо́бен воспринима́ть ю́мор.',x:'Ich bin nicht fähig, Humor wahrzunehmen.',rd:'понима́ть и чу́вствовать то, что вокру́г'},
+ {r:'засекре́ченный',t:'sa-sik-RJE-tschin-nyj',d:'geheim, als geheim eingestuft',e:'Э́то засекре́ченная информа́ция.',x:'Das ist geheime Information.',rd:'та́йный, не для всех'},
+ {r:'подоплёка',t:'pa-dap-LJO-ka',d:'Hintergrund, wahrer Grund',e:'Здесь за́говор с паранорма́льной подоплёкой.',x:'Hier gibt es eine Verschwörung mit übernatürlichem Hintergrund.',rd:'то, что скры́то за собы́тием'},
+ {r:'зашифро́ванный',t:'sa-schif-RO-wan-nyj',d:'verschlüsselt',e:'В кни́ге зашифро́ваны все подска́зки.',x:'Im Buch sind alle Hinweise verschlüsselt.',rd:'напи́санный та́йным ко́дом'},
+ {r:'бу́йный',t:'BUJ-nyj',d:'ungestüm, wild',e:'У ма́льчика бу́йное воображе́ние.',x:'Der Junge hat eine wilde Fantasie.',rd:'о́чень си́льный и неспоко́йный'},
+ {r:'конфискова́ть',t:'kan-fiss-ka-WATJ',d:'beschlagnahmen',e:'Э́то мы конфиску́ем.',x:'Das beschlagnahmen wir.',rd:'забра́ть по зако́ну'},
+ {r:'осмотре́ть',t:'ass-mat-RJETJ',d:'besichtigen, sich ansehen',e:'Нам на́до осмотре́ть други́е места́.',x:'Wir müssen andere Orte besichtigen.',rd:'внима́тельно посмотре́ть всё вокру́г'},
+ {r:'обойти́сь без',t:'a-baj-TISS bis',d:'auskommen ohne',e:'Мо́жешь оди́н день обойти́сь без по́исков?',x:'Kannst du einen Tag ohne Suchen auskommen?',rd:'прожи́ть без чего́-то'},
+ {r:'инопланетя́нин',t:'i-na-pla-ni-TJA-nin',d:'Außerirdischer',e:'Оди́н день без инопланетя́н!',x:'Einen Tag ohne Außerirdische!',rd:'существо́ с друго́й плане́ты'},
+ {r:'воскреша́ть',t:'wass-kri-SCHATJ',d:'auferwecken',e:'Я не воскреша́ю мёртвых.',x:'Ich erwecke keine Toten.',rd:'де́лать мёртвых сно́ва живы́ми'},
+ {r:'шоссе́',t:'schass-SSE',d:'Landstraße, Chaussee',e:'Опа́сная доро́га до шоссе́.',x:'Ein gefährlicher Weg bis zur Landstraße.',rd:'широ́кая доро́га ме́жду города́ми'},
+ {r:'ультрафиоле́т',t:'ul-tra-fi-a-LJET',d:'UV-Licht',e:'От ультрафиоле́та зу́бы све́тятся.',x:'Vom UV-Licht leuchten die Zähne.',rd:'невиди́мый свет, от кото́рого све́тятся ве́щи'},
+ {r:'одобря́ть',t:'a-dab-RJATJ',d:'gutheißen, billigen',e:'Гла́вное, что́бы друзья́ одобря́ли.',x:'Hauptsache, die Freunde finden es gut.',rd:'счита́ть, что э́то хорошо́'}
+ ],
+ q:[
+ {q:'Кто прие́хал в го́род?',qde:'Wer kam in die Stadt?',o:['два аге́нта прави́тельства','тури́сты','музыка́нты'],a:0},
+ {q:'Что аге́нт не спосо́бен воспринима́ть?',qde:'Was kann der Agent nicht wahrnehmen?',o:['ю́мор','му́зыку','цвета́'],a:0},
+ {q:'Что хо́чет показа́ть им ди́ппер?',qde:'Was will Dipper ihnen zeigen?',o:['свой дневни́к','фотогра́фии','го́род'],a:0},
+ {q:'Что де́лает дя́дя стэн?',qde:'Was tut Onkel Stan?',o:['выгоня́ет аге́нтов','помога́ет им','пря́чется'],a:0}]},
+
+{id:'gf-21-3',ic:'📞',t:'Folge 21 · Teil 3',tru:'Звоно́к аге́нтам',ep:'Staffel 2 · Folge 21',
+ url:'https://www.youtube.com/watch?v=KC8AdBmvYIw&list=PLtf1rsGS9MZJZYCooH2BU2yTOAA2h5-h6&index=3',
+ note:'Dipper stiehlt die Visitenkarte, ruft die Agenten – und beweist ihnen das Übernatürliche gründlicher, als ihm lieb ist.',
+ words:[
+ {r:'ме́рзкий',t:'MJERS-kij',d:'widerlich, ekelhaft',e:'Сла́ва бо́гу, без ме́рзких аге́нтов.',x:'Gott sei Dank ohne die widerlichen Agenten.',rd:'о́чень неприя́тный'},
+ {r:'стоя́ть на шу́хере',t:'sta-JATJ na SCHU-chi-ri',d:'Schmiere stehen',e:'Я постою́ на шу́хере, а ты ищи́.',x:'Ich stehe Schmiere, und du suchst.',rd:'следи́ть, что́бы никто́ не пришёл'},
+ {r:'визи́тка',t:'wi-SIT-ka',d:'Visitenkarte',e:'Дя́дя отобра́л его́ визи́тку.',x:'Der Onkel nahm ihm die Visitenkarte weg.',rd:'ма́ленькая ка́рточка с и́менем и телефо́ном'},
+ {r:'отвле́чься',t:'at-WLJETSCH-sa',d:'sich ablenken lassen',e:'Извини́, отвлекла́сь на эсэмэ́ску.',x:'Entschuldige, ich war von einer SMS abgelenkt.',rd:'переста́ть смотре́ть на гла́вное'},
+ {r:'одержи́мость',t:'a-dir-SCHI-mastj',d:'Besessenheit',e:'Твоя́ одержи́мость пло́хо ко́нчится.',x:'Deine Besessenheit wird böse enden.',rd:'когда́ челове́к ду́мает то́лько об одно́м'},
+ {r:'наказа́ть',t:'na-ka-SATJ',d:'bestrafen',e:'За́втра ты бу́дешь нака́зан.',x:'Morgen wirst du bestraft.',rd:'сде́лать пло́хо за плохо́й посту́пок'},
+ {r:'прики́д',t:'pri-KIT',d:'Klamotten, Outfit',e:'Потря́сный прики́д!',x:'Umwerfendes Outfit!',rd:'оде́жда, кото́рую ты наде́л'},
+ {r:'старика́н',t:'sta-ri-KAN',d:'alter Knacker',e:'Глу́пый ста́рый старика́н!',x:'Dummer alter Knacker!',rd:'ста́рый челове́к (гру́бо)'},
+ {r:'засту́кать',t:'sa-STU-katj',d:'erwischen, ertappen',e:'Вы засту́кали меня́?',x:'Habt ihr mich erwischt?',rd:'уви́деть, когда́ кто́-то де́лает что́-то та́йно'},
+ {r:'вертолёт',t:'wir-ta-LJOT',d:'Hubschrauber',e:'А у вас нет вертолётов?',x:'Habt ihr keine Hubschrauber?',rd:'маши́на, кото́рая лета́ет с винто́м'},
+ {r:'лаборато́рия',t:'la-ba-ra-TO-ri-ja',d:'Labor',e:'Отпра́вьте его́ в лаборато́рию.',x:'Schickt es ins Labor.',rd:'ме́сто, где де́лают о́пыты'},
+ {r:'операти́вник',t:'a-pi-ra-TIW-nik',d:'Einsatzkraft, Ermittler',e:'Прие́хали операти́вники.',x:'Die Einsatzkräfte kamen.',rd:'сотру́дник, кото́рый рабо́тает на ме́сте'},
+ {r:'зо́мби',t:'SOM-bi',d:'Zombie',e:'Ви́дите? Настоя́щий зо́мби!',x:'Seht ihr? Ein echter Zombie!',rd:'мёртвый, кото́рый хо́дит и дви́гается'},
+ {r:'правди́вый',t:'praw-DI-wyj',d:'wahrhaftig, wahr',e:'Зна́чит, дневни́к правди́в.',x:'Also ist das Tagebuch wahr.',rd:'тако́й, в кото́ром всё пра́вда'},
+ {r:'деньжо́нки',t:'din-SCHON-ki',d:'Kohle, bisschen Geld',e:'Забира́ем деньжо́нки и идём.',x:'Wir nehmen die Kohle und gehen.',rd:'немно́го де́нег (шутли́во)'},
+ {r:'рюкза́к',t:'rjuk-SAK',d:'Rucksack',e:'У тебя́ есть рюкза́к?',x:'Hast du einen Rucksack?',rd:'су́мка, кото́рую но́сят на спине́'},
+ {r:'магнитофо́н',t:'mag-ni-ta-FON',d:'Kassettenrekorder',e:'Рабо́тающий магнитофо́н!',x:'Ein funktionierender Kassettenrekorder!',rd:'аппара́т, кото́рый пи́шет и игра́ет му́зыку'},
+ {r:'эне́ргия',t:'e-NJER-gi-ja',d:'Energie, Schwung',e:'Что́-то у вас малова́то эне́ргии.',x:'Irgendwie habt ihr zu wenig Energie.',rd:'си́ла, что́бы что́-то де́лать'},
+ {r:'несправедли́во',t:'ni-spra-wid-LI-wa',d:'ungerecht',e:'Э́то про́сто несправедли́во!',x:'Das ist einfach ungerecht!',rd:'не по-че́стному'},
+ {r:'сла́ва бо́гу',t:'SLA-wa BO-gu',d:'Gott sei Dank',e:'Сла́ва бо́гу, все це́лы!',x:'Gott sei Dank sind alle heil!',rd:'так говоря́т, когда́ ра́ды, что всё обошло́сь'}
+ ],
+ q:[
+ {q:'Что ди́ппер взял из ко́мнаты дя́ди?',qde:'Was nahm Dipper aus dem Zimmer des Onkels?',o:['визи́тку аге́нтов','де́ньги','ключи́'],a:0},
+ {q:'Как аге́нты отнесли́сь к дневнику́?',qde:'Wie reagierten die Agenten auf das Tagebuch?',o:['они́ не пове́рили','они́ обра́довались','они́ испуга́лись'],a:0},
+ {q:'Что сде́лал ди́ппер, что́бы доказа́ть пра́вду?',qde:'Was tat Dipper, um die Wahrheit zu beweisen?',o:['прочита́л заклина́ние','показа́л фо́то','позва́л дя́дю'],a:0},
+ {q:'Что появи́лось по́сле заклина́ния?',qde:'Was erschien nach dem Zauberspruch?',o:['зо́мби','гно́мы','при́зрак'],a:0}]},
+
+{id:'gf-21-4',ic:'🧟',t:'Folge 21 · Teil 4',tru:'Наше́ствие зо́мби',ep:'Staffel 2 · Folge 21',
+ url:'https://www.youtube.com/watch?v=FrtY5BBAJKk&list=PLtf1rsGS9MZJZYCooH2BU2yTOAA2h5-h6&index=4',
+ note:'Die Party wird zum Überlebenskampf – und Stan zeigt, dass er die ganze Zeit mehr wusste als alle.',
+ words:[
+ {r:'пани́ка',t:'PA-ni-ka',d:'Panik',e:'Без пани́ки!',x:'Keine Panik!',rd:'о́чень си́льный страх у мно́гих сра́зу'},
+ {r:'уро́дливый',t:'u-ROD-li-wyj',d:'hässlich, missgestaltet',e:'Мо́жет, э́то про́сто уро́дливый флешмо́б.',x:'Vielleicht ist das nur ein hässlicher Flashmob.',rd:'о́чень некраси́вый'},
+ {r:'бе́гство',t:'BJEKST-wa',d:'Flucht',e:'Я спец по бе́гству от зо́мби.',x:'Ich bin Experte für die Flucht vor Zombies.',rd:'когда́ убега́ют от опа́сности'},
+ {r:'сцена́рий',t:'szy-NA-rij',d:'Drehbuch, Szenario',e:'Дава́йте поменя́ем сцена́рий.',x:'Ändern wir das Szenario.',rd:'план того́, что бу́дет происходи́ть'},
+ {r:'согла́сие',t:'sag-LA-ssi-je',d:'Zustimmung, Einverständnis',e:'Говоря́т, молча́ние — знак согла́сия.',x:'Man sagt, Schweigen ist Zustimmung.',rd:'когда́ ты говори́шь «да»'},
+ {r:'зева́ть',t:'si-WATJ',d:'gähnen; verpassen',e:'Не зева́йте, они́ бли́зко!',x:'Passt auf, sie sind nah!',rd:'открыва́ть рот, когда́ хо́чется спать'},
+ {r:'сопротивле́ние',t:'sa-pra-tiw-LJE-ni-je',d:'Widerstand',e:'Сопротивле́ние де́лает мозг жёстким.',x:'Widerstand macht das Gehirn zäh.',rd:'когда́ не сдаю́тся и де́йствуют про́тив'},
+ {r:'жёсткий',t:'SCHOST-kij',d:'zäh, hart',e:'Мя́со ста́ло жёстким.',x:'Das Fleisch ist zäh geworden.',rd:'твёрдый, кото́рый тру́дно жева́ть'},
+ {r:'сова́ть нос',t:'ssa-WATJ NOSS',d:'die Nase hineinstecken',e:'Он ве́чно суёт нос куда́ не на́до.',x:'Er steckt ständig die Nase in fremde Sachen.',rd:'лезть туда́, куда́ не про́сят'},
+ {r:'насты́рный',t:'na-STYR-nyj',d:'aufdringlich, hartnäckig',e:'Э́ти де́ти о́чень насты́рные.',x:'Diese Kinder sind sehr hartnäckig.',rd:'кото́рый не отстаёт и всё вре́мя про́сит'},
+ {r:'забаррикади́ровать',t:'sa-ba-ri-ka-DI-ra-watj',d:'verbarrikadieren',e:'Ну́жно забаррикади́ровать все вхо́ды.',x:'Wir müssen alle Eingänge verbarrikadieren.',rd:'закры́ть вход тяжёлыми веща́ми'},
+ {r:'задержа́ть',t:'sa-dir-SCHATJ',d:'aufhalten, zurückhalten',e:'Мо́жет, э́то их заде́ржит.',x:'Vielleicht hält sie das auf.',rd:'останови́ть на не́которое вре́мя'},
+ {r:'ток',t:'TOK',d:'Strom',e:'Я научи́л зо́мби залеза́ть в электрото́к.',x:'Ich habe die Zombies gelehrt, in den Strom zu fassen.',rd:'электри́чество, кото́рое идёт по про́воду'},
+ {r:'увле́чься',t:'u-WLJETSCH-sa',d:'sich zu sehr vertiefen',e:'Я так увлёкся по́иском, что всё забы́л.',x:'Ich habe mich so in die Suche vertieft, dass ich alles vergaß.',rd:'так заинтересова́ться, что забы́ть про всё'},
+ {r:'подве́ргнуть опа́сности',t:'pad-WJERG-nutj a-PASS-nas-ti',d:'in Gefahr bringen',e:'Я всех подве́рг опа́сности.',x:'Ich habe alle in Gefahr gebracht.',rd:'сде́лать так, что други́м ста́ло опа́сно'},
+ {r:'не́жить',t:'NJE-schitj',d:'Untote',e:'Ну что, тупа́я не́жить?',x:'Na, ihr dumme Untoten?',rd:'мёртвые существа́, кото́рые дви́гаются'},
+ {r:'морщи́нистый',t:'mar-SCHTSCHI-niss-tyj',d:'faltig, runzlig',e:'Оди́н морщи́нистый монстр!',x:'Ein einziges runzliges Monster!',rd:'с мно́гими морщи́нами на лице́'},
+ {r:'внук',t:'WNUK',d:'Enkel',e:'Мои́х вну́ков никто́ не тро́нет.',x:'Meine Enkel rührt niemand an.',rd:'сын твоего́ сы́на и́ли до́чери'},
+ {r:'отрица́ть',t:'at-ri-ZATJ',d:'leugnen, abstreiten',e:'Тепе́рь ты не бу́дешь э́то отрица́ть.',x:'Jetzt wirst du es nicht mehr leugnen.',rd:'говори́ть, что э́того нет'},
+ {r:'городи́шко',t:'ga-ra-DISCH-ka',d:'Kaff, Nest',e:'Наш городи́шко непросто́й.',x:'Unser Kaff ist nicht ohne.',rd:'ма́ленький го́род (пренебрежи́тельно)'},
+ {r:'огради́ть',t:'ag-ra-DITJ',d:'abschirmen, bewahren vor',e:'Я хоте́л огради́ть вас от э́того.',x:'Ich wollte euch davor bewahren.',rd:'защити́ть от чего́-то плохо́го'},
+ {r:'проступи́ть',t:'pra-stu-PITJ',d:'hervortreten, sichtbar werden',e:'Текст проступа́ет в ультрафиоле́те.',x:'Der Text tritt unter UV-Licht hervor.',rd:'ме́дленно появи́ться на пове́рхности'}
+ ],
+ q:[
+ {q:'Что случи́лось на вечери́нке?',qde:'Was passierte auf der Party?',o:['напа́ли зо́мби','поги́с свет','прие́хала поли́ция'],a:0},
+ {q:'Кто спас дете́й?',qde:'Wer rettete die Kinder?',o:['дя́дя стэн','аге́нты','зус'],a:0},
+ {q:'Что призна́л дя́дя стэн?',qde:'Was gab Onkel Stan zu?',o:['он всё вре́мя знал пра́вду','он ничего́ не знал','он бои́тся зо́мби'],a:0},
+ {q:'Что ви́дно в дневнике́ под ультрафиоле́том?',qde:'Was ist im Tagebuch unter UV-Licht zu sehen?',o:['скры́тый текст','рису́нки','ничего́'],a:0}]},
+
 {id:'gf-20-1',ic:'▶️',t:'Folge 20 · Teil 1',tru:'Гедео́н побежда́ет · Teil 1',ep:'Staffel 1 · Folge 20',watchOnly:true,
  url:'https://www.youtube.com/watch?v=_g3xyghLiOI&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=98',
  note:'Für diesen Teil stellt YouTube kein Transkript bereit – deshalb gibt es hier nur den Video-Link, damit deine Folge lückenlos bleibt. Schau ihn vor Teil 2 an.',
@@ -3706,7 +3841,7 @@ function migrateRotation(){
 /* ---- Sprachebene: was man gefahrlos sagen kann und was nicht ----
    slang = locker, nur unter Freunden/Gleichaltrigen · grob = besser nur verstehen, nicht benutzen */
 const REGISTER={};
-'чувак,тусовка,тусоваться,отвисать,кайфовать,кайфолом,втюриться,врубиться,отстой,потрясно,обалдеть,по барабану,круто,мотать отсюда,свалить,предки,прикол,прикольный,клёвый,зажигать,запросто,дружище,умник,смыться,сгодиться,влипать,оторваться,достать,пахать,глазеть,балда,бездельник,дурдом,спереть,зависнуть,реально,вкуснятина,всё путём,чушь,бред,перетрусить,струсить,сам напросился,ерунда,кафешка,пацан,вырубить,надурить,газовать,здоровяк,жирный,воришка,прикинь,таскать,стащить,убираться,спальник,беситься,тусовщица,угробить,девчачий,закидоны,голышом,молодчина,детка,подлиза,ныть,втыкать,мужик,забегаловка,нарываться,разочек,враньё,баранка,смазливый,помойка,заценить,навалять,салага,коротышка,отжать,громадина,кореш,шикарно,башка,обнимашки,доставать,кислотный,движок,умничка,книжонка,идиотский,выкрутиться'
+'чувак,тусовка,тусоваться,отвисать,кайфовать,кайфолом,втюриться,врубиться,отстой,потрясно,обалдеть,по барабану,круто,мотать отсюда,свалить,предки,прикол,прикольный,клёвый,зажигать,запросто,дружище,умник,смыться,сгодиться,влипать,оторваться,достать,пахать,глазеть,балда,бездельник,дурдом,спереть,зависнуть,реально,вкуснятина,всё путём,чушь,бред,перетрусить,струсить,сам напросился,ерунда,кафешка,пацан,вырубить,надурить,газовать,здоровяк,жирный,воришка,прикинь,таскать,стащить,убираться,спальник,беситься,тусовщица,угробить,девчачий,закидоны,голышом,молодчина,детка,подлиза,ныть,втыкать,мужик,забегаловка,нарываться,разочек,враньё,баранка,смазливый,помойка,заценить,навалять,салага,коротышка,отжать,громадина,кореш,шикарно,башка,обнимашки,доставать,кислотный,движок,умничка,книжонка,идиотский,выкрутиться,стоять на шухере,прикид,старикан,застукать,деньжонки,городишко'
  .split(',').forEach(w=>{REGISTER[w.replace(/́/g,'')]='slang'});
 'заткнись,дешёвка,попрошайка,вонючка,придурок,недоумок,болван,дурачок,безмозглый,мерзавец,гад,урод,слабак,размазня,карга,жулик,зануда,чёрт побери,плевать,заткнуться,старпёр,тупой,гадёныш,толстяк,тёлка,дармоед'
  .split(',').forEach(w=>{REGISTER[w.replace(/́/g,'')]='grob'});
@@ -3744,7 +3879,8 @@ const IDIOMS=['держать себя в руках','взять под кры�
 'со всех ног','дать слово','брать пример','снести крышу','покой',
 'золотое дно','души не чаять','кошки-мышки','выдать себя','опомниться','беречься',
 'не по зубам','не терпится','дать сдачи','желать добра','ни в коем случае','что угодно','до той поры',
-'на мушке','за решёткой','голыми руками','судя по','выкрутиться','заботиться','бороться'];
+'на мушке','за решёткой','голыми руками','судя по','выкрутиться','заботиться','бороться',
+'валять дурака','иметь в виду','под носом','в гуще событий','совать нос','стоять на шухере','подвергнуть опасности'];
 /* ---- Wie sich eine Wendung im Satz verändert ----
    Redewendungen stehen im Wörterbuch im Infinitiv, im Gespräch hörst du sie aber
    konjugiert, im Befehl oder in der Vergangenheit. Hier stehen die Formen, die
@@ -3829,7 +3965,11 @@ const IDIOM_FORMS={
 'на мушке':['Ты у меня́ на му́шке.|Ich habe dich im Visier.','Держи́ его́ на му́шке!|Behalte ihn im Visier!','Мы бы́ли у них на му́шке.|Wir waren in ihrem Visier.'],
 'за решёткой':['Он сиди́т за решёткой.|Er sitzt hinter Gittern.','Не окажи́сь за решёткой!|Lande nicht hinter Gittern!','Моше́нник оказа́лся за решёткой.|Der Betrüger landete hinter Gittern.'],
 'голыми руками':['Я де́лаю э́то го́лыми рука́ми.|Ich mache das mit bloßen Händen.','Не хвата́й его́ го́лыми рука́ми!|Fass es nicht mit bloßen Händen an!','Он победи́л ро́бота го́лыми рука́ми.|Er besiegte den Roboter mit bloßen Händen.'],
-'заслуживать':['Ты заслу́живаешь лу́чшего.|Du verdienst Besseres.','Заслужи́ э́то!|Verdiene es dir!','Он заслужи́л побе́ду.|Er hat den Sieg verdient.']
+'заслуживать':['Ты заслу́живаешь лу́чшего.|Du verdienst Besseres.','Заслужи́ э́то!|Verdiene es dir!','Он заслужи́л побе́ду.|Er hat den Sieg verdient.'],
+'валять дурака':['Он це́лый день валя́ет дурака́.|Er albert den ganzen Tag herum.','Хва́тит валя́ть дурака́!|Schluss mit dem Herumalbern!','Мы валя́ли дурака́ всё ле́то.|Wir haben den ganzen Sommer vertrödelt.'],
+'иметь в виду':['Я име́ю в виду́ друго́е.|Ich meine etwas anderes.','Име́й в виду́: он не шу́тит.|Denk dran: Er scherzt nicht.','Что ты име́л в виду́?|Was hast du gemeint?'],
+'совать нос':['Он ве́чно суёт нос куда́ не на́до.|Er steckt seine Nase ständig in fremde Sachen.','Не суй нос в чужи́е дела́!|Steck deine Nase nicht in fremde Angelegenheiten!','Она́ су́нула нос в его́ дневни́к.|Sie steckte ihre Nase in sein Tagebuch.'],
+'под носом':['Э́то пря́мо у тебя́ под но́сом.|Das ist direkt vor deiner Nase.','Ищи́ под но́сом!|Such direkt vor deiner Nase!','Всё бы́ло у нас под но́сом.|Alles war direkt vor unserer Nase.']
 };
 /* ---- Wortbausteine ----------------------------------------------------------
    Lange russische Wörter sind fast nie neu, sondern zusammengesetzt:
@@ -4023,6 +4163,14 @@ function sylTiles(p,parts){
   pool.sort((a,b)=>Math.abs(a.replace(/́/g,'').length-avg)-Math.abs(b.replace(/́/g,'').length-avg));
   const n=parts.length<=3?2:3;
   return shuffle(parts.concat(shuffle(pool.slice(0,n*3)).slice(0,n)));
+}
+/* Russische Erklärung: aufklappbar, damit du erst selbst versuchst, sie zu verstehen.
+   Auf Russisch erklärt zu bekommen ist der Schritt weg vom Übersetzen im Kopf. */
+function defBox(w){
+  if(!w||!w.rd)return '';
+  return '<details class="rdef"><summary>🇷🇺 Auf Russisch erklärt</summary>'+
+    '<div class="rdb">'+acc(esc(w.rd))+' '+sayBtn(w.rd)+
+    '<span class="rdde">'+esc(w.d)+'</span></div></details>';
 }
 function formsBox(w){
   const f=IDIOM_FORMS[String(w.r).replace(/́/g,'')];
@@ -4702,7 +4850,8 @@ function wireStoryWords(){
     const grund=(g&&g.r&&g.r.replace(/́/g,'').toLowerCase()!==el.dataset.n)
       ?'<span class="wgrund">Grundform: '+acc(esc(g.r))+'</span>':'';
     box.innerHTML=sayBtn(el.dataset.r,'spk')+'<b>'+acc(esc(el.dataset.r))+'</b> — '+
-      (g?esc(g.d):'<i>dafür ist noch nichts hinterlegt</i>')+grund;
+      (g?esc(g.d):'<i>dafür ist noch nichts hinterlegt</i>')+grund+
+      (g&&g.rd?'<div style="width:100%">'+defBox(g)+'</div>':'');
     speak(el.dataset.r);
   });
 }
@@ -5032,7 +5181,7 @@ function resolve(ok){
     '<div class="answer"><div class="word" style="font-size:1.6rem;margin:2px 0 4px">'+acc(esc(w.r))+' '+sayBtn(w.r,'speak')+'</div>'+
     '<div class="trans">['+esc(w.t)+']</div><div class="mean">'+esc(w.d)+'</div>'+regBadge(w)+
     (w.e?'<div class="ex"><div class="ru">'+acc(esc(w.e))+' '+sayBtn(w.e)+'</div><div class="de">'+esc(w.x||'')+'</div></div>':'')+
-    twinBox(w)+bausteine(w)+formsBox(w)+
+    defBox(w)+twinBox(w)+bausteine(w)+formsBox(w)+
     (cur.optRu?hearAll(cur.opts,'Alle Antwortmöglichkeiten anhören:'):'')+
     '</div><div class="grade"><button onclick="nextCard()">Weiter</button></div>';
   speak(w.r);
@@ -5285,7 +5434,7 @@ function showWords(pid){
       return '<div class="row"><div class="l"><div class="ru">'+acc(esc(w.r))+'</div>'+
         '<div class="tr">['+esc(w.t||'')+']</div><div class="de">'+esc(w.d)+' '+regBadge(w)+'</div>'+
         (w.e?'<div class="de" style="margin-top:4px;font-style:italic">'+acc(esc(w.e))+' '+sayBtn(w.e)+'</div>':'')+
-        bausteine(w)+formsBox(w)+
+        defBox(w)+bausteine(w)+formsBox(w)+
         '</div><div>'+(st&&st.c>=2?'<span style="color:var(--birch);font-weight:700">✓</span>':'')+'</div>'+
         sayBtn(w.r)+'</div>';
     }).join('')+
