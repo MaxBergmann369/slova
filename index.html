@@ -348,6 +348,9 @@ textarea#impBox,textarea#bakBox{width:100%;min-height:110px;border:1px solid var
     <div class="setrow"><label>Bilder &amp; Bild-Karten</label>
       <select id="setImg"><option value="1">An – Piktogramme offline, Fotos online</option><option value="0">Aus</option></select></div>
     <p class="hint" style="margin:-4px 0 10px">616 Wörter haben ein festes Piktogramm – das braucht kein Internet und kommt im Bild-Modus als Frage. Fotos von Wikipedia gibt es nur zusätzlich, nur online und nur für konkrete Substantive.</p>
+    <div class="setrow"><label>Kognaten-Anteil bei neuen Wörtern</label>
+      <select id="setCog"><option value="0">Aus</option><option value="20">20 %</option><option value="25" selected>25 %</option><option value="35">35 %</option></select></div>
+    <p class="hint" style="margin:-4px 0 10px">Wörter, die fast wie im Deutschen oder Englischen klingen. Sie kosten weniger Kraft – ein fester Anteil hebt den Durchsatz, ohne dass der Tag schwerer wird.</p>
     <div class="setrow"><label>Tagesziel (Karten)</label>
       <select id="setGoal"><option>10</option><option>20</option><option selected>30</option><option>50</option><option>100</option></select></div>
     <div class="setrow"><label>Hör-Karten</label>
@@ -2565,9 +2568,31 @@ function freshPool(n){
   const base=VOCAB.filter(w=>!S.prog[w.i]).sort((a,b)=>a.i-b.i).slice(0,n).map(w=>w.i);
   return shuffle(mine).concat(shuffle(base));
 }
+/* Ein fester Anteil der taeglich neuen Woerter sind Kognaten. Geschenkt sind die
+   nicht - Betonung, Schreibweise und Geschlecht muss man trotzdem lernen - aber
+   der Einstieg kostet wenig, und das hebt den Durchsatz sichtbar. Abschaltbar,
+   damit die Zahl ehrlich bleibt. */
+function cogShare(){const v=S.set.cog;return v===undefined?25:(+v||0)}
+function freshCognates(){
+  return VOCAB.filter(w=>w.g&&!S.prog[w.i]).sort((a,b)=>a.i-b.i).map(w=>w.i);
+}
+function pickFresh(n){
+  if(n<=0)return[];
+  const basis=freshPool(150);
+  const anteil=Math.min(n,Math.round(n*cogShare()/100));
+  if(!anteil)return basis.slice(0,n);
+  const drin=new Set(),kog=[];
+  for(const id of freshCognates()){
+    if(kog.length>=anteil)break;
+    if(drin.has(id))continue;
+    drin.add(id);kog.push(id);
+  }
+  const rest=basis.filter(id=>!drin.has(id)).slice(0,n-kog.length);
+  return shuffle(kog.concat(rest));
+}
 function buildQueue(){
   const due=allWords().filter(w=>isDue(w.i)).map(w=>w.i);
-  const fresh=freshPool(120).slice(0,newAllowance());
+  const fresh=pickFresh(newAllowance());
   return{due,fresh};
 }
 function startSession(ids){ /* Problemwörter/Wiederholungen: eine Karte pro Wort */
@@ -3415,7 +3440,7 @@ function renderCogs(){
   };
   const sec=(title,arr)=>arr.length?'<div class="sect">'+title+' · '+arr.length+'</div>'+arr.map(row).join(''):'';
   $('#view-kognaten').innerHTML=
-    '<div class="cogintro"><b>♾️ Endlos-Training:</b> Alle Kognaten als Karten – genau wie im Lernen-Tab, aber ohne Tageslimit. Falsches kommt nach 3 Karten wieder, Gewusstes viel später. Läuft so lange du willst und zählt nicht in die SRS-Statistik – reines Extra-Training.'+
+    '<div class="cogintro"><b>♾️ Endlos-Training:</b> Alle Kognaten als Karten – genau wie im Lernen-Tab, aber ohne Tageslimit. Falsches kommt nach 3 Karten wieder, Gewusstes viel später. Läuft so lange du willst. <b>Neu:</b> Was du hier zum ersten Mal weißt, wandert automatisch in deine normale Wiederholung – geprüft wird es dort.'+
     '<div class="ctrow">'+
     '<button class="btn btn-primary" onclick="startCogDrill(\'all\')">Alle ('+total+')</button>'+
     '<button class="btn-ghost" onclick="startCogDrill(\'de\')">≈ Deutsch ('+nDE+')</button>'+
@@ -3477,6 +3502,18 @@ function cogGrade(g){
   cdrill.q.splice(Math.min(off,cdrill.q.length),0,id);
   cdrill.seen++;
   if(g==='k')cdrill.right++;else if(g==='w')cdrill.wrong++;
+  /* Auffahrt statt Abkuerzung: Ein "Gewusst" hier holt das Wort in die normale
+     Wiederholung - aber nur auf die unterste Stufe und nur, wenn es dort noch
+     gar nicht steht. Bestehende Lernstaende bleiben unangetastet; ob das Wort
+     wirklich sitzt, entscheidet sich weiterhin im Lernen-Tab, wo getippt,
+     gebaut und produziert wird. Deshalb zaehlt b:1 auch noch nicht als
+     "aktiver Wortschatz" - dafuer braucht es b>=2. */
+  if(g==='k'&&!S.prog[id]){
+    S.prog[id]={b:1,iv:1,ez:2.5,d:addDays(1),c:1,w:0};
+    cdrill.neu=(cdrill.neu||0)+1;
+    const td=todayStr();S.days[td]=(S.days[td]||0)+1;
+    save();
+  }
   renderCogCard();
 }
 function endCogDrill(){
@@ -3489,7 +3526,10 @@ function endCogDrill(){
     '<div class="sumbox"><b style="color:var(--birch)">'+s.right+'</b><span>gewusst</span></div>'+
     '<div class="sumbox"><b style="color:var(--kalina)">'+s.wrong+'</b><span>daneben</span></div>'+
     '<div class="sumbox"><b>'+(s.seen?Math.round(100*s.right/s.seen):0)+' %</b><span>Quote</span></div>'+
-    '</div><button class="btn btn-primary" onclick="startCogDrill(\''+s.mode+'\')">Gleich nochmal</button> '+
+    '<div class="sumbox"><b style="color:var(--gzhel)">'+(s.neu||0)+'</b><span>neu im Wortschatz</span></div>'+
+    '</div>'+
+    ((s.neu||0)?'<div class="cogintro" style="margin-top:12px;text-align:left">Die '+s.neu+' Wörter, die du zum ersten Mal gewusst hast, stehen ab morgen in deiner normalen Wiederholung. Dort werden sie richtig geprüft – getippt und gebaut, nicht nur wiedererkannt.</div>':'')+
+    '<button class="btn btn-primary" onclick="startCogDrill(\''+s.mode+'\')">Gleich nochmal</button> '+
     '<button class="btn-ghost" onclick="renderCogs()">Zur Liste</button></div>';
 }
 
@@ -3647,7 +3687,7 @@ function startRadio(src){
   else ids=freshPool(150); /* neue: eigene Importe zuerst, dann die nächsten Frequenzwörter */
   if(!ids.length)ids=shuffle(allWords().slice(0,100).map(w=>w.i));
   const sentEl=$('#radioSent');
-  radio={q:ids,i:0,playing:true,sent:sentEl?sentEl.checked:true,count:0,src};
+  radio={q:ids,i:0,playing:true,sent:sentEl?sentEl.checked:true,count:0,src,heard:[]};
   renderRadioPlayer();
   radioLoop();
 }
@@ -3678,6 +3718,7 @@ async function radioLoop(){
     const w=byId(radio.q[radio.i]);
     if(!w){radio.i++;continue}
     radio.count++;
+    if(radio.heard.indexOf(w.i)<0)radio.heard.push(w.i);
     updRadioUI(w);
     try{speechSynthesis.cancel()}catch(e){}
     await speakLang(w.r,false);
@@ -3709,11 +3750,30 @@ function toggleRadio(){
   if(radio.playing)radioLoop();
   else{radioTok++;try{speechSynthesis.cancel()}catch(e){}}
 }
+let radioLast=[];
 function stopRadio(){
+  const r=radio;
   radioTok++;radio=null;
   try{speechSynthesis.cancel()}catch(e){}
   try{if(wakeLock){wakeLock.release();wakeLock=null}}catch(e){}
-  renderHome();
+  if(!r||!r.count){renderHome();return}
+  /* Zuhoeren allein ist Wiedererkennen, kein Abrufen. Deshalb hier gleich die
+     Bruecke: dieselben Woerter nochmal, diesmal ohne Vorsprechen. */
+  radioLast=shuffle(r.heard.slice()).slice(0,25);
+  $('#view-lernen').innerHTML='<div class="hero"><div class="done-mark">📻</div>'+
+    '<div class="due-line">'+r.count+' Wörter gehört</div>'+
+    '<div class="sumgrid">'+
+    '<div class="sumbox"><b>'+r.count+'</b><span>Durchgänge</span></div>'+
+    '<div class="sumbox"><b>'+r.heard.length+'</b><span>verschiedene Wörter</span></div>'+
+    '</div>'+
+    '<div class="sub" style="margin-top:14px;text-align:left">Beim Zuhören erkennst du wieder – das ist die leichte Hälfte. Ob du die Wörter auch <b>herholen</b> kannst, zeigt sich erst ohne Vorsprechen. Zehn Minuten Spaziergang plus zwei Minuten Abfrage bringen mehr als zwanzig Minuten nur hören.</div>'+
+    '<button class="btn btn-primary" onclick="testHeard()">'+radioLast.length+' gehörte Wörter jetzt abfragen</button><br>'+
+    '<button class="btn-ghost" onclick="renderRadio()">Nochmal hören</button><br>'+
+    '<button class="btn-ghost" onclick="renderHome()">Zurück</button></div>';
+}
+function testHeard(){
+  if(!radioLast.length){renderHome();return}
+  startSession(radioLast.slice());
 }
 document.addEventListener('visibilitychange',()=>{ /* Wake Lock nach Tab-Wechsel neu anfordern */
   if(!document.hidden&&radio&&radio.playing&&navigator.wakeLock){
@@ -4075,6 +4135,8 @@ function buildAppNav(cur){
   $('#setImg').value=S.set.img===false?'0':'1';
   $('#setImg').onchange=e=>{S.set.img=e.target.value==='1';save()};
   $('#setGoal').value=String(S.set.goal||30);
+  $('#setCog').value=String(cogShare());
+  $('#setCog').onchange=e=>{S.set.cog=+e.target.value;save();if(!sess)renderHome()};
   $('#setGoal').onchange=e=>{S.set.goal=+e.target.value;save();if(!sess)renderHome()};
   $('#setSnd').value=S.set.snd===false?'0':'1';
   $('#setSnd').onchange=e=>{S.set.snd=e.target.value==='1';save()};
