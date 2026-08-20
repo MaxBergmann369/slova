@@ -6310,15 +6310,19 @@ function ladderDone(){
   return Object.keys(sess.st).filter(k=>sess.st[k].step>=LADDER.length).length;
 }
 function halfHtml(word){
-  /* jeder zweite Buchstabe bleibt stehen – genug Halt, zu wenig zum Abschreiben */
-  let i=0;
-  const masked=[...String(word)].map(ch=>{
-    if(ch==='́')return ch;
-    if(!/[А-Яа-яЁё]/.test(ch))return ch;
+  /* jeder zweite Buchstabe bleibt stehen – genug Halt, zu wenig zum Abschreiben.
+     Ein verdeckter Buchstabe nimmt sein Betonungszeichen mit. */
+  const chars=[...String(word)];
+  let i=0,out='';
+  for(let k=0;k<chars.length;k++){
+    const ch=chars[k];
+    if(ch==='́')continue;                     /* wird beim Buchstaben mitgenommen */
+    const hatAkzent=chars[k+1]==='́';
+    if(!/[А-Яа-яЁё]/.test(ch)){out+=ch;continue}
     i++;
-    return i%2===1?ch:'·';
-  }).join('');
-  return '<div class="halfword">'+acc(esc(masked))+'</div>';
+    out+=(i%2===1)?(ch+(hatAkzent?'́':'')):'·';
+  }
+  return '<div class="halfword">'+acc(esc(out))+'</div>';
 }
 /* ---- Mastery-Drill: üben, bis jedes Wort des Pakets sitzt ---- */
 const NEED=2; /* zwei richtige Antworten in verschiedenen Formaten */
