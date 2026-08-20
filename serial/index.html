@@ -151,6 +151,11 @@ nav.tabsbar{position:sticky;top:0;z-index:20;background:var(--paper);padding:12p
 .wordbox b .acc{color:var(--rust)}
 .wordbox .wgrund{width:100%;font-size:.78rem;color:var(--ink-faint);margin-top:2px}
 .wordbox .spk{color:var(--rust);font-size:1.1rem;padding:2px 6px;border-radius:8px;background:var(--paper)}
+.ladbox{background:var(--birch-soft);border:1px solid var(--birch);border-radius:var(--radius);padding:18px;text-align:center;margin:12px 0 4px}
+.ladbox .lk-t{font-family:var(--serif);font-weight:700;font-size:1.05rem;color:var(--birch)}
+.ladbox .lk-s{font-size:.82rem;color:var(--ink-soft);margin:6px 0 12px;line-height:1.6}
+.halfword{font-family:var(--mono);font-size:1.7rem;text-align:center;letter-spacing:.12em;margin:14px 0 4px;color:var(--rust);overflow-wrap:anywhere}
+.halfword .acc{color:var(--rust)}
 .decbox{background:var(--sliva-soft,#EEE8F7);border:1px solid #C9BBE4;border-radius:var(--radius);padding:18px;text-align:center;margin:12px 0 4px}
 .decbox .lk-t{font-family:var(--serif);font-weight:700;font-size:1.05rem;color:#5A3E86}
 .decbox .lk-s{font-size:.82rem;color:var(--ink-soft);margin:6px 0 12px;line-height:1.6}
@@ -6041,32 +6046,85 @@ function hearAllStory(key){
    Einzelne Wörter zu kennen heißt noch nicht, einen Satz zu verstehen. Hier kommt
    ein ganzer Satz: erst selbst raten, dann Wort für Wort auseinandernehmen. */
 let dec=null;
-function decodePool(){
+/* Was du wirklich gelernt hast – aus СЕРИА́Л und (gleiche Domain) aus СЛОВА́.
+   Funktionswörter zählen als bekannt, sie sind Satzklebstoff, keine Vokabeln. */
+let _known=null;
+function knownWords(){
+  if(_known)return _known;
+  const set=new Set(Object.keys(STORY_GLOSS));
+  allPacks().forEach(p=>{
+    if(p.exam||p.sexam)return;
+    p.words.forEach((w,k)=>{
+      const st=S.prog[wordKey(p.id,k)];
+      if(st&&st.c>0)set.add(w.r.replace(/́/g,'').toLowerCase());
+    });
+  });
+  try{
+    const raw=localStorage.getItem('russisch-trainer-v1');
+    if(raw){
+      const d=JSON.parse(raw);
+      if(d&&d.prog){
+        /* СЛОВА́ speichert nach Wort-ID; die Wörter selbst kennen wir über BASE_DICT nicht per ID,
+           deshalb zählt hier die Menge: wer dort viel gelernt hat, kennt den Grundwortschatz. */
+        const n=Object.keys(d.prog).filter(k=>{const p=d.prog[k];return p&&(p.b>=1||p.c>=1)}).length;
+        if(n>=300)Object.keys(BASE_DICT).forEach(k=>set.add(k));
+      }
+    }
+  }catch(e){}
+  _known=set;
+  return set;
+}
+function knownShare(sent){
+  const toks=(String(sent).replace(/́/g,'').toLowerCase().match(/[а-яё]+/g)||[]);
+  if(!toks.length)return 0;
+  const K=knownWords();
+  let ok=0;
+  toks.forEach(t=>{
+    if(K.has(t)){ok++;return}
+    /* gebeugte Form eines gelernten Wortes? */
+    for(const k of K){
+      if(Math.abs(k.length-t.length)>3)continue;
+      let i=0;while(i<Math.min(k.length,t.length)&&k[i]===t[i])i++;
+      if(i>=4&&i>=k.length-3){ok++;return}
+    }
+  });
+  return ok/toks.length;
+}
+function decodePool(nurGelernt){
   const out=[],seen=new Set();
   allPacks().forEach(p=>{
     if(p.exam||p.sexam||!p.words.length)return;
     p.words.forEach((w,k)=>{
       if(!w.e||!w.x||seen.has(w.e))return;
-      const st=S.prog[wordKey(p.id,k)];
       seen.add(w.e);
-      out.push({w,geuebt:!!(st&&(st.c>0||st.w>0))});
+      const st=S.prog[wordKey(p.id,k)];
+      const geuebt=!!(st&&st.c>0);
+      if(nurGelernt&&!geuebt)return;
+      out.push({w,geuebt});
     });
   });
   return out;
 }
 function startDecode(){
-  const pool=decodePool();
-  if(!pool.length){renderPacks();return}
-  /* Sätze mit geübten Wörtern zuerst – die kannst du auch wirklich knacken */
-  const geuebt=pool.filter(o=>o.geuebt),rest=pool.filter(o=>!o.geuebt);
-  const use=shuffle(geuebt.length>=8?geuebt:geuebt.concat(rest)).slice(0,8);
+  /* nur Sätze, deren Zielwort du geübt hast und die zu mindestens 85 % aus Bekanntem bestehen */
+  _known=null;
+  const kandidaten=decodePool(true).filter(o=>knownShare(o.w.e)>=0.85);
+  if(kandidaten.length<4){
+    tab('packs');
+    $('#view-packs').innerHTML='<div class="hero"><div class="done-mark">🔍</div>'+
+      '<div class="due-line">Noch zu früh dafür</div>'+
+      '<div class="sub" style="margin-top:12px">Hier kommen nur Sätze, die du auch wirklich knacken kannst: Das Zielwort musst du geübt haben, und mindestens 85 % des Satzes müssen aus Wörtern bestehen, die du schon kennst.<br><br>Gerade erfüllen das erst <b>'+kandidaten.length+'</b> Sätze. Üb ein paar Pakete durch, dann füllt sich das von selbst.</div>'+
+      '<button class="btn btn-primary" onclick="renderPacks()">Zurück zu den Paketen</button></div>';
+    return;
+  }
+  const use=shuffle(kandidaten).slice(0,8);
   dec={q:use,i:0,right:0,wrong:0,answered:false,zerlegt:false};
   tab('packs');renderDecode();
 }
 function renderDecode(){
   const c=dec.q[dec.i],w=c.w;
   dec.answered=false;dec.zerlegt=false;
-  const falsch=shuffle(decodePool().filter(o=>o.w.x&&o.w.x!==w.x)).slice(0,2).map(o=>o.w.x);
+  const falsch=shuffle(decodePool(false).filter(o=>o.w.x&&o.w.x!==w.x)).slice(0,2).map(o=>o.w.x);
   const opts=shuffle([w.x].concat(falsch));
   dec.opts=opts;dec.good=w.x;
   $('#view-packs').innerHTML=
@@ -6217,6 +6275,51 @@ function startExam(n){
   sess={pid:p.id,exam:n,q:idx.slice(0,EXAM_CARDS),i:0,right:0,wrong:0,mode:'mix',cards:Math.min(EXAM_CARDS,idx.length)};
   renderCard();
 }
+/* ---- Lange Wörter: die Leiter ---------------------------------------------------
+   Lange Wörter bleiben nicht durch mehr Wiederholung hängen, sondern durch immer
+   weniger Hilfe. Vier Stufen pro Wort: Silben legen → abschreiben → Lückenschrift
+   → frei tippen. Jede Stufe nimmt eine Stütze weg. */
+const LADDER=['syl','copy','half','type'];
+function longPool(){
+  const out=[],seen=new Set();
+  allPacks().forEach(p=>{
+    if(p.exam||p.sexam)return;
+    p.words.forEach((w,k)=>{
+      const key=w.r.replace(/́/g,'').toLowerCase();
+      if(seen.has(key)||!isLongWord(w))return;
+      seen.add(key);
+      const st=S.prog[wordKey(p.id,k)]||{c:0,w:0};
+      out.push({pid:p.id,k,w,st,schwach:(st.w||0)-(st.c||0)});
+    });
+  });
+  return out;
+}
+function startLongDrill(){
+  const pool=longPool();
+  if(!pool.length){renderPacks();return}
+  /* die wackligsten zuerst: viele Fehler, wenig Treffer, schon mal angefasst */
+  pool.sort((a,b)=>(b.schwach+(b.st.c>0?1:0)*0.5+Math.random())-(a.schwach+(a.st.c>0?1:0)*0.5+Math.random()));
+  const use=pool.slice(0,6);
+  const st={};
+  use.forEach((o,i)=>{st[i]={step:0}});
+  sess={longd:true,refs:use,st,q:use.map((o,i)=>i),i:0,right:0,wrong:0,total:use.length};
+  tab('packs');renderCard();
+}
+function ladderDone(){
+  if(!sess||!sess.longd)return 0;
+  return Object.keys(sess.st).filter(k=>sess.st[k].step>=LADDER.length).length;
+}
+function halfHtml(word){
+  /* jeder zweite Buchstabe bleibt stehen – genug Halt, zu wenig zum Abschreiben */
+  let i=0;
+  const masked=[...String(word)].map(ch=>{
+    if(ch==='́')return ch;
+    if(!/[А-Яа-яЁё]/.test(ch))return ch;
+    i++;
+    return i%2===1?ch:'·';
+  }).join('');
+  return '<div class="halfword">'+acc(esc(masked))+'</div>';
+}
 /* ---- Mastery-Drill: üben, bis jedes Wort des Pakets sitzt ---- */
 const NEED=2; /* zwei richtige Antworten in verschiedenen Formaten */
 function startDrill(pid){
@@ -6288,7 +6391,8 @@ function renderCard(){
   const p=ref?packById(ref.pid):packById(sess.pid),k=ref?ref.k:sess.q[sess.i],w=p.words[k];
   const st=S.prog[wordKey(p.id,k)];
   let mode=sess.mode;
-  if(sess.drill){
+  if(sess.longd){mode=LADDER[Math.min(sess.st[sess.q[sess.i]].step,LADDER.length-1)]}
+  else if(sess.drill){
     /* erst erkennen (RU→DE), dann produzieren (DE→RU) */
     mode=sess.st[k].ok===0?'mc':(Math.random()<.5?'mcRev':'type');
     /* lange Wörter zuerst als Silbenpuzzle – 14 Buchstaben am Stück tippen hilft niemandem */
@@ -6318,17 +6422,25 @@ function renderCard(){
       '<div class="sylbuilt" id="sylBuilt">·</div>'+
       '<div class="syls" id="sylPool">'+cur.tiles.map((s,i)=>'<button class="syl" data-s="'+i+'">'+acc(esc(s))+'</button>').join('')+'</div>'+
       '<div class="type-row" style="justify-content:center"><button class="btn-ghost" id="sylUndo">⌫ zurück</button><button class="check-btn" id="sylCheck">Prüfen</button></div>';
+  }else if(mode==='copy'){
+    front='<div class="word">'+acc(esc(w.r))+'</div><button class="speak" onclick="speak(cur.w.r)">🔊</button>'+
+      '<div class="qlabel">Schreib es ab – Buchstabe für Buchstabe, laut mitsprechen:</div>'+typeHtml();
+  }else if(mode==='half'){
+    front='<div class="word-de">'+esc(w.d)+'</div>'+halfHtml(w.r)+
+      '<div class="qlabel">Jeder zweite Buchstabe fehlt – ergänze das ganze Wort:</div>'+typeHtml();
   }else{
     front='<div class="word-de">'+esc(w.d)+'</div><div class="qlabel">Schreib es auf Russisch:</div>'+typeHtml();
   }
-  const mast=sess.drill?drillMastered():0;
-  const top=sess.drill
+  const mast=sess.drill?drillMastered():(sess.longd?ladderDone():0);
+  const top=(sess.drill||sess.longd)
     ?'<span class="cnt">✓ '+mast+' / '+sess.total+' sitzen</span>'+
      '<div class="bar"><i style="width:'+Math.round(100*mast/sess.total)+'%"></i></div>'
     :'<span class="cnt">'+(sess.i+1)+' / '+sess.q.length+'</span>'+
      '<div class="bar"><i style="width:'+Math.round(100*sess.i/sess.q.length)+'%"></i></div>';
+  const LAD_LBL=['Silben legen','Abschreiben','Lückenschrift','Frei tippen'];
   const chips='<span class="chip">'+p.ic+' '+esc(p.t)+'</span>'+
-    (sess.drill?'<span class="chip st'+sess.st[k].ok+'">'+(sess.st[k].ok===0?'neu':'✓ 1 / '+NEED)+'</span>':'');
+    (sess.drill?'<span class="chip st'+sess.st[k].ok+'">'+(sess.st[k].ok===0?'neu':'✓ 1 / '+NEED)+'</span>':'')+
+    (sess.longd?'<span class="chip st1">Stufe '+(sess.st[sess.q[sess.i]].step+1)+' / 4 · '+LAD_LBL[Math.min(sess.st[sess.q[sess.i]].step,3)]+'</span>':'');
   $('#view-packs').innerHTML=
     '<div class="sess-top">'+top+
     '<button class="quit" onclick="quitSess()">Beenden</button></div>'+
@@ -6397,7 +6509,18 @@ function resolve(ok){
   cur.answered=true;
   const key=wordKey(cur.p.id,cur.k);
   const st=S.prog[key]||(S.prog[key]={c:0,w:0});
-  if(sess.srs){
+  if(sess.longd){
+    const d=sess.st[sess.q[sess.i]];
+    if(ok){
+      d.step++;sess.right++;st.c=Math.max(st.c,1);
+      if(d.step>=LADDER.length){st.c=Math.max(st.c,NEED);startRotation(st)}
+      else sess.q.splice(Math.min(sess.i+2+Math.floor(Math.random()*2),sess.q.length),0,sess.q[sess.i]);
+    }else{
+      d.step=Math.max(0,d.step-1);st.w++;sess.wrong++;
+      sess.q.splice(Math.min(sess.i+1+Math.floor(Math.random()*2),sess.q.length),0,sess.q[sess.i]);
+    }
+  }
+  else if(sess.srs){
     /* Auffrischung: richtig → Abstand wächst, falsch → zurück auf morgen */
     if(ok){st.c=Math.max(st.c,NEED);st.iv=Math.min(120,Math.round((st.iv||1)*2.3)+1);st.rd=addDays(st.iv);sess.right++}
     else{st.w++;st.c=1;st.iv=1;st.rd=addDays(1);sess.wrong++;sess.q.push(sess.q[sess.i])}
@@ -6433,6 +6556,7 @@ function nextCard(){
   if(sess.i>=sess.q.length)finishSess();else renderCard();
 }
 function finishSess(){
+  if(sess.longd){finishLong();return}
   if(sess.srs){finishRefresh();return}
   const p=packById(sess.pid);
   const tot=sess.right+sess.wrong,accy=tot?Math.round(100*sess.right/tot):100;
@@ -6505,6 +6629,24 @@ function finishStaffelExam(p,accy){
     '<button class="btn-ghost" onclick="startStaffelExam('+st+')">Prüfung wiederholen</button><br>'+
     '<button class="btn-ghost" onclick="renderPacks()">Zur Übersicht</button></div>';
 }
+function finishLong(){
+  const fertig=ladderDone(),tot=sess.total,richtig=sess.right;
+  const woerter=sess.refs.map(o=>o.w.r);
+  sess=null;
+  $('#doneN').textContent=totalDone();
+  $('#view-packs').innerHTML='<div class="hero"><div class="done-mark">🪜</div>'+
+    '<div class="due-line">'+fertig+' von '+tot+' langen Wörtern durchgestiegen</div>'+
+    '<div class="sumgrid">'+
+    '<div class="sumbox"><b>'+richtig+'</b><span>richtig</span></div>'+
+    '<div class="sumbox"><b>4</b><span>Stufen je Wort</span></div>'+
+    '<div class="sumbox"><b>'+longPool().length+'</b><span>lange Wörter gesamt</span></div>'+
+    '<div class="sumbox"><b>'+dueRefs().length+'</b><span>Auffrischung fällig</span></div>'+
+    '</div>'+
+    '<div class="sub" style="margin-top:14px;text-align:left">Diesmal dabei: '+woerter.map(r=>acc(esc(r))).join(' · ')+
+    '<br><br>Was du bis Stufe 4 geschafft hast, kommt morgen in der Auffrischung wieder – erst dann sitzt es wirklich.</div>'+
+    '<button class="btn btn-primary" onclick="startLongDrill()">Nächste sechs Wörter</button><br>'+
+    '<button class="btn-ghost" onclick="renderPacks()">Zurück zur Übersicht</button></div>';
+}
 function quitSess(){sess=null;renderPacks()}
 
 /* ================= Verständnisfragen ================= */
@@ -6573,6 +6715,10 @@ function renderPacks(){
   const ps=allPacks();
   let html='<div class="hero"><div class="due-line">Was hast du <b>geschaut</b>?</div>'+
     '<div class="sub">Üb die Wörter aus deinen Folgen – und schau sie danach nochmal. Kein Transkript, nur Vokabeln und Fragen.</div></div>';
+  const lang=longPool().length;
+  if(lang)html+='<div class="ladbox"><div class="lk-t">🪜 '+lang+' lange Wörter warten</div>'+
+    '<div class="lk-s">Genau die, die nicht hängenbleiben. Vier Stufen pro Wort, und jede nimmt eine Stütze weg: Silben legen → abschreiben → Lückenschrift → frei tippen.</div>'+
+    '<button class="btn btn-primary" onclick="startLongDrill()">Lange Wörter festigen</button></div>';
   html+='<div class="decbox"><div class="lk-t">🔍 Sätze entschlüsseln</div>'+
     '<div class="lk-s">Ein ganzer russischer Satz statt einzelner Wörter: erst selbst verstehen, dann Wort für Wort auseinandernehmen. Antippen geht überall.</div>'+
     '<button class="btn btn-primary" onclick="startDecode()">Satz-Training starten</button></div>';
