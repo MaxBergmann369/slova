@@ -253,6 +253,15 @@ textarea{width:100%;min-height:110px;border:1px solid var(--frost);border-radius
 .msg{font-size:.8rem;font-weight:600;margin-top:8px;min-height:1em}
 .msg.ok{color:var(--birch)}.msg.err{color:var(--kalina)}
 .foot{text-align:center;color:var(--ink-faint);font-size:.72rem;margin-top:26px;line-height:1.7}
+
+/* ---- Lernpause (25/10) – bewusst eigene Farben, damit der Block in allen vier Apps gleich aussieht ---- */
+.pomo{background:#FFF7E6;border:1px solid #C08A2E;border-radius:16px;padding:18px;text-align:center;margin:0 0 14px}
+.pomo-t{font-family:inherit;font-weight:700;font-size:1.02rem;color:#8A5A10}
+.pomo-s{font-size:.82rem;color:#6B5637;margin:6px 0 12px;line-height:1.6}
+.pomo-b{background:#C08A2E;color:#fff;border:0;border-radius:12px;padding:11px 18px;font-size:.9rem;font-weight:600;cursor:pointer;margin:4px 4px 0}
+.pomo-b.ghost{background:transparent;color:#8A5A10;border:1px solid #C08A2E}
+.pomo-bar{height:6px;background:#F0E2C6;border-radius:99px;overflow:hidden;margin:10px 0 2px}
+.pomo-bar i{display:block;height:100%;background:#C08A2E}
 </style>
 </head>
 <body>
@@ -4803,7 +4812,7 @@ const PACKS=[
 ];
 
 /* ================= Zustand ================= */
-let S={prog:{},days:{},extras:[],watched:{},exam:{},sexam:{},open:{},gate:true,recall:true,noSlang:false};
+let S={prog:{},days:{},act:{},extras:[],watched:{},exam:{},sexam:{},open:{},gate:true,recall:true,noSlang:false};
 let storeMode='none';
 function initStore(){
   try{const t='__ser_test';localStorage.setItem(t,'1');localStorage.removeItem(t);storeMode='local'}
@@ -4811,11 +4820,21 @@ function initStore(){
 }
 function load(){
   if(storeMode!=='local')return;
-  try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);S={...S,...d,prog:d.prog||{},days:d.days||{},extras:d.extras||[],watched:d.watched||{},
+  try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);S={...S,...d,prog:d.prog||{},days:d.days||{},act:d.act||{},extras:d.extras||[],watched:d.watched||{},
     exam:d.exam||{},sexam:d.sexam||{},open:d.open||{},
     gate:d.gate!==false,recall:d.recall!==false,noSlang:!!d.noSlang}}}catch(e){}
 }
 function save(){if(storeMode==='local')try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+/* Welche Art Übung heute schon dran war – der Tagesplan in СЕГО́ДНЯ liest das aus.
+   Nur ein Zähler pro Art und Tag, mehr braucht der Plan nicht.
+   Arten: drill (Vokabeln), ref (Auffrischung), long (lange Wörter),
+          dec (Sätze), conf (Verwechslungen), quiz (Fragen), story (Geschichte) */
+function actMark(kind){
+  const t=todayStr();
+  if(!S.act)S.act={};
+  if(!S.act[t]){S.act={};S.act[t]={}}   /* nur der heutige Tag, sonst wächst der Speicher */
+  S.act[t][kind]=(S.act[t][kind]||0)+1;
+}
 /* Wörter, die vor der Auffrischung gemeistert wurden, holen wir nach – aber
    gestaffelt über eine Woche, damit nicht alles auf einmal fällig wird. */
 function migrateRotation(){
@@ -6270,6 +6289,7 @@ function showStory(key,withDe){
   const st=STORIES[key];
   if(!st)return;
   if(withDe!==undefined)storyDe=withDe;
+  actMark('story');save();
   const back=storyBack(key);
   const zielPack=packById(back);
   tab('packs');
@@ -6412,7 +6432,7 @@ function renderDecode(){
     document.querySelectorAll('#view-packs .opt').forEach(x=>{x.disabled=true;if(opts[+x.dataset.k]===w.x)x.classList.add('right')});
     if(!ok)b.classList.add('wrong');
     if(ok)dec.right++;else dec.wrong++;
-    const t=todayStr();S.days[t]=(S.days[t]||0)+1;save();
+    const t=todayStr();S.days[t]=(S.days[t]||0)+1;actMark('dec');save();
     $('#fbZone').innerHTML='<div class="fb '+(ok?'fb-ok':'fb-no')+'">'+(ok?'✓ Richtig!':'✗ Nicht ganz.')+'</div>'+
       '<div class="answer" style="text-align:left"><div class="mean" style="text-align:center">'+esc(w.x)+'</div>'+
       wordByWord(w.e)+
@@ -6483,7 +6503,7 @@ function renderConf(){
     document.querySelectorAll('#view-packs .opt').forEach(x=>{x.disabled=true;if(opts[+x.dataset.k]===richtig)x.classList.add('right')});
     if(!ok)b.classList.add('wrong');
     if(ok)conf.right++;else{conf.wrong++;conf.q.push(c)}
-    const t=todayStr();S.days[t]=(S.days[t]||0)+1;
+    const t=todayStr();S.days[t]=(S.days[t]||0)+1;actMark('conf');
     /* verwechselt → beide Wörter zurück in die Auffrischung */
     if(!ok)[c.a,c.b].forEach(o=>{const st=S.prog[wordKey(o.pid,o.k)];if(st&&st.rd){st.iv=1;st.rd=addDays(1)}});
     save();
@@ -6535,14 +6555,18 @@ function startExam(n){
    → frei tippen. Jede Stufe nimmt eine Stütze weg. */
 const LADDER=['syl','copy','half','type'];
 function longPool(){
+  /* nur Wörter, die schon mindestens einmal in einer Übung dran waren –
+     ein langes Wort zu drillen, das man noch nie gesehen hat, ist Auswendiglernen
+     ohne Anker. Deshalb zählt hier nur, was in S.prog steht. */
   const out=[],seen=new Set();
   allPacks().forEach(p=>{
     if(p.exam||p.sexam)return;
     p.words.forEach((w,k)=>{
       const key=w.r.replace(/́/g,'').toLowerCase();
       if(seen.has(key)||!isLongWord(w))return;
+      const st=S.prog[wordKey(p.id,k)];
+      if(!st||!((st.c||0)+(st.w||0)))return;   /* noch nie gesehen → nicht festigen */
       seen.add(key);
-      const st=S.prog[wordKey(p.id,k)]||{c:0,w:0};
       out.push({pid:p.id,k,w,st,schwach:(st.w||0)-(st.c||0)});
     });
   });
@@ -6797,6 +6821,7 @@ function resolve(ok){
   else if(ok){st.c++;if(st.c>=NEED)startRotation(st);sess.right++}
   else{st.w++;st.c=0;sess.wrong++;sess.q.push(sess.q[sess.i])}
   const t=todayStr();S.days[t]=(S.days[t]||0)+1;
+  actMark(sess.srs?'ref':sess.longd?'long':'drill');
   save();
   const w=cur.w;
   $('#fbZone').innerHTML=
@@ -6897,7 +6922,7 @@ function finishLong(){
     '<div class="sumgrid">'+
     '<div class="sumbox"><b>'+richtig+'</b><span>richtig</span></div>'+
     '<div class="sumbox"><b>4</b><span>Stufen je Wort</span></div>'+
-    '<div class="sumbox"><b>'+longPool().length+'</b><span>lange Wörter gesamt</span></div>'+
+    '<div class="sumbox"><b>'+longPool().length+'</b><span>lange Wörter im Training</span></div>'+
     '<div class="sumbox"><b>'+dueRefs().length+'</b><span>Auffrischung fällig</span></div>'+
     '</div>'+
     '<div class="sub" style="margin-top:14px;text-align:left">Diesmal dabei: '+woerter.map(r=>acc(esc(r))).join(' · ')+
@@ -6935,7 +6960,7 @@ function renderQuiz(){
     document.querySelectorAll('#view-packs .opt').forEach(x=>{x.disabled=true;if(opts[+x.dataset.k].ok)x.classList.add('right')});
     if(!ok)b.classList.add('wrong');
     if(ok)quiz.right++;
-    const t=todayStr();S.days[t]=(S.days[t]||0)+1;save();
+    const t=todayStr();S.days[t]=(S.days[t]||0)+1;actMark(quiz.story?'story':'quiz');save();
     const richtig=opts.find(e=>e.ok).o;
     $('#fbZone').innerHTML='<div class="fb '+(ok?'fb-ok':'fb-no')+'">'+(ok?'✓ Richtig!':'✗ Nicht ganz.')+'</div>'+
       '<div class="answer" style="padding-top:10px"><div class="q-ru">'+acc(esc(richtig))+' '+sayBtn(richtig,'speak')+'</div>'+
@@ -6975,7 +7000,7 @@ function renderPacks(){
     '<div class="sub">Üb die Wörter aus deinen Folgen – und schau sie danach nochmal. Kein Transkript, nur Vokabeln und Fragen.</div></div>';
   const lang=longPool().length;
   if(lang)html+='<div class="ladbox"><div class="lk-t">🪜 '+lang+' lange Wörter warten</div>'+
-    '<div class="lk-s">Genau die, die nicht hängenbleiben. Vier Stufen pro Wort, und jede nimmt eine Stütze weg: Silben legen → abschreiben → Lückenschrift → frei tippen.</div>'+
+    '<div class="lk-s">Nur Wörter, die du schon in einer Übung hattest. Vier Stufen pro Wort, und jede nimmt eine Stütze weg: Silben legen → abschreiben → Lückenschrift → frei tippen.</div>'+
     '<button class="btn btn-primary" onclick="startLongDrill()">Lange Wörter festigen</button></div>';
   html+='<div class="decbox"><div class="lk-t">🔍 Sätze entschlüsseln</div>'+
     '<div class="lk-s">Ein ganzer russischer Satz statt einzelner Wörter: erst selbst verstehen, dann Wort für Wort auseinandernehmen. Antippen geht überall.</div>'+
@@ -7324,6 +7349,66 @@ $('#recallChk').onchange=e=>{
 if('serviceWorker' in navigator&&location.protocol==='https:'){
   try{navigator.serviceWorker.register('/slova/sw.js')}catch(e){}
 }
+
+/* ================= Lernpause: 25 Minuten lernen, 10 Minuten weg ==================
+   Die Uhr läuft über alle vier Apps hinweg (ein gemeinsamer localStorage-Schlüssel,
+   gleiche Domain). Sie zählt nur, solange der Tab wirklich sichtbar ist.
+
+   Wichtig: Sie unterbricht nie mitten in etwas. Der Hinweis wird ausschließlich auf
+   Abschluss-Bildschirmen eingeblendet – erkennbar an '.hero .done-mark', den alle
+   vier Apps für ihre Endkarten benutzen. Wer liest oder mitten im Block ist, merkt
+   nichts davon. Deshalb hängt das hier auch an einem MutationObserver und nicht in
+   den Render-Funktionen: kein Eingriff in bestehende Abläufe. */
+const POMO_KEY='russisch-pause-v1',POMO_WORK=25*60*1000,POMO_BREAK=10*60*1000;
+function pomoGet(){try{return JSON.parse(localStorage.getItem(POMO_KEY))||{}}catch(e){return{}}}
+function pomoSet(o){try{localStorage.setItem(POMO_KEY,JSON.stringify(o))}catch(e){}}
+function pomoTick(an){
+  const o=pomoGet(),now=Date.now();
+  if(o.br&&now<o.br){if(o.run){o.run=0;pomoSet(o)}return}   /* Pause läuft: nichts zählen */
+  if(o.br&&now>=o.br){o.br=0;o.acc=0;o.run=0}
+  if(an){if(o.run)o.acc=(o.acc||0)+(now-o.run);o.run=now}
+  else if(o.run){o.acc=(o.acc||0)+(now-o.run);o.run=0}
+  pomoSet(o);
+}
+function pomoMs(){const o=pomoGet();return (o.acc||0)+(o.run?Date.now()-o.run:0)}
+function pomoPausiert(){const o=pomoGet();return !!(o.br&&Date.now()<o.br)}
+function pomoDue(){return !pomoPausiert()&&pomoMs()>=POMO_WORK}
+function pomoRest(){const o=pomoGet();return Math.max(0,Math.ceil(((o.br||0)-Date.now())/60000))}
+function pomoPause(){pomoSet({acc:0,run:0,br:Date.now()+POMO_BREAK});pomoZeig(true)}
+function pomoWeiter(){pomoSet({acc:0,run:Date.now(),br:0});const b=document.getElementById('pomoBox');if(b)b.remove()}
+function pomoBoxHtml(){
+  if(pomoPausiert()){
+    const rest=pomoRest(),pct=Math.max(0,Math.min(100,Math.round(100*(1-rest*60000/POMO_BREAK))));
+    return '<div class="pomo" id="pomoBox"><div class="pomo-t">☕ Pause läuft · noch '+rest+' Min</div>'+
+      '<div class="pomo-s">Aufstehen, aus dem Fenster schauen, etwas trinken. Was du eben gelernt hast, sortiert sich genau jetzt – und zwar nur, wenn du nicht weiterklickst.</div>'+
+      '<div class="pomo-bar"><i style="width:'+pct+'%"></i></div>'+
+      '<button class="pomo-b ghost" onclick="pomoWeiter()">Pause abbrechen</button></div>';
+  }
+  return '<div class="pomo" id="pomoBox"><div class="pomo-t">⏸ '+Math.floor(pomoMs()/60000)+' Minuten am Stück gelernt</div>'+
+    '<div class="pomo-s">Jetzt ist der richtige Moment: Der Block ist zu Ende, du reißt nichts auseinander. Zehn Minuten Pause, dann nimmt dein Kopf wieder etwas auf.</div>'+
+    '<button class="pomo-b" onclick="pomoPause()">10 Minuten Pause</button>'+
+    '<button class="pomo-b ghost" onclick="pomoWeiter()">Trotzdem weiter</button></div>';
+}
+function pomoZeig(neu){
+  const alt=document.getElementById('pomoBox');
+  if(alt&&!neu)return;                       /* schon da – nicht neu bauen, sonst Endlosschleife */
+  if(alt)alt.remove();
+  if(!pomoPausiert()&&!pomoDue())return;
+  if(document.getElementById('storyText'))return;   /* beim Lesen nicht dazwischenfunken */
+  const mark=document.querySelector('.hero .done-mark');
+  if(!mark)return;
+  const hero=mark.closest('.hero');
+  if(hero)hero.insertAdjacentHTML('beforebegin',pomoBoxHtml());
+}
+(function(){
+  let q=false;
+  new MutationObserver(()=>{if(q)return;q=true;setTimeout(()=>{q=false;pomoZeig(false)},80)})
+    .observe(document.body,{childList:true,subtree:true});
+  document.addEventListener('visibilitychange',()=>pomoTick(!document.hidden));
+  window.addEventListener('pagehide',()=>pomoTick(false));
+  pomoTick(!document.hidden);
+  setInterval(()=>{pomoTick(!document.hidden);if(document.getElementById('pomoBox'))pomoZeig(true)},30000);
+})();
 </script>
 </body>
 </html>

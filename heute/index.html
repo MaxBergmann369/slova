@@ -90,6 +90,37 @@ header{padding:22px 0 6px}
 .bkmsg{font-size:.8rem;font-weight:600;margin-top:10px;min-height:1em;color:var(--mala)}
 .bkmsg.err{color:var(--kalina)}
 .foot{text-align:center;color:var(--ink-faint);font-size:.72rem;margin-top:26px;line-height:1.7}
+/* ---- Tagesplan ---- */
+.planbox{background:var(--card);border:1px solid var(--frost);border-radius:var(--radius);padding:18px}
+.plan-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:4px}
+.plan-head b{font-family:var(--serif);font-size:1.05rem}
+.plan-head span{font-size:.74rem;color:var(--ink-faint);font-weight:700;white-space:nowrap}
+.plan-bar{height:8px;background:var(--frost);border-radius:99px;overflow:hidden;margin:10px 0 14px}
+.plan-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--amber),#D9A13F);border-radius:99px;transition:width .3s}
+.step{display:flex;align-items:flex-start;gap:12px;padding:11px 0;border-top:1px solid var(--frost)}
+.step:first-of-type{border-top:none}
+.step .mk{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  font-size:.78rem;font-weight:800;background:var(--frost);color:var(--ink-faint)}
+.step .bd{flex:1;min-width:0}
+.step .st{font-weight:700;font-size:.92rem}
+.step .sw{font-size:.76rem;color:var(--ink-faint);margin-top:2px;line-height:1.55}
+.step.done .mk{background:var(--mala);color:#fff}
+.step.done .st{color:var(--ink-faint)}
+.step.done .stt{text-decoration:line-through;text-decoration-thickness:1px}
+.step.done .sw{opacity:.75}
+.step.now{background:var(--gzhel-soft);border-radius:12px;padding:13px 12px;margin:4px -4px;border-top:none}
+.step.now+.step{border-top:none}
+.step.now .mk{background:var(--gzhel);color:#fff}
+.step.now .st{color:var(--gzhel)}
+.step .go{display:inline-block;margin-top:9px;background:var(--gzhel);color:#fff;border-radius:10px;
+  padding:9px 15px;font-size:.82rem;font-weight:700}
+.plan-fertig{text-align:center;padding:8px 0 2px}
+.plan-fertig .pf-i{font-size:2rem}
+.plan-fertig .pf-t{font-family:var(--serif);font-weight:700;font-size:1.05rem;margin-top:4px}
+.plan-fertig .pf-s{font-size:.8rem;color:var(--ink-soft);margin-top:6px;line-height:1.6}
+.pausebox{background:#FFF7E6;border:1px solid #C08A2E;border-radius:var(--radius);padding:16px;text-align:center;margin-bottom:10px}
+.pausebox b{color:#8A5A10;font-size:.98rem}
+.pausebox p{font-size:.78rem;color:#6B5637;margin-top:5px;line-height:1.6}
 </style>
 </head>
 <body>
@@ -107,6 +138,15 @@ header{padding:22px 0 6px}
   <div class="big" id="totToday">0</div>
   <div class="lbl">Aufgaben &amp; Karten heute – über alle Apps</div>
   <div class="streakline">🔥 <span id="comboStreak">0</span> Tage in Folge aktiv <span>(irgendwo gelernt zählt)</span></div>
+</div>
+
+<div class="sect">Dein Plan für heute</div>
+<div id="pauseSlot"></div>
+<div class="planbox">
+  <div class="plan-head"><b id="planTitel">Reihenfolge</b><span id="planZaehler"></span></div>
+  <div class="plan-bar"><i id="planBar" style="width:0%"></i></div>
+  <div id="planSteps"></div>
+  <p class="hint">Die Reihenfolge ist nicht beliebig: erst abrufen, was schon da ist, dann Neues, dann Lesen und Grammatik – und Sätze zum Schluss, wenn die Wörter frisch sind. Du musst nicht alles schaffen; von oben nach unten ist mehr wert als quer durch.</p>
 </div>
 
 <div class="sect">Dein Niveau</div>
@@ -228,12 +268,91 @@ function render(){
   const max=Math.max(1,...days.map(d=>u[dstr(d)]||0));
   const WD=['So','Mo','Di','Mi','Do','Fr','Sa'];
   renderLevel(sl,gr,sk,se);
+  renderPlan(t,sl,gr,sk,se,seDue);
   $('#weekBars').innerHTML=days.map((d,i)=>{
     const v=u[dstr(d)]||0;
     const h=Math.round(80*v/max);
     return '<div class="bcol'+(i===6?' today':'')+'"><span class="v">'+(v||'')+'</span>'+
       '<span class="bar" style="height:'+Math.max(3,h)+'px"></span>'+
       '<span class="d">'+WD[d.getDay()]+'</span></div>';
+  }).join('');
+}
+
+/* ================= Tagesplan =================
+   Die Reihenfolge ist bewusst gewählt und nicht die, in der man am liebsten anfängt:
+   1. fällige Auffrischung – Wörter an der Kippe kosten heute eine Minute und
+      nächste Woche eine halbe Stunde,
+   2. СЛОВА́ – das Neue gehört an den frischesten Kopf,
+   3. Lesen – dort trifft man die Wörter im Zusammenhang wieder,
+   4. СЕРИА́Л – Vokabeln zur Folge,
+   5. Grammatik – funktioniert auch müde noch gut, weil es Regeln sind,
+   6. Sätze entschlüsseln – braucht die Wörter frisch aus den Schritten davor.
+   Erledigt heißt: in dieser App ist heute genug passiert. Die Zahlen dafür kommen
+   aus den Tageszählern der Apps, СЕРИА́Л meldet über S.act zusätzlich die Übungsart. */
+function planPause(){
+  let o={};try{o=JSON.parse(localStorage.getItem('russisch-pause-v1'))||{}}catch(e){}
+  const rest=o.br?Math.ceil((o.br-Date.now())/60000):0;
+  const slot=$('#pauseSlot');
+  if(rest>0){
+    slot.innerHTML='<div class="pausebox"><b>☕ Pause läuft · noch '+rest+' Min</b>'+
+      '<p>Nicht weiterlernen – jetzt sortiert sich, was du eben gemacht hast. Der Plan wartet.</p></div>';
+  }else slot.innerHTML='';
+  return rest>0;
+}
+function renderPlan(t,sl,gr,sk,se,seDue){
+  const act=(se&&se.act&&se.act[t])||{};
+  const goal=(sl&&sl.set&&sl.set.goal)||30;
+  const npd=(sl&&sl.set&&sl.set.npd)||20;
+  const dSl=(sl&&sl.days&&sl.days[t])||0;
+  const dGr=(gr&&gr.days&&gr.days[t])||0;
+  const dSk=(sk&&sk.days&&sk.days[t])||0;
+  const SER=appLink('/slova/serial/','serial-app.html');
+  const steps=[];
+  if(seDue)steps.push({i:'🔁',t:'Auffrischung in СЕРИА́Л',
+    w:seDue+' Wörter sind heute fällig – die stehen genau auf der Kippe zwischen sitzt und weg.',
+    ok:(act.ref||0)>=10,href:SER,btn:'Auffrischen'});
+  steps.push({i:'📘',t:'СЛОВА́ · Tagespensum',
+    w:'Wiederholungen plus bis zu '+npd+' neue Wörter. Neues gehört an den frischesten Kopf – heute: '+dSl+' von '+goal+' Karten.',
+    ok:dSl>=goal,href:appLink('/slova/','russisch-vokabeltrainer.html'),btn:'Karten lernen'});
+  steps.push({i:'📖',t:'Eine Geschichte lesen',
+    w:'Hier triffst du die Wörter im Zusammenhang wieder – das ist der Schritt, der aus Vokabeln Sprache macht. СКА́ЗКИ oder eine Kurzgeschichte in СЕРИА́Л.',
+    ok:dSk>0||(act.story||0)>0,href:appLink('/slova/skazki/','skazki-lese-app.html'),btn:'Lesen'});
+  steps.push({i:'📺',t:'СЕРИА́Л · Vokabeln zur Folge',
+    w:'Dein Hauptstoff: die Wörter aus der Folge, die du als Nächstes schaust.',
+    ok:(act.drill||0)>=15,href:SER,btn:'Folge üben'});
+  steps.push({i:'✍️',t:'ГРАММА́ТИКА',
+    w:'Ein Thema reicht. Regeln gehen auch dann noch rein, wenn du für neue Wörter schon zu müde bist.',
+    ok:dGr>=10,href:appLink('/slova/grammatik/','grammatik-trainer.html'),btn:'Grammatik üben'});
+  steps.push({i:'🔍',t:'Sätze entschlüsseln',
+    w:'Zum Schluss, wenn die Wörter von heute noch frisch sind: ein ganzer Satz statt einzelner Vokabeln.',
+    ok:(act.dec||0)>=5,href:SER,btn:'Satz-Training'});
+
+  const fertig=steps.filter(s=>s.ok).length;
+  $('#planZaehler').textContent=fertig+' von '+steps.length+' erledigt';
+  $('#planBar').style.width=Math.round(100*fertig/steps.length)+'%';
+  const inPause=planPause();
+  const jetzt=steps.findIndex(s=>!s.ok);
+
+  if(jetzt<0){
+    $('#planTitel').textContent='Alles durch';
+    const extra=[];
+    if(!(act.long||0))extra.push('🪜 lange Wörter festigen');
+    if(!(act.conf||0))extra.push('🔀 Verwechslungen üben');
+    $('#planSteps').innerHTML='<div class="plan-fertig"><div class="pf-i">🏁</div>'+
+      '<div class="pf-t">Der Tagesplan ist durch.</div>'+
+      '<div class="pf-s">Mehr am selben Tag bringt weniger als derselbe Plan morgen wieder.'+
+      (extra.length?' Wenn du trotzdem Lust hast: '+extra.join(' · ')+' in СЕРИА́Л.':'')+'</div>'+
+      '<a class="go" href="'+SER+'" style="margin-top:12px">СЕРИА́Л öffnen</a></div>';
+    return;
+  }
+  $('#planTitel').textContent=inPause?'Erst Pause zu Ende':'Als Nächstes';
+  $('#planSteps').innerHTML=steps.map((s,i)=>{
+    const cls=s.ok?'step done':(i===jetzt&&!inPause?'step now':'step');
+    return '<div class="'+cls+'"><div class="mk">'+(s.ok?'✓':(i+1))+'</div><div class="bd">'+
+      '<div class="st">'+s.i+' <span class="stt">'+acc(s.t)+'</span></div>'+
+      '<div class="sw">'+s.w+'</div>'+
+      (i===jetzt&&!inPause?'<a class="go" href="'+s.href+'">'+s.btn+' →</a>':'')+
+      '</div></div>';
   }).join('');
 }
 
@@ -326,6 +445,8 @@ $('#bkFile').onchange=e=>{
   render();
   window.addEventListener('focus',render);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)render()});
+  /* Während einer laufenden Pause tickt die Restzeit im Blick mit. */
+  setInterval(()=>{if(!document.hidden&&planPause())render()},30000);
 })();
 
 /* Offline-Modus: Service Worker cached alle vier Apps (nur auf der Webseite aktiv) */
