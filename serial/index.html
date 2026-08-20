@@ -292,7 +292,7 @@ textarea{width:100%;min-height:110px;border:1px solid var(--frost);border-radius
       <b>1.</b> Folge auf Russisch schauen – ruhig mit Untertiteln, ruhig eine Folge, die du schon kennst.<br>
       <b>2.</b> Danach das passende Wortpaket hier üben (5 Minuten reichen).<br>
       <b>3.</b> Dieselbe Folge nochmal schauen – du wirst überrascht sein, wie viel mehr du verstehst.<br>
-      <b>4.</b> Mit „In СЛОВА́ importieren“ wandern die Wörter in deinen normalen Vokabeltrainer und kommen dort automatisch zur Wiederholung.</p>
+      <b>4.</b> Um den Rest musst du dich nicht kümmern: Sobald ein Paket sitzt, wandern die Wörter <b>von selbst</b> nach СЛОВА́ und kommen dort in die normale Wiederholung – dein Lernstand von hier wandert mit.</p>
   </div>
   <div class="panel">
     <h3>Folgen-Sperre</h3>
@@ -4812,7 +4812,7 @@ const PACKS=[
 ];
 
 /* ================= Zustand ================= */
-let S={prog:{},days:{},act:{},extras:[],watched:{},exam:{},sexam:{},open:{},gate:true,recall:true,noSlang:false};
+let S={prog:{},days:{},act:{},sent:{},extras:[],watched:{},exam:{},sexam:{},open:{},gate:true,recall:true,noSlang:false};
 let storeMode='none';
 function initStore(){
   try{const t='__ser_test';localStorage.setItem(t,'1');localStorage.removeItem(t);storeMode='local'}
@@ -4820,7 +4820,7 @@ function initStore(){
 }
 function load(){
   if(storeMode!=='local')return;
-  try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);S={...S,...d,prog:d.prog||{},days:d.days||{},act:d.act||{},extras:d.extras||[],watched:d.watched||{},
+  try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);S={...S,...d,prog:d.prog||{},days:d.days||{},act:d.act||{},sent:d.sent||{},extras:d.extras||[],watched:d.watched||{},
     exam:d.exam||{},sexam:d.sexam||{},open:d.open||{},
     gate:d.gate!==false,recall:d.recall!==false,noSlang:!!d.noSlang}}}catch(e){}
 }
@@ -6844,6 +6844,14 @@ function finishSess(){
   const p=packById(sess.pid);
   const tot=sess.right+sess.wrong,accy=tot?Math.round(100*sess.right/tot):100;
   const war=sess.drill;
+  /* Nach der Lektion wandern die Wörter von selbst nach СЛОВА́ – einmal pro Paket,
+     sobald genug davon sitzt. Kein Kopieren, kein Tab-Wechsel. */
+  let uebergabe='';
+  if(!p.exam&&!p.sexam&&!(S.sent&&S.sent[p.id])&&(war||packProgress(p)>=70)){
+    const r=bridgePush(p.id);
+    if(r&&r.n)uebergabe='<div class="hint" style="text-align:left;margin-top:12px">📥 <b>'+r.n+' Wörter sind auf dem Weg zu СЛОВА́.</b> '+
+      'Sie erscheinen dort automatisch, wenn du die App das nächste Mal öffnest – dein Lernstand von hier wandert mit.</div>';
+  }
   $('#doneN').textContent=totalDone();
   if(sess.sexam){finishStaffelExam(p,accy);return}
   if(sess.exam){finishExam(p,accy);return}
@@ -6860,6 +6868,7 @@ function finishSess(){
       ?'<div class="sub" style="margin-top:14px">Nächster Schritt: die Verständnisfragen zur Folge.</div>'+
        '<button class="btn btn-primary" onclick="startQuiz(\''+p.id+'\')">🧠 Weiter zu den Fragen ('+p.q.length+')</button><br>'
       :'')+
+    uebergabe+
     (p.url?'<button class="btn-ghost" onclick="watchAndOpen(\''+p.id+'\')">▶ Folge nochmal ansehen</button><br>':'')+
     '<button class="btn-ghost" onclick="startPack(\''+p.id+'\')">Nochmal üben</button><br>'+
     '<button class="btn-ghost" onclick="showPack(\''+p.id+'\')">Zum Paket</button></div>';
@@ -7140,7 +7149,7 @@ function showPack(pid){
       '</div><div class="ctrow">'+
       (p.q&&p.q.length?'<button class="btn-ghost" onclick="startQuiz(\''+p.id+'\')">🧠 Alle Fragen ('+p.q.length+')</button>':'')+
       '<button class="btn-ghost" onclick="showWords(\''+p.id+'\')">Wortliste ansehen</button>'+
-      '<button class="btn-ghost" onclick="exportPack(\''+p.id+'\')">→ In СЛОВА́ importieren</button>'+
+      '<button class="btn-ghost" onclick="exportPack(\''+p.id+'\')">→ Jetzt an СЛОВА́ übergeben</button>'+
       '</div><div class="msg" id="expMsg"></div>'+
       '<button class="btn-ghost" onclick="renderPacks()">Zurück zur Übersicht</button></div>';
     return;
@@ -7166,7 +7175,7 @@ function showPack(pid){
      '<div class="ctrow">'+
      '<button class="btn-ghost" onclick="startPack(\''+p.id+'\')">⚡ Schnellrunde (10 Karten)</button>'+
      '<button class="btn-ghost" onclick="showWords(\''+p.id+'\')">Wortliste ansehen</button>'+
-     '<button class="btn-ghost" onclick="exportPack(\''+p.id+'\')">→ In СЛОВА́ importieren</button>'+
+     '<button class="btn-ghost" onclick="exportPack(\''+p.id+'\')">→ Jetzt an СЛОВА́ übergeben</button>'+
      '</div>';
   $('#view-packs').innerHTML=
     '<div class="hero"><div class="done-mark">'+(p.ic||'📺')+'</div>'+
@@ -7202,28 +7211,52 @@ function masteryOf(p,k){
   const bonus=(folge&&examDone(folge))?1:0;
   return Math.min(4,st.c+bonus);
 }
-async function exportPack(pid){
-  const p=packById(pid);
+/* ================= Brücke nach СЛОВА́ =========================================
+   Beide Apps liegen auf derselben Domain, teilen sich also den localStorage.
+   Statt über die Zwischenablage zu gehen, legt СЕРИА́Л die Wörter hier ab –
+   СЛОВА́ holt sie beim nächsten Start selbst. Die Dublettenprüfung läuft zweimal:
+   einmal hier gegen die Warteschlange, einmal drüben gegen den ganzen Bestand. */
+const BRIDGE_KEY='russisch-bruecke-v1';
+function packWords(p){
   /* Sprachebene wandert in die Bedeutung mit, damit sie auch in СЛОВА́ sichtbar bleibt */
-  let mit=0;
-  const json=JSON.stringify(p.words.map((w,k)=>{
+  return p.words.map((w,k)=>{
     const reg=regOf(w);
     const d=w.d+(reg==='grob'?' [⚠ derb – nur verstehen]':reg==='slang'?' [salopp]':'');
     const o={r:w.r,t:w.t||'',d,e:w.e||'',x:w.x||''};
     const m=masteryOf(p,k);
-    if(m){o.m=m;mit++;const st=S.prog[wordKey(p.id,k)];if(st.w)o.mw=st.w}
+    if(m){o.m=m;const st=S.prog[wordKey(p.id,k)];if(st&&st.w)o.mw=st.w}
     return o;
-  }));
-  let ok=false;
-  try{await navigator.clipboard.writeText(json);ok=true}catch(e){}
+  });
+}
+function bridgePush(pid){
+  const p=packById(pid);
+  if(!p||!p.words||!p.words.length)return null;
+  let q={words:[],packs:[]};
+  try{const v=localStorage.getItem(BRIDGE_KEY);if(v){const j=JSON.parse(v);if(j&&Array.isArray(j.words))q=j}}catch(e){}
+  if(!Array.isArray(q.packs))q.packs=[];
+  const drin=new Set(q.words.map(o=>String(o.r).replace(/\u0301/g,'')));
+  let n=0;
+  packWords(p).forEach(o=>{
+    const key=String(o.r).replace(/\u0301/g,'');
+    if(drin.has(key))return;      /* liegt schon in der Warteschlange */
+    drin.add(key);q.words.push(o);n++;
+  });
+  const name=(p.ic||'')+' '+p.t;
+  if(q.packs.indexOf(name)<0)q.packs.push(name);
+  try{localStorage.setItem(BRIDGE_KEY,JSON.stringify(q))}catch(e){return null}
+  if(!S.sent)S.sent={};
+  S.sent[pid]=1;save();
+  return {n,gesamt:q.words.length};
+}
+function exportPack(pid){
+  const r=bridgePush(pid);
   const m=$('#expMsg');
-  if(m){
-    m.className='msg ok';
-    const info=mit?' Bei '+mit+' Wörtern wandert dein Lernstand mit – die tauchen dort nicht als neue Wörter auf.':'';
-    m.innerHTML=ok
-      ?'✓ Kopiert! Jetzt in СЛОВА́ → Mehr → „Wörter importieren“ einfügen.'+info
-      :'<textarea style="min-height:80px">'+esc(json)+'</textarea><div class="hint">Text markieren, kopieren und in СЛОВА́ → Mehr → Wörter importieren einfügen.'+info+'</div>';
-  }
+  if(!m)return;
+  if(!r){m.className='msg err';m.textContent='Konnte nicht übergeben – im Privatmodus ist der gemeinsame Speicher gesperrt.';return}
+  m.className='msg ok';
+  m.textContent=r.n
+    ?'✓ '+r.n+' Wörter liegen für СЛОВА́ bereit. Sie erscheinen dort automatisch, sobald du die App öffnest – nichts zu kopieren.'
+    :'Diese Wörter warten schon in der Übergabe an СЛОВА́ – öffne die App, dann werden sie eingelesen.';
 }
 function renderListe(){
   const ps=allPacks();

@@ -52,6 +52,9 @@ header{padding:22px 0 6px;display:flex;align-items:flex-end;justify-content:spac
 .appnav a .acc{color:inherit}
 
 .notice{background:var(--amber-soft);border:1px solid #E8D9B4;color:#6B4A08;border-radius:12px;padding:10px 14px;font-size:.82rem;margin:10px 0;display:none}
+.bridgebox{background:var(--mala-soft,#E2F1EC);border:1px solid var(--mala,#1E7A63);border-radius:12px;padding:12px 14px;margin:10px 0}
+.bridgebox b{color:var(--mala,#1E7A63);font-size:.92rem}
+.bridgebox p{font-size:.78rem;color:var(--ink-soft);margin-top:4px;line-height:1.55}
 
 /* ---------- Tabs ---------- */
 nav{position:sticky;top:0;z-index:20;background:var(--paper);padding:12px 0 14px}
@@ -174,6 +177,9 @@ nav{position:sticky;top:0;z-index:20;background:var(--paper);padding:12px 0 14px
 .ctrow .btn,.ctrow .btn-ghost{flex:1;min-width:100px;margin:0}
 .cimgwrap{margin:2px 0 8px}
 .cimgwrap:empty{display:none}
+.pikto{font-size:5.2rem;line-height:1.1;text-align:center;margin:6px 0 10px;user-select:none}
+.pikto.sm{font-size:2.6rem;margin:0 0 6px}
+@media(max-width:380px){.pikto{font-size:4.2rem}}
 .cimg{max-width:100%;max-height:170px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.12);object-fit:cover}
 .cnote{color:#7a7a70;font-style:italic}
 .probfoot{margin-top:4px}
@@ -299,6 +305,8 @@ textarea#impBox,textarea#bakBox{width:100%;min-height:110px;border:1px solid var
 
 <div class="notice" id="storeNotice">Hinweis: Der Speicher ist hier nicht verfügbar. Dein Fortschritt gilt nur für diese Sitzung. Öffne den Trainer im Claude-Chat, damit alles dauerhaft gespeichert wird.</div>
 
+<div id="bridgeSlot"></div>
+
 <nav><div class="tabs">
   <button data-tab="lernen" class="on">Lernen</button>
   <button data-tab="liste">Liste</button>
@@ -337,8 +345,9 @@ textarea#impBox,textarea#bakBox{width:100%;min-height:110px;border:1px solid var
       <select id="setNpd"><option>5</option><option>10</option><option>15</option><option selected>20</option><option>30</option></select></div>
     <div class="setrow"><label>Abfragerichtung (Kognaten-Training)</label>
       <select id="setDir"><option value="ru">Russisch → Deutsch</option><option value="de">Deutsch → Russisch</option><option value="mix">Gemischt</option></select></div>
-    <div class="setrow"><label>Bilder auf Karten</label>
-      <select id="setImg"><option value="1">An – lädt online (Wikipedia)</option><option value="0">Aus</option></select></div>
+    <div class="setrow"><label>Bilder &amp; Bild-Karten</label>
+      <select id="setImg"><option value="1">An – Piktogramme offline, Fotos online</option><option value="0">Aus</option></select></div>
+    <p class="hint" style="margin:-4px 0 10px">616 Wörter haben ein festes Piktogramm – das braucht kein Internet und kommt im Bild-Modus als Frage. Fotos von Wikipedia gibt es nur zusätzlich, nur online und nur für konkrete Substantive.</p>
     <div class="setrow"><label>Tagesziel (Karten)</label>
       <select id="setGoal"><option>10</option><option>20</option><option selected>30</option><option>50</option><option>100</option></select></div>
     <div class="setrow"><label>Hör-Karten</label>
@@ -2758,6 +2767,24 @@ function distractors(w,field,n){
   }
   return out.slice(0,n);
 }
+/* ================= Piktogramme =================================================
+   Wikipedia liefert das Titelbild eines ARTIKELS, nicht das Bild eines BEGRIFFS.
+   Deshalb kam bei "Montag" ein Gott und bei "Papa" ein Zeitschriftencover: das
+   sind korrekte Artikelbilder und trotzdem als Vokabelbild wertlos. Für die
+   wichtigsten Wörter steht hier stattdessen ein festes Piktogramm – das ist
+   eindeutig, braucht kein Netz und gibt es auch für Verben, wo ein Foto ohnehin
+   nie funktioniert hätte. Geschlüsselt ohne Betonungszeichen, damit auch
+   importierte Wörter aus СЕРИА́Л getroffen werden. */
+const PIKTO={"знать":"🧠","говорить":"🗣️","сказать":"💬","идти":"🚶","дом":"🏠","друг":"🤝","подруга":"🤝","человек":"🧑","люди":"👥","день":"🌞","ночь":"🌜","утро":"🌅","вечер":"🌆","год":"🗓️","работать":"💼","работа":"💼","любить":"❤️","один":"1️⃣","два":"2️⃣","три":"3️⃣","четыре":"4️⃣","пять":"5️⃣","шесть":"6️⃣","семь":"7️⃣","восемь":"8️⃣","девять":"9️⃣","десять":"🔟","хлеб":"🍞","вода":"💧","чай":"🍵","кофе":"☕","молоко":"🥛","суп":"🍲","салат":"🥗","мясо":"🥩","рыба":"🐟","яблоко":"🍎","сыр":"🧀","соль":"🧂","вино":"🍷","пиво":"🍺","есть (ем)":"🍽️","пить":"🥤","завтрак":"🍳","обед":"🍲","ужин":"🍽️","ресторан":"🍽️","кафе":"☕","семья":"👪","мама":"👩‍👧","папа":"👨‍👧","мать":"👩‍👧","отец":"👨‍👧","брат":"👬","сестра":"👭","сын":"👦","дочь":"👧","ребёнок":"🧒","бабушка":"👵","дедушка":"👴","родители":"👪","слово":"💬","язык":"💬","вопрос":"❓","ответ":"💬","понимать":"💡","думать":"🤔","видеть":"👀","смотреть":"👀","слушать":"👂","слышать":"👂","читать":"📖","писать":"✍️","учить":"📚","учиться":"📚","играть":"🎲","спать":"😴","сидеть":"🪑","стоять":"🧍","ждать":"⏳","помогать":"🤝","покупать":"🛒","купить":"🛒","платить":"💳","брать":"✊","давать":"🤲","искать":"🔍","найти":"🎯","открывать":"🔓","закрывать":"🔒","спрашивать":"❓","отвечать":"💬","показывать":"👉","ехать":"🚗","ходить":"🚶","ездить":"🚗","готовить":"🍳","забыть":"🌀","город":"🏙️","улица":"🛣️","дорога":"🛤️","машина":"🚗","автобус":"🚌","поезд":"🚂","самолёт":"✈️","вокзал":"🚉","аэропорт":"✈️","такси":"🚕","магазин":"🏪","больница":"🏥","врач":"👨‍⚕️","школа":"🏫","университет":"🎓","урок":"🏫","книга":"📕","деньги":"💰","цена":"🏷️","неделя":"🗓️","месяц":"🗓️","час":"🕐","минута":"⏱️","секунда":"⏱️","квартира":"🏢","комната":"🚪","кухня":"🍳","окно":"🪟","дверь":"🚪","стол":"🪑","стул":"🪑","кровать":"🛏️","ключ":"🔑","мир":"🌍","жизнь":"🌱","любовь":"❤️","телефон":"📞","компьютер":"💻","фото":"📷","фильм":"🎬","музыка":"🎵","песня":"🎵","подарок":"🎁","праздник":"🎉","музей":"🏛️","парк":"🌳","море":"🌊","солнце":"☀️","погода":"🌦️","дождь":"🌧️","снег":"❄️","зима":"❄️","лето":"☀️","весна":"🌸","осень":"🍂","собака":"🐕","голова":"🗣️","рука":"✋","нога":"🦵","глаз":"👁️","красный":"🟥","белый":"⬜","чёрный":"⬛","зелёный":"🟩","синий":"🟦","жёлтый":"🟨","день рождения":"🎂","сердце":"❤️","зуб":"🦷","волосы":"💇","лицо":"😐","ухо":"👂","рот":"👄","нос":"👃","боль":"🤕","температура":"🌡️","здоровье":"💚","проснуться":"⏰","мыть":"🧼","лежать":"🛌","приносить":"📦","летать":"🛫","бегать":"🏃","плавать":"🏊","танцевать":"💃","петь":"🎤","рисовать":"🎨","улыбаться":"🙂","смеяться":"😂","плакать":"😭","кричать":"😱","забывать":"🌀","жениться":"💍","умереть":"💀","коричневый":"🟫","одежда":"👕","рубашка":"👔","брюки":"👖","платье":"👗","куртка":"🧥","пальто":"🧥","обувь":"👟","шапка":"🧢","очки":"👓","сумка":"👜","чемодан":"🧳","кошелёк":"👛","картошка":"🥔","помидор":"🍅","лук":"🧅","курица":"🐔","яйцо":"🥚","масло":"🧈","рис":"🍚","макароны":"🍝","колбаса":"🌭","торт":"🎂","пирог":"🍰","шоколад":"🍫","сок":"🧃","апельсин":"🍊","банан":"🍌","лимон":"🍋","счёт":"🧾","ложка":"🥄","вилка":"🍴","нож":"🔪","тарелка":"🍽️","чашка":"☕","стакан":"🥛","бутылка":"🍾","зеркало":"🪞","телевизор":"📺","лампа":"💡","диван":"🛋️","шкаф":"🗄️","свет":"💡","мост":"🌉","церковь":"⛪","рынок":"🏪","банк":"🏦","почта":"📮","гостиница":"🏨","библиотека":"📚","театр":"🎭","кино":"🎬","пляж":"🏖️","лес":"🌲","гора":"⛰️","река":"🏞️","деревня":"🏘️","природа":"🏞️","небо":"🌤️","звезда":"⭐","луна":"🌙","ветер":"💨","сосед":"🏘️","гость":"🚪","коллега":"👔","начальник":"💼","учитель":"👨‍🏫","студент":"🎓","профессия":"💼","отпуск":"🏖️","каникулы":"🏖️","экзамен":"📝","письмо":"✉️","идея":"💡","мысль":"💭","правило":"📏","ошибка":"❌","помощь":"🆘","карта":"🗺️","путь":"🛤️","курить":"🚬","носить":"🎒","продавать":"🏷️","строить":"🏗️","стена":"🧱","велосипед":"🚲","водитель":"🚗","мужчина":"👨","женщина":"👩","девочка":"👧","мальчик":"👦","цветок":"🌸","дерево":"🌳","птица":"🐦","животное":"🐾","план":"🗓️","успех":"🏆","счастье":"🍀","рюкзак":"🎒","повар":"👨‍🍳","трамвай":"🚊","радио":"📻","камера":"📷","журнал":"📰","газета":"📰","гитара":"🎸","актёр":"🎭","медицина":"💊","пицца":"🍕","печенье":"🍪","мусор":"🗑️","ковёр":"🧶","шарф":"🧣","свитер":"🧶","сапоги":"🥾","носки":"🧦","монета":"🪙","облако":"☁️","ложь":"🤥","секрет":"🤫","свадьба":"💒","дарить":"🎁","мечтать":"💭","резать":"✂️","чинить":"🔧","выиграть":"🏆","целовать":"💋","обнимать":"🤗","кататься":"🚗","падать":"⬇️","находить":"🎯","словарь":"📔","тетрадь":"📓","ручка":"🖊️","карандаш":"✏️","бумага":"📄","крыша":"🏠","сад":"🌷","медведь":"🐻","волк":"🐺","заяц":"🐇","мышь":"🐁","корова":"🐄","лошадь":"🐎","слон":"🐘","огонь":"🔥","капуста":"🥬","огурец":"🥒","морковь":"🥕","гриб":"🍄","орех":"🌰","мёд":"🍯","перец":"🌶️","варенье":"🍓","картина":"🖼️","герой":"🦸","артист":"🎨","писатель":"✍️","учёный":"🔬","земля":"🌍","игрушка":"🧸","мяч":"⚽","приз":"🏷️","шаг":"👣","сюрприз":"🎁","душа":"👻","радость":"😄","страх":"😨","слеза":"😢","война":"⚔️","начинаться":"▶️","расти":"🌱","дышать":"🫁","экран":"🖥️","кнопка":"🔘","мыло":"🧼","полотенце":"🧺","подушка":"🛏️","часы":"🕐","остров":"🏝️","песок":"🏖️","камень":"🪨","трава":"🌱","лист":"🍃","корзина":"🧺","колесо":"🛞","инструмент":"🧰","молоток":"🔨","лестница":"🪜","башня":"🗼","мотор":"⚙️","вечеринка":"🎉","белка":"🐿️","ёж":"🦔","лиса":"🦊","утка":"🦆","гусь":"🦢","пчела":"🐝","бабочка":"🦋","гроза":"⛈️","молния":"⚡","туман":"🌫️","плечо":"🤷","палец":"👆","колено":"🦵","кровь":"🩸","мозг":"🧠","конфета":"🍬","задача":"📝","варить":"🍳","печь":"🥖","чистить":"🧹","бросать":"🤾","ловить":"🥅","прятаться":"🙈","нажимать":"👇","принимать":"✊","врать":"🤥","прыгать":"🤸","близнецы":"👯","дневник":"📔","ведро":"🪣","ножницы":"✂️","свеча":"🕯️","батарейка":"🔋","пуговица":"🔘","юбка":"👗","костюм":"🕴️","дым":"💨","сниться":"💭","зевать":"🥱","борода":"🧔","инженер":"⚙️","продавец":"🛍️","хор":"🎶","скрипка":"🎻","барабан":"🥁","пианино":"🎹","клад":"💰","ругать":"🤬","мерить":"📏","шептать":"🤫","чаевые":"💵","подвал":"🕳️","дыра":"🕳️","корень":"🌱","ветка":"🌿","золото":"🥇","серебро":"🥈","кольцо":"💍","ремень":"👖","смерть":"💀","расчёска":"💇","мотоцикл":"🏍️","лодка":"⛵","лев":"🦁","тигр":"🐅","обезьяна":"🐒","кит":"🐋","акула":"🦈","змея":"🐍","лягушка":"🐸","календарь":"🗓️","медсестра":"👩‍⚕️","пилот":"✈️","фермер":"👨‍🌾","поле":"🌾","тайна":"🤫","победа":"🏆","акцент":"🗣️","муравей":"🐜","паук":"🕷️","махать":"👋","призрак":"👻","опасность":"⚠️","пещера":"🕳️","сокровище":"💰","бежать":"🏃","мечта":"💭","комар":"🦟","королева":"👑","выйти замуж":"💍","ударить":"👊","нажать":"👇","кукла":"🪆","испытание":"📝","победить":"🏆","научиться":"📚","народ":"👥","плыть":"🏊","робот":"🤖","уничтожить":"💥","плёнка":"🎬","штаны":"👖","дырка":"🕳️","ярость":"😡","полицейский":"👮","оружие":"🔫","туфли":"👟","крыса":"🐀","украсть":"🥷","починить":"🔧","способ":"🛤️","поболтать":"💬","король":"👑","неожиданность":"🎁","печаль":"😢","привидение":"👻","устроить":"🎉","лужок":"🌾","ограда":"🚧","бал":"⚽","блинчик":"🥞","проверка":"📝","пацан":"👦","задание":"📝","дитя":"🧒","кружка":"☕","корона":"👑","обнять":"🤗","удача":"🍀","разрушить":"💥","укрыться":"🙈","ящик":"📦","ведьма":"🧙","шутник":"🤡","свинья":"🐖","лекарство":"💊","кепка":"🧢","зверь":"🐾","ботинки":"👟","прекратить":"⏹️","кипеть":"🍳","пояс":"👖","сон":"💭","пешка":"👨‍🌾","считаться":"🔢","двигатель":"⚙️","сражаться":"⚔️","тусовка":"🎉","предки":"👪","колдунья":"🧙","замёрзнуть":"🥶","скелет":"💀","лгать":"🤥","почесать":"🖐️","красть":"🥷","солгать":"🤥","тюрьма":"⛓️","закрываться":"🔒","кашлять":"🤧","забор":"🚧","сова":"🦉","стирать":"🧼","ход":"🚂","детка":"👶","проявить":"👉","разум":"🧠","враньё":"🤥","соврать":"🤥","вызывать":"📣","нитка":"🧵","салага":"👦","меч":"⚔️","просыпаться":"⏰","паника":"😱","ток":"🔌","сироп":"🍯","блин":"🥞","лунка":"🕳️","замок":"🏰","перчатка":"🧤","мобила":"📱","плоть":"🥩","небеса":"🌤️","невежество":"🤷","змей":"🐉","магия":"✨","цыпа":"🐤","воровать":"🥷","юнец":"👦","жилище":"🏚️","таз":"🪣","капюшон":"🧥","уборщик":"🧹","ругаться":"🤬","репетировать":"🎭","трубка":"🧪","сигнализация":"🚨","дятел":"🐦","девичник":"🥂","шаровая молния":"⚡","обязанность":"📋","неведение":"🤷","разрушать":"💥","нрав":"🎭","стрелять":"🎯","мягкая игрушка":"🧸","заразить":"🦠","касание":"👉","экскурсовод":"🧭","житель":"🏙️","татуировка":"💉","ассистент":"🧑‍🔬","человечество":"🌍","испытуемый":"🧪","автоавария":"💥","пугало":"🎃","рассудок":"🧠","портрет":"🖼️","заключённый":"⛓️","прогноз погоды":"🌦️","ураган":"🌪️","фантик":"🍬","бумажник":"👛","донор":"🩸","эксперт":"🎓","колибри":"🐦","весельчак":"🤡","труба":"🚰","бороться":"⚔️","дно":"🔲","монетка":"🪙","движок":"⚙️"};
+function piktoOf(w){
+  if(!w||!w.r)return null;
+  return PIKTO[String(w.r).replace(/\u0301/g,'').toLowerCase()]||PIKTO[String(w.r).replace(/\u0301/g,'')]||null;
+}
+function netOk(){return !(typeof navigator!=='undefined'&&navigator.onLine===false)}
+/* Wörter, bei denen Wikipedia verlässlich danebengreift: Wochentage und Monate
+   bekommen dort mythologische oder kalendarische Titelbilder. */
+const IMG_STOP=/^(Montag|Dienstag|Mittwoch|Donnerstag|Freitag|Samstag|Sonnabend|Sonntag|Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember|Woche|Wochenende|Norden|Süden|Osten|Westen)$/;
+
 function pickMode(w,p,cl){
   const known=!!p&&p.b>=2;
   const m=[];
@@ -2775,9 +2802,15 @@ function pickMode(w,p,cl){
     if(S.set.mic!==false&&speechOK())m.push('speech');
   }
   if(isLongWord(w))m.push('syl','syl'); /* lange Wörter: Silben-Puzzle als Brücke zum freien Tippen */
+  /* Bild-Modi: nur wenn es ein Piktogramm gibt. Ein Bild als Reiz umgeht den Umweg
+     über das deutsche Wort – genau das, was beim Abrufen sonst hängenbleibt. */
+  if(S.set.img!==false&&piktoOf(w)){
+    m.push('pic');
+    if(known)m.push('pic','picSyl');
+  }
   return m[Math.floor(Math.random()*m.length)];
 }
-const MODE_LABEL={mc:'Bedeutung wählen',mcRev:'Übersetzen',type:'Schreiben',clozeMC:'Lückentext',clozeType:'Lückentext',audio:'Hören',audioSent:'Satz hören',speech:'Sprechen',syl:'Silben bauen'};
+const MODE_LABEL={mc:'Bedeutung wählen',mcRev:'Übersetzen',type:'Schreiben',clozeMC:'Lückentext',clozeType:'Lückentext',audio:'Hören',audioSent:'Satz hören',speech:'Sprechen',syl:'Silben bauen',pic:'Bild erkennen',picSyl:'Bild + Silben'};
 /* ---- Silben: lange Wörter in sprechbare Häppchen zerlegen ---- */
 const VOWELS='аеёиоуыэюя';
 function isVow(ch){return VOWELS.indexOf(String(ch).toLowerCase().replace(/́/g,''))>=0}
@@ -3045,6 +3078,29 @@ function renderCard(forceMode){
       '<div class="sylbuilt" id="sylBuilt"></div>'+
       '<div class="syltiles" id="sylTiles">'+cur.syl.order.map(k=>'<button class="syltile" data-k="'+k+'">'+acc(esc(tiles[k]))+'</button>').join('')+'</div>'+
       '<div class="grade on grade1" style="margin-top:12px"><button class="g-k" id="sylCheck">Prüfen</button></div>';
+  }else if(mode==='pic'||mode==='picSyl'){
+    const bild='<div class="pikto">'+piktoOf(w)+'</div>';
+    if(mode==='pic'){
+      /* Ablenker dürfen nicht dasselbe Piktogramm haben – sonst gäbe es
+         zwei richtige Antworten auf dasselbe Bild (Freund/Freundin, Topf/Suppe …). */
+      const mein=piktoOf(w);
+      const abl=distractors(w,'r',8).filter(o=>piktoOf(o)!==mein).slice(0,3);
+      while(abl.length<3){
+        const kand=allWords()[Math.floor(Math.random()*allWords().length)];
+        if(kand.i!==w.i&&piktoOf(kand)!==mein&&abl.indexOf(kand)<0)abl.push(kand);
+      }
+      cur.opts=shuffle(abl.map(o=>o.r).concat([w.r]));
+      cur.goodIdx=cur.opts.indexOf(w.r);cur.optRu=true;
+      front=bild+'<div class="qlabel">Welches Wort passt zum Bild?</div>'+optsHtml(cur.opts,true);
+    }else{
+      const sy=syllables(w.r);
+      const tiles=sylTiles(w,sy);
+      cur.syl={parts:tiles,need:sy.length,picked:[],order:tiles.map((p,k)=>k)};
+      front=bild+'<div class="qlabel">Bau das Wort aus den Silben – nicht alle gehören dazu:</div>'+
+        '<div class="sylbuilt" id="sylBuilt"></div>'+
+        '<div class="syltiles" id="sylTiles">'+cur.syl.order.map(k=>'<button class="syltile" data-k="'+k+'">'+acc(esc(tiles[k]))+'</button>').join('')+'</div>'+
+        '<div class="grade on grade1" style="margin-top:12px"><button class="g-k" id="sylCheck">Prüfen</button></div>';
+    }
   }else if(mode==='audio'){
     cur.opts=shuffle(distractors(w,'d',3).map(o=>o.d).concat([w.d]));
     cur.goodIdx=cur.opts.indexOf(w.d);
@@ -3093,7 +3149,7 @@ function renderCard(forceMode){
     $('#checkBtn').onclick=checkTyped;
     $('#typeInp').addEventListener('keydown',e=>{if(e.key==='Enter')checkTyped()});
   }
-  if(mode==='syl')wireSyl();
+  if(mode==='syl'||mode==='picSyl')wireSyl();
   if(mode==='audio')setTimeout(()=>speak(w.r),300);
   else if(mode==='audioSent')setTimeout(()=>speak(w.e),300);
 }
@@ -3281,13 +3337,21 @@ async function fetchImgUrl(w){
 function imgWordOk(w){
   if(!w)return false;
   if(/[ !?]/.test(w.r))return false;
-  /* Deutsche Substantive sind gro\u00dfgeschrieben \u2013 nur daf\u00fcr ergibt ein Bild Sinn */
-  return /^[A-Z\u00c4\u00d6\u00dc]/.test((w.d||'').trim());
+  const erst=String(w.d||'').split(/[,;(/]/)[0].trim();
+  if(IMG_STOP.test(erst))return false;   /* Wochentage & Monate: Wikipedia trifft hier nie */
+  /* Deutsche Substantive sind großgeschrieben – nur dafür ergibt ein Foto Sinn */
+  return /^[A-ZÄÖÜ]/.test(erst);
 }
 async function attachImg(slot,id){
   if(S.set.img===false)return;
-  if(typeof navigator!=='undefined'&&navigator.onLine===false)return;
   const w=byId(id);
+  const el0=document.getElementById(slot);
+  if(!el0||el0.dataset.w!=id)return;
+  /* 1. Piktogramm: sofort da, auch offline, und nie daneben */
+  const pk=piktoOf(w);
+  if(pk){el0.innerHTML='<div class="pikto sm">'+pk+'</div>';return}
+  /* 2. sonst ein Wikipedia-Foto – aber nur online und nur für konkrete Substantive */
+  if(!netOk())return;
   if(!imgWordOk(w))return;
   let url=IMGC[id];
   if(url===undefined){
@@ -3846,41 +3910,79 @@ document.addEventListener('click',e=>{
   if(w)speak(b.hasAttribute('data-speak-ex')?w.e:w.r);
 });
 
-$('#impBtn').onclick=()=>{
-  const box=$('#impBox'),msg=$('#impMsg');msg.className='msg';
-  try{
-    const arr=JSON.parse(box.value);
-    if(!Array.isArray(arr))throw new Error('kein Array');
-    let max=Math.max(...allWords().map(w=>w.i)),n=0,mit=0;
-    const seen=new Set(allWords().map(w=>String(w.r).replace(/\u0301/g,'')));
-    arr.forEach(o=>{
-      if(!o||!o.r||!o.d)return;
-      const key=String(o.r).replace(/\u0301/g,'');
-      if(seen.has(key))return;
-      seen.add(key);
-      const item={i:++max,r:String(o.r),t:String(o.t||''),d:String(o.d),e:String(o.e||''),x:String(o.x||''),g:+o.g||0};
-      if(o.n)item.n=String(o.n);
-      S.extras.push(item);n++;
-      /* Lernstand aus СЕРИА́Л übernehmen: was dort schon sitzt, startet hier nicht bei null */
-      const m=Math.min(4,+o.m||0);
-      if(m>0){
-        const b=m>=4?3:m>=2?2:1;
-        const iv=b===3?7:b===2?3:1;
-        S.prog[item.i]={b,iv,ez:2.5,d:addDays(iv),c:m,w:+o.mw||0};
-        mit++;
-      }
-    });
+/* Nimmt eine Liste Wörter (aus der Zwischenablage oder aus der СЕРИА́Л-Brücke)
+   und legt sie an. Dubletten fliegen hier raus – verglichen wird ohne Betonungs-
+   zeichen, damit "рабо́та" und "работа" als dasselbe Wort gelten. */
+function importWords(arr){
+  if(!Array.isArray(arr))throw new Error('kein Array');
+  let max=Math.max(...allWords().map(w=>w.i)),n=0,mit=0,dop=0;
+  const seen=new Set(allWords().map(w=>String(w.r).replace(/\u0301/g,'')));
+  arr.forEach(o=>{
+    if(!o||!o.r||!o.d)return;
+    const key=String(o.r).replace(/\u0301/g,'');
+    if(seen.has(key)){dop++;return}
+    seen.add(key);
+    const item={i:++max,r:String(o.r),t:String(o.t||''),d:String(o.d),e:String(o.e||''),x:String(o.x||''),g:+o.g||0};
+    if(o.n)item.n=String(o.n);
+    S.extras.push(item);n++;
+    /* Lernstand aus СЕРИА́Л übernehmen: was dort schon sitzt, startet hier nicht bei null */
+    const m=Math.min(4,+o.m||0);
+    if(m>0){
+      const b=m>=4?3:m>=2?2:1;
+      const iv=b===3?7:b===2?3:1;
+      S.prog[item.i]={b,iv,ez:2.5,d:addDays(iv),c:m,w:+o.mw||0};
+      mit++;
+    }
+  });
+  if(n){
     ASPECT=null; /* Aspekt-Index neu aufbauen, falls importierte Verben Paare vervollständigen */
     _twinIdx=null; /* Zwillinge neu suchen: importierte Wörter können neue Verwechslungspaare bilden */
     save(true);
+  }
+  return {n,mit,dop};
+}
+$('#impBtn').onclick=()=>{
+  const box=$('#impBox'),msg=$('#impMsg');msg.className='msg';
+  try{
+    const r=importWords(JSON.parse(box.value));
     box.value='';
-    msg.textContent=n+' neue Wörter importiert ✓'+(mit?' · davon '+mit+' mit Lernstand aus СЕРИА́Л – die kommen erst später dran, nicht als neue Wörter.':'');
+    msg.textContent=r.n+' neue Wörter importiert ✓'+(r.mit?' · davon '+r.mit+' mit Lernstand aus СЕРИА́Л – die kommen erst später dran, nicht als neue Wörter.':'')+
+      (r.dop?' · '+r.dop+' waren schon da und wurden übersprungen.':'');
     msg.classList.add('ok');
   }catch(e){
     msg.textContent='Format nicht lesbar. Bitte eine JSON-Liste einfügen (siehe grauer Beispieltext).';
     msg.classList.add('err');
   }
 };
+
+/* ================= Brücke von СЕРИА́Л =========================================
+   Beide Apps liegen auf derselben Domain und teilen sich damit den localStorage.
+   СЕРИА́Л legt fertig gelernte Pakete dort ab, СЛОВА́ holt sie beim Start ab –
+   kein Kopieren, kein Einfügen, kein Tab-Wechsel. Die Dublettenprüfung ist
+   dieselbe wie beim Einfügen von Hand. */
+const BRIDGE_KEY='russisch-bruecke-v1';
+function bridgeDrain(){
+  let q=null;
+  try{q=JSON.parse(localStorage.getItem(BRIDGE_KEY))}catch(e){}
+  if(!q||!Array.isArray(q.words)||!q.words.length)return null;
+  try{localStorage.removeItem(BRIDGE_KEY)}catch(e){}   /* sofort leeren: nichts doppelt einlesen */
+  let r;
+  try{r=importWords(q.words)}catch(e){return null}
+  r.pakete=Array.isArray(q.packs)?q.packs:[];
+  return r;
+}
+function bridgeHinweis(){
+  const r=bridgeDrain();
+  if(!r||(!r.n&&!r.dop))return;
+  const el=document.getElementById('bridgeSlot');
+  if(!el)return;
+  const woher=r.pakete.length?r.pakete.slice(0,3).join(' · ')+(r.pakete.length>3?' …':''):'СЕРИА́Л';
+  el.innerHTML='<div class="bridgebox"><b>📥 '+(r.n||0)+' Wörter aus СЕРИА́Л übernommen</b>'+
+    '<p>Aus: '+esc(woher)+
+    (r.mit?' · '+r.mit+' davon mit deinem Lernstand von dort – die starten hier nicht bei null.':'')+
+    (r.dop?' · '+r.dop+' kanntest du hier schon.':'')+
+    '</p></div>';
+}
 
 $('#expBtn').onclick=()=>{
   const rows=[['Russisch','Lautschrift','Deutsch','Beispielsatz','Übersetzung','Notiz'].join('\t')]
@@ -3989,7 +4091,10 @@ function buildAppNav(cur){
     document.querySelectorAll('#filterBar button').forEach(x=>x.classList.toggle('on',x===b));
     renderList();
   });
+  bridgeHinweis();   /* was СЕРИА́Л hinterlegt hat, wandert beim Start herein */
   renderHome();
+  /* Auch abholen, wenn СЕРИА́Л in einem anderen Tab weiterläuft und man zurückwechselt */
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden){bridgeHinweis();if(!sess)renderHome()}});
 })();
 
 /* Offline-Modus: Service Worker cached alle vier Apps (nur auf der Webseite aktiv) */
