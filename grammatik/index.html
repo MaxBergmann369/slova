@@ -766,6 +766,28 @@ const TOPICS=[
 {type:'mc2',q:'Сего́дня ве́чером я ___ прийти́ к тебе́.',o:['могу́','уме́ю'],a:0,de:'Heute Abend kann ich zu dir kommen.',e:'Möglichkeit/Gelegenheit → мочь.'},
 {type:'mc2',q:'___ здесь кури́ть? — Нет, нельзя́!',o:['Мо́жно','На́до'],a:0,de:'Darf man hier rauchen? – Nein, verboten!',e:'Nach Erlaubnis fragen → мо́жно.'}
 ]},
+{id:'hab',icon:'🎒',t:'Haben & Brauchen',s:'у меня́ (есть) · нет · мне ну́жен',type:'mc2',
+ intro:'Russisch hat kein Verb „haben". Stattdessen: у меня́ (bei mir) + das Ding im Nominativ. Das kleine есть steht nur, wenn es um das Ob geht („ich habe überhaupt eins"), nicht wenn es um das Wie geht. Bei „ich brauche" richtet sich ну́жен nach dem gebrauchten Ding, nicht nach dir.',
+ items:[
+{q:'У меня́ ___ соба́ка.',o:['есть','—'],a:0,de:'Ich habe einen Hund.',e:'Es geht darum, DASS ich einen Hund habe → есть.'},
+{q:'У меня́ ___ больша́я соба́ка.',o:['—','есть'],a:0,de:'Ich habe einen großen Hund.',e:'Dass ich einen Hund habe, ist bekannt – neu ist „groß" → kein есть.'},
+{q:'У меня́ ___ боли́т голова́.',o:['—','есть'],a:0,de:'Ich habe Kopfschmerzen.',e:'Hier steht schon ein Verb (боли́т) → nie есть.'},
+{q:'У тебя́ ___ вре́мя?',o:['есть','—'],a:0,de:'Hast du Zeit?',e:'Frage nach dem Ob → есть.'},
+{q:'У меня́ ___ но́вая маши́на.',o:['—','есть'],a:0,de:'Ich habe ein neues Auto.',e:'Betont wird „neu", nicht das Auto selbst → kein есть.'},
+{q:'У него́ ___ де́нег.',o:['нет','не'],a:0,de:'Er hat kein Geld.',e:'Verneintes Haben → нет + Genitiv (де́нег).'},
+{q:'У неё нет ___.',o:['вре́мени','вре́мя'],a:0,de:'Sie hat keine Zeit.',e:'Nach нет steht immer der Genitiv.'},
+{q:'У нас нет ___.',o:['маши́ны','маши́на'],a:0,de:'Wir haben kein Auto.',e:'нет + Genitiv, auch wenn es im Deutschen Nominativ wäre.'},
+{q:'Вчера́ у меня́ ___ температу́ра.',o:['была́','был'],a:0,de:'Gestern hatte ich Fieber.',e:'был richtet sich nach dem Ding: температу́ра ist feminin → была́.'},
+{q:'У него́ ___ два бра́та.',o:['бы́ло','бы́ли'],a:0,de:'Er hatte zwei Brüder.',e:'Nach 2, 3, 4 steht das Verb im Neutrum Singular: бы́ло.'},
+{q:'За́втра у нас ___ уро́к.',o:['бу́дет','бу́дут'],a:0,de:'Morgen haben wir Unterricht.',e:'уро́к ist Singular → бу́дет.'},
+{q:'Мне ___ но́вый телефо́н.',o:['ну́жен','ну́жно'],a:0,de:'Ich brauche ein neues Handy.',e:'ну́жен richtet sich nach телефо́н (maskulin).'},
+{q:'Мне ___ по́мощь.',o:['нужна́','ну́жен'],a:0,de:'Ich brauche Hilfe.',e:'по́мощь ist feminin → нужна́.'},
+{q:'Нам ___ де́ньги.',o:['нужны́','ну́жно'],a:0,de:'Wir brauchen Geld.',e:'де́ньги ist Plural → нужны́.'},
+{q:'Мне ___ рабо́тать.',o:['на́до','ну́жен'],a:0,de:'Ich muss arbeiten.',e:'Vor einem Infinitiv steht на́до/ну́жно, nie ну́жен.'},
+{q:'Я ___ пойти́ домо́й.',o:['до́лжен','ну́жен'],a:0,de:'Ich muss nach Hause gehen.',e:'до́лжен = ich bin verpflichtet (mit я, nicht мне).'},
+{q:'___ на́до отдохну́ть.',o:['Мне','Я'],a:0,de:'Ich muss mich ausruhen.',e:'Bei на́до steht die Person im Dativ: мне.'},
+{q:'У меня́ ___ ко́шка, но я не зна́ю, где она́.',o:['есть','—'],a:0,de:'Ich habe eine Katze, aber ich weiß nicht, wo sie ist.',e:'Erste Erwähnung, es geht ums Ob → есть.'}
+]},
 {id:'mov',icon:'🚶',t:'Gehen & Fahren',s:'идти́/ходи́ть · е́хать/е́здить',type:'gap',
  intro:'Russisch unterscheidet: gerade JETZT in eine Richtung unterwegs (идти́ zu Fuß, е́хать mit Fahrzeug) oder regelmäßig/hin und zurück (ходи́ть, е́здить). Мы ходи́ли в теа́тр = „wir waren im Theater (und wieder zurück)".',
  items:[
@@ -1183,6 +1205,37 @@ Nach <b>allen</b> diesen Wörtern steht der <b>Infinitiv</b>: на́до <b>ид
 • „Я на́до" ✗ → <b>Мне на́до</b> ✓ (Dativ!)<br>
 • „Я могу́ пла́вать" bedeutet „ich habe jetzt die Gelegenheit zu schwimmen" – für die Fähigkeit: <b>уме́ю</b>.`,
 
+hab:`<h4>Wozu ist das da?</h4>
+Russisch hat <b>kein Verb „haben"</b>. Man sagt nicht „ich habe", sondern <b>bei mir ist</b>:<br>
+<i>У меня́ есть соба́ка.</i> – wörtlich „Bei mir ist ein Hund."<br>
+Das Ding steht dabei im <b>Nominativ</b> – es ist grammatisch das Subjekt, nicht das Objekt.
+<h4>Wann есть und wann nicht?</h4>
+Das ist die Frage, an der fast alle hängenbleiben. Die Regel ist einfacher als sie aussieht:<br>
+<b>есть steht, wenn es um das OB geht</b> – gibt es das Ding überhaupt?<br>
+<i>У меня́ <b>есть</b> маши́на.</i> – Ich habe ein Auto (im Gegensatz zu keinem).<br>
+<b>есть fällt weg, wenn es um das WIE geht</b> – das Ding ist bekannt, neu ist seine Eigenschaft:<br>
+<i>У меня́ <b>но́вая</b> маши́на.</i> – Mein Auto ist neu. (Dass ich eins habe, weiß man.)<br>
+<b>Merksatz:</b> Steht ein Adjektiv beim Ding, fällt есть fast immer weg.<br>
+<b>Nie есть</b>, wenn schon ein anderes Verb da ist: <i>У меня́ боли́т голова́.</i>
+<h4>Und die Verneinung?</h4>
+Nicht „нет есть", sondern nur <b>нет + Genitiv</b>:<br>
+<i>У меня́ <b>нет</b> вре́мени.</i> (не вре́мя!) · <i>У него́ <b>нет</b> де́нег.</i><br>
+In Vergangenheit und Zukunft: <i>У меня́ <b>не́ было</b> вре́мени.</i> · <i>У меня́ <b>не бу́дет</b> вре́мени.</i> – immer Genitiv, immer sächlich.
+<h4>Vergangenheit und Zukunft beim Haben</h4>
+был/была́/бы́ло/бы́ли richten sich nach dem <b>Ding</b>, nicht nach dir:<br>
+<i>У меня́ <b>был</b> телефо́н.</i> (maskulin) · <i>У меня́ <b>была́</b> температу́ра.</i> (feminin) · <i>У нас <b>бы́ли</b> вопро́сы.</i> (Plural)
+<h4>Brauchen: ну́жен oder на́до?</h4>
+<b>ну́жен + Substantiv</b> – und es richtet sich nach dem Ding, nicht nach dir:<br>
+мне <b>ну́жен</b> телефо́н (m) · мне <b>нужна́</b> по́мощь (f) · мне <b>ну́жно</b> вре́мя (n) · мне <b>нужны́</b> де́ньги (Pl)<br>
+<b>на́до / ну́жно + Infinitiv</b> – wenn eine Handlung nötig ist:<br>
+<i>Мне <b>на́до</b> рабо́тать.</i> Die Person steht dabei immer im <b>Dativ</b> (мне, тебе́, ему́).<br>
+<b>до́лжен</b> ist persönlicher – „ich bin verpflichtet" – und steht mit dem Nominativ:<br>
+<i><b>Я до́лжен</b> пойти́.</i> (nicht мне до́лжен!)
+<h4>Typische Fehler</h4>
+✗ <i>У меня́ есть но́вая маши́на</i> (bei Eigenschaft kein есть) → ✓ <i>У меня́ но́вая маши́на</i><br>
+✗ <i>У меня́ нет вре́мя</i> → ✓ <i>нет вре́мени</i> (Genitiv!)<br>
+✗ <i>Мне ну́жен помо́чь</i> → ✓ <i>Мне на́до помо́чь</i> (vor Infinitiv nie ну́жен)<br>
+✗ <i>Мне до́лжен</i> → ✓ <i>Я до́лжен</i>`,
 mov:`<h4>Worum geht's?</h4>
 Russisch hat für „gehen" und „fahren" jeweils <b>zwei Verben</b>. Welches du nimmst, hängt nicht von der Zeit ab, sondern von der <b>Art der Bewegung</b>.
 <h4>Die Tabelle</h4>
