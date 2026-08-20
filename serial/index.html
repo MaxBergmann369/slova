@@ -167,6 +167,14 @@ nav.tabsbar{position:sticky;top:0;z-index:20;background:var(--paper);padding:12p
 .twin .tw b{font-family:var(--serif);font-size:1.08rem}
 .twin .tw b u{text-decoration:none;background:var(--kalina);color:#fff;border-radius:4px;padding:0 2px}
 .twin .tw span{font-size:.82rem;color:var(--ink-soft)}
+.grp{display:flex;align-items:center;gap:10px;width:100%;background:var(--card);border:1px solid var(--frost);border-radius:12px;padding:11px 14px;margin:8px 0 4px;text-align:left}
+.grp .ar{font-size:.9rem;color:var(--ink-faint);width:16px;flex-shrink:0}
+.grp .gt{font-family:var(--serif);font-weight:700;font-size:1rem;flex:1}
+.grp .gs{font-size:.74rem;color:var(--ink-faint);font-weight:600;white-space:nowrap}
+.grp.open{background:var(--paper)}
+.grp.lock{opacity:.65}
+.grp-st{background:var(--ink);color:#fff;border-color:transparent;margin-top:18px}
+.grp-st .ar,.grp-st .gs{color:rgba(255,255,255,.7)}
 .srsbox{background:var(--birch-soft);border:1px solid var(--birch);border-radius:var(--radius);padding:18px;text-align:center;margin:12px 0 4px}
 .srsbox .lk-t{font-family:var(--serif);font-weight:700;font-size:1.05rem;color:var(--birch)}
 .srsbox .lk-s{font-size:.82rem;color:var(--ink-soft);margin:6px 0 12px;line-height:1.6}
@@ -375,7 +383,7 @@ const PACKS=[
  {r:'существо́',t:'su-schtschist-WO',d:'Lebewesen, Kreatur',e:'Э́то существо́ говори́т!',x:'Diese Kreatur spricht!'},
  {r:'волшебство́',t:'wal-schib-STWO',d:'Zauberei',e:'Он ве́рит в волшебство́.',x:'Er glaubt an Zauberei.'},
  {r:'невероя́тно',t:'ni-wi-ra-JAT-na',d:'unglaublich',e:'Невероя́тно! Как ты э́то сде́лал?',x:'Unglaublich! Wie hast du das gemacht?'},
- {r:'смея́ться',t:'smi-JAT-sa',d:'lachen',e:'Все смея́лись над его́ шу́ткой.',x:'Alle lachten über seinen Witz.'},
+ {r:'смея́ться',t:'smi-JAT-sa',d:'lachen (Verb)',e:'Все смея́лись над его́ шу́ткой.',x:'Alle lachten über seinen Witz.'},
  {r:'шу́тка',t:'SCHUT-ka',d:'Witz, Scherz',e:'Э́то была́ то́лько шу́тка.',x:'Das war nur ein Scherz.'},
  {r:'бежа́ть',t:'bi-SCHATJ',d:'rennen',e:'Бежи́м отсю́да!',x:'Lass uns hier abhauen!'},
  {r:'ве́рить',t:'WJE-ritj',d:'glauben',e:'Ты мне не ве́ришь?',x:'Glaubst du mir nicht?'}
@@ -401,7 +409,7 @@ const PACKS=[
  {r:'черда́к',t:'tschir-DAK',d:'Dachboden',e:'На чердаке́ мно́го ста́рых веще́й.',x:'Auf dem Dachboden sind viele alte Sachen.'},
  {r:'хи́жина',t:'CHI-schy-na',d:'Hütte',e:'В лесу́ стои́т ма́ленькая хи́жина.',x:'Im Wald steht eine kleine Hütte.'},
  {r:'чу́до',t:'TSCHU-da',d:'Wunder',e:'Э́то настоя́щее чу́до!',x:'Das ist ein echtes Wunder!'},
- {r:'запреща́ть',t:'sa-pri-SCHTSCHATJ',d:'verbieten',e:'Здесь запреща́ют тро́гать това́ры.',x:'Hier ist es verboten, die Waren anzufassen.'},
+ {r:'запреща́ть',t:'sa-pri-SCHTSCHATJ',d:'verbieten (allgemein, dauernd)',e:'Здесь запреща́ют тро́гать това́ры.',x:'Hier ist es verboten, die Waren anzufassen.'},
  {r:'ску́ка',t:'SKU-ka',d:'Langeweile',e:'Кака́я ску́ка!',x:'Was für eine Langeweile!'},
  {r:'совпаде́ние',t:'saf-pa-DJE-ni-je',d:'Zufall',e:'Како́е совпаде́ние!',x:'Was für ein Zufall!'},
  {r:'мечта́',t:'mitsch-TA',d:'Traum, Wunschtraum',e:'Э́то де́вочка мое́й мечты́.',x:'Das ist das Mädchen meiner Träume.'},
@@ -429,7 +437,7 @@ const PACKS=[
  {r:'подозре́ние',t:'pa-da-SRJE-ni-je',d:'Verdacht',e:'Мои́ подозре́ния подтверди́лись.',x:'Mein Verdacht hat sich bestätigt.'},
  {r:'спря́тать',t:'SPRJA-tatj',d:'verstecken',e:'Ну́жно спря́тать кни́гу.',x:'Ich muss das Buch verstecken.'},
  {r:'доверя́ть',t:'da-wi-RJATJ',d:'vertrauen',e:'Здесь никому́ нельзя́ доверя́ть.',x:'Hier darf man niemandem vertrauen.'},
- {r:'внеза́пно',t:'wni-SAP-na',d:'plötzlich',e:'Он внеза́пно исче́з.',x:'Er verschwand plötzlich.'},
+ {r:'внеза́пно',t:'wni-SAP-na',d:'plötzlich (unerwartet, schlagartig)',e:'Он внеза́пно исче́з.',x:'Er verschwand plötzlich.'},
  {r:'исче́знуть',t:'is-TSCHES-nutj',d:'verschwinden',e:'Кни́га исче́зла.',x:'Das Buch ist verschwunden.'},
  {r:'свида́ние',t:'swi-DA-ni-je',d:'Verabredung, Date',e:'У неё сего́дня свида́ние.',x:'Sie hat heute ein Date.'},
  {r:'кла́дбище',t:'KLAD-bi-schtsche',d:'Friedhof',e:'Они́ встре́тились на кла́дбище.',x:'Sie trafen sich auf dem Friedhof.'},
@@ -462,7 +470,7 @@ const PACKS=[
  {r:'сумасше́дший',t:'su-mas-SCHED-schyj',d:'verrückt',e:'Лю́ди поду́мают, что ты сумасше́дший.',x:'Die Leute werden denken, du bist verrückt.'},
  {r:'доказа́тельство',t:'da-ka-SA-tilj-stwa',d:'Beweis',e:'У меня́ нет доказа́тельств.',x:'Ich habe keine Beweise.'},
  {r:'хва́тит',t:'CHWA-tit',d:'genug! Schluss!',e:'Хва́тит, пора́ поговори́ть.',x:'Genug, es ist Zeit zu reden.'},
- {r:'целова́ться',t:'zy-la-WAT-sa',d:'sich küssen',e:'Они́ у́чатся целова́ться.',x:'Sie üben das Küssen.'},
+ {r:'целова́ться',t:'zy-la-WAT-sa',d:'sich küssen (allgemein)',e:'Они́ у́чатся целова́ться.',x:'Sie üben das Küssen.'},
  {r:'хромота́',t:'chra-ma-TA',d:'Hinken, Lahmheit',e:'Кровь на щеке́ и хромота́.',x:'Blut auf der Wange und ein Hinken.'},
  {r:'щека́',t:'schtschi-KA',d:'Wange',e:'У него́ кровь на щеке́.',x:'Er hat Blut auf der Wange.'},
  {r:'морга́ть',t:'mar-GATJ',d:'blinzeln',e:'Он совсе́м не морга́ет.',x:'Er blinzelt überhaupt nicht.'},
@@ -493,7 +501,7 @@ const PACKS=[
  {r:'недоразуме́ние',t:'ni-da-ra-su-MJE-ni-je',d:'Missverständnis',e:'Э́то про́сто недоразуме́ние.',x:'Das ist nur ein Missverständnis.'},
  {r:'безопа́сность',t:'bi-sa-PAS-nastj',d:'Sicherheit',e:'Она́ в безопа́сности.',x:'Sie ist in Sicherheit.'},
  {r:'вы́йти за́муж',t:'WYJ-ti SA-musch',d:'heiraten (Frau)',e:'Она́ вы́йдет за́муж за него́.',x:'Sie wird ihn heiraten.'},
- {r:'наве́ки',t:'na-WJE-ki',d:'für immer',e:'Наве́ки ста́нет на́шей короле́вой.',x:'Sie wird für immer unsere Königin.'},
+ {r:'наве́ки',t:'na-WJE-ki',d:'für immer (feierlich: in Ewigkeit)',e:'Наве́ки ста́нет на́шей короле́вой.',x:'Sie wird für immer unsere Königin.'},
  {r:'останови́ть',t:'as-ta-na-WITJ',d:'aufhalten, stoppen',e:'Ты ду́маешь, что остано́вишь нас?',x:'Du denkst, du hältst uns auf?'},
  {r:'могу́щественный',t:'ma-GU-schtschist-win-nyj',d:'mächtig',e:'Гно́мы — могу́щественная ра́са.',x:'Gnome sind eine mächtige Rasse.'},
  {r:'пристегни́сь',t:'pri-stig-NISS',d:'schnall dich an!',e:'Пристегни́сь, мы е́дем!',x:'Schnall dich an, wir fahren!'},
@@ -526,7 +534,7 @@ const PACKS=[
  {r:'оби́дно',t:'a-BID-na',d:'ärgerlich, kränkend',e:'Мне оби́дно, но я не пла́чу.',x:'Es kränkt mich, aber ich weine nicht.'},
  {r:'пережива́ть',t:'pi-ri-schy-WATJ',d:'sich Sorgen machen',e:'Не пережива́й, всё бу́дет хорошо́.',x:'Mach dir keine Sorgen, alles wird gut.'},
  {r:'успока́ивать',t:'us-pa-KA-i-watj',d:'beruhigen, trösten',e:'Ты меня́ успока́иваешь?',x:'Willst du mich damit trösten?'},
- {r:'объя́тия',t:'ab-JA-ti-ja',d:'Umarmung',e:'Ро́дственные объя́тия!',x:'Familienumarmung!'},
+ {r:'объя́тия',t:'ab-JA-ti-ja',d:'Umarmung (die Arme, Plural)',e:'Ро́дственные объя́тия!',x:'Familienumarmung!'},
  {r:'пода́рок',t:'pa-DA-rak',d:'Geschenk',e:'Возьми́те себе́ по пода́рку.',x:'Nehmt euch je ein Geschenk.'},
  {r:'подво́х',t:'pad-WOCH',d:'Haken (an der Sache)',e:'И в чём подво́х?',x:'Und wo ist der Haken?'},
  {r:'переду́мать',t:'pi-ri-DU-matj',d:'es sich anders überlegen',e:'Бери́ бы́стро, пока́ я не переду́мал.',x:'Nimm schnell, bevor ich es mir anders überlege.'},
@@ -563,7 +571,7 @@ const PACKS=[
  {r:'заду́мать',t:'sa-DU-matj',d:'vorhaben, planen',e:'Дя́дя, что ты заду́мал?',x:'Onkel, was hast du vor?'},
  {r:'подбодри́ть',t:'pad-bad-RITJ',d:'aufmuntern',e:'Я зна́ю, что вас подбодри́т.',x:'Ich weiß, was euch aufmuntert.'},
  {r:'предупрежде́ние',t:'pri-du-prisch-DJE-ni-je',d:'Warnung',e:'Э́то после́днее предупрежде́ние!',x:'Das ist die letzte Warnung!'},
- {r:'пуга́ть',t:'pu-GATJ',d:'erschrecken, Angst machen',e:'Не пуга́й покупа́телей!',x:'Erschreck nicht die Kunden!'}
+ {r:'пуга́ть',t:'pu-GATJ',d:'erschrecken (jemandem Angst machen)',e:'Не пуга́й покупа́телей!',x:'Erschreck nicht die Kunden!'}
  ],
  q:[
  {q:'За что даю́т де́нежный приз?',qde:'Wofür gibt es den Geldpreis?',o:['за фотогра́фию мо́нстра','за большу́ю ры́бу','за ста́рую кни́гу'],a:0},
@@ -581,9 +589,9 @@ const PACKS=[
  {r:'ло́дка',t:'LOT-ka',d:'Boot',e:'Отвя́зываем ло́дку и поплы́ли!',x:'Boot losbinden und los!'},
  {r:'отвяза́ть',t:'at-wi-SATJ',d:'losbinden',e:'Отвяжи́ ло́дку, пожа́луйста.',x:'Binde bitte das Boot los.'},
  {r:'стари́к',t:'sta-RIK',d:'alter Mann, Greis',e:'Ты слы́шала, что сказа́л стари́к?',x:'Hast du gehört, was der alte Mann sagte?'},
- {r:'подели́ть',t:'pa-di-LITJ',d:'teilen, aufteilen',e:'Мы поде́лим приз попола́м.',x:'Wir teilen den Preis in zwei Hälften.'},
+ {r:'подели́ть',t:'pa-di-LITJ',d:'teilen (in Teile aufteilen)',e:'Мы поде́лим приз попола́м.',x:'Wir teilen den Preis in zwei Hälften.'},
  {r:'полови́на',t:'pa-la-WI-na',d:'Hälfte',e:'Э́то моя́ полови́на.',x:'Das ist meine Hälfte.'},
- {r:'предста́вить',t:'prit-STA-witj',d:'sich vorstellen',e:'То́лько предста́вь, что мо́жно купи́ть!',x:'Stell dir nur vor, was man kaufen kann!'},
+ {r:'предста́вить',t:'prit-STA-witj',d:'sich etwas vorstellen (im Kopf)',e:'То́лько предста́вь, что мо́жно купи́ть!',x:'Stell dir nur vor, was man kaufen kann!'},
  {r:'отпра́виться',t:'at-PRA-wit-sa',d:'aufbrechen, losfahren',e:'Мы отпра́вимся на о́стров.',x:'Wir brechen zur Insel auf.'},
  {r:'охо́та',t:'a-CHO-ta',d:'Jagd',e:'Вы крича́ли про охо́ту на чудо́вищ?',x:'Habt ihr von Monsterjagd gerufen?'},
  {r:'штурва́л',t:'schtur-WAL',d:'Steuerrad, Ruder',e:'Здесь есть штурва́л и сту́лья.',x:'Hier gibt es ein Steuerrad und Stühle.'},
@@ -607,7 +615,7 @@ const PACKS=[
  url:'https://www.youtube.com/watch?v=pKqoEU-K0rc&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=8',
  note:'An Bord streiten alle, wer Kapitän ist – und Onkel Stan bleibt allein am Steg zurück.',
  words:[
- {r:'выбра́сывать',t:'wy-BRA-sy-watj',d:'wegwerfen',e:'Хва́тит выбра́сывать фотоаппара́ты за борт!',x:'Hör auf, die Kameras über Bord zu werfen!'},
+ {r:'выбра́сывать',t:'wy-BRA-sy-watj',d:'wegwerfen (immer wieder)',e:'Хва́тит выбра́сывать фотоаппара́ты за борт!',x:'Hör auf, die Kameras über Bord zu werfen!'},
  {r:'борт',t:'bort',d:'Bordwand, Bord',e:'Он упа́л за борт.',x:'Er fiel über Bord.'},
  {r:'дозо́рный',t:'da-SOR-nyj',d:'Ausguck, Wachposten',e:'Ты бу́дешь дозо́рным.',x:'Du bist der Ausguck.'},
  {r:'капита́н',t:'ka-pi-TAN',d:'Kapitän',e:'Двух капита́нов не быва́ет!',x:'Zwei Kapitäne gibt es nicht!'},
@@ -698,7 +706,7 @@ const PACKS=[
  note:'Der Erfinder erzählt, warum er Roboter baut – und die Kinder entdecken, mit wem sie den Tag eigentlich verbringen wollten.',
  words:[
  {r:'настоя́щий',t:'nas-ta-JA-schtschij',d:'echt, wahr',e:'Настоя́щее чудо́вище — э́то вы дво́е!',x:'Das wahre Ungeheuer seid ihr zwei!'},
- {r:'вдруг',t:'wdruk',d:'plötzlich',e:'Я вдруг поду́мал об э́том.',x:'Ich dachte plötzlich daran.'},
+ {r:'вдруг',t:'wdruk',d:'plötzlich (auf einmal, da)',e:'Я вдруг поду́мал об э́том.',x:'Ich dachte plötzlich daran.'},
  {r:'стро́ить',t:'STRO-itj',d:'bauen',e:'Он всё вре́мя стро́ил ро́ботов.',x:'Er baute die ganze Zeit Roboter.'},
  {r:'уйти́',t:'uj-TI',d:'weggehen, verlassen',e:'От меня́ ушла́ жена́.',x:'Meine Frau hat mich verlassen.'},
  {r:'вечери́нка',t:'wi-tschi-RIN-ka',d:'Party, Feier',e:'Друг не пришёл на вечери́нку.',x:'Der Freund kam nicht zur Party.'},
@@ -710,7 +718,7 @@ const PACKS=[
  {r:'предлага́ть',t:'prid-la-GATJ',d:'vorschlagen, anbieten',e:'И что ты предлага́ешь?',x:'Und was schlägst du vor?'},
  {r:'убива́ть вре́мя',t:'u-bi-WATJ WRJE-mja',d:'die Zeit totschlagen',e:'Вы отпра́вились убива́ть вре́мя.',x:'Ihr seid losgezogen, um die Zeit totzuschlagen.'},
  {r:'пыта́ться',t:'py-TAT-sa',d:'versuchen',e:'Мы весь день пыта́лись его́ найти́.',x:'Wir haben den ganzen Tag versucht, ihn zu finden.'},
- {r:'отыска́ть',t:'a-tys-KATJ',d:'aufspüren, ausfindig machen',e:'Мы хоте́ли отыска́ть дре́внего диноза́вра.',x:'Wir wollten einen uralten Dinosaurier aufspüren.'},
+ {r:'отыска́ть',t:'a-tys-KATJ',d:'aufspüren (nach langem Suchen finden)',e:'Мы хоте́ли отыска́ть дре́внего диноза́вра.',x:'Wir wollten einen uralten Dinosaurier aufspüren.'},
  {r:'дре́вний',t:'DRJEW-nij',d:'uralt, antik',e:'Э́то дре́вняя исто́рия.',x:'Das ist eine uralte Geschichte.'},
  {r:'жале́ть',t:'scha-LJETJ',d:'bemitleiden; bedauern',e:'То́лько не на́до меня́ жале́ть!',x:'Bemitleide mich bloß nicht!'},
  {r:'кру́то',t:'KRU-ta',d:'super, cool',e:'Я кру́то провёл вре́мя.',x:'Ich hatte eine super Zeit.'},
@@ -739,16 +747,16 @@ const PACKS=[
  {r:'спосо́бность',t:'spa-SOB-nastj',d:'Fähigkeit, Begabung',e:'У меня́ хоро́шие аналити́ческие спосо́бности.',x:'Ich habe gute analytische Fähigkeiten.'},
  {r:'за́пах',t:'SA-pach',d:'Geruch',e:'По за́паху я могу́ сказа́ть, что ты ел.',x:'Am Geruch erkenne ich, was du gegessen hast.'},
  {r:'зубна́я па́ста',t:'sub-NA-ja PAS-ta',d:'Zahnpasta',e:'Ты съе́ла це́лый тю́бик зубно́й па́сты!',x:'Du hast eine ganze Tube Zahnpasta gegessen!'},
- {r:'прибира́ть',t:'pri-bi-RATJ',d:'aufräumen',e:'Я тут прибира́л и кое-что́ нашёл.',x:'Ich habe hier aufgeräumt und etwas gefunden.'},
+ {r:'прибира́ть',t:'pri-bi-RATJ',d:'aufräumen (regelmäßig)',e:'Я тут прибира́л и кое-что́ нашёл.',x:'Ich habe hier aufgeräumt und etwas gefunden.'},
  {r:'пота́йная дверь',t:'pa-TAJ-na-ja dwjerj',d:'Geheimtür',e:'Я нашёл пота́йную дверь!',x:'Ich habe eine Geheimtür gefunden!'},
- {r:'спря́танный',t:'SPRJA-tan-nyj',d:'versteckt, verborgen',e:'Дверь была́ спря́тана за обо́ями.',x:'Die Tür war hinter der Tapete versteckt.'},
+ {r:'спря́танный',t:'SPRJA-tan-nyj',d:'versteckt (von jemandem verborgen)',e:'Дверь была́ спря́тана за обо́ями.',x:'Die Tür war hinter der Tapete versteckt.'},
  {r:'обо́и',t:'a-BO-i',d:'Tapete',e:'За обо́ями что-то есть.',x:'Hinter der Tapete ist etwas.'},
- {r:'та́йный',t:'TAJ-nyj',d:'geheim',e:'Э́то та́йный музе́й!',x:'Das ist ein geheimes Museum!'},
+ {r:'та́йный',t:'TAJ-nyj',d:'geheim (heimlich gehalten)',e:'Э́то та́йный музе́й!',x:'Das ist ein geheimes Museum!'},
  {r:'музе́й',t:'mu-SJEJ',d:'Museum',e:'Ра́ньше музе́й был о́чень популя́рным.',x:'Früher war das Museum sehr beliebt.'},
  {r:'воск',t:'wosk',d:'Wachs',e:'Я сде́лаю фигу́ру из ста́рого во́ска.',x:'Ich mache eine Figur aus altem Wachs.'},
  {r:'фигу́ра',t:'fi-GU-ra',d:'Figur, Gestalt',e:'Э́то музе́й восковы́х фигу́р.',x:'Das ist ein Wachsfigurenkabinett.'},
  {r:'популя́рный',t:'pa-pu-LJAR-nyj',d:'beliebt, populär',e:'Он был о́чень популя́рным.',x:'Es war sehr beliebt.'},
- {r:'жу́ткий',t:'SCHUT-kij',d:'unheimlich, gruselig',e:'Они́ не ка́жутся вам жу́ткими?',x:'Kommen sie euch nicht unheimlich vor?'},
+ {r:'жу́ткий',t:'SCHUT-kij',d:'unheimlich (Adjektiv)',e:'Они́ не ка́жутся вам жу́ткими?',x:'Kommen sie euch nicht unheimlich vor?'},
  {r:'люби́мец',t:'lju-BI-mez',d:'Liebling, Favorit',e:'Познако́мьтесь с ва́шим люби́мцем!',x:'Lernt euren Liebling kennen!'},
  {r:'жалюзи́',t:'scha-lju-SI',d:'Jalousie',e:'Кто не закры́л жалюзи́?',x:'Wer hat die Jalousie nicht zugemacht?'},
  {r:'уби́йца',t:'u-BIJ-za',d:'Mörder',e:'Он уби́йца воско́вого президе́нта!',x:'Er ist der Mörder des Wachs-Präsidenten!'},
@@ -786,14 +794,14 @@ const PACKS=[
  {r:'моти́в',t:'ma-TIF',d:'Motiv, Beweggrund',e:'У него́ был моти́в.',x:'Er hatte ein Motiv.'},
  {r:'вы́яснить',t:'WY-jis-nitj',d:'herausfinden, klären',e:'Он вы́яснил, кто э́то был.',x:'Er hat herausgefunden, wer es war.'},
  {r:'раскры́ть де́ло',t:'ras-KRYTJ DJE-la',d:'einen Fall aufklären',e:'Он ду́мает, что раскро́ет де́ло.',x:'Er denkt, er löst den Fall.'},
- {r:'сле́дствие',t:'SLJED-stwi-je',d:'Ermittlung, Untersuchung',e:'Оста́вьте сле́дствие взро́слым!',x:'Überlasst die Ermittlung den Erwachsenen!'},
+ {r:'сле́дствие',t:'SLJED-stwi-je',d:'Ermittlung (amtlich, durch Behörden)',e:'Оста́вьте сле́дствие взро́слым!',x:'Überlasst die Ermittlung den Erwachsenen!'},
  {r:'взро́слый',t:'WSROS-lyj',d:'Erwachsener; erwachsen',e:'Э́то де́ло для взро́слых.',x:'Das ist eine Sache für Erwachsene.'},
  {r:'гад',t:'gat',d:'Mistkerl, Schuft',e:'Мы найдём гада, кото́рый э́то сде́лал!',x:'Wir finden den Mistkerl, der das getan hat!'},
  {r:'недово́льный',t:'ni-da-WOLJ-nyj',d:'unzufrieden',e:'На откры́тии бы́ло мно́го недово́льных люде́й.',x:'Bei der Eröffnung gab es viele unzufriedene Leute.'},
  {r:'след',t:'sljet',d:'Spur, Fußabdruck',e:'Смотри́ — следы́ на ковре́!',x:'Schau – Spuren auf dem Teppich!'},
  {r:'ды́рка',t:'DYR-ka',d:'Loch',e:'В них есть ды́рка.',x:'Da ist ein Loch drin.'},
  {r:'топо́р',t:'ta-POR',d:'Axt, Beil',e:'Я ду́маю, что э́то топо́р.',x:'Ich glaube, das ist eine Axt.'},
- {r:'дровосе́к',t:'dra-wa-SJEK',d:'Holzfäller',e:'Дровосе́к был в я́рости.',x:'Der Holzfäller war wütend.'},
+ {r:'дровосе́к',t:'dra-wa-SJEK',d:'Holzfäller (der Holz hackt, Märchenfigur)',e:'Дровосе́к был в я́рости.',x:'Der Holzfäller war wütend.'},
  {r:'я́рость',t:'JA-rastj',d:'Wut, Zorn',e:'Он был в я́рости.',x:'Er war außer sich vor Wut.'}
  ],
  q:[
@@ -813,7 +821,7 @@ const PACKS=[
  {r:'проры́в',t:'pra-RYF',d:'Durchbruch',e:'У нас большо́й проры́в по де́лу!',x:'Wir haben einen großen Durchbruch im Fall!'},
  {r:'допроси́ть',t:'da-pra-SITJ',d:'verhören, befragen',e:'Мы е́дем допроси́ть уби́йцу.',x:'Wir fahren, um den Mörder zu verhören.'},
  {r:'отве́тственный',t:'at-WJET-stwin-nyj',d:'verantwortungsvoll',e:'Отве́тственный взро́слый запрети́л бы э́то.',x:'Ein verantwortungsvoller Erwachsener würde das verbieten.'},
- {r:'запрети́ть',t:'sap-ri-TITJ',d:'verbieten',e:'Мне запрети́ли игра́ть с топоро́м.',x:'Man hat mir verboten, mit der Axt zu spielen.'},
+ {r:'запрети́ть',t:'sap-ri-TITJ',d:'verbieten (einmalig, endgültig)',e:'Мне запрети́ли игра́ть с топоро́м.',x:'Man hat mir verboten, mit der Axt zu spielen.'},
  {r:'отомсти́ть',t:'a-tam-STITJ',d:'sich rächen, Rache nehmen',e:'Отомсти́те за меня́!',x:'Rächt mich!'},
  {r:'подде́льный',t:'pad-DJELJ-nyj',d:'gefälscht',e:'У нас есть подде́льные докуме́нты.',x:'Wir haben gefälschte Papiere.'},
  {r:'обслу́живать',t:'ap-SLU-schy-watj',d:'bedienen',e:'Ма́леньких не обслу́живаем.',x:'Kleine bedienen wir nicht.'},
@@ -843,7 +851,7 @@ const PACKS=[
  note:'Kein Alibi, keine Fingerabdrücke – bis Dipper begreift, wer wirklich hinter ihm steht.',
  words:[
  {r:'а́либи',t:'A-li-bi',d:'Alibi',e:'У тебя́ есть а́либи?',x:'Hast du ein Alibi?'},
- {r:'невино́вный',t:'ni-wi-NOW-nyj',d:'unschuldig',e:'Он невино́вен.',x:'Er ist unschuldig.'},
+ {r:'невино́вный',t:'ni-wi-NOW-nyj',d:'unschuldig (nicht schuldig, vor Gericht)',e:'Он невино́вен.',x:'Er ist unschuldig.'},
  {r:'отпеча́ток',t:'at-pi-TSCHA-tak',d:'Abdruck (отпеча́тки па́льцев = Fingerabdrücke)',e:'Отпеча́тков па́льцев нет.',x:'Es gibt keine Fingerabdrücke.'},
  {r:'заголо́вок',t:'sa-ga-LO-wak',d:'Schlagzeile, Überschrift',e:'Я приду́мал хоро́ший заголо́вок.',x:'Ich habe eine gute Schlagzeile erfunden.'},
  {r:'тра́тить',t:'TRA-titj',d:'verschwenden, ausgeben',e:'Де́ти тра́тят вре́мя взро́слых.',x:'Kinder verschwenden die Zeit der Erwachsenen.'},
@@ -899,7 +907,7 @@ const PACKS=[
  {r:'поощря́ть',t:'pa-asch-TSCHRJATJ',d:'belohnen, loben',e:'Сейча́с я бу́ду вас поощря́ть.',x:'Jetzt werde ich euch belohnen.'},
  {r:'распла́вить',t:'ras-PLA-witj',d:'einschmelzen',e:'Она́ распла́вила все восковы́е фигу́ры.',x:'Sie schmolz alle Wachsfiguren ein.'},
  {r:'кры́са',t:'KRY-sa',d:'Ratte',e:'Кры́са укра́ла моё у́хо!',x:'Eine Ratte hat mein Ohr gestohlen!'},
- {r:'укра́сть',t:'uk-RASTJ',d:'stehlen',e:'Кто укра́л моё у́хо?',x:'Wer hat mein Ohr gestohlen?'},
+ {r:'укра́сть',t:'uk-RASTJ',d:'stehlen (einmalig)',e:'Кто укра́л моё у́хо?',x:'Wer hat mein Ohr gestohlen?'},
  {r:'у́хо',t:'U-cha',d:'Ohr',e:'У меня́ боли́т у́хо.',x:'Mein Ohr tut weh.'},
  {r:'шерсть',t:'schersj',d:'Wolle, Fell',e:'Что лу́чше — синте́тика и́ли шерсть?',x:'Was ist besser – Synthetik oder Wolle?'},
  {r:'ла́ма',t:'LA-ma',d:'Lama',e:'Ла́мы — лу́чшие бойцы́ в приро́де!',x:'Lamas sind die besten Kämpfer der Natur!'},
@@ -962,16 +970,16 @@ const PACKS=[
  {r:'запомина́ться',t:'sa-pa-mi-NAT-sa',d:'sich einprägen, hängenbleiben',e:'Пе́сенка запомина́ется.',x:'Das Liedchen bleibt hängen.'},
  {r:'официа́льно',t:'a-fi-zy-ALJ-na',d:'offiziell',e:'Мы официа́льно не знако́мы.',x:'Wir kennen uns offiziell noch nicht.'},
  {r:'порази́ть',t:'pa-ra-SITJ',d:'beeindrucken, verblüffen',e:'Меня́ порази́л твой смех.',x:'Dein Lachen hat mich beeindruckt.'},
- {r:'смех',t:'smjech',d:'Lachen',e:'У неё прекра́сный смех.',x:'Sie hat ein wunderschönes Lachen.'},
+ {r:'смех',t:'smjech',d:'Lachen (Substantiv)',e:'У неё прекра́сный смех.',x:'Sie hat ein wunderschönes Lachen.'},
  {r:'зал',t:'sal',d:'Saal, Zuschauerraum',e:'Я уви́дел тебя́ в за́ле.',x:'Ich sah dich im Saal.'},
  {r:'родна́я душа́',t:'rad-NA-ja du-SCHA',d:'Seelenverwandte(r)',e:'Вот моя́ родна́я душа́!',x:'Das ist meine Seelenverwandte!'},
  {r:'душа́',t:'du-SCHA',d:'Seele',e:'Э́то идёт из души́.',x:'Das kommt aus der Seele.'},
- {r:'поки́нуть',t:'pa-KI-nutj',d:'verlassen',e:'Не хо́чешь поки́нуть э́тот дом?',x:'Willst du dieses Haus nicht verlassen?'},
- {r:'ую́тный',t:'u-JUT-nyj',d:'gemütlich',e:'Пойдём в мою́ ую́тную ко́мнату.',x:'Gehen wir in mein gemütliches Zimmer.'},
+ {r:'поки́нуть',t:'pa-KI-nutj',d:'verlassen (einmalig, endgültig)',e:'Не хо́чешь поки́нуть э́тот дом?',x:'Willst du dieses Haus nicht verlassen?'},
+ {r:'ую́тный',t:'u-JUT-nyj',d:'gemütlich (Adjektiv)',e:'Пойдём в мою́ ую́тную ко́мнату.',x:'Gehen wir in mein gemütliches Zimmer.'},
  {r:'поболта́ть',t:'pa-bal-TATJ',d:'plaudern, quatschen',e:'Дава́й поболта́ем!',x:'Lass uns plaudern!'},
  {r:'но́готь',t:'NO-gatj',d:'Fingernagel',e:'Что у тебя́ с ногтя́ми?',x:'Was ist mit deinen Nägeln los?'},
  {r:'ве́чно',t:'WJETSCH-na',d:'ständig, ewig',e:'У тебя́ ве́чно каки́е-то дела́.',x:'Du hast ständig irgendwas zu tun.'},
- {r:'взрыва́ть',t:'wsry-WATJ',d:'sprengen, in die Luft jagen',e:'Пошли́ взрыва́ть хот-до́ги в микроволно́вке!',x:'Lass uns Hotdogs in der Mikrowelle sprengen!'},
+ {r:'взрыва́ть',t:'wsry-WATJ',d:'sprengen (immer wieder)',e:'Пошли́ взрыва́ть хот-до́ги в микроволно́вке!',x:'Lass uns Hotdogs in der Mikrowelle sprengen!'},
  {r:'микроволно́вка',t:'mik-ra-wal-NOF-ka',d:'Mikrowelle',e:'Хот-до́г в микроволно́вке — плоха́я иде́я.',x:'Hotdog in der Mikrowelle – schlechte Idee.'},
  {r:'коро́ль',t:'ka-ROLJ',d:'König',e:'Мне ка́жется, что я коро́ль ми́ра!',x:'Mir kommt es vor, ich wäre König der Welt!'},
  {r:'оказа́ть честь',t:'a-ka-SATJ tschestj',d:'die Ehre erweisen',e:'Не ока́жешь ли ты мне честь?',x:'Würdest du mir die Ehre erweisen?'},
@@ -1016,7 +1024,7 @@ const PACKS=[
  {r:'возлю́бленный',t:'was-LJUB-lin-nyj',d:'Geliebter, Liebster',e:'А мо́жет, возлю́бленный?',x:'Oder vielleicht Liebster?'},
  {r:'разби́ть се́рдце',t:'ras-BITJ SJER-ze',d:'das Herz brechen',e:'Я не могу́ разби́ть ему́ се́рдце.',x:'Ich kann ihm nicht das Herz brechen.'},
  {r:'боло́то',t:'ba-LO-ta',d:'Sumpf, Morast',e:'Э́то как боло́то — оно́ меня́ затя́гивает.',x:'Das ist wie ein Sumpf – er zieht mich hinein.'},
- {r:'затя́гивать',t:'sa-TJA-gi-watj',d:'hineinziehen',e:'Оно́ меня́ затя́гивает.',x:'Es zieht mich hinein.'}
+ {r:'затя́гивать',t:'sa-TJA-gi-watj',d:'hineinziehen (langsam, immer wieder)',e:'Оно́ меня́ затя́гивает.',x:'Es zieht mich hinein.'}
  ],
  q:[
  {q:'О чём говори́т весь го́род?',qde:'Worüber redet die ganze Stadt?',o:['о свида́нии','о рыба́лке','о музе́е'],a:0},
@@ -1041,7 +1049,7 @@ const PACKS=[
  {r:'натвори́ть',t:'nat-wa-RITJ',d:'anrichten, anstellen',e:'Ты не представля́ешь, что натвори́л!',x:'Du ahnst nicht, was du angerichtet hast!'},
  {r:'соверши́ть оши́бку',t:'sa-wir-SCHITJ a-SCHIP-ku',d:'einen Fehler begehen',e:'Ты соверши́л велича́йшую оши́бку.',x:'Du hast den größten Fehler begangen.'},
  {r:'неме́дленно',t:'ni-MJED-lin-na',d:'sofort, unverzüglich',e:'Неме́дленно прибери́ в ко́мнате!',x:'Räum sofort dein Zimmer auf!'},
- {r:'прибра́ть',t:'prib-RATJ',d:'aufräumen',e:'Прибери́ у себя́ в ко́мнате.',x:'Räum bei dir im Zimmer auf.'},
+ {r:'прибра́ть',t:'prib-RATJ',d:'aufräumen (einmal fertig)',e:'Прибери́ у себя́ в ко́мнате.',x:'Räum bei dir im Zimmer auf.'},
  {r:'стере́ть в порошо́к',t:'sti-RJETJ f pa-ra-SCHOK',d:'zu Staub zermahlen',e:'Я тебя́ в порошо́к сотру́!',x:'Ich mahle dich zu Staub!'},
  {r:'напада́ть',t:'na-pa-DATJ',d:'angreifen',e:'Напада́йте!',x:'Greift an!'},
  {r:'о́чередь',t:'O-tschi-ritj',d:'Reihe, Schlange (твоя́ ~ = du bist dran)',e:'Твоя́ о́чередь!',x:'Du bist dran!'},
@@ -1070,7 +1078,7 @@ const PACKS=[
  {r:'ли́чно',t:'LITSCH-na',d:'persönlich',e:'Я пришла́ сказа́ть тебе́ э́то ли́чно.',x:'Ich bin gekommen, um dir das persönlich zu sagen.'},
  {r:'си́ла',t:'SI-la',d:'Kraft, Stärke',e:'Моя́ си́ла — э́то ещё не коне́ц.',x:'Meine Macht ist noch nicht am Ende.'},
  {r:'проклина́ть',t:'pra-kli-NATJ',d:'verfluchen',e:'Я проклина́ю тебя́!',x:'Ich verfluche dich!'},
- {r:'заслужи́ть',t:'sas-lu-SCHITJ',d:'verdienen',e:'Ва́ша семья́ заслужи́ла мой гнев.',x:'Deine Familie hat meinen Zorn verdient.'},
+ {r:'заслужи́ть',t:'sas-lu-SCHITJ',d:'verdienen (sich verdient machen, einmalig)',e:'Ва́ша семья́ заслужи́ла мой гнев.',x:'Deine Familie hat meinen Zorn verdient.'},
  {r:'гнев',t:'gnjef',d:'Zorn, Wut',e:'Э́то мой пра́ведный гнев!',x:'Das ist mein gerechter Zorn!'},
  {r:'преступле́ние',t:'pris-tup-LJE-ni-je',d:'Verbrechen',e:'Вы запла́тите за э́то преступле́ние!',x:'Ihr werdet für dieses Verbrechen bezahlen!'},
  {r:'не в ду́хе',t:'ni w DU-che',d:'schlecht gelaunt',e:'Мой сыно́к сего́дня не в ду́хе.',x:'Mein Söhnchen ist heute schlecht gelaunt.'},
@@ -1105,7 +1113,7 @@ const PACKS=[
  {r:'влюби́ться',t:'wlju-BIT-sa',d:'sich verlieben',e:'Кто-то влюби́лся!',x:'Da hat sich jemand verliebt!'},
  {r:'устро́ить',t:'us-TRO-itj',d:'veranstalten, organisieren',e:'Устро́им танцева́льный ве́чер!',x:'Veranstalten wir einen Tanzabend!'},
  {r:'причи́на',t:'pri-TSCHI-na',d:'Grund, Ursache',e:'Без причи́ны, про́сто так.',x:'Ohne Grund, einfach so.'},
- {r:'притворя́ться',t:'prit-wa-RJAT-sa',d:'so tun als ob',e:'Я притворя́юсь, что что-то пишу́.',x:'Ich tue so, als würde ich etwas schreiben.'},
+ {r:'притворя́ться',t:'prit-wa-RJAT-sa',d:'so tun als ob (sich verstellen)',e:'Я притворя́юсь, что что-то пишу́.',x:'Ich tue so, als würde ich etwas schreiben.'},
  {r:'наряжа́ть',t:'na-ri-SCHATJ',d:'herausputzen, verkleiden',e:'Ма́ма наряжа́ла его́ в костю́м бара́шка.',x:'Mama verkleidete ihn als Lämmchen.'},
  {r:'костю́м',t:'kas-TJUM',d:'Kostüm, Anzug',e:'Пря́мо с уша́ми и хвосто́м?',x:'Etwa mit Ohren und Schwanz?'},
  {r:'бара́шек',t:'ba-RA-schyk',d:'Lämmchen',e:'Он танцева́л бара́шкин та́нец.',x:'Er tanzte den Lämmchen-Tanz.'},
@@ -1390,7 +1398,7 @@ const PACKS=[
  {r:'вста́вить',t:'FSTA-witj',d:'einlegen, einsetzen',e:'Плёнка уже́ вста́влена.',x:'Der Film ist schon eingelegt.'},
  {r:'исла́ндский',t:'is-LAND-skij',d:'isländisch',e:'Ты слу́шаешь исла́ндскую гру́ппу?',x:'Du hörst eine isländische Band?'},
  {r:'судьба́',t:'sudj-BA',d:'Schicksal',e:'Я принима́ю свою́ судьбу́.',x:'Ich nehme mein Schicksal an.'},
- {r:'отказа́ться',t:'at-ka-SAT-sa',d:'sich weigern, ablehnen',e:'Я отка́зываюсь э́то де́лать.',x:'Ich weigere mich, das zu tun.'},
+ {r:'отказа́ться',t:'at-ka-SAT-sa',d:'sich weigern (einmalig)',e:'Я отка́зываюсь э́то де́лать.',x:'Ich weigere mich, das zu tun.'},
  {r:'борода́тый',t:'ba-ra-DA-tyj',d:'bärtig',e:'Э́тот борода́тый па́рень.',x:'Dieser bärtige Typ.'},
  {r:'постоя́нно',t:'pas-ta-JAN-na',d:'ständig, dauernd',e:'Ну́жно постоя́нно зли́ться?',x:'Muss man ständig wütend sein?'},
  {r:'зли́ться',t:'SLIT-sa',d:'wütend sein',e:'Не зли́сь на меня́.',x:'Sei mir nicht böse.'},
@@ -1421,7 +1429,7 @@ const PACKS=[
  {r:'накорми́ть',t:'na-kar-MITJ',d:'füttern, zu essen geben',e:'Чем ты нас накорми́л?',x:'Womit hast du uns gefüttert?'},
  {r:'катастро́фа',t:'ka-tas-TRO-fa',d:'Katastrophe',e:'Случи́лась стра́шная катастро́фа!',x:'Es ist eine schreckliche Katastrophe passiert!'},
  {r:'пра́здновать',t:'PRAS-na-watj',d:'feiern',e:'А что бу́дем пра́здновать?',x:'Und was feiern wir?'},
- {r:'зарабо́тать',t:'sa-ra-BO-tatj',d:'verdienen',e:'Я устра́иваю вечери́нку, что́бы зарабо́тать.',x:'Ich veranstalte eine Party, um Geld zu verdienen.'},
+ {r:'зарабо́тать',t:'sa-ra-BO-tatj',d:'verdienen (Geld)',e:'Я устра́иваю вечери́нку, что́бы зарабо́тать.',x:'Ich veranstalte eine Party, um Geld zu verdienen.'},
  {r:'кру́жка',t:'KRUSCH-ka',d:'Tasse, Becher',e:'Кру́жки, футбо́лки, календари́!',x:'Tassen, T-Shirts, Kalender!'},
  {r:'футбо́лка',t:'fut-BOL-ka',d:'T-Shirt',e:'Мне нра́вится э́та футбо́лка.',x:'Mir gefällt dieses T-Shirt.'},
  {r:'календа́рь',t:'ka-lin-DARJ',d:'Kalender',e:'Купи́ календа́рь на сле́дующий год.',x:'Kauf einen Kalender für nächstes Jahr.'},
@@ -1526,11 +1534,11 @@ const PACKS=[
  {r:'Больша́я Медве́дица',t:'balj-SCHA-ja mid-WJE-di-za',d:'Großer Bär (Sternbild)',e:'Э́то ковш Большо́й Медве́дицы.',x:'Das ist der Wagen des Großen Bären.'},
  {r:'знак',t:'snak',d:'Zeichen',e:'А что, е́сли э́то знак?',x:'Und wenn das ein Zeichen ist?'},
  {r:'и́збранный',t:'IS-bran-nyj',d:'auserwählt, der Auserwählte',e:'Э́то знак и́збранного!',x:'Das ist das Zeichen des Auserwählten!'},
- {r:'отвлека́ть',t:'at-wli-KATJ',d:'ablenken',e:'Он уже́ пятна́дцать мину́т отвлека́ет Зу́са.',x:'Er lenkt Soos schon fünfzehn Minuten ab.'},
+ {r:'отвлека́ть',t:'at-wli-KATJ',d:'ablenken (immer wieder)',e:'Он уже́ пятна́дцать мину́т отвлека́ет Зу́са.',x:'Er lenkt Soos schon fünfzehn Minuten ab.'},
  {r:'случа́йно',t:'slu-TSCHAJ-na',d:'zufällig, aus Versehen',e:'Я случа́йно встре́тил Ве́нди.',x:'Ich habe Wendy zufällig getroffen.'},
  {r:'бред',t:'brjet',d:'Unsinn, Wahnsinn',e:'Э́то како́й-то бред!',x:'Das ist doch Unsinn!'},
  {r:'сле́довать',t:'SLJE-da-watj',d:'folgen, sich richten nach',e:'Ты не хо́чешь сле́довать пла́ну?',x:'Du willst dich nicht an den Plan halten?'},
- {r:'врать',t:'wratj',d:'lügen',e:'Мы все зна́ли, что врём.',x:'Wir wussten alle, dass wir lügen.'},
+ {r:'врать',t:'wratj',d:'lügen (umgangssprachlich)',e:'Мы все зна́ли, что врём.',x:'Wir wussten alle, dass wir lügen.'},
  {r:'дыша́ть',t:'dy-SCHATJ',d:'atmen',e:'Здесь совсе́м не́чем дыша́ть!',x:'Hier bekommt man keine Luft!'},
  {r:'во́здух',t:'WOS-duch',d:'Luft',e:'Там полно́ во́здуха.',x:'Dort gibt es genug Luft.'},
  {r:'раскра́ска',t:'ras-KRAS-ka',d:'Malbuch',e:'Есть еда́ и де́тские раскра́ски.',x:'Es gibt Essen und Kindermalbücher.'},
@@ -1567,7 +1575,7 @@ const PACKS=[
  {r:'отпроси́ться',t:'at-pra-SIT-sa',d:'sich freistellen lassen, um Erlaubnis bitten',e:'Я отпроси́лся у роди́телей.',x:'Ich habe meine Eltern um Erlaubnis gebeten.'},
  {r:'журна́л',t:'schur-NAL',d:'Zeitschrift, Magazin',e:'У меня́ есть де́вичьи журна́лы!',x:'Ich habe Mädchenzeitschriften!'},
  {r:'весели́ться',t:'wi-si-LIT-sa',d:'sich amüsieren, feiern',e:'Бу́дем весели́ться всю ночь!',x:'Wir feiern die ganze Nacht!'},
- {r:'вы́бросить',t:'WY-bra-sitj',d:'wegwerfen',e:'План ну́жно вы́бросить.',x:'Den Plan muss man wegwerfen.'},
+ {r:'вы́бросить',t:'WY-bra-sitj',d:'wegwerfen (einmalig)',e:'План ну́жно вы́бросить.',x:'Den Plan muss man wegwerfen.'},
  {r:'в прямо́м смы́сле',t:'w pri-MOM SMYS-li',d:'im wörtlichen Sinne',e:'Я сам себе́ меша́ю — в прямо́м смы́сле!',x:'Ich stehe mir selbst im Weg – im wörtlichen Sinne!'},
  {r:'сглупи́ть',t:'sglu-PITJ',d:'eine Dummheit machen',e:'Вот я сглупи́л!',x:'Da habe ich eine Dummheit gemacht!'},
  {r:'сла́вно',t:'SLAW-na',d:'herrlich, prima',e:'Я сла́вно пожи́л.',x:'Ich hatte ein schönes Leben.'},
@@ -1604,7 +1612,7 @@ const PACKS=[
  {r:'кошелёк',t:'ka-schy-LJOK',d:'Geldbörse, Portemonnaie',e:'Поли́ция! Мой кошелёк!',x:'Polizei! Mein Portemonnaie!'},
  {r:'основа́тель',t:'as-na-WA-tilj',d:'Gründer',e:'Я праправну́чка основа́теля го́рода.',x:'Ich bin die Ururenkelin des Stadtgründers.'},
  {r:'бога́тый',t:'ba-GA-tyj',d:'reich',e:'Я о́чень бога́та.',x:'Ich bin sehr reich.'},
- {r:'предста́виться',t:'prit-STA-wit-sa',d:'sich vorstellen',e:'Выходи́те сюда́ и предста́вьтесь!',x:'Kommt her und stellt euch vor!'},
+ {r:'предста́виться',t:'prit-STA-wit-sa',d:'sich vorstellen (Namen nennen)',e:'Выходи́те сюда́ и предста́вьтесь!',x:'Kommt her und stellt euch vor!'},
  {r:'вы́ступить',t:'WY-stu-pitj',d:'auftreten, vortragen',e:'Я о́чень хочу́ вы́ступить!',x:'Ich möchte unbedingt auftreten!'},
  {r:'терпе́ть не мочь',t:'tir-PJETJ ni motsch',d:'nicht ausstehen können',e:'Вы друг дру́га терпе́ть не мо́жете.',x:'Ihr könnt euch nicht ausstehen.'},
  {r:'прерыва́ть',t:'pri-ry-WATJ',d:'unterbrechen',e:'Извини́, что прерыва́ю.',x:'Entschuldige, dass ich unterbreche.'},
@@ -1634,7 +1642,7 @@ const PACKS=[
  {r:'вну́чка',t:'WNUTSCH-ka',d:'Enkelin',e:'Она́ вну́чка основа́теля.',x:'Sie ist die Enkelin des Gründers.'},
  {r:'поста́вить на ме́сто',t:'pas-TA-witj na MJES-ta',d:'in die Schranken weisen',e:'Пора́ поста́вить её на ме́сто!',x:'Zeit, sie in die Schranken zu weisen!'},
  {r:'пра́дед',t:'PRA-dit',d:'Urgroßvater',e:'Я чита́л про её пра́деда.',x:'Ich habe über ihren Urgroßvater gelesen.'},
- {r:'рассле́дование',t:'ras-SLJE-da-wa-ni-je',d:'Ermittlung, Untersuchung',e:'В моём рассле́довании я обнару́жил…',x:'In meiner Untersuchung entdeckte ich…'},
+ {r:'рассле́дование',t:'ras-SLJE-da-wa-ni-je',d:'Ermittlung (Untersuchung eines Falls)',e:'В моём рассле́довании я обнару́жил…',x:'In meiner Untersuchung entdeckte ich…'},
  {r:'обнару́жить',t:'ab-na-RU-schytj',d:'entdecken, feststellen',e:'Я обнару́жил кое-что́ ва́жное.',x:'Ich habe etwas Wichtiges entdeckt.'},
  {r:'расшифрова́ть',t:'ras-schyf-ra-WATJ',d:'entschlüsseln, dechiffrieren',e:'Не могу́ его́ расшифрова́ть.',x:'Ich kann es nicht entschlüsseln.'},
  {r:'моше́нник',t:'ma-SCHEN-nik',d:'Betrüger, Schwindler',e:'Вся семья́ — моше́нники!',x:'Die ganze Familie sind Betrüger!'},
@@ -1665,7 +1673,7 @@ const PACKS=[
  {r:'подска́зка',t:'pat-SKAS-ka',d:'Hinweis, Tipp',e:'Сле́дующая подска́зка бу́дет здесь.',x:'Der nächste Hinweis wird hier sein.'},
  {r:'библиоте́ка',t:'bib-li-a-TJE-ka',d:'Bibliothek',e:'Э́ти копы пришли́ в библиоте́ку не за кни́гами.',x:'Diese Cops kamen nicht wegen der Bücher in die Bibliothek.'},
  {r:'жи́вопись',t:'SCHI-wa-pisj',d:'Malerei',e:'Я ду́мал, э́то абстра́ктная жи́вопись.',x:'Ich dachte, das wäre abstrakte Malerei.'},
- {r:'зря',t:'srja',d:'umsonst, vergeblich',e:'Зна́чит, мы зря пришли́?',x:'Also sind wir umsonst gekommen?'},
+ {r:'зря',t:'srja',d:'umsonst (ohne Sinn, vergebens)',e:'Зна́чит, мы зря пришли́?',x:'Also sind wir umsonst gekommen?'},
  {r:'снотво́рный',t:'snat-WOR-nyj',d:'einschläfernd, Schlaf-',e:'Э́то снотво́рные дро́тики.',x:'Das sind Betäubungspfeile.'},
  {r:'дро́тик',t:'DRO-tik',d:'Wurfpfeil, Dart',e:'В него́ попа́ла па́рочка дро́тиков.',x:'Ihn trafen ein paar Pfeile.'},
  {r:'клад',t:'klat',d:'Schatz, Fund',e:'Э́то настоя́щий клад секре́тов!',x:'Das ist ein wahrer Schatz an Geheimnissen!'},
@@ -1676,7 +1684,7 @@ const PACKS=[
  {r:'национа́льный',t:'na-zy-a-NALJ-nyj',d:'national',e:'Э́то вопро́с национа́льной безопа́сности!',x:'Das ist eine Frage der nationalen Sicherheit!'},
  {r:'различа́ть',t:'ras-li-TSCHATJ',d:'unterscheiden',e:'Я перестаю́ различа́ть цвета́.',x:'Ich kann die Farben nicht mehr unterscheiden.'},
  {r:'до́ступ',t:'DOS-tup',d:'Zugang, Zutritt',e:'У вас есть до́ступ к секре́тной информа́ции.',x:'Sie haben Zugang zu geheimen Informationen.'},
- {r:'секре́тный',t:'sik-RJET-nyj',d:'geheim',e:'Э́то секре́тная информа́ция.',x:'Das ist eine geheime Information.'},
+ {r:'секре́тный',t:'sik-RJET-nyj',d:'geheim (amtlich eingestuft)',e:'Э́то секре́тная информа́ция.',x:'Das ist eine geheime Information.'},
  {r:'съёмки',t:'SJOM-ki',d:'Dreharbeiten',e:'Как то́лько зако́нчатся съёмки…',x:'Sobald die Dreharbeiten zu Ende sind…'},
  {r:'позо́рный',t:'pa-SOR-nyj',d:'schändlich, beschämend',e:'Э́то са́мый позо́рный секре́т.',x:'Das ist das beschämendste Geheimnis.'},
  {r:'напра́вить',t:'na-PRA-witj',d:'lenken, richten auf',e:'Подска́зка напра́вит нас да́льше.',x:'Der Hinweis führt uns weiter.'}
@@ -1708,10 +1716,10 @@ const PACKS=[
  {r:'замурова́ть',t:'sa-mu-ra-WATJ',d:'einmauern, einschließen',e:'Он замурова́л себя́ в кусо́к.',x:'Er hat sich in einem Block eingeschlossen.'},
  {r:'ара́хисовый',t:'a-RA-chi-sa-wyj',d:'Erdnuss-',e:'Ара́хисовый щербе́т поле́зен для здоро́вья!',x:'Erdnuss-Sorbet ist gesund!'},
  {r:'обёртка',t:'a-BJORT-ka',d:'Verpackung, Bonbonpapier',e:'Я оста́вила след из обёрток.',x:'Ich hinterließ eine Spur aus Bonbonpapieren.'},
- {r:'винова́т',t:'wi-na-WAT',d:'schuld',e:'Я во всём винова́та.',x:'Ich bin an allem schuld.'},
+ {r:'винова́т',t:'wi-na-WAT',d:'schuld (ich bin schuld)',e:'Я во всём винова́та.',x:'Ich bin an allem schuld.'},
  {r:'барахло́',t:'ba-rach-LO',d:'Kram, Plunder',e:'Отвезём вас и всё э́то барахло́.',x:'Wir bringen euch und den ganzen Kram weg.'},
  {r:'страши́лка',t:'stra-SCHIL-ka',d:'Gruselgeschichte',e:'Я взял кни́жку со страши́лками.',x:'Ich habe ein Buch mit Gruselgeschichten mitgenommen.'},
- {r:'плести́',t:'plis-TI',d:'flechten',e:'А я бу́ду плести́ брасле́тики.',x:'Und ich flechte Armbändchen.'},
+ {r:'плести́',t:'plis-TI',d:'flechten (Zöpfe, Körbe)',e:'А я бу́ду плести́ брасле́тики.',x:'Und ich flechte Armbändchen.'},
  {r:'освободи́ть',t:'as-wa-ba-DITJ',d:'befreien',e:'Ты освободи́ла меня́!',x:'Du hast mich befreit!'},
  {r:'вверх нога́ми',t:'wwjerch na-GA-mi',d:'auf dem Kopf, verkehrt herum',e:'Ка́рта лежа́ла вверх нога́ми.',x:'Die Karte lag verkehrt herum.'},
  {r:'взлома́ть',t:'wsla-MATJ',d:'knacken, aufbrechen',e:'Ты взлома́ла шифр!',x:'Du hast den Code geknackt!'},
@@ -1732,7 +1740,7 @@ const PACKS=[
  note:'Der Präsident verteilt Ämter und Geschenke – und Mabel entscheidet sich gegen die Rache.',
  words:[
  {r:'прика́зывать',t:'pri-KA-sy-watj',d:'befehlen, anordnen',e:'Я прика́зываю вам отдохну́ть!',x:'Ich befehle euch, euch auszuruhen!'},
- {r:'сде́лать вид',t:'SDJE-latj wit',d:'so tun als ob',e:'Сде́лайте вид, что ничего́ не́ было.',x:'Tut so, als wäre nichts gewesen.'},
+ {r:'сде́лать вид',t:'SDJE-latj wit',d:'so tun als ob (kurz vortäuschen)',e:'Сде́лайте вид, что ничего́ не́ было.',x:'Tut so, als wäre nichts gewesen.'},
  {r:'о́тпуск',t:'OT-pusk',d:'Urlaub',e:'Отпра́вьтесь в о́тпуск!',x:'Fahrt in den Urlaub!'},
  {r:'слу́жба',t:'SLUSCHB-a',d:'Dienst',e:'Ты заслужи́ла награ́ду за слу́жбу.',x:'Du hast dir eine Auszeichnung für deinen Dienst verdient.'},
  {r:'дари́ть',t:'da-RITJ',d:'schenken',e:'Я дарю́ тебе́ свой ключ.',x:'Ich schenke dir meinen Schlüssel.'},
@@ -1875,7 +1883,7 @@ const PACKS=[
  {r:'сочу́вствовать',t:'sa-TSCHUST-wa-watj',d:'mitfühlen, Mitgefühl haben',e:'Я так тебе́ сочу́вствую!',x:'Ich fühle so mit dir!'},
  {r:'ход вре́мени',t:'chot WRJE-mi-ni',d:'Lauf der Zeit',e:'Мы измени́ли ход вре́мени.',x:'Wir haben den Lauf der Zeit verändert.'},
  {r:'допусти́ть',t:'da-pus-TITJ',d:'zulassen, geschehen lassen',e:'Я э́того не допущу́!',x:'Das lasse ich nicht zu!'},
- {r:'навсегда́',t:'naf-sig-DA',d:'für immer',e:'Так я навсегда́ теря́ю пу́хлю.',x:'So verliere ich Waddles für immer.'},
+ {r:'навсегда́',t:'naf-sig-DA',d:'für immer (endgültig, ab jetzt)',e:'Так я навсегда́ теря́ю пу́хлю.',x:'So verliere ich Waddles für immer.'},
  {r:'теря́ть',t:'ti-RJATJ',d:'verlieren',e:'Я не хочу́ теря́ть друзе́й.',x:'Ich will keine Freunde verlieren.'},
  {r:'остерега́ться',t:'as-ti-ri-GAT-sa',d:'sich hüten vor',e:'Остерега́йтесь го́рных льво́в!',x:'Hütet euch vor Berglöwen!'},
  {r:'тропа́',t:'tra-PA',d:'Pfad, Weg',e:'По э́той у́зкой тропе́ мы идём.',x:'Auf diesem schmalen Pfad gehen wir.'},
@@ -1989,7 +1997,7 @@ const PACKS=[
  {r:'кольцо́',t:'kalj-ZO',d:'Ring',e:'У нас нет золоты́х ко́лец.',x:'Wir haben keine goldenen Ringe.'},
  {r:'чемпио́н',t:'tschim-pi-ON',d:'Champion, Meister',e:'Я до́лжен победи́ть всех чемпио́нов!',x:'Ich muss alle Champions besiegen!'},
  {r:'зану́да',t:'sa-NU-da',d:'Langweiler, Nervensäge',e:'Он жу́ткий зану́да.',x:'Er ist eine furchtbare Nervensäge.'},
- {r:'напуга́ть',t:'na-pu-GATJ',d:'erschrecken, Angst machen',e:'Про́сто напуга́й его́!',x:'Erschreck ihn einfach!'},
+ {r:'напуга́ть',t:'na-pu-GATJ',d:'erschrecken (einmal, erfolgreich)',e:'Про́сто напуга́й его́!',x:'Erschreck ihn einfach!'},
  {r:'вы́зов при́нят',t:'WY-saf PRI-nit',d:'Herausforderung angenommen',e:'Вы́зов при́нят!',x:'Herausforderung angenommen!'},
  {r:'неподви́жный',t:'ni-pad-WISCH-nyj',d:'unbeweglich, reglos',e:'Э́то мой неподви́жный режи́м.',x:'Das ist mein Reglos-Modus.'},
  {r:'преодоле́ть',t:'pri-a-da-LJETJ',d:'überwinden',e:'Как помо́чь ему́ преодоле́ть страх?',x:'Wie hilft man ihm, die Angst zu überwinden?'},
@@ -2105,7 +2113,7 @@ const PACKS=[
  {r:'превраща́ться',t:'pri-wra-SCHTSCHAT-sa',d:'sich verwandeln',e:'Я превраща́юсь в гла́вную двойня́шку!',x:'Ich verwandle mich in den Haupt-Zwilling!'},
  {r:'счита́ться',t:'schtschi-TAT-sa',d:'zählen, gelten',e:'Миллиме́тр не счита́ется!',x:'Ein Millimeter zählt nicht!'},
  {r:'бра́тик',t:'BRA-tik',d:'Brüderchen',e:'Я всегда́ хоте́ла ма́ленького бра́тика.',x:'Ich wollte immer ein kleines Brüderchen.'},
- {r:'проти́вный',t:'pra-TIW-nyj',d:'widerlich, ekelhaft',e:'Проти́вная Мэ́йбл!',x:'Fiese Mabel!'},
+ {r:'проти́вный',t:'pra-TIW-nyj',d:'widerlich (Adjektiv)',e:'Проти́вная Мэ́йбл!',x:'Fiese Mabel!'},
  {r:'миллиме́тр',t:'mil-li-MJETR',d:'Millimeter',e:'Она́ на миллиме́тр вы́ше тебя́.',x:'Sie ist einen Millimeter größer als du.'}
  ],
  q:[
@@ -2318,7 +2326,7 @@ const PACKS=[
  {r:'колду́нья',t:'kal-DU-nja',d:'Hexe, Zauberin',e:'Она́ оде́лась как колду́нья.',x:'Sie hat sich als Hexe verkleidet.'},
  {r:'ледене́ц',t:'li-di-NJEZ',d:'Lutscher, Bonbon',e:'Мне то́лько ледене́ц, пожа́луйста.',x:'Für mich nur einen Lutscher, bitte.'},
  {r:'изобража́ть',t:'i-sa-bra-SCHATJ',d:'darstellen, spielen',e:'А ты кого́ изобража́ешь?',x:'Und wen stellst du dar?'},
- {r:'торопи́ться',t:'ta-ra-PIT-sa',d:'sich beeilen',e:'Мы о́чень торо́пимся!',x:'Wir haben es sehr eilig!'},
+ {r:'торопи́ться',t:'ta-ra-PIT-sa',d:'sich beeilen (in Eile sein)',e:'Мы о́чень торо́пимся!',x:'Wir haben es sehr eilig!'},
  {r:'ара́хис',t:'a-RA-chis',d:'Erdnuss',e:'Сла́дкий ара́хис — моя́ люби́мая конфе́та.',x:'Gebrannte Erdnüsse sind meine Lieblingssüßigkeit.'},
  {r:'пра́вило',t:'PRA-wi-la',d:'Regel',e:'Ну́жно игра́ть по пра́вилам!',x:'Man muss sich an die Regeln halten!'},
  {r:'наде́ть',t:'na-DJETJ',d:'anziehen, aufsetzen',e:'Ты то́же до́лжен наде́ть костю́м.',x:'Du musst auch ein Kostüm anziehen.'},
@@ -2328,7 +2336,7 @@ const PACKS=[
  {r:'просла́вить',t:'pra-SLA-witj',d:'berühmt machen',e:'Я просла́влю тебя́ в интерне́те!',x:'Ich mache dich im Internet berühmt!'},
  {r:'поко́нчить',t:'pa-KON-tschitj',d:'Schluss machen mit, beenden',e:'Дава́йте поко́нчим с э́тим!',x:'Lasst uns damit Schluss machen!'},
  {r:'вы́просить',t:'WY-pra-sitj',d:'erbetteln, herausbekommen',e:'Оста́лось вы́просить всего́ одну́ конфе́ту.',x:'Wir müssen nur noch ein Bonbon erbetteln.'},
- {r:'ка́шель',t:'KA-schylj',d:'Husten',e:'Твой ка́шель совсе́м прошёл!',x:'Dein Husten ist ganz weg!'},
+ {r:'ка́шель',t:'KA-schylj',d:'Husten (Substantiv)',e:'Твой ка́шель совсе́м прошёл!',x:'Dein Husten ist ganz weg!'},
  {r:'подогна́ть',t:'pa-dag-NATJ',d:'vorfahren, heranfahren',e:'Я пойду́ подгоню́ пика́п.',x:'Ich fahre schon mal den Pick-up vor.'},
  {r:'воню́чка',t:'wa-NJUTSCH-ka',d:'Stinker (Schimpfwort)',e:'Кто после́дний — тот воню́чка!',x:'Wer Letzter ist, ist ein Stinker!'},
  {r:'погляде́ть',t:'pa-gli-DJETJ',d:'mal schauen, gucken',e:'Я про́сто пришёл погляде́ть.',x:'Ich bin nur zum Gucken gekommen.'},
@@ -2358,7 +2366,7 @@ const PACKS=[
  {r:'тормози́ть',t:'tar-ma-SITJ',d:'bremsen',e:'Тормози́, Зус!',x:'Brems, Soos!'},
  {r:'перекры́ть',t:'pi-rik-RYTJ',d:'versperren, blockieren',e:'Он перекры́л еди́нственный вы́ход.',x:'Er hat den einzigen Ausgang versperrt.'},
  {r:'волнова́ть',t:'wal-na-WATJ',d:'beunruhigen, kümmern',e:'Зна́чит, тепе́рь тебя́ волну́ет монстр?',x:'Also kümmert dich jetzt das Monster?'},
- {r:'взросле́ть',t:'wsras-LJETJ',d:'erwachsen werden',e:'Мы взросле́ем, и пра́здников всё ме́ньше.',x:'Wir werden erwachsen, und es gibt immer weniger Feste.'},
+ {r:'взросле́ть',t:'wsras-LJETJ',d:'erwachsen werden (nach und nach)',e:'Мы взросле́ем, и пра́здников всё ме́ньше.',x:'Wir werden erwachsen, und es gibt immer weniger Feste.'},
  {r:'прекраща́ть',t:'pri-kra-SCHTSCHATJ',d:'aufhören mit, einstellen',e:'И́менно поэ́тому нельзя́ прекраща́ть!',x:'Genau deshalb darf man nicht aufhören!'},
  {r:'прикры́ть',t:'pri-KRYTJ',d:'bedecken, zudecken',e:'Нам ну́жно чем-то прикры́ть лица́.',x:'Wir müssen unsere Gesichter irgendwie bedecken.'},
  {r:'камуфля́ж',t:'ka-muf-LJASCH',d:'Tarnung, Tarnkleidung',e:'Что-то вро́де камуфля́жа.',x:'So etwas wie eine Tarnung.'},
@@ -2509,14 +2517,14 @@ const PACKS=[
  {r:'постро́же',t:'pas-TRO-schy',d:'etwas strenger',e:'Мо́жет, ста́ть немно́го постро́же?',x:'Vielleicht etwas strenger werden?'},
  {r:'дружелю́бный',t:'dru-schy-LJUB-nyj',d:'freundlich, umgänglich',e:'Будь дружелю́бной и позити́вной.',x:'Sei freundlich und positiv.'},
  {r:'кле́тка',t:'KLJET-ka',d:'Käfig; Zelle',e:'Как он вы́брался из за́пертой кле́тки?',x:'Wie ist er aus dem verschlossenen Käfig gekommen?'},
- {r:'переры́в',t:'pi-ri-RYF',d:'Pause',e:'Ты дала́ ему́ переры́в?',x:'Du hast ihm eine Pause gegeben?'},
+ {r:'переры́в',t:'pi-ri-RYF',d:'Pause (im Arbeitstag)',e:'Ты дала́ ему́ переры́в?',x:'Du hast ihm eine Pause gegeben?'},
  {r:'передохну́ть',t:'pi-ri-dach-NUTJ',d:'verschnaufen, kurz ausruhen',e:'Передохни́ пять мину́т.',x:'Verschnauf fünf Minuten.'},
  {r:'покло́нник',t:'pak-LON-nik',d:'Fan, Verehrer',e:'Ска́жете что-нибудь покло́нникам?',x:'Sagen Sie etwas zu Ihren Fans?'},
  {r:'обли́ть',t:'ab-LITJ',d:'übergießen, begießen',e:'Его́ ну́жно обли́ть водо́й.',x:'Man muss ihn mit Wasser übergießen.'},
  {r:'разнести́',t:'ras-nis-TI',d:'verwüsten, zerlegen',e:'Хорошо́, что он не успе́л всё разнести́.',x:'Gut, dass er nicht alles verwüsten konnte.'},
  {r:'на исхо́де',t:'na is-CHO-di',d:'geht zu Ende, neigt sich',e:'Тре́тий день на исхо́де!',x:'Der dritte Tag neigt sich dem Ende!'},
  {r:'бре́дить',t:'BRJE-ditj',d:'fantasieren, im Fieber reden',e:'Я бре́жу и́ли тут что-то измени́лось?',x:'Fantasiere ich, oder hat sich hier was verändert?'},
- {r:'поспеши́ть',t:'pas-pi-SCHITJ',d:'sich beeilen',e:'Е́сли поспеши́м, успе́ем!',x:'Wenn wir uns beeilen, schaffen wir es!'},
+ {r:'поспеши́ть',t:'pas-pi-SCHITJ',d:'sich beeilen (schneller machen)',e:'Е́сли поспеши́м, успе́ем!',x:'Wenn wir uns beeilen, schaffen wir es!'},
  {r:'ста́я',t:'STA-ja',d:'Rudel, Schwarm',e:'Я познако́мился с во́лчьей ста́ей.',x:'Ich habe ein Wolfsrudel kennengelernt.'},
  {r:'воспита́ть',t:'was-pi-TATJ',d:'erziehen, aufziehen',e:'Они́ хотя́т воспита́ть меня́ как во́лка.',x:'Sie wollen mich wie einen Wolf aufziehen.'},
  {r:'ло́гово',t:'LO-ga-wa',d:'Bau, Höhle (von Tieren)',e:'Мне пора́ в ло́гово.',x:'Ich muss in den Bau.'},
@@ -2604,7 +2612,7 @@ const PACKS=[
  words:[
  {r:'явля́ться',t:'jiw-LJAT-sa',d:'erscheinen; sein',e:'Я бу́ду явля́ться тебе́ в кошма́рах!',x:'Ich werde dir in Albträumen erscheinen!'},
  {r:'вы́жить',t:'WY-schytj',d:'überleben',e:'Коне́чно, е́сли вы́живешь.',x:'Natürlich, wenn du überlebst.'},
- {r:'жу́тко',t:'SCHUT-ka',d:'unheimlich, gruselig',e:'Э́то жу́тко и проти́вно!',x:'Das ist unheimlich und widerlich!'},
+ {r:'жу́тко',t:'SCHUT-ka',d:'unheimlich (Adverb: es ist unheimlich)',e:'Э́то жу́тко и проти́вно!',x:'Das ist unheimlich und widerlich!'},
  {r:'ди́ктор',t:'DIK-tar',d:'Ansager, Sprecher (Radio/TV)',e:'Ты говори́шь как ди́ктор из телеви́зора.',x:'Du sprichst wie ein Fernsehsprecher.'},
  {r:'облада́тель',t:'ab-la-DA-tilj',d:'Besitzer, Inhaber',e:'Облада́тель круто́го го́лоса!',x:'Besitzer einer coolen Stimme!'},
  {r:'хулига́н',t:'chu-li-GAN',d:'Rowdy, Störenfried',e:'Там телефо́нный хулига́н!',x:'Da ist ein Telefon-Störenfried!'},
@@ -2640,12 +2648,12 @@ const PACKS=[
  {r:'буди́льник',t:'bu-DILJ-nik',d:'Wecker',e:'Э́то не мой буди́льник.',x:'Das ist nicht mein Wecker.'},
  {r:'восклица́ть',t:'was-kli-ZATJ',d:'ausrufen',e:'Я то́же удивлённо восклица́л.',x:'Ich habe auch erstaunt ausgerufen.'},
  {r:'скеле́т',t:'ski-LJET',d:'Skelett',e:'Э́то голова́ ковбо́я-скеле́та.',x:'Das ist der Kopf eines Cowboy-Skeletts.'},
- {r:'втяну́ть',t:'wtji-NUTJ',d:'hineinziehen',e:'Ты втяну́л меня́ в э́то!',x:'Du hast mich da hineingezogen!'},
+ {r:'втяну́ть',t:'wtji-NUTJ',d:'hineinziehen (einmal, ruckartig)',e:'Ты втяну́л меня́ в э́то!',x:'Du hast mich da hineingezogen!'},
  {r:'превзойти́',t:'priw-saj-TI',d:'übertreffen',e:'Я превзошёл сам себя́!',x:'Ich habe mich selbst übertroffen!'},
  {r:'отыгра́ться',t:'a-tyg-RAT-sa',d:'sich revanchieren, zurückschlagen',e:'Тепе́рь я отыгра́юсь на вас!',x:'Jetzt revanchiere ich mich an euch!'},
  {r:'выключа́тель',t:'wy-klju-TSCHA-tilj',d:'Schalter',e:'Внутри́ есть выключа́тель.',x:'Drinnen gibt es einen Schalter.'},
  {r:'вы́рубить',t:'WY-ru-bitj',d:'ausschalten, abschalten (salopp)',e:'Я найду́ его́ и вы́рублю игру́.',x:'Ich finde ihn und schalte das Spiel ab.'},
- {r:'отвле́чь',t:'at-WLJETSCH',d:'ablenken',e:'Вы должны́ отвле́чь его́!',x:'Ihr müsst ihn ablenken!'},
+ {r:'отвле́чь',t:'at-WLJETSCH',d:'ablenken (einmalig)',e:'Вы должны́ отвле́чь его́!',x:'Ihr müsst ihn ablenken!'},
  {r:'издава́ть',t:'is-da-WATJ',d:'von sich geben (Laute)',e:'Кто уме́ет издава́ть проти́вные зву́ки?',x:'Wer kann eklige Geräusche machen?'},
  {r:'негодя́й',t:'ni-ga-DJAJ',d:'Schurke, Halunke',e:'А ну-ка покажи́тесь, негодя́и!',x:'Kommt heraus, ihr Halunken!'},
  {r:'бесполе́зно',t:'bis-pa-LJES-na',d:'zwecklos, nutzlos',e:'Всё бесполе́зно!',x:'Alles zwecklos!'},
@@ -2684,7 +2692,7 @@ const PACKS=[
  {r:'таре́лка',t:'ta-RJEL-ka',d:'Teller',e:'Никто́ не ви́дел мою́ таре́лку?',x:'Hat niemand meinen Teller gesehen?'},
  {r:'заста́вить',t:'sas-TA-witj',d:'zwingen, veranlassen',e:'Как мне заста́вить его́?',x:'Wie kann ich ihn dazu zwingen?'},
  {r:'зары́ть',t:'sa-RYTJ',d:'vergraben',e:'В лесу́ зары́ты зу́бы пра́вды.',x:'Im Wald sind die Zähne der Wahrheit vergraben.'},
- {r:'лгать',t:'lgatj',d:'lügen',e:'Наде́вший их не смо́жет лгать.',x:'Wer sie trägt, kann nicht mehr lügen.'},
+ {r:'лгать',t:'lgatj',d:'lügen (gehoben, ernst)',e:'Наде́вший их не смо́жет лгать.',x:'Wer sie trägt, kann nicht mehr lügen.'},
  {r:'открове́нно',t:'at-kra-WJEN-na',d:'offen, freimütig',e:'Дово́льно открове́нно!',x:'Ziemlich offen!'},
  {r:'разучи́ться',t:'ra-su-TSCHIT-sa',d:'verlernen',e:'Я как бу́дто разучи́лся лгать.',x:'Ich habe anscheinend das Lügen verlernt.'},
  {r:'почеса́ть',t:'pa-tschi-SATJ',d:'kratzen',e:'Мне ну́жно споко́йно почеса́ть спи́ну.',x:'Ich muss mir in Ruhe den Rücken kratzen.'},
@@ -2713,7 +2721,7 @@ const PACKS=[
  {r:'фами́лия',t:'fa-MI-li-ja',d:'Nachname, Familienname',e:'Нет врача́ с тако́й фами́лией.',x:'Es gibt keinen Arzt mit diesem Nachnamen.'},
  {r:'паркова́ться',t:'par-ka-WAT-sa',d:'parken',e:'Я паркова́лся на места́х для инвали́дов.',x:'Ich habe auf Behindertenparkplätzen geparkt.'},
  {r:'инвали́д',t:'in-wa-LIT',d:'Behinderter',e:'Э́то ме́сто для инвали́дов.',x:'Das ist ein Behindertenparkplatz.'},
- {r:'красть',t:'krastj',d:'stehlen',e:'Он крал фейерве́рки.',x:'Er hat Feuerwerkskörper gestohlen.'},
+ {r:'красть',t:'krastj',d:'stehlen (immer wieder)',e:'Он крал фейерве́рки.',x:'Er hat Feuerwerkskörper gestohlen.'},
  {r:'фейерве́рк',t:'fi-jir-WJERK',d:'Feuerwerk',e:'Мы смотре́ли фейерве́рк.',x:'Wir haben das Feuerwerk angeschaut.'},
  {r:'контраба́нда',t:'kan-tra-BAN-da',d:'Schmuggelware',e:'Он вози́л контраба́нду.',x:'Er hat Schmuggelware transportiert.'},
  {r:'экзоти́ческий',t:'ig-sa-TI-tschis-kij',d:'exotisch',e:'Экзоти́ческие живо́тные.',x:'Exotische Tiere.'},
@@ -2748,7 +2756,7 @@ const PACKS=[
  {r:'очарова́ние',t:'a-tscha-ra-WA-ni-je',d:'Zauber, Charme',e:'Оа́зис ле́тнего очарова́ния.',x:'Eine Oase des Sommerzaubers.'},
  {r:'сыро́й',t:'sy-ROJ',d:'feucht, nass; roh',e:'Сиде́ть в сыро́й я́ме?',x:'In einer feuchten Grube sitzen?'},
  {r:'незнако́мец',t:'ni-sna-KO-miz',d:'Fremder, Unbekannter',e:'С незнако́мцами, как в авто́бусе.',x:'Mit Fremden, wie im Bus.'},
- {r:'покида́ть',t:'pa-ki-DATJ',d:'verlassen',e:'Он не покида́ет бассе́йна.',x:'Er verlässt das Schwimmbad nie.'},
+ {r:'покида́ть',t:'pa-ki-DATJ',d:'verlassen (immer wieder, nie)',e:'Он не покида́ет бассе́йна.',x:'Er verlässt das Schwimmbad nie.'},
  {r:'одино́чка',t:'a-di-NOTSCH-ka',d:'Einzelgänger',e:'Его́ называ́ют зага́дочным одино́чкой.',x:'Man nennt ihn den geheimnisvollen Einzelgänger.'},
  {r:'пыша́ть жа́ром',t:'py-SCHATJ SCHA-ram',d:'Hitze ausstrahlen',e:'И́ли жа́ром пы́шет тот па́рень?',x:'Oder strahlt dieser Typ die Hitze aus?'},
  {r:'усы́',t:'u-SY',d:'Schnurrbart',e:'Вы посмотри́те на его́ усы́!',x:'Schaut euch seinen Schnurrbart an!'},
@@ -2824,7 +2832,7 @@ const PACKS=[
  {r:'ки́слый',t:'KISS-lyj',d:'sauer',e:'От ки́слых конфе́т у меня́ свело́ гу́бы.',x:'Von den sauren Bonbons zog es mir die Lippen zusammen.'},
  {r:'склад',t:'SKLAT',d:'Lager, Lagerraum',e:'Кто́-то но́чью взлома́л склад.',x:'Jemand ist nachts ins Lager eingebrochen.'},
  {r:'сачо́к',t:'sa-TSCHOK',d:'Kescher, Käscher',e:'Он слома́л наш еди́нственный сачо́к.',x:'Er hat unseren einzigen Kescher zerbrochen.'},
- {r:'вы́следить',t:'WY-sli-ditj',d:'aufspüren, ausfindig machen',e:'Ты до́лжен вы́следить во́ра.',x:'Du musst den Dieb aufspüren.'},
+ {r:'вы́следить',t:'WY-sli-ditj',d:'aufspüren (durch Verfolgen)',e:'Ты до́лжен вы́следить во́ра.',x:'Du musst den Dieb aufspüren.'},
  {r:'му́читься',t:'MU-tschit-sa',d:'leiden, sich quälen',e:'Я не могу́ смотре́ть, как ты му́чишься.',x:'Ich kann nicht zusehen, wie du leidest.'},
  {r:'бры́зги',t:'BRYS-gi',d:'Spritzer, Sprühwasser',e:'Прости́ за бры́зги!',x:'Entschuldige die Spritzer!'},
  {r:'океа́н',t:'a-ki-AN',d:'Ozean',e:'Его́ семья́ живёт в океа́не.',x:'Seine Familie lebt im Ozean.'},
@@ -2850,7 +2858,7 @@ const PACKS=[
  {r:'любопы́тно',t:'lju-ba-PYT-na',d:'interessant, das macht neugierig',e:'Любопы́тно, но сли́шком сло́жно.',x:'Interessant, aber zu kompliziert.'},
  {r:'увести́',t:'u-wis-TI',d:'wegführen, fortbringen',e:'Мы уведём тебя́ отсю́да но́чью.',x:'Wir bringen dich heute Nacht weg.'},
  {r:'водово́з',t:'wa-da-WOS',d:'Wasserwagen, Wassertransporter',e:'Мы спря́чем его́ в водово́зе.',x:'Wir verstecken ihn im Wasserwagen.'},
- {r:'ка́шлять',t:'KASCH-litj',d:'husten',e:'Э́тот ку́лер то́лько что ка́шлянул!',x:'Dieser Wasserspender hat gerade gehustet!'},
+ {r:'ка́шлять',t:'KASCH-litj',d:'husten (Verb)',e:'Э́тот ку́лер то́лько что ка́шлянул!',x:'Dieser Wasserspender hat gerade gehustet!'},
  {r:'отвезти́',t:'at-wis-TI',d:'hinbringen, hinfahren',e:'Я отвезу́ тебя́ к океа́ну.',x:'Ich fahre dich zum Ozean.'},
  {r:'превы́сить',t:'pri-WY-ssitj',d:'überschreiten',e:'Кто́-то превы́сил ско́рость.',x:'Jemand hat die Geschwindigkeit überschritten.'},
  {r:'присни́ться',t:'pris-NIT-sa',d:'im Traum erscheinen, träumen',e:'Наве́рное, мне э́то присни́лось.',x:'Wahrscheinlich habe ich das nur geträumt.'},
@@ -2883,7 +2891,7 @@ const PACKS=[
  {r:'забо́р',t:'sa-BOR',d:'Zaun',e:'Сло́манный забо́р — э́то моя́ вина́.',x:'Der kaputte Zaun ist meine Schuld.'},
  {r:'вмя́тина',t:'WMJA-ti-na',d:'Delle, Beule',e:'На маши́не оста́лась вмя́тина.',x:'Am Auto blieb eine Delle zurück.'},
  {r:'пропа́вший',t:'pra-PAF-schij',d:'verschwunden, vermisst',e:'Пропа́вший мегафо́н так и не нашли́.',x:'Das verschwundene Megafon wurde nie gefunden.'},
- {r:'вина́',t:'wi-NA',d:'Schuld',e:'Э́то моя́ вина́, прости́те.',x:'Das ist meine Schuld, entschuldigt.'},
+ {r:'вина́',t:'wi-NA',d:'Schuld (die)',e:'Э́то моя́ вина́, прости́те.',x:'Das ist meine Schuld, entschuldigt.'},
  {r:'свисто́к',t:'swiss-TOK',d:'Trillerpfeife, Pfiff',e:'Сдай свисто́к, ты бо́льше не рабо́таешь.',x:'Gib die Trillerpfeife ab, du arbeitest nicht mehr.'},
  {r:'сдать',t:'SDATJ',d:'abgeben, zurückgeben',e:'На́до сдать ключи́ до ве́чера.',x:'Man muss die Schlüssel bis zum Abend abgeben.'},
  {r:'объединя́ться',t:'ab-ji-di-NJAT-sa',d:'sich vereinigen, zusammenschließen',e:'У́точки всех стран, объединя́йтесь!',x:'Entchen aller Länder, vereinigt euch!'},
@@ -2956,7 +2964,7 @@ const PACKS=[
  {r:'одновреме́нно',t:'ad-na-wri-MJEN-na',d:'gleichzeitig',e:'Мы узна́ли об э́том одновреме́нно.',x:'Wir haben es gleichzeitig erfahren.'},
  {r:'шнуро́к',t:'schnu-ROK',d:'Schnürsenkel',e:'У меня́ шнуро́к развяза́лся.',x:'Mein Schnürsenkel hat sich gelöst.'},
  {r:'развяза́ться',t:'ras-wi-SAT-sa',d:'sich lösen, aufgehen',e:'Шнурки́ ча́сто развя́зываются.',x:'Schnürsenkel gehen oft auf.'},
- {r:'ую́тно',t:'u-JUT-na',d:'gemütlich',e:'У вас на чердаке́ дово́льно ую́тно.',x:'Bei euch auf dem Dachboden ist es ziemlich gemütlich.'},
+ {r:'ую́тно',t:'u-JUT-na',d:'gemütlich (Adverb: es ist gemütlich)',e:'У вас на чердаке́ дово́льно ую́тно.',x:'Bei euch auf dem Dachboden ist es ziemlich gemütlich.'},
  {r:'подли́за',t:'pad-LI-sa',d:'Schleimer, Schleimerin',e:'Он ма́стер среди́ подли́з.',x:'Er ist ein Meister unter den Schleimern.'},
  {r:'перегиба́ть па́лку',t:'pi-ri-gi-BATJ PAL-ku',d:'es übertreiben, den Bogen überspannen',e:'Дя́дя, ты перегиба́ешь па́лку.',x:'Onkel, du übertreibst es.'},
  {r:'чини́ть',t:'tschi-NITJ',d:'reparieren, flicken',e:'Кто хо́чет чини́ть кры́шу в жару́?',x:'Wer will bei der Hitze das Dach reparieren?'},
@@ -2988,7 +2996,7 @@ const PACKS=[
  {r:'вслух',t:'FSSLUCH',d:'laut, hörbar',e:'Ну́жно про́сто пожела́ть вслух.',x:'Man muss es einfach laut wünschen.'},
  {r:'девча́чий',t:'diw-TSCHA-tschij',d:'Mädchen-, mädchenhaft',e:'У нас девча́чья вечери́нка.',x:'Wir haben eine Mädchenparty.'},
  {r:'закидо́ны',t:'sa-ki-DO-ny',d:'Macken, Spleen',e:'Э́ти девча́чьи закидо́ны не для меня́.',x:'Diese Mädchen-Macken sind nichts für mich.'},
- {r:'напра́сно',t:'na-PRASS-na',d:'umsonst, vergeblich',e:'Я напра́сно принесла́ э́ти кни́ги.',x:'Ich habe diese Bücher umsonst mitgebracht.'},
+ {r:'напра́сно',t:'na-PRASS-na',d:'umsonst (ohne Ergebnis)',e:'Я напра́сно принесла́ э́ти кни́ги.',x:'Ich habe diese Bücher umsonst mitgebracht.'},
  {r:'мускули́стый',t:'muss-ku-LISS-tyj',d:'muskulös',e:'Мускули́стая грудь зве́ря.',x:'Die muskulöse Brust der Bestie.'},
  {r:'созда́ние',t:'sas-DA-ni-je',d:'Geschöpf, Wesen',e:'Я созда́ние но́чи и стра́сти.',x:'Ich bin ein Geschöpf der Nacht und der Leidenschaft.'},
  {r:'страсть',t:'STRASSTJ',d:'Leidenschaft',e:'Он говори́т то́лько о стра́сти.',x:'Er spricht nur von Leidenschaft.'},
@@ -2997,7 +3005,7 @@ const PACKS=[
  {r:'лу́жа',t:'LU-scha',d:'Pfütze',e:'Гря́зная лу́жа меня́ не пуга́ет.',x:'Eine schmutzige Pfütze macht mir keine Angst.'},
  {r:'бана́льный',t:'ba-NALJ-nyj',d:'banal, gewöhnlich',e:'Э́то соверше́нно бана́льный вопро́с.',x:'Das ist eine völlig banale Frage.'},
  {r:'гороско́п',t:'ga-ras-KOP',d:'Horoskop',e:'Всё то́чно как в моём гороско́пе.',x:'Alles genau wie in meinem Horoskop.'},
- {r:'повзросле́ть',t:'paw-sras-LJETJ',d:'erwachsen werden',e:'Вот я и повзросле́ла.',x:'Und schon bin ich erwachsen geworden.'},
+ {r:'повзросле́ть',t:'paw-sras-LJETJ',d:'erwachsen geworden sein',e:'Вот я и повзросле́ла.',x:'Und schon bin ich erwachsen geworden.'},
  {r:'заткну́ться',t:'satk-NUT-sa',d:'die Klappe halten',e:'А ну заткни́сь!',x:'Halt jetzt die Klappe!'},
  {r:'старпёр',t:'star-PJOR',d:'alter Sack, Opa (beleidigend)',e:'Ты ста́рый жа́дный старпёр!',x:'Du alter, geiziger Sack!'},
  {r:'жа́дный',t:'SCHAD-nyj',d:'geizig, gierig',e:'Он о́чень жа́дный челове́к.',x:'Er ist ein sehr geiziger Mensch.'},
@@ -3029,7 +3037,7 @@ const PACKS=[
  {r:'ме́риться',t:'MJE-rit-sa',d:'sich messen (mit jemandem)',e:'Пошли́ ме́риться уса́ми!',x:'Gehen wir Schnurrbärte vergleichen!'},
  {r:'то́нкий',t:'TON-kij',d:'dünn, fein',e:'Каки́е у меня́ то́нкие ру́чки!',x:'Was für dünne Ärmchen ich habe!'},
  {r:'напряже́ние',t:'na-pri-SCHE-ni-je',d:'Spannung',e:'Идёт напряже́ние, держи́сь!',x:'Die Spannung kommt, halt dich fest!'},
- {r:'неви́нный',t:'ni-WIN-nyj',d:'unschuldig',e:'Я чи́сто неви́нен!',x:'Ich bin völlig unschuldig!'},
+ {r:'неви́нный',t:'ni-WIN-nyj',d:'unschuldig (arglos, harmlos)',e:'Я чи́сто неви́нен!',x:'Ich bin völlig unschuldig!'},
  {r:'поросёнок',t:'pa-ra-SSJO-nak',d:'Ferkel, Schweinchen',e:'Ну что ж, я стал поросёнком.',x:'Nun ja, ich bin ein Ferkel geworden.'},
  {r:'жа́реный',t:'SCHA-ri-nyj',d:'gebraten, frittiert',e:'Я хочу́ жа́реный сыр!',x:'Ich will gebratenen Käse!'},
  {r:'сообщи́ть',t:'sa-ap-SCHTSCHITJ',d:'mitteilen, melden',e:'Нам сообщи́ли о гро́мком сме́хе.',x:'Uns wurde lautes Lachen gemeldet.'},
@@ -3063,7 +3071,7 @@ const PACKS=[
  {r:'измени́ться',t:'is-mi-NIT-sa',d:'sich verändern',e:'Почему́ ты так измени́лся?',x:'Warum hast du dich so verändert?'},
  {r:'втыка́ть',t:'fty-KATJ',d:'kapieren, schnallen',e:'Я что́-то не втыка́ю.',x:'Ich kapiere das irgendwie nicht.'},
  {r:'разо́чек',t:'ra-SO-tschik',d:'ein einziges Mal',e:'Ну хоть разо́чек!',x:'Na, wenigstens ein einziges Mal!'},
- {r:'поцелова́ться',t:'pa-zy-la-WAT-sa',d:'sich küssen',e:'Дава́й поцелу́емся!',x:'Lass uns küssen!'},
+ {r:'поцелова́ться',t:'pa-zy-la-WAT-sa',d:'sich küssen (einmal, kurz)',e:'Дава́й поцелу́емся!',x:'Lass uns küssen!'},
  {r:'до́брой но́чи',t:'DOB-raj NO-tschi',d:'Gute Nacht',e:'До́брой но́чи, Мэ́йбл.',x:'Gute Nacht, Mabel.'}
  ],
  q:[
@@ -3166,10 +3174,10 @@ const PACKS=[
  {r:'корми́ть',t:'kar-MITJ',d:'füttern, ernähren',e:'Она́ ко́рмит нас пи́ццей.',x:'Sie füttert uns mit Pizza.'},
  {r:'преда́тельница',t:'pri-DA-tilj-ni-za',d:'Verräterin',e:'Ты преда́тельница!',x:'Du bist eine Verräterin!'},
  {r:'обезу́меть',t:'a-bi-SU-mitj',d:'den Verstand verlieren',e:'Мэ́йбл совсе́м обезу́мела.',x:'Mabel hat völlig den Verstand verloren.'},
- {r:'заплета́ть',t:'sap-li-TATJ',d:'flechten',e:'Дава́йте заплета́ть коси́чки!',x:'Lasst uns Zöpfe flechten!'},
+ {r:'заплета́ть',t:'sap-li-TATJ',d:'flechten (Haare zu Zöpfen)',e:'Дава́йте заплета́ть коси́чки!',x:'Lasst uns Zöpfe flechten!'},
  {r:'предупреди́ть',t:'pri-dup-ri-DITJ',d:'warnen, Bescheid geben',e:'Ну́жно предупреди́ть Ве́нди.',x:'Wir müssen Wendy warnen.'},
  {r:'благода́рность',t:'bla-ga-DAR-nastj',d:'Dankbarkeit, Dank',e:'Э́та пе́сня — на́ша благода́рность.',x:'Dieses Lied ist unser Dank.'},
- {r:'объя́тие',t:'ab-JA-ti-je',d:'Umarmung',e:'Э́то объя́тие для души́.',x:'Das ist eine Umarmung für die Seele.'},
+ {r:'объя́тие',t:'ab-JA-ti-je',d:'Umarmung (einzelne)',e:'Э́то объя́тие для души́.',x:'Das ist eine Umarmung für die Seele.'},
  {r:'выгоня́ть',t:'wy-ga-NJATJ',d:'hinauswerfen, vertreiben',e:'Девчо́нок на́до выгоня́ть.',x:'Mädchen muss man rauswerfen.'},
  {r:'нело́вко',t:'ni-LOF-ka',d:'unangenehm, peinlich',e:'Я чу́вствую себя́ как-то нело́вко.',x:'Mir ist das irgendwie unangenehm.'},
  {r:'фен',t:'FJEN',d:'Föhn, Haartrockner',e:'Она́ де́ржит фен, пока́ мы поём.',x:'Sie hält den Föhn, während wir singen.'},
@@ -3269,7 +3277,7 @@ const PACKS=[
  {r:'крыло́',t:'kry-LO',d:'Flügel',e:'Да э́то же крыло́!',x:'Das ist ja ein Flügel!'},
  {r:'вы́мереть',t:'WY-mi-ritj',d:'aussterben',e:'Все диноза́вры вы́мерли давно́.',x:'Alle Dinosaurier sind längst ausgestorben.'},
  {r:'диноза́вр',t:'di-na-SAWR',d:'Dinosaurier',e:'Э́то был настоя́щий диноза́вр!',x:'Das war ein echter Dinosaurier!'},
- {r:'па́уза',t:'PAU-sa',d:'Pause',e:'Ага́, нело́вкая па́уза.',x:'Aha, eine peinliche Pause.'},
+ {r:'па́уза',t:'PAU-sa',d:'Pause (Stille im Gespräch)',e:'Ага́, нело́вкая па́уза.',x:'Aha, eine peinliche Pause.'},
  {r:'сли́вки',t:'SLIF-ki',d:'Sahne, Rahm',e:'Я пои́л его́ са́мыми жи́рными сли́вками.',x:'Ich habe ihn mit der fettesten Sahne gefüttert.'},
  {r:'мо́рда',t:'MOR-da',d:'Schnauze, Maul',e:'Он уда́рил его́ пря́мо по мо́рде.',x:'Er schlug ihm direkt auf die Schnauze.'},
  {r:'нече́стно',t:'ni-TSCHESS-na',d:'unfair, unehrlich',e:'Он игра́л нече́стно.',x:'Er hat unfair gespielt.'},
@@ -3358,7 +3366,7 @@ const PACKS=[
  {r:'рискова́ть',t:'riss-ka-WATJ',d:'riskieren, aufs Spiel setzen',e:'Ты рискова́л ра́ди пу́хли!',x:'Du hast für Waddles alles riskiert!'},
  {r:'ге́йзер',t:'GJEJ-sir',d:'Geysir',e:'Ге́йзер вы́толкнет нас нару́жу.',x:'Der Geysir stößt uns nach draußen.'},
  {r:'вы́толкнуть',t:'WY-talk-nutj',d:'hinausstoßen, hinausdrücken',e:'Вода́ вы́толкнула нас вверх.',x:'Das Wasser drückte uns nach oben.'},
- {r:'жиле́т',t:'schi-LJET',d:'Weste',e:'Он разорва́л мне весь жиле́т.',x:'Er hat mir die ganze Weste zerrissen.'},
+ {r:'жиле́т',t:'schi-LJET',d:'Weste (Kleidungsstück)',e:'Он разорва́л мне весь жиле́т.',x:'Er hat mir die ganze Weste zerrissen.'},
  {r:'разорва́ть',t:'ra-sar-WATJ',d:'zerreißen',e:'Не разорви́ руба́шку!',x:'Zerreiß das Hemd nicht!'},
  {r:'клык',t:'KLYK',d:'Reißzahn, Fangzahn',e:'Смотри́, э́то клык диноза́вра!',x:'Schau, das ist ein Dinosaurierzahn!'},
  {r:'вы́говорить',t:'WY-ga-wa-ritj',d:'aussprechen',e:'Я пра́вильно вы́говорил?',x:'Habe ich das richtig ausgesprochen?'},
@@ -3397,7 +3405,7 @@ const PACKS=[
  {r:'подуста́ть',t:'pa-du-STATJ',d:'etwas müde werden',e:'Что́-то я сего́дня подуста́л.',x:'Ich bin heute irgendwie etwas müde.'},
  {r:'лету́чая мышь',t:'li-TU-tscha-ja MYSCH',d:'Fledermaus',e:'На ку́хне лету́чая мышь!',x:'In der Küche ist eine Fledermaus!'},
  {r:'ко́готь',t:'KO-gatj',d:'Kralle, Klaue',e:'Она́ тро́гала меня́ свои́ми ко́гтями.',x:'Sie berührte mich mit ihren Krallen.'},
- {r:'отка́зываться',t:'at-KA-sy-wat-sa',d:'sich weigern, ablehnen',e:'На э́тот раз я отка́зываюсь!',x:'Diesmal weigere ich mich!'},
+ {r:'отка́зываться',t:'at-KA-sy-wat-sa',d:'sich weigern (immer wieder)',e:'На э́тот раз я отка́зываюсь!',x:'Diesmal weigere ich mich!'},
  {r:'утёнок',t:'u-TJO-nak',d:'Entlein, Küken',e:'И́ли э́то говоря́т про утя́т?',x:'Oder sagt man das über Entenküken?'},
  {r:'дезинфици́ровать',t:'di-sin-fi-ZY-ra-watj',d:'desinfizieren',e:'На́до всё продезинфици́ровать.',x:'Man muss alles desinfizieren.'},
  {r:'вероя́тность',t:'wi-ra-JAT-nastj',d:'Wahrscheinlichkeit',e:'Тем бо́льше вероя́тность, что вы́берут меня́.',x:'Umso größer die Wahrscheinlichkeit, dass er mich nimmt.'},
@@ -3451,7 +3459,7 @@ const PACKS=[
  {r:'звёздочка',t:'SWJOS-datsch-ka',d:'Sternchen',e:'Знак вопро́са, звёздочка и ёлка.',x:'Fragezeichen, Sternchen und Tannenbaum.'},
  {r:'позво́лить',t:'pa-SWO-litj',d:'erlauben, zulassen',e:'Но мы тебе́ не позво́лим!',x:'Aber das lassen wir nicht zu!'},
  {r:'властели́н',t:'wlas-ti-LIN',d:'Herrscher, Gebieter',e:'Я властели́н ра́зума.',x:'Ich bin der Herrscher über den Verstand.'},
- {r:'полага́ть',t:'pa-la-GATJ',d:'annehmen, vermuten',e:'Полага́ю, что мы в раю́.',x:'Ich nehme an, wir sind im Paradies.'},
+ {r:'полага́ть',t:'pa-la-GATJ',d:'annehmen, meinen (gehoben)',e:'Полага́ю, что мы в раю́.',x:'Ich nehme an, wir sind im Paradies.'},
  {r:'рай',t:'RAJ',d:'Paradies, Himmel',e:'Мы в раю́, я ви́жу а́нгела.',x:'Wir sind im Paradies, ich sehe einen Engel.'},
  {r:'а́нгел',t:'AN-gil',d:'Engel',e:'Она́ вы́глядит как а́нгел.',x:'Sie sieht aus wie ein Engel.'},
  {r:'не по зуба́м',t:'ni pa su-BAM',d:'eine Nummer zu groß für jemanden',e:'Я вам не по зуба́м, де́тки.',x:'Für euch bin ich eine Nummer zu groß, Kinder.'},
@@ -3611,7 +3619,7 @@ const PACKS=[
  url:'https://www.youtube.com/watch?v=KC8AdBmvYIw&list=PLtf1rsGS9MZJZYCooH2BU2yTOAA2h5-h6&index=3',
  note:'Dipper stiehlt die Visitenkarte, ruft die Agenten – und beweist ihnen das Übernatürliche gründlicher, als ihm lieb ist.',
  words:[
- {r:'ме́рзкий',t:'MJERS-kij',d:'widerlich, ekelhaft',e:'Сла́ва бо́гу, без ме́рзких аге́нтов.',x:'Gott sei Dank ohne die widerlichen Agenten.',rd:'о́чень неприя́тный'},
+ {r:'ме́рзкий',t:'MJERS-kij',d:'abscheulich, gemein',e:'Сла́ва бо́гу, без ме́рзких аге́нтов.',x:'Gott sei Dank ohne die widerlichen Agenten.',rd:'о́чень неприя́тный'},
  {r:'стоя́ть на шу́хере',t:'sta-JATJ na SCHU-chi-ri',d:'Schmiere stehen',e:'Я постою́ на шу́хере, а ты ищи́.',x:'Ich stehe Schmiere, und du suchst.',rd:'следи́ть, что́бы никто́ не пришёл'},
  {r:'визи́тка',t:'wi-SIT-ka',d:'Visitenkarte',e:'Дя́дя отобра́л его́ визи́тку.',x:'Der Onkel nahm ihm die Visitenkarte weg.',rd:'ма́ленькая ка́рточка с и́менем и телефо́ном'},
  {r:'отвле́чься',t:'at-WLJETSCH-sa',d:'sich ablenken lassen',e:'Извини́, отвлекла́сь на эсэмэ́ску.',x:'Entschuldige, ich war von einer SMS abgelenkt.',rd:'переста́ть смотре́ть на гла́вное'},
@@ -3671,6 +3679,126 @@ const PACKS=[
  {q:'Что призна́л дя́дя стэн?',qde:'Was gab Onkel Stan zu?',o:['он всё вре́мя знал пра́вду','он ничего́ не знал','он бои́тся зо́мби'],a:0},
  {q:'Что ви́дно в дневнике́ под ультрафиоле́том?',qde:'Was ist im Tagebuch unter UV-Licht zu sehen?',o:['скры́тый текст','рису́нки','ничего́'],a:0}]},
 
+{id:'gf-21-5',ic:'🎤',t:'Folge 21 · Teil 5',tru:'Трезву́чие',ep:'Staffel 2 · Folge 21',
+ url:'https://www.youtube.com/watch?v=wekChcpoN2c&list=PLtf1rsGS9MZJZYCooH2BU2yTOAA2h5-h6&index=5',
+ note:'Der Dreiklang besiegt die Zombies – und Stan lässt Dipper das Tagebuch behalten.',
+ words:[
+ {r:'черни́ла',t:'tschir-NI-la',d:'Tinte',e:'Они́ бы́ли напи́саны невиди́мыми черни́лами.',x:'Sie waren mit unsichtbarer Tinte geschrieben.',rd:'жи́дкость, кото́рой пи́шут ру́чкой'},
+ {r:'несокруши́мый',t:'ni-sak-ru-SCHI-myj',d:'unbezwingbar, unzerstörbar',e:'Я ду́мал, они́ несокруши́мые.',x:'Ich dachte, sie wären unbezwingbar.',rd:'тако́й, кото́рого нельзя́ победи́ть'},
+ {r:'трезву́чие',t:'tris-WU-tschi-je',d:'Dreiklang',e:'Зо́мби боя́тся пра́вильного трезву́чия.',x:'Zombies fürchten den richtigen Dreiklang.',rd:'три но́ты, кото́рые звуча́т вме́сте'},
+ {r:'визжа́ть',t:'wi-SCHATJ',d:'kreischen (hoher Schrei)',e:'Я могу́ дово́льно высоко́ визжа́ть.',x:'Ich kann ziemlich hoch kreischen.',rd:'крича́ть о́чень высо́ким го́лосом'},
+ {r:'наме́ренно',t:'na-MJE-rin-na',d:'absichtlich',e:'Иногда́ наме́ренно, иногда́ нет.',x:'Manchmal absichtlich, manchmal nicht.',rd:'специа́льно, а не случа́йно'},
+ {r:'упуска́ть из ви́ду',t:'u-puss-KATJ is WI-du',d:'übersehen, aus den Augen verlieren',e:'Вы упуска́ете из ви́ду лу́чшее реше́ние.',x:'Ihr überseht die bessere Lösung.',rd:'не замеча́ть чего́-то ва́жного'},
+ {r:'домохозя́йка',t:'da-ma-cha-SJAJ-ka',d:'Hausfrau',e:'Прове́рка: две домохозя́йки.',x:'Test: zwei Hausfrauen.',rd:'же́нщина, кото́рая рабо́тает до́ма по хозя́йству'},
+ {r:'идиоти́зм',t:'i-di-a-TISM',d:'Schwachsinn',e:'Мэ́йбл, э́то идиоти́зм!',x:'Mabel, das ist Schwachsinn!',rd:'что́-то о́чень глу́пое'},
+ {r:'носи́ть на рука́х',t:'na-SSITJ na ru-KACH',d:'auf Händen tragen',e:'Они́ гото́вы носи́ть нас на рука́х.',x:'Sie sind bereit, uns auf Händen zu tragen.',rd:'о́чень люби́ть и всё де́лать для кого́-то'},
+ {r:'бли́зкий',t:'BLIS-kij',d:'nah, vertraut',e:'Я пе́ла с са́мыми бли́зкими людьми́.',x:'Ich habe mit meinen liebsten Menschen gesungen.',rd:'о́чень ва́жный и родно́й для тебя́'},
+ {r:'самооборо́на',t:'sa-ma-a-ba-RO-na',d:'Selbstverteidigung',e:'Испо́льзуй э́то то́лько для самооборо́ны.',x:'Benutze es nur zur Selbstverteidigung.',rd:'защи́та самого́ себя́ от нападе́ния'},
+ {r:'инстру́кция',t:'in-STRUK-zy-ja',d:'Anleitung',e:'Тут есть инстру́кция по лече́нию.',x:'Hier gibt es eine Behandlungsanleitung.',rd:'текст, кото́рый объясня́ет, как что́-то де́лать'},
+ {r:'кори́ца',t:'ka-RI-za',d:'Zimt',e:'Потре́буется ещё кори́ца.',x:'Es braucht noch Zimt.',rd:'коричневая пря́ность для сла́дких блюд'},
+ {r:'на ви́дном ме́сте',t:'na WID-nam MJESS-ti',d:'gut sichtbar, offen sichtbar',e:'Секре́ты бы́ли на са́мом ви́дном ме́сте.',x:'Die Geheimnisse lagen ganz offen da.',rd:'там, где все мо́гут уви́деть'},
+ {r:'материа́л',t:'ma-ti-ri-AL',d:'Material, Stoff',e:'Ско́лько но́вого материа́ла!',x:'So viel neues Material!',rd:'то, из чего́ де́лают и́ли с чем рабо́тают'},
+ {r:'артилле́рия',t:'ar-ti-LJE-ri-ja',d:'Artillerie, schweres Geschütz',e:'Нужна́ тяжёлая артилле́рия.',x:'Wir brauchen schweres Geschütz.',rd:'больши́е пу́шки в а́рмии'},
+ {r:'предполага́ть',t:'prit-pa-la-GATJ',d:'vermuten, voraussetzen',e:'Всё серьёзнее, чем мы предполага́ли.',x:'Alles ist ernster, als wir angenommen hatten.',rd:'ду́мать, что что́-то, наве́рное, так'},
+ {r:'мертвя́к',t:'mirt-WJAK',d:'Leiche, Toter',e:'Э́тот мертвя́к ме́дленно идёт.',x:'Dieser Tote geht langsam.',rd:'мёртвый челове́к (гру́бо)'},
+ {r:'разру́шен',t:'ras-RU-schin',d:'zerstört',e:'Тут всё разру́шено из-за меня́.',x:'Hier ist alles wegen mir zerstört.',rd:'сло́манный до конца́'}
+ ],
+ q:[
+ {q:'Чего́ боя́тся зо́мби?',qde:'Wovor fürchten sich die Zombies?',o:['трезву́чия','све́та','воды́'],a:0},
+ {q:'Кто спел пе́сню вме́сте?',qde:'Wer sang das Lied zusammen?',o:['семе́йное трио','то́лько Мэ́йбл','аге́нты'],a:0},
+ {q:'Что дя́дя разреши́л ди́пперу?',qde:'Was erlaubte der Onkel Dipper?',o:['оста́вить себе́ дневни́к','уе́хать домо́й','взять маши́ну'],a:0},
+ {q:'Где бы́ли секре́ты а́втора?',qde:'Wo waren die Geheimnisse des Autors?',o:['на са́мом ви́дном ме́сте','в подва́ле','в лесу́'],a:0}]},
+
+{id:'gf-22-1',ic:'🌲',t:'Folge 22 · Teil 1',tru:'Похо́д за ули́ками',ep:'Staffel 2 · Folge 22',
+ url:'https://www.youtube.com/watch?v=oueyCo37UJM&list=PLtf1rsGS9MZJZYCooH2BU2yTOAA2h5-h6&index=6',
+ note:'Dipper findet einen Hinweis auf den Bunker des Autors – und lädt Wendy ein, obwohl er sagt, er sei über sie hinweg.',
+ words:[
+ {r:'подми́гивание',t:'pad-MI-gi-wa-ni-je',d:'Zwinkern',e:'Гру́стное подми́гивание — что э́то зна́чит?',x:'Ein trauriges Zwinkern – was heißt das?',rd:'когда́ закрыва́ют оди́н глаз на секу́нду'},
+ {r:'похо́д',t:'pa-CHOT',d:'Wanderung, Ausflug',e:'Пойдёшь со мной в похо́д за ули́ками?',x:'Kommst du mit mir auf Spurensuche?',rd:'дли́нная прогу́лка с рюкзако́м'},
+ {r:'пла́стик',t:'PLASS-tik',d:'Plastik',e:'Э́то настоя́щий пла́стик!',x:'Das ist echtes Plastik!',rd:'иску́сственный материа́л, лёгкий и твёрдый'},
+ {r:'тре́щина',t:'TRJE-schtschi-na',d:'Riss, Sprung',e:'Я заде́ла тре́щину на парко́вке.',x:'Ich habe den Riss auf dem Parkplatz gestreift.',rd:'у́зкая ли́ния там, где что́-то тре́снуло'},
+ {r:'парко́вка',t:'par-KOF-ka',d:'Parkplatz',e:'Маши́на стои́т на парко́вке.',x:'Das Auto steht auf dem Parkplatz.',rd:'ме́сто, где ста́вят маши́ны'},
+ {r:'провали́ться',t:'pra-wa-LIT-sa',d:'einbrechen, durchfallen',e:'Не хочу́ провали́ться с маши́ной!',x:'Ich will nicht mit dem Auto einbrechen!',rd:'упа́сть вниз че́рез дыру́'},
+ {r:'поврежде́ние',t:'pa-wrisch-DJE-ni-je',d:'Beschädigung, Schaden',e:'Что вы́звало э́ти поврежде́ния?',x:'Was hat diese Schäden verursacht?',rd:'ме́сто, где что́-то слома́лось'},
+ {r:'ри́фма',t:'RIF-ma',d:'Reim',e:'Отли́чная ри́фма!',x:'Ein toller Reim!',rd:'когда́ два сло́ва звуча́т похо́же в конце́'},
+ {r:'бу́нкер',t:'BUN-kir',d:'Bunker',e:'Возмо́жно, здесь его́ бу́нкер.',x:'Vielleicht ist hier sein Bunker.',rd:'подзе́мное убе́жище с то́лстыми сте́нами'},
+ {r:'сруби́ть',t:'sru-BITJ',d:'fällen, abhacken',e:'Про́сто сруби́ де́рево!',x:'Fäll einfach den Baum!',rd:'сре́зать де́рево топоро́м'},
+ {r:'бессмы́сленно',t:'biss-SMYSS-lin-na',d:'sinnlos',e:'Э́то абсолю́тно бессмы́сленно.',x:'Das ist völlig sinnlos.',rd:'без вся́кого смы́сла и по́льзы'},
+ {r:'скепти́ческий',t:'skip-TI-tschis-kij',d:'skeptisch',e:'Наде́ну свои́ скепти́ческие очки́.',x:'Ich setze meine skeptische Brille auf.',rd:'тако́й, кото́рый не ве́рит сра́зу'},
+ {r:'ве́тка',t:'WJET-ka',d:'Ast, Zweig',e:'Э́та ве́тка похо́жа на рыча́г.',x:'Dieser Ast sieht aus wie ein Hebel.',rd:'часть де́рева, кото́рая растёт в сто́рону'},
+ {r:'лесору́б',t:'li-ssa-RUP',d:'Holzfäller (Waldarbeiter von Beruf)',e:'Он оде́т как лесору́б.',x:'Er ist wie ein Holzfäller gekleidet.',rd:'челове́к, кото́рый ру́бит дере́вья'},
+ {r:'све́рху',t:'SWJER-chu',d:'von oben, oben drauf',e:'Кто ста́вит сте́ны све́рху?',x:'Wer baut Wände von oben?',rd:'с ве́рхней стороны́'},
+ {r:'в про́шлом',t:'w PROSCH-lam',d:'vorbei, Vergangenheit',e:'Ве́нди для меня́ в про́шлом.',x:'Wendy ist für mich Vergangenheit.',rd:'то, что уже́ зако́нчилось'},
+ {r:'абсолю́тно',t:'ap-ssa-LJUT-na',d:'absolut, völlig',e:'Э́то абсолю́тно то́чно.',x:'Das ist absolut sicher.',rd:'соверше́нно, на сто проце́нтов'},
+ {r:'моде́ль',t:'ma-DJELJ',d:'Modell, Entwurf',e:'Попро́буй нарисова́ть моде́ль.',x:'Versuch, ein Modell zu zeichnen.',rd:'ма́ленькая ко́пия и́ли рису́нок пла́на'},
+ {r:'в любо́е вре́мя',t:'w lju-BO-je WRJE-mja',d:'jederzeit',e:'Не за что, в любо́е вре́мя!',x:'Nichts zu danken, jederzeit!',rd:'когда́ уго́дно, без огранич́ений'}
+ ],
+ q:[
+ {q:'Куда́ хо́чет пойти́ ди́ппер?',qde:'Wohin will Dipper gehen?',o:['в похо́д за ули́ками','в кино́','домо́й'],a:0},
+ {q:'Что он и́щет в лесу́?',qde:'Was sucht er im Wald?',o:['бу́нкер а́втора','сокро́вище','гно́мов'],a:0},
+ {q:'Кого́ Мэ́йбл пригласи́ла в похо́д?',qde:'Wen lud Mabel zur Wanderung ein?',o:['Ве́нди','Ро́би','дя́дю'],a:0},
+ {q:'Что говори́т ди́ппер о Ве́нди?',qde:'Was sagt Dipper über Wendy?',o:['что она́ для него́ в про́шлом','что он её лю́бит','ничего́'],a:0}]},
+
+{id:'gf-22-2',ic:'🚪',t:'Folge 22 · Teil 2',tru:'Внутри́ бу́нкера',ep:'Staffel 2 · Folge 22',
+ url:'https://www.youtube.com/watch?v=wS9j8EDXd9Y&list=PLtf1rsGS9MZJZYCooH2BU2yTOAA2h5-h6&index=7',
+ note:'Unten warten Vorräte für sechzig Jahre, bewegliche Wände – und Mabel sperrt Dipper mit Wendy ein.',
+ words:[
+ {r:'неда́вно',t:'ni-DAW-na',d:'vor Kurzem, neulich',e:'Э́ту ба́нку откры́ли совсе́м неда́вно.',x:'Diese Dose wurde erst vor Kurzem geöffnet.',rd:'не о́чень давно́, коро́ткое вре́мя наза́д'},
+ {r:'запа́сы',t:'sa-PA-ssy',d:'Vorräte',e:'Запа́сы на шестьдеся́т лет!',x:'Vorräte für sechzig Jahre!',rd:'еда́ и ве́щи, кото́рые храня́т на бу́дущее'},
+ {r:'пы́льный',t:'PYLJ-nyj',d:'staubig',e:'Каки́е пы́льные ба́нки!',x:'Was für staubige Dosen!',rd:'покры́тый пы́лью'},
+ {r:'сдвига́ться',t:'sdwi-GAT-sa',d:'sich verschieben, zusammenrücken',e:'Э́ти сте́ны сдвига́ются!',x:'Diese Wände rücken zusammen!',rd:'ме́дленно дви́гаться в сто́рону'},
+ {r:'удержа́ть',t:'u-dir-SCHATJ',d:'festhalten, aufhalten',e:'Их не удержа́ть!',x:'Man kann sie nicht aufhalten!',rd:'не дать чему́-то дви́гаться и́ли упа́сть'},
+ {r:'надави́ть',t:'na-da-WITJ',d:'draufdrücken',e:'Ну́жно надави́ть на четы́ре си́мвола.',x:'Man muss auf vier Symbole drücken.',rd:'си́льно нажа́ть па́льцем'},
+ {r:'центр управле́ния',t:'ZENTR up-raw-LJE-ni-ja',d:'Kontrollzentrum',e:'Дава́йте осмо́трим центр управле́ния.',x:'Sehen wir uns das Kontrollzentrum an.',rd:'ко́мната, отку́да всем управля́ют'},
+ {r:'жиле́тка',t:'schi-LJET-ka',d:'Weste (umgangssprachlich)',e:'Не забу́дь жиле́тку!',x:'Vergiss die Weste nicht!',rd:'оде́жда без рукаво́в на грудь'},
+ {r:'ненави́стный',t:'ni-na-WIST-nyj',d:'verhasst',e:'Ста́ну для неё ещё одни́м ненави́стным па́рнем.',x:'Ich werde für sie noch so ein verhasster Typ.',rd:'тако́й, кото́рого не мо́гут терпе́ть'},
+ {r:'подтолкну́ть',t:'pat-talk-NUTJ',d:'anschubsen, einen Anstoß geben',e:'Мо́жет, сто́ит его́ подтолкну́ть?',x:'Vielleicht sollte man ihn anschubsen?',rd:'помо́чь начать, слегка́ толкну́в'},
+ {r:'дезинфе́кция',t:'di-sin-FJEK-zy-ja',d:'Desinfektion',e:'Дезинфе́кция заверше́на.',x:'Desinfektion abgeschlossen.',rd:'очи́стка от вре́дных микро́бов'},
+ {r:'заверши́ть',t:'sa-wir-SCHITJ',d:'abschließen, beenden',e:'Рабо́та заверше́на.',x:'Die Arbeit ist abgeschlossen.',rd:'сде́лать что́-то до конца́'},
+ {r:'осмотре́ться',t:'ass-mat-RJET-sa',d:'sich umsehen',e:'Дава́й снача́ла осмо́тримся.',x:'Sehen wir uns erst mal um.',rd:'посмотре́ть вокру́г себя́'},
+ {r:'жесть',t:'SCHESTJ',d:'krass, heftig',e:'Э́то бы́ло про́сто жесть!',x:'Das war einfach krass!',rd:'что́-то о́чень си́льное и́ли стра́шное (разгово́рно)'},
+ {r:'вкусня́шка',t:'fkuss-NJASCH-ka',d:'Leckerei',e:'Я съем твои́ просро́ченные вкусня́шки.',x:'Ich esse deine abgelaufenen Leckereien.',rd:'что́-то о́чень вку́сное (ла́сково)'},
+ {r:'недоста́ток',t:'ni-da-STA-tak',d:'Mangel, Nachteil',e:'Здесь нет недоста́тка в еде́.',x:'Hier gibt es keinen Mangel an Essen.',rd:'когда́ чего́-то не хвата́ет'},
+ {r:'брати́шка',t:'bra-TISCH-ka',d:'Brüderchen, Kumpel',e:'Дава́й, брати́шка, пора́!',x:'Los, Brüderchen, es ist Zeit!',rd:'ла́сковое сло́во для бра́та и́ли дру́га'},
+ {r:'признава́ться',t:'pri-sna-WAT-sa',d:'gestehen, sich offenbaren',e:'Сего́дня он хоте́л ей призна́ться.',x:'Heute wollte er es ihr gestehen.',rd:'сказа́ть вслух то, что скрыва́л'}
+ ],
+ q:[
+ {q:'На ско́лько лет там запа́сы?',qde:'Für wie viele Jahre gibt es dort Vorräte?',o:['на шестьдеся́т','на де́сять','на сто'],a:0},
+ {q:'Что начало́сь в ко́мнате?',qde:'Was begann in dem Raum?',o:['сте́ны сдви́нулись','пожа́р','пото́п'],a:0},
+ {q:'Как они́ спасли́сь?',qde:'Wie retteten sie sich?',o:['надави́ли на четы́ре си́мвола','вы́бежали','позва́ли на по́мощь'],a:0},
+ {q:'Что сде́лала Мэ́йбл в конце́?',qde:'Was tat Mabel am Ende?',o:['заперла́ ди́ппера с Ве́нди','ушла́ домо́й','нашла́ вы́ход'],a:0}]},
+
+{id:'gf-22-3',ic:'🧬',t:'Folge 22 · Teil 3',tru:'Шейпши́фтер',ep:'Staffel 2 · Folge 22',
+ url:'https://www.youtube.com/watch?v=pgaow0yBCVA&list=PLtf1rsGS9MZJZYCooH2BU2yTOAA2h5-h6&index=8',
+ note:'Ein Labor voller Experimente, ein alter Mann, der der Autor sein will – und ein Wesen, das jede Gestalt annehmen kann.',
+ words:[
+ {r:'экспериме́нт',t:'eks-pi-ri-MJENT',d:'Experiment',e:'Мо́жет, а́втор проводи́л тут экспериме́нты.',x:'Vielleicht machte der Autor hier Experimente.',rd:'о́пыт, что́бы прове́рить иде́ю'},
+ {r:'проры́ть',t:'pra-RYTJ',d:'graben, durchgraben',e:'Кто проры́л э́ти тунне́ли?',x:'Wer hat diese Tunnel gegraben?',rd:'сде́лать дли́нную дыру́ в земле́'},
+ {r:'тунне́ль',t:'tu-NELJ',d:'Tunnel',e:'Э́ти тунне́ли о́чень дли́нные.',x:'Diese Tunnel sind sehr lang.',rd:'дли́нный прохо́д под землёй'},
+ {r:'отпугну́ть',t:'at-pug-NUTJ',d:'verscheuchen, abschrecken',e:'Я смог его́ отпугну́ть.',x:'Ich konnte es verscheuchen.',rd:'испуга́ть так, что́бы ушёл'},
+ {r:'пресле́довать',t:'pri-SLJE-da-watj',d:'verfolgen, nachstellen',e:'Кто вас пресле́довал?',x:'Wer hat Sie verfolgt?',rd:'идти́ за ке́м-то, что́бы пойма́ть'},
+ {r:'отро́дье',t:'at-ROD-ji',d:'Ausgeburt, Brut',e:'Я пыта́лся пойма́ть э́то отро́дье.',x:'Ich versuchte, diese Ausgeburt zu fangen.',rd:'о́чень плохо́е существо́ (ру́гательно)'},
+ {r:'отлови́ть',t:'at-la-WITJ',d:'einfangen',e:'Вы помо́жете мне его́ отлови́ть.',x:'Ihr helft mir, es einzufangen.',rd:'пойма́ть и посади́ть в кле́тку'},
+ {r:'хала́т',t:'cha-LAT',d:'Kittel, Bademantel',e:'В хала́те я вы́гляжу умне́е.',x:'Im Kittel sehe ich klüger aus.',rd:'дли́нная свобо́дная оде́жда для до́ма и́ли рабо́ты'},
+ {r:'заморо́зить',t:'sa-ma-RO-sitj',d:'einfrieren',e:'Заморо́зить, разморо́зить, заморо́зить!',x:'Einfrieren, auftauen, einfrieren!',rd:'сде́лать о́чень холо́дным, что́бы ста́ло льдом'},
+ {r:'беспоря́док',t:'biss-pa-RJA-dak',d:'Unordnung, Chaos',e:'Извини́те за э́тот беспоря́док.',x:'Entschuldigen Sie die Unordnung.',rd:'когда́ всё лежи́т не на свои́х места́х'},
+ {r:'навеща́ть',t:'na-wi-SCHTSCHATJ',d:'besuchen',e:'Меня́ навеща́ют то́лько кроты́.',x:'Mich besuchen nur Maulwürfe.',rd:'приходи́ть к кому́-то в го́сти'},
+ {r:'крот',t:'KROT',d:'Maulwurf',e:'Кроты́ живу́т под землёй.',x:'Maulwürfe leben unter der Erde.',rd:'ма́ленький зверёк, кото́рый ро́ет ходы́ в земле́'},
+ {r:'сыгра́ть на',t:'syg-RATJ na',d:'ausnutzen, ausspielen',e:'На́до сыгра́ть на его́ сла́бости.',x:'Man muss seine Schwäche ausnutzen.',rd:'испо́льзовать чужу́ю сла́бость для себя́'},
+ {r:'огнеопа́сный',t:'ag-ni-a-PASS-nyj',d:'feuergefährlich',e:'Э́та оде́жда огнеопа́сная?',x:'Ist diese Kleidung feuergefährlich?',rd:'тако́й, кото́рый мо́жет легко́ загоре́ться'},
+ {r:'освеща́ть',t:'ass-wi-SCHTSCHATJ',d:'beleuchten',e:'Она́ бу́дет освеща́ть нам путь.',x:'Sie wird uns den Weg beleuchten.',rd:'дава́ть свет, что́бы бы́ло ви́дно'},
+ {r:'бесе́довать',t:'bi-SSJE-da-watj',d:'sich unterhalten, plaudern',e:'Мы бесе́дуем с а́втором дневнико́в!',x:'Wir unterhalten uns mit dem Autor der Tagebücher!',rd:'споко́йно разгова́ривать о чём-то'},
+ {r:'о́блик',t:'OB-lik',d:'Gestalt, Erscheinung',e:'Как вам мой и́стинный о́блик?',x:'Wie gefällt euch meine wahre Gestalt?',rd:'то, как кто́-то вы́глядит снару́жи'},
+ {r:'бота́ник',t:'ba-TA-nik',d:'Streber, Nerd; Botaniker',e:'Э́тот шестипа́лый бота́ник!',x:'Dieser sechsfingrige Streber!',rd:'челове́к, кото́рый то́лько у́чится и чита́ет (насме́шливо)'},
+ {r:'свихну́ться',t:'swich-NUT-sa',d:'durchdrehen, verrückt werden',e:'Он три́дцать лет как свихну́лся.',x:'Er ist seit dreißig Jahren durchgedreht.',rd:'сойти́ с ума́ (разгово́рно)'},
+ {r:'шестипа́лый',t:'schiss-ti-PA-lyj',d:'sechsfingrig',e:'Э́тот шестипа́лый бота́ник!',x:'Dieser sechsfingrige Streber!',rd:'с шестью́ па́льцами на руке́'}
+ ],
+ q:[
+ {q:'Что нашли́ де́ти внизу́?',qde:'Was fanden die Kinder unten?',o:['лаборато́рию','библиоте́ку','ку́хню'],a:0},
+ {q:'Кто, по его́ слова́м, к нему́ прихо́дит?',qde:'Wer besucht ihn nach eigener Aussage?',o:['то́лько кроты́','тури́сты','аге́нты'],a:0},
+ {q:'Что уме́ет шейпши́фтер?',qde:'Was kann der Gestaltwandler?',o:['принима́ть любо́й о́блик','лета́ть','чита́ть мы́сли'],a:0},
+ {q:'Кем оказа́лся стари́к?',qde:'Wer war der alte Mann in Wirklichkeit?',o:['сам шейпши́фтер','а́втор','учёный'],a:0}]},
+
 {id:'gf-20-1',ic:'▶️',t:'Folge 20 · Teil 1',tru:'Гедео́н побежда́ет · Teil 1',ep:'Staffel 1 · Folge 20',watchOnly:true,
  url:'https://www.youtube.com/watch?v=_g3xyghLiOI&list=PLtf1rsGS9MZL11YScRZ9sAZL6GUCjsh-B&index=98',
  note:'Für diesen Teil stellt YouTube kein Transkript bereit – deshalb gibt es hier nur den Video-Link, damit deine Folge lückenlos bleibt. Schau ihn vor Teil 2 an.',
@@ -3686,7 +3814,7 @@ const PACKS=[
  {r:'у́гол',t:'U-gal',d:'Ecke, Winkel',e:'Марш в свой у́гол!',x:'Ab in deine Ecke!'},
  {r:'стари́нный',t:'sta-RIN-nyj',d:'alt, antik',e:'Вме́сто чте́ния стари́нных книг…',x:'Statt alte Bücher zu lesen …'},
  {r:'устро́йство',t:'us-TROJST-wa',d:'Aufbau, Struktur; Gerät',e:'Он знал вели́кие та́йны устро́йства ми́ра.',x:'Er kannte die großen Geheimnisse des Weltaufbaus.'},
- {r:'раздели́ть',t:'ras-di-LITJ',d:'teilen, aufteilen',e:'Он раздели́л кни́гу на ча́сти.',x:'Er teilte das Buch in Teile auf.'},
+ {r:'раздели́ть',t:'ras-di-LITJ',d:'teilen (untereinander verteilen)',e:'Он раздели́л кни́гу на ча́сти.',x:'Er teilte das Buch in Teile auf.'},
  {r:'соедини́ть',t:'sa-ji-di-NITJ',d:'verbinden, zusammenfügen',e:'Сто́ит соедини́ть их вме́сте…',x:'Sobald man sie zusammenfügt …'},
  {r:'могу́щество',t:'ma-GU-schtschist-wa',d:'Macht, Gewalt',e:'Они́ откро́ют путь к могу́ществу.',x:'Sie öffnen den Weg zur Macht.'},
  {r:'су́дя по',t:'SSU-dja pa',d:'nach … zu urteilen',e:'Су́дя по ка́ртам, он ря́дом.',x:'Den Karten nach zu urteilen, ist es in der Nähe.'},
@@ -3783,7 +3911,7 @@ const PACKS=[
  {r:'ингредие́нт',t:'in-gri-di-JENT',d:'Zutat, Bestandteil',e:'Секре́тный ингредие́нт — ко́фе.',x:'Die geheime Zutat ist Kaffee.'},
  {r:'диа́гноз',t:'di-AG-nas',d:'Diagnose, Befund',e:'Мой диа́гноз: э́то роди́нка.',x:'Meine Diagnose: Das ist ein Muttermal.'},
  {r:'роди́нка',t:'ra-DIN-ka',d:'Muttermal, Leberfleck',e:'Огро́мная и ужа́сная роди́нка!',x:'Ein riesiges, schreckliches Muttermal!'},
- {r:'скры́тый',t:'SKRY-tyj',d:'versteckt, verborgen',e:'Э́то скры́тые ка́меры.',x:'Das sind versteckte Kameras.'},
+ {r:'скры́тый',t:'SKRY-tyj',d:'verborgen (nicht sichtbar)',e:'Э́то скры́тые ка́меры.',x:'Das sind versteckte Kameras.'},
  {r:'сигна́л',t:'sig-NAL',d:'Signal',e:'Сигна́л идёт на его́ аппара́т.',x:'Das Signal geht an sein Gerät.'},
  {r:'моше́нничество',t:'ma-SCHEN-ni-tschist-wa',d:'Betrug, Schwindel',e:'Ты аресто́ван за моше́нничество.',x:'Du bist wegen Betrugs verhaftet.'},
  {r:'нару́чники',t:'na-RUTSCH-ni-ki',d:'Handschellen',e:'Дай мои́ ми́ни-нару́чники.',x:'Gib mir meine Mini-Handschellen.'},
@@ -3793,11 +3921,11 @@ const PACKS=[
  {r:'пятно́',t:'pit-NO',d:'Fleck',e:'Мои́ люби́мые пя́тна на потолке́ на ме́сте.',x:'Meine Lieblingsflecken an der Decke sind noch da.'},
  {r:'твори́ться',t:'twa-RIT-sa',d:'sich abspielen, vor sich gehen',e:'В ней говори́тся обо всех чудеса́х, что творя́тся здесь.',x:'Darin steht alles über die Wunder, die hier geschehen.'},
  {r:'разгроми́ть',t:'ras-gra-MITJ',d:'verwüsten, zerschlagen',e:'Кто́-то разгроми́л весь го́род.',x:'Jemand hat die ganze Stadt verwüstet.'},
- {r:'заслу́живать',t:'sas-LU-schi-watj',d:'verdienen',e:'Ты заслу́живаешь знать об э́том.',x:'Du verdienst es, davon zu wissen.'},
+ {r:'заслу́живать',t:'sas-LU-schi-watj',d:'verdienen (wert sein)',e:'Ты заслу́живаешь знать об э́том.',x:'Du verdienst es, davon zu wissen.'},
  {r:'подели́ться',t:'pa-di-LIT-sa',d:'mitteilen, teilen mit',e:'Спаси́бо, что подели́лся.',x:'Danke, dass du es mit mir geteilt hast.'},
  {r:'книжо́нка',t:'kni-SCHON-ka',d:'Schundbuch, Schmöker (abwertend)',e:'Всё э́то из-за твое́й книжо́нки.',x:'Das alles kommt von deinem Schundbuch.'},
  {r:'го́лыми рука́ми',t:'GO-ly-mi ru-KA-mi',d:'mit bloßen Händen',e:'Ты победи́л ро́бота го́лыми рука́ми.',x:'Du hast den Roboter mit bloßen Händen besiegt.'},
- {r:'взорва́ть',t:'wsar-WATJ',d:'sprengen, in die Luft jagen',e:'Они́ хоте́ли взорва́ть ста́тую.',x:'Sie wollten die Statue sprengen.'}
+ {r:'взорва́ть',t:'wsar-WATJ',d:'sprengen (einmalig)',e:'Они́ хоте́ли взорва́ть ста́тую.',x:'Sie wollten die Statue sprengen.'}
  ],
  q:[
  {q:'Как стэн доказа́л, что гедео́н моше́нник?',qde:'Wie bewies Stan, dass Gideon ein Betrüger ist?',o:['показа́л скры́тые ка́меры','позва́л поли́цию','нашёл письмо́'],a:0},
@@ -3812,7 +3940,7 @@ const PACKS=[
 ];
 
 /* ================= Zustand ================= */
-let S={prog:{},days:{},extras:[],watched:{},exam:{},gate:true,recall:true,noSlang:false};
+let S={prog:{},days:{},extras:[],watched:{},exam:{},sexam:{},open:{},gate:true,recall:true,noSlang:false};
 let storeMode='none';
 function initStore(){
   try{const t='__ser_test';localStorage.setItem(t,'1');localStorage.removeItem(t);storeMode='local'}
@@ -3821,7 +3949,8 @@ function initStore(){
 function load(){
   if(storeMode!=='local')return;
   try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);S={...S,...d,prog:d.prog||{},days:d.days||{},extras:d.extras||[],watched:d.watched||{},
-    exam:d.exam||{},gate:d.gate!==false,recall:d.recall!==false,noSlang:!!d.noSlang}}}catch(e){}
+    exam:d.exam||{},sexam:d.sexam||{},open:d.open||{},
+    gate:d.gate!==false,recall:d.recall!==false,noSlang:!!d.noSlang}}}catch(e){}
 }
 function save(){if(storeMode==='local')try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 /* Wörter, die vor der Auffrischung gemeistert wurden, holen wir nach – aber
@@ -4666,6 +4795,47 @@ const STORIES={
  {q:'Что измени́лось в до́ме в конце́?',qde:'Was hatte sich am Ende im Haus verändert?',o:['ничего́','всё','то́лько ме́бель'],a:0}]}
 };
 function folgeNum(p){const m=/Folge\s+(\d+)/.exec((p&&p.ep)||'');return m?+m[1]:0}
+function staffelNum(p){const m=/Staffel\s+(\d+)/.exec((p&&p.ep)||'');return m?+m[1]:0}
+function staffelOfFolge(n){
+  const list=folgeList()[n];
+  return list?staffelNum(list[0]):0;
+}
+function staffelList(){
+  const m={};
+  PACKS.forEach(p=>{const st=staffelNum(p),fn=folgeNum(p);if(st&&fn){(m[st]=m[st]||new Set()).add(fn)}});
+  const out={};
+  Object.keys(m).forEach(k=>out[k]=[...m[k]].sort((a,b)=>a-b));
+  return out;
+}
+/* Staffel-Prüfung: Querschnitt durch eine ganze Staffel, schaltet die nächste frei */
+const SEXAM_CARDS=40;
+const _sexamCache={};
+function staffelExam(st){
+  if(_sexamCache[st]!==undefined)return _sexamCache[st];
+  const folgen=staffelList()[st]||[];
+  const words=[],seen=new Set(),q=[];
+  folgen.forEach(n=>(folgeList()[n]||[]).forEach(p=>{
+    p.words.forEach(w=>{const k=w.r.replace(/́/g,'');if(!seen.has(k)){seen.add(k);words.push(w)}});
+    (p.q||[]).forEach(x=>q.push(x));
+  }));
+  const out=words.length>=40?{id:'sexam-'+st,ic:'🏆',t:'Staffel-Prüfung · Staffel '+st,tru:'Экза́мен за '+st+'-й сезо́н',
+    sexam:st,words,q,
+    note:'Alle Wörter aus Staffel '+st+' – '+words.length+' Stück. '+SEXAM_CARDS+' Karten, ab '+EXAM_PASS+' % bestanden. Damit schaltest du Staffel '+(st+1)+' frei.'}:null;
+  _sexamCache[st]=out;
+  return out;
+}
+function sexamDone(st){return !!(S.sexam&&S.sexam[st]&&S.sexam[st].passed)}
+function startStaffelExam(st){
+  const p=staffelExam(st);
+  if(!p)return;
+  const idx=p.words.map((w,k)=>k);
+  idx.sort((a,b)=>{
+    const sa=S.prog[wordKey(p.id,a)],sb=S.prog[wordKey(p.id,b)];
+    return((sa?sa.c:0)+Math.random()*1.5)-((sb?sb.c:0)+Math.random()*1.5);
+  });
+  sess={pid:p.id,exam:0,sexam:st,q:idx.slice(0,SEXAM_CARDS),i:0,right:0,wrong:0,mode:'mix'};
+  renderCard();
+}
 function folgeList(){
   const m={};
   PACKS.forEach(p=>{const n=folgeNum(p);if(n)(m[n]=m[n]||[]).push(p)});
@@ -4705,7 +4875,16 @@ function folgeLocked(n){
   const i=nums.indexOf(n);
   if(i<=0)return false;
   if(n<=maxTouched())return false; /* schon angefangen → nie nachträglich sperren */
+  const st=staffelOfFolge(n),stPrev=staffelOfFolge(nums[i-1]);
+  /* neue Staffel → erst die Staffel-Prüfung der vorigen */
+  if(st>stPrev&&staffelExam(stPrev))return !sexamDone(stPrev);
   return !examDone(nums[i-1]);
+}
+function lockReason(n){
+  const nums=Object.keys(folgeList()).map(Number).sort((a,b)=>a-b);
+  const i=nums.indexOf(n),prev=nums[i-1];
+  const st=staffelOfFolge(n),stPrev=staffelOfFolge(prev);
+  return(st>stPrev&&staffelExam(stPrev))?{typ:'staffel',n:stPrev}:{typ:'folge',n:prev};
 }
 function prevFolge(n){
   const nums=Object.keys(folgeList()).map(Number).sort((a,b)=>a-b);
@@ -4713,7 +4892,16 @@ function prevFolge(n){
   return i>0?nums[i-1]:0;
 }
 function lockBox(n){
-  const pv=prevFolge(n),ex=examOf(pv);
+  const r=lockReason(n);
+  if(r.typ==='staffel'){
+    const sx=staffelExam(r.n);
+    return '<div class="lockbox"><div class="lk-t">🔒 Staffel '+(r.n+1)+' ist noch zu</div>'+
+      '<div class="lk-s">Eine ganze Staffel liegt hinter dir – jetzt zeigt sich, was davon geblieben ist. '+
+      SEXAM_CARDS+' Karten quer durch alle '+(staffelList()[r.n]||[]).length+' Folgen, ab '+EXAM_PASS+' % bestanden.</div>'+
+      '<button class="btn btn-primary" onclick="showPack(\'sexam-'+r.n+'\')">🏆 Zur Staffel-Prüfung</button>'+
+      '<div class="lk-h">Keine Lust auf Sperren? Unter „Mehr" kannst du sie ausschalten.</div></div>';
+  }
+  const pv=r.n,ex=examOf(pv);
   return '<div class="lockbox"><div class="lk-t">🔒 Folge '+n+' ist noch zu</div>'+
     '<div class="lk-s">Erst sitzen die Wörter aus Folge '+pv+', dann geht es weiter. '+
     (ex?'Die Prüfung sind '+EXAM_CARDS+' Karten aus allen Teilen – ab '+EXAM_PASS+' % ist sie bestanden.':'')+'</div>'+
@@ -4730,6 +4918,7 @@ function allPacks(){
     out.push(p);curN=n;
   });
   if(curN){const e=examOf(curN);if(e)out.push(e)}
+  Object.keys(staffelList()).map(Number).forEach(st=>{const sx=staffelExam(st);if(sx)out.push(sx)});
   return (v?[v]:[]).concat(out).concat(S.extras);
 }
 function packById(id){return allPacks().find(p=>p.id===id)}
@@ -4741,7 +4930,7 @@ function packProgress(p){
   return Math.round(100*m/p.words.length);
 }
 function totalDone(){
-  return allPacks().filter(p=>!p.exam&&packProgress(p)>=100).length;
+  return allPacks().filter(p=>!p.exam&&!p.sexam&&packProgress(p)>=100).length;
 }
 
 /* ================= Übung ================= */
@@ -5196,6 +5385,7 @@ function finishSess(){
   const tot=sess.right+sess.wrong,accy=tot?Math.round(100*sess.right/tot):100;
   const war=sess.drill;
   $('#doneN').textContent=totalDone();
+  if(sess.sexam){finishStaffelExam(p,accy);return}
   if(sess.exam){finishExam(p,accy);return}
   $('#view-packs').innerHTML='<div class="hero"><div class="done-mark">'+(war?'🏆':'🎬')+'</div>'+
     '<div class="due-line">'+(war?'Alle Wörter sitzen!':'Runde geschafft!')+'</div>'+
@@ -5238,6 +5428,29 @@ function finishExam(p,accy){
     '<button class="btn-ghost" onclick="startExam('+n+')">Prüfung wiederholen</button><br>'+
     '<button class="btn-ghost" onclick="showPack(\''+p.id+'\')">Zum Prüfungspaket</button></div>';
   sess=null;
+}
+function finishStaffelExam(p,accy){
+  const st=sess.sexam,ok=accy>=EXAM_PASS,richtig=sess.right;
+  const alt=(S.sexam||{})[st]||{};
+  if(!S.sexam)S.sexam={};
+  S.sexam[st]={passed:ok||alt.passed?(alt.passed||todayStr()):'',best:Math.max(accy,alt.best||0),tries:(alt.tries||0)+1};
+  save();sess=null;
+  const nx=Object.keys(staffelList()).map(Number).sort((a,b)=>a-b).find(x=>x>st);
+  $('#doneN').textContent=totalDone();
+  $('#view-packs').innerHTML='<div class="hero"><div class="done-mark">'+(ok?'🏆':'📚')+'</div>'+
+    '<div class="due-line">'+(ok?'Staffel '+st+' bestanden!':'Noch nicht ganz')+'</div>'+
+    '<div class="sumgrid">'+
+    '<div class="sumbox"><b>'+accy+' %</b><span>diesmal</span></div>'+
+    '<div class="sumbox"><b>'+EXAM_PASS+' %</b><span>nötig</span></div>'+
+    '<div class="sumbox"><b>'+richtig+'</b><span>richtig</span></div>'+
+    '<div class="sumbox"><b>'+S.sexam[st].best+' %</b><span>dein Bestwert</span></div>'+
+    '</div>'+
+    (ok
+      ?'<div class="sub" style="margin-top:14px">'+(nx?'🔓 <b>Staffel '+nx+' ist jetzt frei.</b> Eine ganze Staffel Wortschatz sitzt – das ist der größte Sprung, den du bisher gemacht hast.':'Das war die letzte Staffel, die es hier gibt.')+'</div>'
+      :'<div class="sub" style="margin-top:14px">Über eine ganze Staffel hinweg ist das normal. Frisch die fälligen Wörter auf und komm wieder – die Prüfung nimmt immer deine schwächsten zuerst.</div>')+
+    '<button class="btn btn-primary" onclick="'+(ok?'renderPacks()':'startRefresh()')+'">'+(ok?'Weiter zur Übersicht':'🔁 Erst auffrischen')+'</button><br>'+
+    '<button class="btn-ghost" onclick="startStaffelExam('+st+')">Prüfung wiederholen</button><br>'+
+    '<button class="btn-ghost" onclick="renderPacks()">Zur Übersicht</button></div>';
 }
 function quitSess(){sess=null;renderPacks()}
 
@@ -5317,27 +5530,62 @@ function renderPacks(){
     '<button class="btn btn-primary" onclick="startRefresh()">Jetzt auffrischen</button></div>';
   html+='<div class="sect">Deine Pakete</div>';
   if(!ps.length)html+='<p class="hint">Noch keine Pakete. Unter „Mehr" kannst du eins einfügen.</p>';
-  let lastEp=null,skipN=0;
-  ps.forEach(p=>{
-    const fn=folgeNum(p);
-    if(p.ep&&p.ep!==lastEp){
-      html+='<div class="sect" style="font-size:.95rem;margin:18px 0 8px">'+esc(p.ep)+
-        (fn&&examDone(fn)?' <span class="vtag seen">🎓 bestanden</span>':'')+'</div>';
-      lastEp=p.ep;
-      skipN=(fn&&folgeLocked(fn))?fn:0;
-      if(skipN)html+=lockBox(fn);
-    }
-    if(skipN&&fn===skipN)return;
+  const packHtml=p=>{
     const pr=packProgress(p);
     const badge=!p.url?'':(S.watched[p.id]?'<span class="vtag seen">✓ geschaut</span>':'<span class="vtag">▶ neu</span>');
-    html+='<button class="pack" onclick="showPack(\''+p.id+'\')">'+
+    return '<button class="pack" onclick="showPack(\''+p.id+'\')">'+
       '<span class="ic">'+(p.ic||'📺')+'</span>'+
       '<span class="m"><span class="t">'+esc(p.t)+' '+badge+'</span>'+
       '<span class="s" style="display:block">'+esc(p.tru||'')+' · '+(p.words.length?p.words.length+' Wörter':'nur ansehen')+'</span>'+
       '<span class="pbar"><i style="width:'+pr+'%"></i></span></span>'+
       '<span class="pct">'+pr+' %</span></button>';
+  };
+  /* Pakete ohne Folge (Redewendungen, Grundwortschatz, eigene Importe) bleiben immer oben */
+  ps.filter(p=>!folgeNum(p)&&!p.sexam).forEach(p=>{html+=packHtml(p)});
+  /* danach nach Staffel und Folge gruppiert und einklappbar */
+  const stList=staffelList();
+  Object.keys(stList).map(Number).sort((a,b)=>a-b).forEach(st=>{
+    const folgen=stList[st];
+    const fertig=folgen.filter(n=>examDone(n)).length;
+    const stOpen=openState('s'+st,fertig<folgen.length);
+    html+='<button class="grp grp-st'+(stOpen?' open':'')+'" onclick="toggleGrp(\'s'+st+'\','+stOpen+')">'+
+      '<span class="ar">'+(stOpen?'▾':'▸')+'</span>'+
+      '<span class="gt">Staffel '+st+'</span>'+
+      '<span class="gs">'+fertig+' / '+folgen.length+' Folgen bestanden</span></button>';
+    if(!stOpen)return;
+    folgen.forEach(n=>{
+      const list=folgeList()[n]||[];
+      const locked=folgeLocked(n);
+      const done=examDone(n);
+      const pr=Math.round(list.reduce((a,p)=>a+packProgress(p),0)/Math.max(1,list.length));
+      const fOpen=openState('f'+n,!done&&!locked);
+      html+='<button class="grp'+(fOpen?' open':'')+(locked?' lock':'')+'" onclick="toggleGrp(\'f'+n+'\','+fOpen+')">'+
+        '<span class="ar">'+(locked?'🔒':(fOpen?'▾':'▸'))+'</span>'+
+        '<span class="gt">Folge '+n+(done?' <span class="vtag seen">🎓</span>':'')+'</span>'+
+        '<span class="gs">'+(locked?'gesperrt':pr+' % gelernt')+'</span></button>';
+      if(!fOpen)return;
+      if(locked){html+=lockBox(n);return}
+      list.forEach(p=>{html+=packHtml(p)});
+      const ex=examOf(n);
+      if(ex)html+=packHtml(ex);
+    });
+    const sx=staffelExam(st);
+    if(sx&&stOpen)html+=packHtml(sx);
   });
   $('#view-packs').innerHTML=html;
+}
+/* Auf-/Zuklappen: was du selbst umgeschaltet hast, wird gemerkt – der Rest folgt
+   der Regel „offen ist, woran du gerade arbeitest". */
+function openState(key,dflt){
+  if(!S.open)S.open={};
+  return S.open[key]===undefined?dflt:!!S.open[key];
+}
+function toggleGrp(key,jetztOffen){
+  if(!S.open)S.open={};
+  S.open[key]=!jetztOffen;
+  save();renderPacks();
+  const el=document.querySelector('.grp[onclick*=\"'+key+'\"]');
+  if(el)el.scrollIntoView({block:'center'});
 }
 function markWatched(pid){
   S.watched[pid]=todayStr();
@@ -5364,6 +5612,26 @@ function showPack(pid){
         '<div class="vb-s">Schau dir die Folge auf YouTube an (ruhig mit Untertiteln) und komm dann hierher zurück.</div>'+
         '<button class="btn btn-primary" onclick="watchAndOpen(\''+p.id+'\')">▶ Folge auf YouTube ansehen</button>'+
         '<button class="lnk" style="display:block;margin:10px auto 0" onclick="markWatched(\''+p.id+'\')">Schon gesehen → weiter zu den Aufgaben</button></div>';
+  }
+  if(p.sexam){ /* Staffel-Prüfung */
+    const st=p.sexam,rec=(S.sexam||{})[st]||{};
+    const nx=Object.keys(staffelList()).map(Number).sort((a,b)=>a-b).find(x=>x>st);
+    $('#view-packs').innerHTML=
+      '<div class="hero"><div class="done-mark">'+(rec.passed?'🏆':'📚')+'</div>'+
+      '<div class="due-line">'+esc(p.t)+'</div>'+
+      '<div class="sub">'+acc(esc(p.tru||''))+'</div>'+
+      '<div class="sub" style="text-align:left;margin-top:12px">'+esc(p.note)+'</div>'+
+      '<div class="sumgrid">'+
+      '<div class="sumbox"><b>'+p.words.length+'</b><span>Wörter der Staffel</span></div>'+
+      '<div class="sumbox"><b>'+pr+' %</b><span>davon sitzen</span></div>'+
+      '<div class="sumbox"><b>'+(rec.best||0)+' %</b><span>Bestwert</span></div>'+
+      '<div class="sumbox"><b>'+(rec.tries||0)+'</b><span>Versuche</span></div>'+
+      '</div>'+
+      (rec.passed?'<div class="sub" style="margin-top:12px">✅ Bestanden am '+rec.passed.split('-').reverse().join('.')+(nx?' · Staffel '+nx+' ist frei':'')+'</div>':'')+
+      '<button class="btn btn-primary" onclick="startStaffelExam('+st+')">🏆 Staffel-Prüfung starten ('+SEXAM_CARDS+' Karten)</button><br>'+
+      '<button class="btn-ghost" onclick="showWords(\''+p.id+'\')">Wortliste der ganzen Staffel</button><br>'+
+      '<button class="btn-ghost" onclick="renderPacks()">Zurück zur Übersicht</button></div>';
+    return;
   }
   if(p.exam){ /* Gesamtpaket einer Folge + Freischalt-Prüfung */
     const n=p.exam,st=S.exam[n]||{};
