@@ -71,6 +71,24 @@ header{padding:22px 0 6px}
 .bcol .d{font-size:.68rem;color:var(--ink-faint);font-weight:700}
 .bcol .v{font-size:.68rem;color:var(--ink-soft);font-weight:700;font-variant-numeric:tabular-nums}
 .hint{font-size:.78rem;color:var(--ink-faint);margin-top:10px;line-height:1.6}
+.lvlbox{background:var(--card);border:1px solid var(--frost);border-radius:var(--radius);padding:18px}
+.lvl-top{display:flex;align-items:center;gap:14px}
+.lvl-badge{font-family:var(--serif);font-weight:800;font-size:1.5rem;background:var(--ink);color:#fff;border-radius:12px;padding:10px 14px;min-width:74px;text-align:center;letter-spacing:.02em}
+.lvl-m{flex:1;min-width:0}
+.lvl-t{font-family:var(--serif);font-weight:700;font-size:1.05rem}
+.lvl-s{font-size:.8rem;color:var(--ink-soft);margin-top:2px}
+.lvl-bar{height:8px;background:var(--frost);border-radius:99px;overflow:hidden;margin:14px 0 6px}
+.lvl-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--amber),#D9A13F);border-radius:99px;transition:width .3s}
+.lvl-next{font-size:.78rem;color:var(--ink-faint);font-weight:600}
+.lvl-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.lvl-cell{background:var(--paper);border-radius:10px;padding:10px 12px}
+.lvl-cell b{display:block;font-family:var(--serif);font-size:1.25rem;line-height:1.2}
+.lvl-cell span{font-size:.7rem;color:var(--ink-faint);font-weight:600}
+.bkrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.bkbtn{flex:1;min-width:150px;background:var(--ink);color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;font-size:.88rem}
+.bkbtn.gray{background:var(--frost);color:var(--ink)}
+.bkmsg{font-size:.8rem;font-weight:600;margin-top:10px;min-height:1em;color:var(--mala)}
+.bkmsg.err{color:var(--kalina)}
 .foot{text-align:center;color:var(--ink-faint);font-size:.72rem;margin-top:26px;line-height:1.7}
 </style>
 </head>
@@ -91,12 +109,38 @@ header{padding:22px 0 6px}
   <div class="streakline">🔥 <span id="comboStreak">0</span> Tage in Folge aktiv <span>(irgendwo gelernt zählt)</span></div>
 </div>
 
+<div class="sect">Dein Niveau</div>
+<div class="lvlbox">
+  <div class="lvl-top">
+    <div class="lvl-badge" id="lvlBadge">A1−</div>
+    <div class="lvl-m">
+      <div class="lvl-t" id="lvlName">Ganz am Anfang</div>
+      <div class="lvl-s" id="lvlSub">0 Wörter sitzen</div>
+    </div>
+  </div>
+  <div class="lvl-bar"><i id="lvlBar" style="width:0%"></i></div>
+  <div class="lvl-next" id="lvlNext"></div>
+  <div class="lvl-grid" id="lvlGrid"></div>
+  <p class="hint">Geschätzt nach deinem aktiven Wortschatz – also Wörtern, die du wirklich abrufen kannst, nicht nur gesehen hast. Grammatik und Lesen zählen nicht in die Stufe, stehen aber daneben.</p>
+</div>
+
 <div class="grid" id="appGrid"></div>
 
 <div class="sect">Deine Woche</div>
 <div class="week">
   <div class="bars" id="weekBars"></div>
   <p class="hint">Alle Apps zusammengezählt. Dunkel = heute.</p>
+</div>
+
+<div class="sect">Sicherung</div>
+<div class="week">
+  <p class="hint" style="margin-top:0">Dein Fortschritt liegt <b>nur in diesem Browser</b>. Wenn du Browserdaten löschst oder der Browser selbst aufräumt, ist er weg. Sichere ihn regelmäßig als Datei – das umfasst alle vier Apps auf einmal.</p>
+  <div class="bkrow">
+    <button class="bkbtn" id="bkSave">💾 Alles als Datei sichern</button>
+    <button class="bkbtn gray" id="bkLoad">📂 Sicherung laden</button>
+    <input type="file" id="bkFile" accept="application/json,.json" style="display:none">
+  </div>
+  <div class="bkmsg" id="bkMsg"></div>
 </div>
 
 <p class="foot" id="footNote">Aktualisiert sich automatisch, wenn du zurückkommst.</p>
@@ -183,6 +227,7 @@ function render(){
   for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(d)}
   const max=Math.max(1,...days.map(d=>u[dstr(d)]||0));
   const WD=['So','Mo','Di','Mi','Do','Fr','Sa'];
+  renderLevel(sl,gr,sk,se);
   $('#weekBars').innerHTML=days.map((d,i)=>{
     const v=u[dstr(d)]||0;
     const h=Math.round(80*v/max);
@@ -191,6 +236,89 @@ function render(){
       '<span class="d">'+WD[d.getDay()]+'</span></div>';
   }).join('');
 }
+
+/* ================= Niveau =================
+   Geschätzt nach aktivem Wortschatz. Die Schwellen orientieren sich an den
+   üblichen Richtwerten für den GER: A1 ca. 500, A2 ca. 1000, B1 ca. 2000,
+   B2 ca. 4000, C1 ca. 8000 Wörter. Dazwischen liegen die Zwischenstufen. */
+const LEVELS=[
+ [0,'A1−','Ganz am Anfang'],[150,'A1','Erste Wörter sitzen'],[350,'A1+','Alltagsbasis steht'],
+ [550,'A2−','Über den Anfang hinaus'],[800,'A2','Einfache Gespräche möglich'],[1100,'A2+','Fast auf der Schwelle'],
+ [1450,'B1−','Schwelle zum Selbstständigen'],[1900,'B1','Selbstständig im Alltag'],[2500,'B1+','Sicher im Alltag'],
+ [3100,'B2−','Auf dem Weg zum Fließenden'],[3900,'B2','Fließend in vertrauten Themen'],[4800,'B2+','Fast überall zu Hause'],
+ [6000,'C1−','Kompetente Verwendung'],[7800,'C1','Fließend und differenziert']];
+function levelOf(n){
+  let i=0;
+  for(let k=0;k<LEVELS.length;k++)if(n>=LEVELS[k][0])i=k;
+  const cur=LEVELS[i],nxt=LEVELS[i+1]||null;
+  const span=nxt?nxt[0]-cur[0]:1,pct=nxt?Math.min(100,Math.round(100*(n-cur[0])/span)):100;
+  return{i,code:cur[1],name:cur[2],pct,next:nxt,fehlt:nxt?nxt[0]-n:0};
+}
+function renderLevel(sl,gr,sk,se){
+  /* aktiver Wortschatz: Wörter, die zweimal in verschiedenen Formaten saßen */
+  let slova=0;
+  if(sl&&sl.prog)Object.keys(sl.prog).forEach(k=>{const p=sl.prog[k];if(p&&(p.b>=2||p.c>=2))slova++});
+  let serial=0;
+  if(se&&se.prog)Object.keys(se.prog).forEach(k=>{const p=se.prog[k];if(p&&p.c>=2&&k.indexOf('exam-')!==0&&k.indexOf('sexam-')!==0)serial++});
+  const wort=slova+serial;
+  const L=levelOf(wort);
+  $('#lvlBadge').textContent=L.code;
+  $('#lvlName').textContent=L.name;
+  $('#lvlSub').textContent=wort+' Wörter sitzen aktiv';
+  $('#lvlBar').style.width=L.pct+'%';
+  $('#lvlNext').textContent=L.next
+    ?'Noch '+L.fehlt+' Wörter bis '+L.next[1]+' · '+L.pct+' % der Stufe geschafft'
+    :'Höchste hier abgebildete Stufe erreicht.';
+  const grAuf=gr&&gr.tot?(gr.tot.r+gr.tot.w):0;
+  const skGel=sk&&sk.read?Object.keys(sk.read).length:0;
+  $('#lvlGrid').innerHTML=
+    '<div class="lvl-cell"><b>'+slova+'</b><span>Wörter aus СЛОВА́</span></div>'+
+    '<div class="lvl-cell"><b>'+serial+'</b><span>Wörter aus СЕРИА́Л</span></div>'+
+    '<div class="lvl-cell"><b>'+grAuf+'</b><span>Grammatik-Aufgaben</span></div>'+
+    '<div class="lvl-cell"><b>'+skGel+'</b><span>Geschichten gelesen</span></div>';
+}
+
+/* ================= Sicherung über alle Apps ================= */
+const BK_KEYS=['russisch-trainer-v1','russisch-grammatik-v1','russisch-skazki-v1','russisch-serial-v1'];
+$('#bkSave').onclick=()=>{
+  const daten={typ:'russisch-suite-backup',v:1,datum:new Date().toISOString(),apps:{}};
+  let n=0;
+  BK_KEYS.forEach(k=>{const v=localStorage.getItem(k);if(v){daten.apps[k]=v;n++}});
+  if(!n){$('#bkMsg').textContent='Es gibt noch nichts zu sichern.';$('#bkMsg').className='bkmsg err';return}
+  const blob=new Blob([JSON.stringify(daten)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='russisch-sicherung-'+dstr(new Date())+'.json';
+  document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);
+  $('#bkMsg').textContent='✓ Datei mit '+n+' App'+(n===1?'':'s')+' gespeichert. Leg sie irgendwo ab, wo sie den Browser überlebt.';
+  $('#bkMsg').className='bkmsg';
+};
+$('#bkLoad').onclick=()=>$('#bkFile').click();
+$('#bkFile').onchange=e=>{
+  const f=e.target.files&&e.target.files[0];
+  if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const d=JSON.parse(r.result);
+      if(!d||d.typ!=='russisch-suite-backup'||!d.apps)throw new Error('kein Backup');
+      let n=0;
+      Object.keys(d.apps).forEach(k=>{
+        if(BK_KEYS.indexOf(k)<0)return;
+        localStorage.setItem(k,typeof d.apps[k]==='string'?d.apps[k]:JSON.stringify(d.apps[k]));n++;
+      });
+      $('#bkMsg').textContent='✓ '+n+' App'+(n===1?'':'s')+' wiederhergestellt'+(d.datum?' (Stand '+d.datum.slice(0,10).split('-').reverse().join('.')+')':'')+'.';
+      $('#bkMsg').className='bkmsg';
+      render();
+    }catch(err){
+      $('#bkMsg').textContent='Das sieht nicht nach einer Sicherung dieser Apps aus.';
+      $('#bkMsg').className='bkmsg err';
+    }
+    e.target.value='';
+  };
+  r.readAsText(f);
+};
 
 (function init(){
   $('#brandTitle').innerHTML=acc('СЕГО́ДНЯ');

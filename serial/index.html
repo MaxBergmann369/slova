@@ -151,6 +151,22 @@ nav.tabsbar{position:sticky;top:0;z-index:20;background:var(--paper);padding:12p
 .wordbox b .acc{color:var(--rust)}
 .wordbox .wgrund{width:100%;font-size:.78rem;color:var(--ink-faint);margin-top:2px}
 .wordbox .spk{color:var(--rust);font-size:1.1rem;padding:2px 6px;border-radius:8px;background:var(--paper)}
+.decbox{background:var(--sliva-soft,#EEE8F7);border:1px solid #C9BBE4;border-radius:var(--radius);padding:18px;text-align:center;margin:12px 0 4px}
+.decbox .lk-t{font-family:var(--serif);font-weight:700;font-size:1.05rem;color:#5A3E86}
+.decbox .lk-s{font-size:.82rem;color:var(--ink-soft);margin:6px 0 12px;line-height:1.6}
+.decsent{font-family:var(--serif);font-size:1.35rem;line-height:1.8;text-align:center;margin:16px 0 4px;overflow-wrap:anywhere}
+.decsent .w{cursor:pointer;border-radius:4px;padding:0 2px}
+.decsent .w:hover{background:var(--rust-soft)}
+.decsent .w.sel{background:var(--rust);color:#fff}
+.decsent .w.sel .acc{color:#fff}
+.decsent .acc{color:var(--rust)}
+.wbwbox{margin-top:14px;background:var(--paper);border-radius:10px;padding:10px 12px}
+.wbwbox .ft{font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px}
+.wbw{display:flex;gap:10px;align-items:baseline;padding:3px 0;border-top:1px solid rgba(0,0,0,.05)}
+.wbw:first-of-type{border-top:none}
+.wbw b{font-family:var(--serif);font-size:1rem;min-width:38%}
+.wbw b .acc{color:var(--rust)}
+.wbw span{font-size:.82rem;color:var(--ink-soft)}
 .confbox{background:#FBF0D9;border:1px solid #E8D9B4;border-radius:var(--radius);padding:18px;text-align:center;margin:12px 0 4px}
 .confbox .lk-t{font-family:var(--serif);font-weight:700;font-size:1.05rem;color:#8A6A12}
 .confbox .lk-s{font-size:.82rem;color:var(--ink-soft);margin:6px 0 12px;line-height:1.6}
@@ -5665,6 +5681,99 @@ function hearAllStory(key){
   const go=()=>{if(i>=st.ru.length)return;speak(st.ru[i]);i++;setTimeout(go,Math.max(3000,st.ru[i-1].length*90))};
   go();
 }
+/* ---- Satz entschlüsseln --------------------------------------------------------
+   Einzelne Wörter zu kennen heißt noch nicht, einen Satz zu verstehen. Hier kommt
+   ein ganzer Satz: erst selbst raten, dann Wort für Wort auseinandernehmen. */
+let dec=null;
+function decodePool(){
+  const out=[],seen=new Set();
+  allPacks().forEach(p=>{
+    if(p.exam||p.sexam||!p.words.length)return;
+    p.words.forEach((w,k)=>{
+      if(!w.e||!w.x||seen.has(w.e))return;
+      const st=S.prog[wordKey(p.id,k)];
+      seen.add(w.e);
+      out.push({w,geuebt:!!(st&&(st.c>0||st.w>0))});
+    });
+  });
+  return out;
+}
+function startDecode(){
+  const pool=decodePool();
+  if(!pool.length){renderPacks();return}
+  /* Sätze mit geübten Wörtern zuerst – die kannst du auch wirklich knacken */
+  const geuebt=pool.filter(o=>o.geuebt),rest=pool.filter(o=>!o.geuebt);
+  const use=shuffle(geuebt.length>=8?geuebt:geuebt.concat(rest)).slice(0,8);
+  dec={q:use,i:0,right:0,wrong:0,answered:false,zerlegt:false};
+  tab('packs');renderDecode();
+}
+function renderDecode(){
+  const c=dec.q[dec.i],w=c.w;
+  dec.answered=false;dec.zerlegt=false;
+  const falsch=shuffle(decodePool().filter(o=>o.w.x&&o.w.x!==w.x)).slice(0,2).map(o=>o.w.x);
+  const opts=shuffle([w.x].concat(falsch));
+  dec.opts=opts;dec.good=w.x;
+  $('#view-packs').innerHTML=
+    '<div class="sess-top"><span class="cnt">'+(dec.i+1)+' / '+dec.q.length+'</span>'+
+    '<div class="bar"><i style="width:'+Math.round(100*dec.i/dec.q.length)+'%"></i></div>'+
+    '<button class="quit" onclick="dec=null;renderPacks()">Beenden</button></div>'+
+    '<div class="card"><div class="badges"><span class="chip">🔍 Satz entschlüsseln</span></div>'+
+    '<div class="decsent" id="decSent">'+storyWords(w.e)+' '+sayBtn(w.e,'speak')+'</div>'+
+    '<div class="wordbox empty" id="wordBox">👆 Tippe einzelne Wörter an, wenn du hängst.</div>'+
+    '<div class="qlabel">Was bedeutet dieser Satz?</div>'+
+    '<div class="opts">'+opts.map((o,i)=>'<button class="opt" data-k="'+i+'">'+esc(o)+'</button>').join('')+'</div>'+
+    '<div id="fbZone"></div></div>';
+  const st=$('#decSent');
+  if(st){st.id='storyText';wireStoryWords();st.id='decSent';
+    document.querySelectorAll('#decSent .w').forEach(el=>el.onclick=()=>{
+      document.querySelectorAll('#decSent .w.sel').forEach(x=>x.classList.remove('sel'));
+      el.classList.add('sel');
+      const g=storyLookup(el.dataset.n),box=$('#wordBox');
+      box.className='wordbox';
+      box.innerHTML=sayBtn(el.dataset.r,'spk')+'<b>'+acc(esc(el.dataset.r))+'</b> — '+
+        (g?esc(g.d):'<i>kein Eintrag</i>')+
+        (g&&g.r&&g.r.replace(/́/g,'').toLowerCase()!==el.dataset.n?'<span class="wgrund">Grundform: '+acc(esc(g.r))+'</span>':'');
+      speak(el.dataset.r);
+    });
+  }
+  speak(w.e);
+  document.querySelectorAll('#view-packs .opt').forEach(b=>b.onclick=()=>{
+    if(dec.answered)return;
+    dec.answered=true;
+    const ok=opts[+b.dataset.k]===w.x;
+    document.querySelectorAll('#view-packs .opt').forEach(x=>{x.disabled=true;if(opts[+x.dataset.k]===w.x)x.classList.add('right')});
+    if(!ok)b.classList.add('wrong');
+    if(ok)dec.right++;else dec.wrong++;
+    const t=todayStr();S.days[t]=(S.days[t]||0)+1;save();
+    $('#fbZone').innerHTML='<div class="fb '+(ok?'fb-ok':'fb-no')+'">'+(ok?'✓ Richtig!':'✗ Nicht ganz.')+'</div>'+
+      '<div class="answer" style="text-align:left"><div class="mean" style="text-align:center">'+esc(w.x)+'</div>'+
+      wordByWord(w.e)+
+      '</div><div class="grade"><button onclick="nextDecode()">Weiter</button></div>';
+  });
+}
+function wordByWord(sent){
+  const toks=String(sent).match(/[А-Яа-яЁё́-]+/g)||[];
+  const seen=new Set();
+  const rows=toks.map(tk=>{
+    const key=tk.replace(/́/g,'').toLowerCase();
+    if(seen.has(key))return '';
+    seen.add(key);
+    const g=storyLookup(key);
+    return '<div class="wbw"><b>'+acc(esc(tk))+'</b><span>'+(g?esc(g.d):'—')+'</span></div>';
+  }).filter(Boolean).join('');
+  return '<div class="wbwbox"><div class="ft">Wort für Wort</div>'+rows+'</div>';
+}
+function nextDecode(){
+  dec.i++;
+  if(dec.i>=dec.q.length){
+    const r=dec.right,n=dec.q.length;dec=null;
+    $('#view-packs').innerHTML='<div class="hero"><div class="done-mark">🔍</div>'+
+      '<div class="due-line">'+r+' / '+n+' Sätze geknackt</div>'+
+      '<div class="sub" style="margin-top:12px">Sätze zu verstehen ist etwas anderes, als Wörter zu kennen – hier merkst du, wie die Teile zusammenspielen.</div>'+
+      '<button class="btn btn-primary" onclick="startDecode()">Noch eine Runde</button><br>'+
+      '<button class="btn-ghost" onclick="renderPacks()">Zurück zur Übersicht</button></div>';
+  }else renderDecode();
+}
 /* ---- Verwechslungs-Trainer: die zwei Ähnlichen direkt gegeneinander ---- */
 let conf=null;
 function startConf(){
@@ -6108,6 +6217,9 @@ function renderPacks(){
   const ps=allPacks();
   let html='<div class="hero"><div class="due-line">Was hast du <b>geschaut</b>?</div>'+
     '<div class="sub">Üb die Wörter aus deinen Folgen – und schau sie danach nochmal. Kein Transkript, nur Vokabeln und Fragen.</div></div>';
+  html+='<div class="decbox"><div class="lk-t">🔍 Sätze entschlüsseln</div>'+
+    '<div class="lk-s">Ein ganzer russischer Satz statt einzelner Wörter: erst selbst verstehen, dann Wort für Wort auseinandernehmen. Antippen geht überall.</div>'+
+    '<button class="btn btn-primary" onclick="startDecode()">Satz-Training starten</button></div>';
   const cp=livePairs().length;
   if(cp>=3)html+='<div class="confbox"><div class="lk-t">🔀 '+cp+' Wortpaare, die man leicht verwechselt</div>'+
     '<div class="lk-s">Wörter aus deinem Training, die sich in ein bis zwei Buchstaben unterscheiden. Hier stehen sie direkt nebeneinander – der einzige Weg, sie auseinanderzuhalten.</div>'+
