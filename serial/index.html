@@ -141,6 +141,16 @@ nav.tabsbar{position:sticky;top:0;z-index:20;background:var(--paper);padding:12p
 .story .sp{font-size:1.05rem;line-height:1.85;margin-bottom:12px;overflow-wrap:anywhere}
 .story .sp .acc{color:var(--rust)}
 .story .sde{display:block;font-size:.82rem;color:var(--ink-faint);line-height:1.6;margin-top:2px}
+.story .w{cursor:pointer;border-radius:4px;padding:0 1px;transition:background .12s}
+.story .w:hover{background:var(--rust-soft)}
+.story .w.sel{background:var(--rust);color:#fff}
+.story .w.sel .acc{color:#fff}
+.wordbox{background:var(--card);border:1px solid var(--frost);border-radius:12px;padding:12px 14px;margin-top:10px;text-align:left;font-size:.95rem;min-height:48px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.wordbox.empty{color:var(--ink-faint);font-size:.82rem;justify-content:center;text-align:center}
+.wordbox b{font-family:var(--serif);font-size:1.15rem}
+.wordbox b .acc{color:var(--rust)}
+.wordbox .wgrund{width:100%;font-size:.78rem;color:var(--ink-faint);margin-top:2px}
+.wordbox .spk{color:var(--rust);font-size:1.1rem;padding:2px 6px;border-radius:8px;background:var(--paper)}
 .confbox{background:#FBF0D9;border:1px solid #E8D9B4;border-radius:var(--radius);padding:18px;text-align:center;margin:12px 0 4px}
 .confbox .lk-t{font-family:var(--serif);font-weight:700;font-size:1.05rem;color:#8A6A12}
 .confbox .lk-s{font-size:.82rem;color:var(--ink-soft);margin:6px 0 12px;line-height:1.6}
@@ -4048,6 +4058,106 @@ const EXAM_PASS=85, EXAM_CARDS=25;
    Zusammenhängender Text schlägt Einzelwörter: hier tauchen die Vokabeln einer Folge
    in einer eigenen kleinen Geschichte wieder auf. Kein Serientext – selbst geschrieben,
    angelehnt an die Handlung, damit die Bilder aus der Folge tragen. */
+/* ---- Wörterbuch für die Kurzgeschichten ----------------------------------------
+   Funktionswörter und Wortformen, die in keinem Folgenpaket stehen. Zusammen mit den
+   2.200 Paketvokabeln lässt sich damit jedes Wort der Geschichten antippen. */
+const STORY_GLOSS={
+"и":"und","в":"in, nach","не":"nicht","он":"er","что":"was; dass","на":"auf, an","они":"sie (Plural)","было":"war (es)","его":"ihn, sein","но":"aber",
+"это":"das (ist)","с":"mit; von","за":"hinter; für","всё":"alles","один":"ein, einer; allein","а":"aber, und","она":"sie","все":"alle","к":"zu",
+"у":"bei","ему":"ihm","только":"nur","никто":"niemand","из":"aus","кто":"wer","была":"war (sie)","тот":"jener","то":"das; dann",
+"чтобы":"damit, um zu","однажды":"eines Tages","их":"sie; ihr","были":"waren","раз":"Mal","по":"entlang, über","от":"von, weg von","как":"wie",
+"потом":"danach","её":"sie; ihr","старый":"alt","долго":"lange","каждый":"jeder","человек":"Mensch","же":"doch, denn (Verstärkung)","день":"Tag",
+"тоже":"auch","до":"bis","него":"ihn, ihm","утром":"am Morgen","другой":"ein anderer","ночью":"nachts","когда":"wann, als","теперь":"jetzt",
+"ни":"kein, nicht ein","ничего":"nichts","сначала":"zuerst","них":"ihnen","тогда":"da, dann","полу":"Boden (auf dem)","друг":"Freund","здесь":"hier",
+"летом":"im Sommer","правда":"Wahrheit; wirklich","зато":"dafür, dafür aber","дело":"Sache, Fall","себе":"sich","себя":"sich","ним":"ihm (mit)",
+"очень":"sehr","жили":"lebten","если":"wenn","свою":"seine, ihre","стала":"wurde (sie)","ты":"du","со":"mit","мне":"mir","про":"über","дети":"Kinder",
+"другу":"dem Freund","девочка":"Mädchen","чужой":"fremd","дяде":"dem Onkel","где":"wo","первый":"der erste","нём":"ihm (über)",
+"написано":"geschrieben (es steht)","никому":"niemandem","под":"unter","кафе":"Café","собой":"mit sich","им":"ihnen","того":"dessen",
+"ними":"ihnen (mit)","нибудь":"-irgend (Teil von кто-нибудь)","таки":"doch (всё-таки = trotzdem)","лучше":"besser","одну":"eine","остались":"blieben",
+"этом":"diesem","слово":"Wort","пошли":"gingen los","магазин":"Laden","музыка":"Musik","которые":"die","ещё":"noch","во":"in",
+"бы":"würde (Konjunktiv)","стало":"wurde (es)","тебе":"dir","другое":"etwas anderes","домой":"nach Hause","именно":"genau, ausgerechnet",
+"этот":"dieser","самым":"dem allerbesten (Superlativ)","город":"Stadt","неё":"sie, ihr","сестре":"der Schwester","молчать":"schweigen",
+"времени":"Zeit (Gen.)","уже":"schon","несколько":"einige","дней":"Tage (Gen.)","старого":"des alten","кого":"wen","надо":"man muss",
+"всего":"insgesamt; am allermeisten","оно":"es","люди":"Leute","слишком":"zu (sehr)","я":"ich","своей":"seiner, ihrer","дома":"zu Hause; Häuser",
+"могу":"ich kann","другого":"eines anderen","ней":"ihr","больше":"mehr","оба":"beide","одна":"eine","там":"dort","код":"Code","дом":"Haus",
+"живёт":"wohnt","пахнет":"riecht","пылью":"nach Staub","почти":"fast","нужно":"man muss, nötig","пальто":"Mantel","пять":"fünf",
+"замуж":"in die Ehe (выйти замуж = heiraten)","прибежал":"kam gelaufen","видел":"sah","озере":"See (im)","целый":"ganz","между":"zwischen",
+"готов":"bereit","вода":"Wasser","получили":"bekamen","любого":"jedes beliebigen","сам":"selbst","вёл":"führte","музее":"im Museum","видит":"sieht",
+"одного":"eines","солнца":"der Sonne","ждать":"warten","рассвета":"der Morgendämmerung","об":"über","писать":"schreiben","большом":"im großen",
+"полон":"voll","верили":"glaubten","каждому":"jedem","слову":"Wort (Dat.)","сразу":"sofort","маленького":"des kleinen","пойти":"gehen",
+"слышать":"hören","нет":"nein; es gibt nicht","шее":"Hals (am)","кончилось":"war zu Ende","врага":"einen Feind","старшие":"die Älteren",
+"ребята":"Jungs, Leute","крыше":"Dach (auf dem)","утра":"Morgen (bis zum)","давно":"seit Langem","горел":"brannte","свет":"Licht","играла":"spielte",
+"старая":"alte","полки":"Regale","полны":"voll","двери":"Türen","шумных":"lauter (Gen. Pl.)","скажет":"sagt (wird sagen)","ребёнок":"Kind",
+"друзья":"Freunde","смогли":"konnten","над":"über","смеялся":"lachte","мальчика":"den Jungen","назвали":"nannten","должен":"muss, soll",
+"стать":"werden","горах":"Bergen (in den)","говорили":"sagten, sprachen","камни":"Steine","тёр":"rieb","скалу":"den Felsen",
+"разу":"Mal (ни разу = kein einziges Mal)","даже":"sogar","груди":"Brust (auf der)","последнее":"das letzte","сделало":"tat (es)",
+"учителя":"die Lehrer","ушли":"gingen weg","сильным":"am stärksten","вешали":"hängten auf","ждали":"warteten","танцполе":"Tanzfläche (auf der)",
+"одной":"mit einem/einer","девочкой":"Mädchen (mit dem)","подвале":"Keller (im)","сделал":"machte","копию":"eine Kopie","отлично":"ausgezeichnet",
+"работал":"arbeitete","готовил":"bereitete vor","смыло":"spülte weg","водой":"mit Wasser","получился":"wurde gut, gelang","год":"Jahr",
+"звонят":"läuten","начинается":"beginnt","любил":"mochte, liebte","сцене":"Bühne (auf der)","смотреть":"zusehen","ушёл":"ging weg","начал":"begann",
+"самом":"in Wirklichkeit (на самом деле)","деле":"Sache (Präp.)","старой":"in der alten","стене":"Wand (in der)","имя":"Name","стёрли":"löschten aus",
+"права":"recht (ты права = du hast recht)","быть":"sein","целился":"zielte","попадал":"traf","десятый":"der zehnte","небо":"Himmel",
+"молчала":"schwieg","нельзя":"man darf nicht","потери":"Verlust (ohne)","ошибки":"Fehler","иногда":"manchmal","держат":"halten","мир":"Welt; Frieden",
+"вместе":"zusammen","зале":"Saal (im)","игровых":"Spiel- (Gen. Pl.)","убежал":"lief weg","скажи":"sag","бить":"schlagen","казалось":"schien",
+"сильный":"stark","бесстрашный":"furchtlos","чужая":"fremde","придётся":"man wird müssen","самому":"selbst","воина":"den Krieger",
+"драки":"Prügelei (keine)","разговор":"Gespräch","временем":"mit der Zeit","прошёл":"verging","светит":"leuchtet","маленьким":"der Kleinste",
+"классе":"Klasse (in der)","лабиринте":"Labyrinth (im)","каждое":"jedes","показывало":"zeigte","ростом":"durch Körpergröße","место":"Stelle, Platz",
+"успел":"schaffte es rechtzeitig","полку":"Regal (aufs)","решает":"entscheidet","меньше":"weniger","городе":"Stadt (in der)","хэллоуин":"Halloween",
+"ходят":"gehen","домам":"Häuser (von Haus zu Haus)","кричат":"rufen","сладость":"Süßes","или":"oder","мальчику":"dem Jungen","боялся":"hatte Angst",
+"старшими":"den Älteren","состояло":"bestand","меня":"mich","говорило":"sagte (es)","вас":"euch","доем":"ich esse auf","хитрость":"List",
+"спокойно":"ruhig, gelassen","взял":"nahm","съел":"aß auf","потому":"weil (потому что)","равно":"gleich (всё равно = egal)","выглядит":"sieht aus",
+"нравится":"gefällt","надел":"zog an","пошёл":"ging los","уехал":"fuhr weg","неделю":"eine Woche","главное":"die Hauptsache","всем":"allen",
+"долгий":"lang","какие":"was für","довольны":"zufrieden","через":"nach, durch","два":"zwei","дня":"Tage","работники":"die Angestellten",
+"спал":"schlief","пустую":"leere","кассу":"Kasse","само":"selbst (само по себе = für sich allein)","честной":"ehrlich","работаем":"wir arbeiten",
+"шести":"sechs (bis)","навела":"schuf (Ordnung)","городом":"Stadt (за городом = außerhalb)","есть":"es gibt","знает":"weiß","вырыл":"grub",
+"лежит":"liegt","дне":"Grund (auf dem)","приходят":"kommen","туда":"dorthin","старых":"alter (Gen. Pl.)","часов":"Uhren","плохих":"schlechter",
+"яму":"Grube (in die)","упали":"fielen","трое":"drei (Personen)","друзей":"Freunde (Gen.)","падали":"fielen","рассказывать":"erzählen",
+"игре":"Spiel (im)","второй":"der zweite","лгал":"log","о":"über","своих":"eigenen","молчал":"schwieg","говори":"sprich","вылетели":"flogen heraus",
+"помнил":"erinnerte sich","зачем":"wozu","прыгнул":"sprang","сказанная":"gesagte","городском":"städtischen","бегать":"rennen","прыгать":"springen",
+"борта":"Rand (vom)","никогда":"nie","воду":"Wasser (ins)","называли":"nannten","бутерброд":"belegtes Brot","узнала":"erfuhr","тайну":"Geheimnis",
+"поймали":"fingen","далеко":"weit","выйти":"hinausgehen","отсюда":"von hier","план":"Plan","любви":"Liebe (aus)","можно":"man kann",
+"самое":"das (aller-)","умеет":"kann, versteht","читал":"las","устраивала":"veranstaltete","книжным":"Bücher- (hinter dem)",
+"шкафом":"Schrank (hinter dem)","лежал":"lag","понравится":"gefallen wird","началась":"begann","статическое":"statische",
+"электричество":"Elektrizität","меняло":"tauschte","местами":"die Plätze","проснулся":"wachte auf","брате":"Bruder (im)",
+"палку":"Stock (перегибать палку)","круги":"Kreise (на круги своя)","своя":"eigen (на круги своя)","отдали":"gaben ab","сами":"selbst",
+"ночи":"Nacht (доброй ночи)","самая":"die (aller-)","известная":"bekannte","группа":"Band, Gruppe","города":"der Stadt","давала":"gab",
+"концерт":"Konzert","полном":"vollem","промывает":"wäscht (Gehirn)","мозги":"Gehirn","докопаться":"auf den Grund gehen","хуже":"schlimmer",
+"певцов":"die Sänger","держали":"hielten","продюсер":"Produzent","смел":"wagte","помогла":"half","любишь":"du liebst","поняла":"begriff",
+"дверь":"Tür","ног":"Beine (со всех ног)","никакого":"gar kein","песне":"Lied (im)","пришлось":"man musste","заново":"von Neuem","лежала":"lag",
+"красная":"rote","вела":"führte","нитке":"Faden (dem)","бродят":"streifen umher","шахту":"Bergwerk (in das)","земля":"Erde, Boden","липкая":"klebrig",
+"смолы":"vom Harz","споткнулся":"stolperte","уронил":"ließ fallen","ссорьтесь":"streitet euch (nicht)","робейте":"seid zaghaft (nicht)","мы":"wir",
+"найдём":"wir finden","жива":"lebendig","сидел":"saß","рядом":"daneben","сейфа":"des Safes","самый":"der allerbeste","желало":"wünschte, meinte es",
+"добра":"Gutes","тысячи":"tausend","дверей":"Türen","каждой":"jeder","одно":"eines","школьный":"Schul-","отец":"Vater","боксёрская":"Box-",
+"первая":"die erste","вошли":"traten ein","вслед":"hinterher","чужим":"dem Fremden","видели":"sahen","маленький":"kleiner","плачет":"weint",
+"такой":"so ein","сказала":"sagte","мог":"konnte","дать":"geben","сдачи":"zurück (дать сдачи)","получил":"bekam","побеждает":"gewinnt",
+"утро":"Morgen","семья":"Familie","отжал":"nahm ab, presste ab","нечем":"womit nicht (mir fehlt es an)","столько":"so viele","ртов":"Mäuler",
+"купил":"kaufte","детям":"den Kindern","автобус":"Bus","знали":"wussten","автобусом":"Bus (hinter dem)","погнался":"verfolgte","крикнул":"rief",
+"серьёзное":"ernst","книги":"Buches","вся":"die ganze","снова":"wieder","те":"dieselben","пятна":"Flecken","та":"dieselbe","лучшее":"das Beste",
+"могло":"konnte","случиться":"passieren","приехали":"kamen an","много":"viel","тишины":"Stille","книгу":"Buch (ein)","чей":"wessen","каждая":"jede",
+"новую":"neues","смеялась":"lachte","увидели":"erblickten","дерево":"Baum","кричал":"rief","тут":"hier","дальше":"weiter","вход":"Eingang",
+"сидело":"saß","маленькое":"kleines","боялось":"hatte Angst","позвали":"riefen (herbei)","дядю":"den Onkel","верят":"glauben","страница":"Seite",
+"обещала":"versprach","подозрение":"Verdacht","заподозрил":"schöpfte Verdacht","недоброе":"nichts Gutes","парень":"Junge, Typ",
+"парнем":"Typ (mit dem)","высоким":"großem","говорил":"sprach","пошла":"ging","гномов":"Gnome","искали":"suchten","садовый":"Garten-",
+"началось":"begann","клялся":"schwor","смеялись":"lachten","сестрой":"Schwester (mit der)","лодку":"Boot","звал":"rief, lud ein",
+"плавали":"fuhren umher","спокойной":"ruhig","поехали":"fuhren","дядей":"Onkel (mit dem)","снимка":"Foto (als ein)","восковых":"Wachs- (Gen. Pl.)",
+"приходили":"kamen","платили":"zahlten","уходили":"gingen weg","довольные":"zufrieden","составил":"stellte auf","ложные":"falsche",
+"боится":"fürchtet","стал":"begann, wurde","лужи":"Pfützen","шатре":"Zelt (im)","называл":"nannte","истерику":"Anfall","пообещал":"versprach",
+"порошок":"Pulver (в порошок)","нажили":"handelten sich ein","собирались":"trafen sich","ночам":"nachts (по ночам)","восторге":"begeistert",
+"выносили":"ertrugen","магазине":"Laden (im)","копии":"die Kopien","всякой":"jeglicher","шло":"lief, ging","третий":"der dritte","десять":"zehn",
+"машину":"Maschine","хотела":"wollte","получит":"bekommt","комнату":"Zimmer","тела":"Körper","голыми":"bloßen","руками":"Händen","спасли":"retteten",
+"стали":"begannen","сказали":"sagten","тебя":"dich","почему":"warum","увезли":"brachten weg","узнал":"erfuhr","знал":"wusste","думал":"dachte",
+"делал":"tat","которую":"die","оказалась":"erwies sich als","оказалось":"stellte sich heraus","взяли":"nahmen","решил":"beschloss","хотел":"wollte",
+"нашли":"fanden","нашёл":"fand","лесу":"Wald (im)","который":"welcher","без":"ohne","всех":"alle (Gen.)","начали":"begannen","осталась":"blieb",
+"наконец":"endlich","побежали":"rannten los","вышел":"trat hinaus","правду":"die Wahrheit","поняли":"begriffen","сказал":"sagte","мальчик":"Junge",
+"был":"war","брат":"Bruder","сестра":"Schwester","есть ещё":"es gibt noch","вечером":"am Abend","вечер":"Abend","вечера":"Abends (des)",
+"понял":"begriff","так":"so","внутри":"drinnen","которое":"das","смотрела":"sah, schaute","говорила":"sagte, sprach","порядок":"Ordnung",
+"отправили":"schickten","прятались":"versteckten sich","отправились":"brachen auf","погналось":"verfolgte","раскрыть":"aufklären",
+"появились":"tauchten auf","раскрыто":"aufgeklärt","завидует":"ist neidisch","притворялся":"tat so als ob","прилипло":"blieb hängen",
+"празднует":"feiert","празднуют":"feiern","праздник":"Fest","встретил":"traf","встретила":"traf","встретились":"trafen sich",
+"задирался":"suchte Streit","вызов":"Herausforderung","принят":"angenommen","прекрасным":"großartig","заварил":"brockte ein (заварить кашу)",
+"кашу":"Brei (заварить кашу = etwas einbrocken)","попросил":"bat","свести":"abrechnen (свести счёты)","счёты":"Rechnungen (свести счёты)",
+"поставил":"stellte","внушало":"flößte ein","ссорились":"stritten sich","подругами":"Freundinnen (mit den)","восстанавливать":"wiederaufbauen",
+"ворвалось":"stürmte herein","проник":"drang ein","придирается":"nörgelt herum","изменилось":"hat sich verändert"};
 const STORIES={
 'gf-basis':{t:'Ле́то, лес и одна́ кни́га',
  ru:['Ле́том близнецы́ прие́хали к дя́де. Здесь был то́лько лес, ста́рый дом и о́чень мно́го ти́шины.',
@@ -4548,6 +4658,54 @@ function finishRefresh(){
     '<button class="btn-ghost" onclick="renderPacks()">Zurück zur Übersicht</button></div>';
 }
 /* ---- Kurzgeschichte lesen, dann prüfen ---- */
+/* Antippbare Wörter: erst das Zusatzwörterbuch, dann die Paketvokabeln (auch in
+   gebeugter Form über den gemeinsamen Wortanfang). */
+let _sdict=null;
+function storyDict(){
+  if(_sdict)return _sdict;
+  const exact={},list=[];
+  PACKS.concat(S.extras).forEach(p=>p.words.forEach(w=>{
+    const k=w.r.replace(/́/g,'').toLowerCase();
+    if(/\s|-/.test(k))return;
+    if(!exact[k])exact[k]={r:w.r,d:w.d};
+    list.push({k,r:w.r,d:w.d});
+  }));
+  _sdict={exact,list};
+  return _sdict;
+}
+function storyLookup(tok){
+  if(STORY_GLOSS[tok])return{r:'',d:STORY_GLOSS[tok]};
+  const D=storyDict();
+  if(D.exact[tok])return D.exact[tok];
+  let best=null,bl=0;
+  for(const e of D.list){
+    if(Math.abs(e.k.length-tok.length)>3)continue;
+    let i=0;while(i<Math.min(e.k.length,tok.length)&&e.k[i]===tok[i])i++;
+    if(i<4||i<e.k.length-3)continue;
+    if(i>bl||(i===bl&&best&&e.k.length<best.k.length)){bl=i;best=e}
+  }
+  return best;
+}
+function storyWords(sent){
+  const RX=/[А-Яа-яЁё́]+/g;
+  return esc(sent).replace(RX,m=>''+m+'')
+    .replace(/([А-Яа-яЁё́]+)/g,(_,w)=>
+      '<span class="w" data-n="'+w.replace(/́/g,'').toLowerCase()+'" data-r="'+w+'">'+acc(w)+'</span>');
+}
+function wireStoryWords(){
+  document.querySelectorAll('#storyText .w').forEach(el=>el.onclick=()=>{
+    document.querySelectorAll('#storyText .w.sel').forEach(x=>x.classList.remove('sel'));
+    el.classList.add('sel');
+    const g=storyLookup(el.dataset.n),box=$('#wordBox');
+    if(!box)return;
+    box.className='wordbox';
+    const grund=(g&&g.r&&g.r.replace(/́/g,'').toLowerCase()!==el.dataset.n)
+      ?'<span class="wgrund">Grundform: '+acc(esc(g.r))+'</span>':'';
+    box.innerHTML=sayBtn(el.dataset.r,'spk')+'<b>'+acc(esc(el.dataset.r))+'</b> — '+
+      (g?esc(g.d):'<i>dafür ist noch nichts hinterlegt</i>')+grund;
+    speak(el.dataset.r);
+  });
+}
 let storyDe=false;
 function storyBack(key){return /^\d+$/.test(key)?('exam-'+key):key}
 function showStory(key,withDe){
@@ -4562,15 +4720,17 @@ function showStory(key,withDe){
     '<div class="hero" style="text-align:left"><div class="done-mark" style="text-align:center">📖</div>'+
     '<div class="due-line" style="text-align:center">'+acc(esc(st.t))+' '+sayBtn(st.t,'speak')+'</div>'+
     '<div class="sub" style="text-align:center">'+(/^\d+$/.test(key)?'Folge '+key:esc(zielPack?zielPack.t:''))+' · alle Wörter kennst du schon</div>'+
-    '<div class="story">'+st.ru.map((s,i)=>
-      '<p class="sp">'+acc(esc(s))+' '+sayBtn(s)+
+    '<div class="story" id="storyText">'+st.ru.map((s,i)=>
+      '<p class="sp">'+storyWords(s)+' '+sayBtn(s)+
       (storyDe?'<span class="sde">'+esc(st.de[i])+'</span>':'')+'</p>').join('')+'</div>'+
+    '<div class="wordbox empty" id="wordBox">👆 Tippe ein russisches Wort an – du bekommst die Übersetzung und hörst es.</div>'+
     '<div class="ctrow">'+
     '<button class="btn-ghost" onclick="showStory(\''+key+'\','+(storyDe?'false':'true')+')">'+(storyDe?'Übersetzung ausblenden':'Übersetzung einblenden')+'</button>'+
     '<button class="btn-ghost" onclick="hearAllStory(\''+key+'\')">🔊 Ganze Geschichte hören</button>'+
     '</div>'+
     '<button class="btn btn-primary" onclick="startQuiz(\''+back+'\',STORIES[\''+key+'\'].q,\''+key+'\')">🧠 Fragen zur Geschichte ('+st.q.length+')</button><br>'+
     '<button class="btn-ghost" onclick="showPack(\''+back+'\')">Zurück zum Paket</button></div>';
+  wireStoryWords();
 }
 function hearAllStory(key){
   const st=STORIES[String(key)];
