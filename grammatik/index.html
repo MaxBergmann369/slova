@@ -813,7 +813,7 @@ const TOPICS=[
 {type:'mc2',q:'Сейча́с я ___ в магази́н.',o:['иду́','хожу́'],a:0,de:'Ich gehe gerade in den Laden.',e:'Jetzt, eine Richtung → идти́.'},
 {type:'mc2',q:'По суббо́там я ___ в бассе́йн.',o:['хожу́','иду́'],a:0,de:'Samstags gehe ich (regelmäßig) ins Schwimmbad.',e:'Regelmäßig, hin und zurück → ходи́ть.'}
 ]},
-{id:'asp',icon:'⚖️',t:'Aspekt',s:'Prozess oder Ergebnis?',type:'mc2',
+{id:'asp',icon:'⚖️',t:'Aspekt',s:'Prozess oder Ergebnis?',type:'mc2',ask:'Prozess oder Ergebnis? Achte auf das Signalwort!',
  intro:'Unvollendet = Prozess, Dauer, Gewohnheit (чита́л). Vollendet = einmalig, abgeschlossen, Ergebnis (прочита́л). Lies das Signalwort im Satz!',
  items:[
 {q:'Вчера́ я весь ве́чер ___ кни́гу.',o:['чита́л','прочита́л'],a:0,de:'Gestern las ich den ganzen Abend ein Buch.',e:'„весь ве́чер“ = Dauer/Prozess → unvollendet.'},
@@ -968,6 +968,187 @@ const TOPICS=[
 {type:'mc2',q:'Мы пое́хали бы на мо́ре, е́сли бы ___ тепло́.',o:['бы́ло','бу́дет'],a:0,de:'Wir würden ans Meer fahren, wenn es warm wäre.',e:'Nach е́сли бы steht immer die Vergangenheitsform.'},
 {q:'Что́бы хорошо́ говори́ть, на́до мно́го ___.',b:'говори́ть',a:'говори́ть',x:['говорю́','говори́л','говори́шь'],de:'Um gut zu sprechen, muss man viel sprechen. (что́бы + Infinitiv bei gleichem Subjekt)'}
 ]}
+,
+{id:"part",icon:"💬",t:"Partikeln",s:"же · ведь · ли · ра́зве · -то · -нибудь",sec:3,type:"gap",intro:"Winzige Wörter, die an der Grammatik nichts ändern und am Ton alles. Sie stehen in jedem zweiten gesprochenen Satz – und in keiner Vokabelliste.",items:[
+{"q":"Не зна́ю, придёт ___ он.","a":"ли","x":["же","бы","то"],"de":"Ich weiß nicht, ob er kommt.","h":"ob – im Nebensatz ohne Fragewort"},
+{"q":"___ ты не знал об э́том?","a":"Ра́зве","x":["Ли","Же","Бы"],"de":"Wusstest du das etwa nicht?","h":"Erstaunen mit einem Vorwurf darin"},
+{"q":"Кто́-___ звони́л, но не сказа́л и́мя.","a":"то","x":["нибудь","ли","же"],"de":"Jemand hat angerufen, aber den Namen nicht gesagt.","h":"Die Person gibt es wirklich – ich weiß nur nicht, wer."},
+{"q":"Спроси́ кого́-___, тебе́ подска́жут.","a":"нибудь","x":["то","ли","же"],"de":"Frag irgendjemanden, man hilft dir schon.","h":"Egal wen – die Person steht noch gar nicht fest."},
+{"q":"Где ___ мои́ ключи́?","a":"же","x":["ли","нибудь","бы"],"de":"Wo sind denn meine Schlüssel?"},
+{"q":"Пойдём домо́й, ___ уже́ по́здно.","a":"ведь","x":["же","ли","ра́зве"],"de":"Gehen wir nach Hause, es ist ja schon spät.","h":"Begründung: das weißt du doch selbst"},
+{"q":"___ он уже́ ушёл?","a":"Неуже́ли","x":["Ли","Же","Ведь"],"de":"Ist er wirklich schon gegangen?","h":"ungläubiges Staunen"},
+{"q":"Дай-___ мне посмотре́ть.","a":"ка","x":["то","ли","же"],"de":"Lass mich mal schauen.","h":"macht aus dem Befehl eine Bitte"},
+{"q":"Пойдём куда́-___ ве́чером?","a":"нибудь","x":["то","ли","же"],"de":"Gehen wir abends irgendwohin?"},
+{"q":"Она́ спроси́ла, не хочу́ ___ я ко́фе.","a":"ли","x":["же","бы","то"],"de":"Sie fragte, ob ich Kaffee möchte."},
+{"q":"Он живёт где́-___ на се́вере.","a":"то","x":["нибудь","ли","ка"],"de":"Er wohnt irgendwo im Norden."},
+{"q":"___ э́то так тру́дно?","a":"Ра́зве","x":["Ли","Ка","То"],"de":"Ist das etwa so schwer?"},
+{"q":"Не серди́сь, он ___ ещё ребёнок.","a":"ведь","x":["ли","ка","нибудь"],"de":"Sei nicht böse, er ist ja noch ein Kind."},
+{"q":"Что ___ мне тепе́рь де́лать?","a":"же","x":["ли","ка","нибудь"],"de":"Was soll ich denn jetzt machen?"}]},
+{id:"kotor",icon:"🔗",t:"кото́рый – der, die, das",s:"Nebensätze: кото́рый in allen Fällen",sec:3,type:"gap",intro:"Das russische „der/die/das, welcher\". Das Geschlecht kommt vom Wort davor, der Fall von der Aufgabe im Nebensatz. Diese beiden Dinge auseinanderzuhalten ist der ganze Trick.",items:[
+{"q":"Э́то челове́к, ___ живёт ря́дом.","b":"кото́рый","a":"кото́рый","x":["кото́рого","кото́рому","кото́рым"],"de":"Das ist der Mann, der nebenan wohnt.","h":"Er ist im Nebensatz das Subjekt → Nominativ"},
+{"q":"Э́то челове́к, ___ я ви́дел вчера́.","b":"кото́рый","a":"кото́рого","x":["кото́рый","кото́рому","кото́ром"],"de":"Das ist der Mann, den ich gestern gesehen habe."},
+{"q":"Э́то челове́к, ___ я помога́ю.","b":"кото́рый","a":"кото́рому","x":["кото́рого","кото́рый","кото́рым"],"de":"Das ist der Mann, dem ich helfe."},
+{"q":"Кни́га, ___ я чита́ю, о́чень интере́сная.","b":"кото́рый","a":"кото́рую","x":["кото́рая","кото́рой","кото́рым"],"de":"Das Buch, das ich lese, ist sehr interessant.","h":"кни́га ist feminin – das Geschlecht kommt vom Wort davor."},
+{"q":"Дом, в ___ мы жи́ли, уже́ сне́сли.","b":"кото́рый","a":"кото́ром","x":["кото́рый","кото́рого","кото́рым"],"de":"Das Haus, in dem wir wohnten, ist schon abgerissen."},
+{"q":"Друзья́, с ___ я вы́рос, живу́т далеко́.","b":"кото́рый","a":"кото́рыми","x":["кото́рых","кото́рые","кото́рым"],"de":"Die Freunde, mit denen ich aufgewachsen bin, wohnen weit weg."},
+{"q":"Де́вушка, ___ зову́т А́ня, — моя́ сестра́.","b":"кото́рый","a":"кото́рую","x":["кото́рая","кото́рой","кото́рым"],"de":"Das Mädchen, das Anja heißt, ist meine Schwester.","h":"зову́т verlangt den Akkusativ: её зову́т"},
+{"q":"Фильм, о ___ ты говори́л, мне понра́вился.","b":"кото́рый","a":"кото́ром","x":["кото́рый","кото́рого","кото́рым"],"de":"Der Film, von dem du gesprochen hast, hat mir gefallen."},
+{"q":"Я не зна́ю люде́й, ___ здесь рабо́тают.","b":"кото́рый","a":"кото́рые","x":["кото́рых","кото́рым","кото́рыми"],"de":"Ich kenne die Leute nicht, die hier arbeiten."},
+{"q":"Э́то маши́на, ___ сто́ит це́лое состоя́ние.","b":"кото́рый","a":"кото́рая","x":["кото́рую","кото́рой","кото́рым"],"de":"Das ist ein Auto, das ein Vermögen kostet."},
+{"q":"Учи́тель, ___ ты бои́шься, о́чень до́брый.","b":"кото́рый","a":"кото́рого","x":["кото́рый","кото́рому","кото́рым"],"de":"Der Lehrer, vor dem du Angst hast, ist sehr nett.","h":"боя́ться verlangt den Genitiv"},
+{"q":"Соба́ка, ___ мы нашли́, была́ голо́дная.","b":"кото́рый","a":"кото́рую","x":["кото́рая","кото́рой","кото́рым"],"de":"Der Hund, den wir gefunden haben, war hungrig."},
+{"q":"Пробле́ма, о ___ никто́ не говори́т, ста́ла бо́льше.","b":"кото́рый","a":"кото́рой","x":["кото́рая","кото́рую","кото́рым"],"de":"Das Problem, über das niemand spricht, ist größer geworden."},
+{"q":"Челове́к, ___ ты ве́ришь, тебя́ обма́нывает.","b":"кото́рый","a":"кото́рому","x":["кото́рого","кото́рый","кото́ром"],"de":"Der Mensch, dem du glaubst, betrügt dich.","h":"ве́рить + Dativ"}]},
+{id:"kurz",icon:"⚡",t:"Kurzformen",s:"рад · до́лжен · гото́в · ну́жен · за́нят",sec:3,type:"gap",intro:"Manche Adjektive haben eine kurze Form ohne Endung. Sie steht nie vor dem Substantiv, sondern immer als Aussage im Satz – und richtet sich nach dem, um den es geht.",items:[
+{"q":"Я о́чень ___ тебя́ ви́деть.","b":"рад","a":"рад","x":["ра́да","ра́ды","ра́дый"],"de":"Ich freue mich sehr, dich zu sehen.","h":"Ein Mann spricht."},
+{"q":"Она́ ___ тебя́ ви́деть.","b":"рад","a":"ра́да","x":["рад","ра́ды","ра́дый"],"de":"Sie freut sich, dich zu sehen."},
+{"q":"Ты ___ идти́?","b":"гото́в","a":"гото́в","x":["гото́ва","гото́вы","гото́вый"],"de":"Bist du bereit zu gehen?","h":"zu einem Mann gesagt"},
+{"q":"Мы ___ помо́чь.","b":"гото́в","a":"гото́вы","x":["гото́в","гото́ва","гото́вый"],"de":"Wir sind bereit zu helfen."},
+{"q":"Я ___ идти́ домо́й.","b":"до́лжен","a":"до́лжен","x":["должна́","должны́","до́лжный"],"de":"Ich muss nach Hause gehen.","h":"Ein Mann spricht."},
+{"q":"Она́ ___ рабо́тать сего́дня.","b":"до́лжен","a":"должна́","x":["до́лжен","должны́","до́лжный"],"de":"Sie muss heute arbeiten."},
+{"q":"Ты был ___ — извини́.","b":"прав","a":"прав","x":["права́","пра́вы","пра́вый"],"de":"Du hattest recht – entschuldige.","h":"zu einem Mann gesagt"},
+{"q":"Мне ___ но́вая ку́ртка.","b":"ну́жен","a":"нужна́","x":["ну́жен","ну́жно","нужны́"],"de":"Ich brauche eine neue Jacke.","h":"ну́жен richtet sich nach dem Ding, nicht nach dir."},
+{"q":"Нам ___ де́ньги.","b":"ну́жен","a":"нужны́","x":["ну́жен","нужна́","ну́жно"],"de":"Wir brauchen Geld.","h":"де́ньги gibt es nur im Plural."},
+{"q":"Он сейча́с ___, позвони́ по́зже.","b":"за́нят","a":"за́нят","x":["занята́","за́няты","за́нятый"],"de":"Er ist gerade beschäftigt, ruf später an."},
+{"q":"Она́ ___ весь день.","b":"за́нят","a":"занята́","x":["за́нят","за́няты","за́нятый"],"de":"Sie ist den ganzen Tag beschäftigt."},
+{"q":"Э́тот сто́лик ___?","b":"свобо́ден","a":"свобо́ден","x":["свобо́дна","свобо́дны","свобо́дный"],"de":"Ist dieser Tisch frei?"},
+{"q":"Я ___ в тебе́.","b":"уве́рен","a":"уве́рен","x":["уве́рена","уве́рены","уве́ренный"],"de":"Ich bin mir bei dir sicher.","h":"Ein Mann spricht."},
+{"q":"Все ___, что э́то оши́бка.","b":"уве́рен","a":"уве́рены","x":["уве́рен","уве́рена","уве́ренный"],"de":"Alle sind sicher, dass das ein Fehler ist."}]},
+{id:"neg",icon:"🚫",t:"Doppelte Verneinung",s:"никто́ не · ничего́ не · никогда́ не",sec:3,type:"gap",intro:"Im Russischen verneint man zweimal, und das ist kein Fehler: „Niemand weiß nichts\" heißt schlicht „Niemand weiß etwas\". Das не am Verb muss immer dabei sein.",items:[
+{"q":"___ не зна́ет, где он.","a":"Никто́","x":["Кто́-то","Кто́-нибудь","Никого́"],"de":"Niemand weiß, wo er ist."},
+{"q":"Я ___ не ви́дел.","a":"ничего́","x":["что́-то","что́-нибудь","ничему́"],"de":"Ich habe nichts gesehen."},
+{"q":"Он ___ не хо́дит в кино́.","a":"никогда́","x":["всегда́","иногда́","когда́-то"],"de":"Er geht nie ins Kino."},
+{"q":"Я ___ не пойду́ сего́дня.","a":"никуда́","x":["где́-то","куда́-то","нигде́"],"de":"Ich gehe heute nirgendwohin."},
+{"q":"Её ___ нет.","a":"нигде́","x":["никуда́","куда́-то","никто́"],"de":"Sie ist nirgends."},
+{"q":"Он ___ не говори́т об э́том.","a":"ни с кем","x":["с ке́м-то","с ке́м-нибудь","никто́"],"de":"Er spricht mit niemandem darüber."},
+{"q":"Я ___ не помога́ю.","a":"никому́","x":["кому́-то","никого́","никто́"],"de":"Ich helfe niemandem."},
+{"q":"Он не лю́бит ___ ко́фе, ни чай.","a":"ни","x":["не","и","а"],"de":"Er mag weder Kaffee noch Tee.","h":"ни … ни … = weder … noch"},
+{"q":"Я ___ не бою́сь.","a":"никого́","x":["кого́-то","никто́","никому́"],"de":"Ich habe vor niemandem Angst.","h":"боя́ться + Genitiv"},
+{"q":"___ не случи́лось.","a":"Ничего́","x":["Что́-то","Ничему́","Ничем"],"de":"Es ist nichts passiert."},
+{"q":"Она́ ___ не рассказа́ла свою́ та́йну.","a":"никому́","x":["кому́-то","никого́","ни с кем"],"de":"Sie hat niemandem ihr Geheimnis erzählt."},
+{"q":"В до́ме ___ не́ было.","a":"никого́","x":["кто́-то","никто́","никому́"],"de":"Im Haus war niemand."},
+{"q":"Мне ___ де́лать, я свобо́ден.","a":"не́чего","x":["ничего́","никогда́","не́куда"],"de":"Ich habe nichts zu tun, ich bin frei.","h":"Betonung vorn: es gibt nichts, was ich tun könnte."},
+{"q":"Нам ___ идти́, все две́ри закры́ты.","a":"не́куда","x":["никуда́","не́чего","нигде́"],"de":"Wir haben keinen Ort, wohin wir gehen könnten."}]},
+{id:"svoj",icon:"🪞",t:"свой oder его́?",s:"sein eigener – oder der von jemand anderem",sec:3,type:"mc2",ask:"Wessen ist gemeint?",intro:"свой zeigt immer auf das Subjekt des Satzes zurück. его́ / её / их zeigen auf jemand anderen. Der Unterschied entscheidet, wessen Auto gemeint ist.",items:[
+{"q":"Он взял ___ маши́ну и уе́хал.","o":["свою́","его́"],"a":0,"de":"Er nahm sein (eigenes) Auto und fuhr weg.","e":"свою́ → das Auto gehört ihm selbst."},
+{"q":"Брат уе́хал, и он взял ___ маши́ну.","o":["его́","свою́"],"a":0,"de":"Der Bruder fuhr weg, und er nahm dessen Auto.","e":"его́ → das Auto gehört einem anderen."},
+{"q":"Я люблю́ ___ рабо́ту.","o":["свою́","мою́"],"a":0,"de":"Ich liebe meine Arbeit.","e":"мою́ ist nicht falsch, klingt aber ungelenk. Beim eigenen Subjekt nimmt man свой."},
+{"q":"Она́ потеря́ла ___ ключи́.","o":["свои́","её"],"a":0,"de":"Sie hat ihre Schlüssel verloren.","e":"свои́ → ihre eigenen."},
+{"q":"Подру́га ушла́, а она́ нашла́ ___ ключи́.","o":["её","свои́"],"a":0,"de":"Die Freundin ging, und sie fand deren Schlüssel."},
+{"q":"Он говори́т о ___ пробле́мах.","o":["свои́х","его́"],"a":0,"de":"Er spricht über seine Probleme."},
+{"q":"Мы зна́ем ___ права́.","o":["свои́","на́ши"],"a":0,"de":"Wir kennen unsere Rechte."},
+{"q":"___ брат живёт в Москве́.","o":["Его́","Свой"],"a":0,"de":"Sein Bruder wohnt in Moskau.","e":"свой kann nie im Subjekt stehen – es zeigt ja auf das Subjekt zurück."},
+{"q":"Он лю́бит ___ жену́.","o":["свою́","его́"],"a":0,"de":"Er liebt seine Frau."},
+{"q":"Она́ сказа́ла, что ___ сын бо́лен.","o":["её","свой"],"a":0,"de":"Sie sagte, dass ihr Sohn krank ist.","e":"Im Nebensatz ist сын selbst das Subjekt – свой hätte hier niemanden, auf den es zeigen könnte."},
+{"q":"Расскажи́ мне о ___ семье́.","o":["свое́й","твое́й"],"a":0,"de":"Erzähl mir von deiner Familie."},
+{"q":"Он потеря́л ___ телефо́н и взял мой.","o":["свой","его́"],"a":0,"de":"Er hat sein Handy verloren und meins genommen."},
+{"q":"Они́ прода́ли ___ дом.","o":["свой","их"],"a":0,"de":"Sie haben ihr Haus verkauft."},
+{"q":"Я ви́дел его́ и ___ сестру́.","o":["его́","свою́"],"a":0,"de":"Ich habe ihn und seine Schwester gesehen.","e":"Das Subjekt bin ich – die Schwester gehört aber ihm."}]},
+{id:"unpers",icon:"🌡️",t:"Sätze ohne Subjekt",s:"мне хо́лодно · на́до · мо́жно · нельзя́",sec:3,type:"gap",intro:"Sätze, in denen niemand etwas tut: Wem ist kalt? Wer muss? Die Person steht im Dativ, und das Wort dazu endet auf -о und ändert sich nie.",items:[
+{"q":"___ хо́лодно.","b":"я","a":"Мне","x":["Я","Меня́","Мной"],"de":"Mir ist kalt."},
+{"q":"___ на́до идти́.","b":"мы","a":"Нам","x":["Мы","Нас","На́ми"],"de":"Wir müssen gehen."},
+{"q":"Здесь ___ кури́ть.","a":"нельзя́","x":["мо́жно","на́до","ну́жен"],"de":"Hier darf man nicht rauchen."},
+{"q":"___ мне войти́?","a":"Мо́жно","x":["Нельзя́","На́до","Ну́жен"],"de":"Darf ich hereinkommen?"},
+{"q":"Ему́ ___ спать.","a":"хо́чется","x":["хо́чет","хоти́т","хотя́т"],"de":"Er hat Lust zu schlafen.","h":"хо́чется: der Wunsch kommt von selbst."},
+{"q":"___ ка́жется, что э́то оши́бка.","b":"я","a":"Мне","x":["Я","Меня́","Мной"],"de":"Mir scheint, dass das ein Fehler ist."},
+{"q":"В ко́мнате бы́ло ___.","a":"темно́","x":["тёмный","темна́","тёмное"],"de":"Im Zimmer war es dunkel."},
+{"q":"___ бы́ло ску́чно на уро́ке.","b":"они́","a":"Им","x":["Они́","Их","И́ми"],"de":"Ihnen war im Unterricht langweilig."},
+{"q":"Тебе́ ___ отдохну́ть.","a":"ну́жно","x":["ну́жен","нужна́","нужны́"],"de":"Du musst dich ausruhen.","h":"Vor einem Infinitiv steht immer die Form auf -о."},
+{"q":"На у́лице ___.","a":"жа́рко","x":["жа́ркий","жа́ркая","жа́ркое"],"de":"Draußen ist es heiß."},
+{"q":"___ пора́ домо́й.","b":"ты","a":"Тебе́","x":["Ты","Тебя́","Тобо́й"],"de":"Für dich ist es Zeit, nach Hause zu gehen."},
+{"q":"Отсю́да ___ дое́хать за час.","a":"мо́жно","x":["нельзя́","ну́жен","нужна́"],"de":"Von hier kommt man in einer Stunde hin.","h":"мо́жно heißt auch „es ist möglich\", nicht nur „erlaubt\"."},
+{"q":"___ бы́ло тру́дно поня́ть.","b":"все","a":"Всем","x":["Все","Всех","Все́ми"],"de":"Für alle war es schwer zu verstehen."},
+{"q":"Здесь ___ никого́.","a":"нет","x":["не","нельзя́","ни"],"de":"Hier ist niemand."}]},
+{id:"rekt",icon:"⚓",t:"Verben mit festem Fall",s:"боя́ться + Gen · зави́сеть от · горди́ться",sec:3,type:"gap",intro:"Viele Verben verlangen einen festen Fall oder eine feste Präposition – und die stimmt fast nie mit dem Deutschen überein. Das lernt man Verb für Verb, nicht nach Regel.",items:[
+{"q":"Я бою́сь ___.","b":"соба́ка","a":"соба́ки","x":["соба́ку","соба́ке","соба́кой"],"de":"Ich habe Angst vor dem Hund.","h":"боя́ться + Genitiv"},
+{"q":"Всё зави́сит от ___.","b":"ты","a":"тебя́","x":["тебе́","тобо́й","ты"],"de":"Alles hängt von dir ab.","h":"зави́сеть от + Genitiv"},
+{"q":"Он гото́вится к ___.","b":"экза́мен","a":"экза́мену","x":["экза́мена","экза́меном","экза́мене"],"de":"Er bereitet sich auf die Prüfung vor.","h":"гото́виться к + Dativ"},
+{"q":"Я ду́маю о ___.","b":"рабо́та","a":"рабо́те","x":["рабо́ту","рабо́ты","рабо́той"],"de":"Ich denke an die Arbeit.","h":"ду́мать о + Präpositiv"},
+{"q":"Не смейся над ___!","b":"он","a":"ним","x":["его́","ему́","нём"],"de":"Lach ihn nicht aus!","h":"смея́ться над + Instrumental"},
+{"q":"Он жени́лся на ___.","b":"она́","a":"ней","x":["её","ей","неё"],"de":"Er hat sie geheiratet.","h":"жени́ться на + Präpositiv"},
+{"q":"Я жду ___.","b":"авто́бус","a":"авто́буса","x":["авто́бус","авто́бусу","авто́бусом"],"de":"Ich warte auf den Bus.","h":"ждать + Genitiv, wenn ungewiss ist, ob er kommt."},
+{"q":"Она́ интересу́ется ___.","b":"му́зыка","a":"му́зыкой","x":["му́зыку","му́зыки","му́зыке"],"de":"Sie interessiert sich für Musik.","h":"интересова́ться + Instrumental"},
+{"q":"Он по́льзуется ___.","b":"слова́рь","a":"словарём","x":["слова́рь","словаря́","словарю́"],"de":"Er benutzt ein Wörterbuch.","h":"по́льзоваться + Instrumental"},
+{"q":"Мы поздравля́ем тебя́ с ___!","b":"день рожде́ния","a":"днём рожде́ния","x":["день рожде́ния","дня рожде́ния","дню рожде́ния"],"de":"Wir gratulieren dir zum Geburtstag!","h":"поздравля́ть с + Instrumental"},
+{"q":"Он отвеча́ет за ___.","b":"результа́т","a":"результа́т","x":["результа́та","результа́ту","результа́том"],"de":"Er ist für das Ergebnis verantwortlich.","h":"отвеча́ть за + Akkusativ – hier ändert sich nichts."},
+{"q":"Я скуча́ю по ___.","b":"дом","a":"до́му","x":["дом","до́ма","до́мом"],"de":"Ich habe Heimweh.","h":"скуча́ть по + Dativ"},
+{"q":"Она́ ве́рит ___.","b":"я","a":"мне","x":["меня́","мной","мой"],"de":"Sie glaubt mir.","h":"ве́рить + Dativ"},
+{"q":"Мы горди́мся ___.","b":"ты","a":"тобо́й","x":["тебя́","тебе́","твой"],"de":"Wir sind stolz auf dich.","h":"горди́ться + Instrumental"}]},
+{id:"pref",icon:"🚪",t:"Bewegung mit Präfix",s:"войти́ · вы́йти · прийти́ · уйти́ · перейти́",sec:3,type:"gap",intro:"Ein Präfix vor идти́ oder е́хать sagt genau, wohin es geht: hinein, hinaus, an, weg, hinüber, bis. Dieselben Präfixe wirken bei fast allen Bewegungsverben gleich.",items:[
+{"q":"Он ___ в ко́мнату.","b":"идти́","a":"вошёл","x":["вы́шел","ушёл","пришёл"],"de":"Er ging ins Zimmer hinein.","h":"в- = hinein"},
+{"q":"Он ___ из ко́мнаты.","b":"идти́","a":"вы́шел","x":["вошёл","пришёл","подошёл"],"de":"Er ging aus dem Zimmer hinaus.","h":"вы- = hinaus"},
+{"q":"Он ___ домо́й в семь.","b":"идти́","a":"пришёл","x":["ушёл","вы́шел","перешёл"],"de":"Er kam um sieben nach Hause.","h":"при- = ankommen"},
+{"q":"Он ___ и не сказа́л ни сло́ва.","b":"идти́","a":"ушёл","x":["пришёл","вошёл","подошёл"],"de":"Er ging weg, ohne ein Wort zu sagen.","h":"у- = weggehen"},
+{"q":"Он ___ у́лицу.","b":"идти́","a":"перешёл","x":["подошёл","вы́шел","дошёл"],"de":"Er ging über die Straße.","h":"пере- = hinüber"},
+{"q":"Он ___ ко мне и спроси́л …","b":"идти́","a":"подошёл","x":["отошёл","вошёл","ушёл"],"de":"Er trat zu mir und fragte …","h":"под- = herantreten"},
+{"q":"Он ___ от окна́.","b":"идти́","a":"отошёл","x":["подошёл","пришёл","вошёл"],"de":"Er trat vom Fenster weg.","h":"от- = ein Stück wegtreten"},
+{"q":"Мы ___ до вокза́ла за де́сять мину́т.","b":"идти́","a":"дошли́","x":["вошли́","перешли́","ушли́"],"de":"Wir kamen in zehn Minuten bis zum Bahnhof.","h":"до- = bis zu einem Ziel"},
+{"q":"Она́ ___ вокру́г до́ма.","b":"идти́","a":"обошла́","x":["вошла́","подошла́","ушла́"],"de":"Sie ging um das Haus herum.","h":"об- = herum"},
+{"q":"Маши́на ___ в гара́ж.","b":"е́хать","a":"въе́хала","x":["вы́ехала","уе́хала","прие́хала"],"de":"Das Auto fuhr in die Garage."},
+{"q":"Он ___ из го́рода вчера́.","b":"е́хать","a":"уе́хал","x":["прие́хал","въе́хал","перее́хал"],"de":"Er ist gestern aus der Stadt weggefahren."},
+{"q":"Они́ ___ в но́вую кварти́ру.","b":"е́хать","a":"перее́хали","x":["вы́ехали","дое́хали","подъе́хали"],"de":"Sie sind in eine neue Wohnung umgezogen.","h":"пере- + е́хать = umziehen"},
+{"q":"Авто́бус ___ к остано́вке.","b":"е́хать","a":"подъе́хал","x":["отъе́хал","въе́хал","вы́ехал"],"de":"Der Bus fuhr an die Haltestelle heran."},
+{"q":"Мы ___ до до́ма то́лько но́чью.","b":"е́хать","a":"дое́хали","x":["уе́хали","въе́хали","перее́хали"],"de":"Wir kamen erst nachts zu Hause an."}]},
+{id:"sup",icon:"🏆",t:"Superlativ",s:"са́мый · лу́чший · бо́льше всего́",sec:3,type:"gap",intro:"Am einfachsten mit са́мый vor dem Adjektiv – das wird mitdekliniert wie jedes Adjektiv. Daneben gibt es feste Formen (лу́чший, ху́дший) und die Wendung Komparativ + всех / всего́.",items:[
+{"q":"Э́то ___ интере́сная кни́га.","a":"са́мая","x":["са́мый","са́мое","са́мые"],"de":"Das ist das interessanteste Buch."},
+{"q":"Он ___ высо́кий в кла́ссе.","a":"са́мый","x":["са́мая","са́мое","са́мые"],"de":"Er ist der Größte in der Klasse."},
+{"q":"Э́то ___ ва́жное реше́ние.","a":"са́мое","x":["са́мый","са́мая","са́мые"],"de":"Das ist die wichtigste Entscheidung."},
+{"q":"Он мой ___ друг.","a":"лу́чший","x":["лу́чше","са́мый","ху́дший"],"de":"Er ist mein bester Freund.","h":"лу́чший ist die feste Form – са́мый хоро́ший sagt man kaum."},
+{"q":"Э́то был ___ день в мое́й жи́зни.","a":"ху́дший","x":["ху́же","ху́дшая","ху́дшее"],"de":"Das war der schlimmste Tag meines Lebens."},
+{"q":"Я ___ всего́ люблю́ ле́то.","a":"бо́льше","x":["бо́лее","са́мый","лу́чше"],"de":"Am liebsten mag ich den Sommer.","h":"бо́льше всего́ = am meisten"},
+{"q":"Она́ поёт ___ всех.","a":"лу́чше","x":["лу́чший","бо́льше","са́мый"],"de":"Sie singt am besten von allen.","h":"Komparativ + всех wird beim Verb zum Superlativ."},
+{"q":"В ___ большо́м го́роде страны́ живёт мно́го люде́й.","a":"са́мом","x":["са́мый","са́мого","са́мым"],"de":"In der größten Stadt des Landes wohnen viele Menschen.","h":"са́мый wird mitdekliniert."},
+{"q":"Он рабо́тает с ___ у́мными людьми́.","a":"са́мыми","x":["са́мые","са́мых","са́мым"],"de":"Er arbeitet mit den klügsten Leuten."},
+{"q":"Э́то ___ вопро́с из всех.","a":"важне́йший","x":["ва́жный","важне́е","ва́жно"],"de":"Das ist die wichtigste Frage von allen.","h":"-ейший: die gehobene, schriftliche Form."},
+{"q":"Э́то ___ ва́жный пункт догово́ра.","a":"наибо́лее","x":["наибо́льше","бо́лее","са́мое"],"de":"Das ist der wichtigste Punkt des Vertrags.","h":"наибо́лее: schriftsprachlich für са́мый."},
+{"q":"Она́ ста́ла ___ подру́гой.","a":"лу́чшей","x":["лу́чший","лу́чшая","лу́чше"],"de":"Sie wurde die beste Freundin."},
+{"q":"Э́то оди́н из ___ городо́в Росси́и.","a":"краси́вейших","x":["краси́вый","краси́вее","краси́вое"],"de":"Das ist eine der schönsten Städte Russlands."},
+{"q":"Он прие́хал ___ всех.","a":"ра́ньше","x":["ра́нний","ра́но","са́мый"],"de":"Er kam vor allen anderen an.","h":"wieder Komparativ + всех"}]},
+{id:"cht",icon:"🎯",t:"что oder что́бы?",s:"berichten – oder ein Ziel nennen",sec:3,type:"mc2",ask:"Tatsache oder Ziel?",intro:"что berichtet, was ist. что́бы nennt ein Ziel oder einen Wunsch – und dahinter steht nie ein Präsens, sondern die Form auf -л oder ein Infinitiv.",items:[
+{"q":"Я зна́ю, ___ он до́ма.","o":["что","что́бы"],"a":0,"de":"Ich weiß, dass er zu Hause ist.","e":"Eine Tatsache wird berichtet → что."},
+{"q":"Я хочу́, ___ ты пришёл.","o":["что́бы","что"],"a":0,"de":"Ich will, dass du kommst.","e":"Ein Wunsch an eine andere Person → что́бы + Form auf -л."},
+{"q":"Он сказа́л, ___ уста́л.","o":["что","что́бы"],"a":0,"de":"Er sagte, dass er müde sei."},
+{"q":"Он сказа́л, ___ я пришёл.","o":["что́бы","что"],"a":0,"de":"Er sagte, ich solle kommen.","e":"Hier verlangt er etwas – das ist ein Ziel, keine Nachricht."},
+{"q":"Я пришёл, ___ помо́чь.","o":["что́бы","что"],"a":0,"de":"Ich bin gekommen, um zu helfen.","e":"Ziel bei gleichem Subjekt → что́бы + Infinitiv."},
+{"q":"Я ду́маю, ___ э́то оши́бка.","o":["что","что́бы"],"a":0,"de":"Ich denke, dass das ein Fehler ist."},
+{"q":"Ну́жно, ___ все зна́ли об э́том.","o":["что́бы","что"],"a":0,"de":"Es ist nötig, dass alle davon wissen."},
+{"q":"Я ви́жу, ___ ты за́нят.","o":["что","что́бы"],"a":0,"de":"Ich sehe, dass du beschäftigt bist."},
+{"q":"Она́ проси́ла, ___ мы подожда́ли.","o":["что́бы","что"],"a":0,"de":"Sie bat darum, dass wir warten."},
+{"q":"Он не ве́рит, ___ э́то пра́вда.","o":["что","что́бы"],"a":0,"de":"Er glaubt nicht, dass das wahr ist."},
+{"q":"Мы у́чим ру́сский, ___ понима́ть фи́льмы.","o":["что́бы","что"],"a":0,"de":"Wir lernen Russisch, um Filme zu verstehen."},
+{"q":"Я бою́сь, ___ он опозда́ет.","o":["что","что́бы"],"a":0,"de":"Ich fürchte, dass er zu spät kommt.","e":"Eine Befürchtung über eine Tatsache → что."},
+{"q":"Скажи́ ему́, ___ он позвони́л.","o":["что́бы","что"],"a":0,"de":"Sag ihm, er soll anrufen.","e":"Eine Bitte weitergeben → что́бы."},
+{"q":"Скажи́ ему́, ___ я до́ма.","o":["что","что́бы"],"a":0,"de":"Sag ihm, dass ich zu Hause bin.","e":"Eine Information weitergeben → что."}]},
+{id:"negg",icon:"🕳️",t:"Genitiv der Verneinung",s:"нет · не́ было · не бу́дет + Genitiv",sec:3,type:"gap",intro:"Wenn etwas nicht da ist, steht es im Genitiv – und das Subjekt verschwindet: statt „der Bruder ist nicht da\" sagt man „von Bruder gibt es nicht\". In der Vergangenheit heißt es immer не́ было, egal wer fehlt.",items:[
+{"q":"У меня́ нет ___.","b":"вре́мя","a":"вре́мени","x":["вре́мя","вре́менем","времена́"],"de":"Ich habe keine Zeit."},
+{"q":"До́ма нет ___.","b":"молоко́","a":"молока́","x":["молоко́","молоку́","молоко́м"],"de":"Zu Hause ist keine Milch."},
+{"q":"Вчера́ его́ ___ на рабо́те.","a":"не́ было","x":["не был","не была́","не бу́дет"],"de":"Gestern war er nicht auf der Arbeit.","h":"Bei „nicht da sein\" immer не́ было – unveränderlich."},
+{"q":"За́втра ___ вре́мени.","a":"не бу́дет","x":["не бу́дут","не бу́ду","не была́"],"de":"Morgen wird keine Zeit sein."},
+{"q":"В ко́мнате ___ никого́.","a":"нет","x":["не","нельзя́","ни"],"de":"Im Zimmer ist niemand."},
+{"q":"Я не ви́жу ___.","b":"разни́ца","a":"разни́цы","x":["разни́ца","разни́цу","разни́цей"],"de":"Ich sehe keinen Unterschied.","h":"Bei abstrakten Dingen nach не + Verb steht gern der Genitiv."},
+{"q":"У неё нет ___.","b":"де́ньги","a":"де́нег","x":["де́ньги","деньга́м","деньга́ми"],"de":"Sie hat kein Geld."},
+{"q":"У нас нет ___.","b":"вы́бор","a":"вы́бора","x":["вы́бор","вы́бору","вы́бором"],"de":"Wir haben keine Wahl."},
+{"q":"Он не зна́ет ___.","b":"отве́т","a":"отве́та","x":["отве́т","отве́ту","отве́том"],"de":"Er kennt die Antwort nicht."},
+{"q":"В го́роде нет ___.","b":"метро́","a":"метро́","x":["метра́","метру́","метро́м"],"de":"In der Stadt gibt es keine Metro.","h":"метро́ ist unveränderlich – der Genitiv sieht gleich aus."},
+{"q":"На столе́ ___ никаки́х бума́г.","a":"не́ было","x":["не был","не была́","не бы́ли"],"de":"Auf dem Tisch waren keine Papiere."},
+{"q":"У меня́ нет ___.","b":"сестра́","a":"сестры́","x":["сестра́","сестру́","сестро́й"],"de":"Ich habe keine Schwester."},
+{"q":"Тако́й пробле́мы про́сто ___.","a":"не существу́ет","x":["не существу́ют","не существова́л","нет существу́ет"],"de":"So ein Problem existiert einfach nicht."},
+{"q":"У них ___ дете́й.","a":"не́ было","x":["не был","не бы́ли","не была́"],"de":"Sie hatten keine Kinder."}]},
+{id:"prich",icon:"📖",t:"Partizipien erkennen",s:"чита́ющий · прочи́танный · сказа́в · идя́",sec:3,type:"mc2",ask:"Was bedeutet die Form?",intro:"In Büchern und Erzählungen begegnen dir ständig Formen wie чита́ющий, прочи́танный, сказа́в. Bilden musst du sie nicht – aber du musst sofort sehen, was sie bedeuten.",items:[
+{"q":"Челове́к, чита́ющий газе́ту, — мой оте́ц.","o":["der die Zeitung liest","der die Zeitung gelesen hat"],"a":0,"de":"Der Mann, der die Zeitung liest, ist mein Vater.","e":"-ющий: aktiv und gerade jetzt."},
+{"q":"Кни́га, прочи́танная за одну́ ночь.","o":["das in einer Nacht gelesene Buch","das Buch, das eine Nacht lang liest"],"a":0,"de":"Das in einer Nacht gelesene Buch.","e":"-нный: passiv und fertig – jemand hat es gelesen."},
+{"q":"Сказа́в э́то, он ушёл.","o":["Nachdem er das gesagt hatte, ging er.","Während er das sagte, ging er."],"a":0,"de":"Nachdem er das gesagt hatte, ging er.","e":"сказа́в endet auf -в: erst das eine, dann das andere."},
+{"q":"Идя́ домо́й, я ду́мал о тебе́.","o":["Während ich nach Hause ging","Nachdem ich nach Hause gegangen war"],"a":0,"de":"Während ich nach Hause ging, dachte ich an dich.","e":"идя́ endet auf -я: beides gleichzeitig."},
+{"q":"Де́вушка, живу́щая ря́дом.","o":["das Mädchen, das nebenan wohnt","das Mädchen, das nebenan gewohnt hat"],"a":0,"de":"Das Mädchen, das nebenan wohnt."},
+{"q":"Письмо́, напи́санное вчера́.","o":["der gestern geschriebene Brief","der Brief, der gestern schreibt"],"a":0,"de":"Der gestern geschriebene Brief."},
+{"q":"Не зна́я отве́та, он молча́л.","o":["Da er die Antwort nicht wusste, schwieg er.","Nachdem er die Antwort erfahren hatte, schwieg er."],"a":0,"de":"Da er die Antwort nicht wusste, schwieg er."},
+{"q":"Дом, постро́енный сто лет наза́д.","o":["das vor hundert Jahren gebaute Haus","das Haus, das vor hundert Jahren baut"],"a":0,"de":"Das vor hundert Jahren gebaute Haus."},
+{"q":"Услы́шав шум, она́ вы́шла.","o":["Als sie den Lärm gehört hatte, ging sie hinaus.","Während sie den Lärm hörte, ging sie hinaus."],"a":0,"de":"Als sie den Lärm gehört hatte, ging sie hinaus."},
+{"q":"Рабо́тающий телеви́зор меша́л спать.","o":["Der laufende Fernseher","Der reparierte Fernseher"],"a":0,"de":"Der laufende Fernseher störte beim Schlafen."},
+{"q":"Забы́тые ве́щи лежа́ли в углу́.","o":["Die vergessenen Sachen","Die vergessenden Sachen"],"a":0,"de":"Die vergessenen Sachen lagen in der Ecke."},
+{"q":"Улыба́ясь, он откры́л дверь.","o":["Lächelnd öffnete er die Tür.","Nachdem er gelächelt hatte, öffnete er die Tür."],"a":0,"de":"Lächelnd öffnete er die Tür."},
+{"q":"Челове́к, вы́игравший приз.","o":["der Mensch, der den Preis gewonnen hat","der Mensch, der den Preis gewinnt"],"a":0,"de":"Der Mensch, der den Preis gewonnen hat.","e":"-вший: aktiv, aber abgeschlossen."},
+{"q":"Реша́я зада́чу, он де́лал оши́бки.","o":["Beim Lösen der Aufgabe machte er Fehler.","Nachdem er die Aufgabe gelöst hatte, machte er Fehler."],"a":0,"de":"Beim Lösen der Aufgabe machte er Fehler."}]}
 ];
 
 /* ================= Regel-Erklärungen pro Thema ================= */
@@ -1432,6 +1613,19 @@ Das бы kann vor oder nach dem Verb stehen – beides ist richtig.
 <h4>Typische Fehler</h4>
 • „Е́сли бы бу́дет …" ✗ – nach е́сли бы steht immer die <b>Vergangenheit</b>.<br>
 • „Я хочу́, что́бы ты придёшь" ✗ → <b>что́бы ты пришёл</b> ✓ (auch wenn es Zukunft meint!).`
+,
+part:"<h4>Wozu sind Partikeln da?</h4>\nSie ändern die Grammatik nicht – sie ändern die <b>Haltung</b> des Sprechers. Genau darum fehlen sie in Vokabellisten und stehen trotzdem in fast jedem gesprochenen Satz.\n<h4>Die wichtigsten</h4>\n<b>же</b> – verstärkt, oft Ärger oder Ungeduld. Steht direkt hinter dem betonten Wort.<br>\n<i>Где <b>же</b> ты был?</i> – Wo <u>warst</u> du denn?\n<h4></h4>\n<b>ведь</b> – „doch, ja schließlich\". Beruft sich auf etwas, das beide wissen.<br>\n<i>Пойдём, <b>ведь</b> уже́ по́здно.</i> – Gehen wir, es ist ja schon spät.\n<h4></h4>\n<b>ли</b> – „ob\". Nur in Nebensätzen ohne Fragewort. Steht hinter dem Wort, um das es geht.<br>\n<i>Не зна́ю, придёт <b>ли</b> он.</i> – Ich weiß nicht, ob er kommt.\n<h4></h4>\n<b>ра́зве / неуже́ли</b> – Zweifel und Staunen. ра́зве hat oft einen Vorwurf, неуже́ли reines Erstaunen.<br>\n<i><b>Ра́зве</b> ты не знал?</i> · <i><b>Неуже́ли</b> он ушёл?</i>\n<h4>-то und -нибудь</h4>\nBeide heißen „irgend-\", aber:<br>\n• <b>-то</b>: die Sache oder Person <b>gibt es</b>, ich weiß nur nicht, welche. <i>Кто́-<b>то</b> звони́л.</i> (jemand hat angerufen)<br>\n• <b>-нибудь</b>: <b>egal welche</b>, sie steht noch nicht fest. <i>Спроси́ кого́-<b>нибудь</b>.</i> (frag irgendwen)<br>\nFaustregel: Vergangenheit und Feststellung → <b>-то</b>. Frage, Bitte, Zukunft → <b>-нибудь</b>.\n<h4>-ка</h4>\nHängt sich an den Imperativ und macht ihn freundlich: <i>Дай-<b>ка</b> посмотре́ть.</i> – Lass mich mal schauen.",
+kotor:"<h4>Ein Wort für alle Nebensätze</h4>\nкото́рый ersetzt „der, die, das, welcher\". Es sieht aus wie ein normales Adjektiv und wird auch so dekliniert.\n<h4>Die Regel in zwei Schritten</h4>\n<b>1. Geschlecht und Zahl</b> kommen vom Wort <u>davor</u> im Hauptsatz.<br>\n<b>2. Der Fall</b> kommt von der Aufgabe <u>im Nebensatz</u>.<br>\nDiese beiden Dinge haben nichts miteinander zu tun – das ist der ganze Trick.\n<h4>Dasselbe Wort, vier Fälle</h4>\n<i>Челове́к, <b>кото́рый</b> живёт ря́дом …</i> – er wohnt → Subjekt → Nominativ<br>\n<i>Челове́к, <b>кото́рого</b> я ви́дел …</i> – ich sah ihn → Akkusativ (belebt)<br>\n<i>Челове́к, <b>кото́рому</b> я помога́ю …</i> – ich helfe ihm → Dativ<br>\n<i>Челове́к, о <b>кото́ром</b> ты говори́л …</i> – über ihn → Präpositiv\n<h4>Präposition vorn</h4>\nGehört zum Nebensatz eine Präposition, steht sie <b>vor</b> кото́рый, nicht am Satzende wie im Deutschen:<br>\n<i>Дом, <b>в кото́ром</b> мы жи́ли.</i> – Das Haus, in dem wir wohnten.\n<h4>Komma nicht vergessen</h4>\nVor кото́рый steht im Russischen <b>immer</b> ein Komma. Ohne Ausnahme.",
+kurz:"<h4>Lange und kurze Form</h4>\nViele Adjektive haben zwei Formen:<br>\n• <b>lang</b> (но́вый, за́нятый) – steht vor dem Substantiv: <i>но́вый дом</i><br>\n• <b>kurz</b> (нов, за́нят) – steht als Aussage im Satz: <i>Дом нов.</i>\n<h4>Wie sie gebildet wird</h4>\nMan streicht die Endung und hängt an:<br>\nmaskulin <b>–</b> · feminin <b>-а</b> · neutrum <b>-о</b> · Plural <b>-ы</b><br>\n<i>рад · ра́да · ра́до · ра́ды</i>\n<h4>Die, die du wirklich brauchst</h4>\nDiese kommen fast nur kurz vor:<br>\n<b>рад</b> (froh) · <b>до́лжен</b> (muss) · <b>гото́в</b> (bereit) · <b>прав</b> (hat recht) · <b>за́нят</b> (beschäftigt) · <b>свобо́ден</b> (frei) · <b>уве́рен</b> (sicher) · <b>согла́сен</b> (einverstanden) · <b>ну́жен</b> (nötig)\n<h4>Der Stolperstein: ну́жен</h4>\nну́жен richtet sich nach dem <b>gebrauchten Ding</b>, nicht nach dir. Du selbst stehst im Dativ:<br>\n<i>Мне <b>ну́жен</b> слова́рь.</i> (der ist maskulin)<br>\n<i>Мне <b>нужна́</b> по́мощь.</i> (die ist feminin)<br>\n<i>Мне <b>нужны́</b> де́ньги.</i> (Plural)<br>\n<i>Мне <b>ну́жно</b> идти́.</i> (vor Infinitiv immer -о)\n<h4>Typischer Fehler</h4>\n✗ <i>Я ра́дый тебя́ ви́деть.</i> → ✓ <i>Я <b>рад</b> тебя́ ви́деть.</i><br>\nDie lange Form beschreibt eine Eigenschaft, die kurze einen Zustand gerade jetzt.",
+neg:"<h4>Zweimal nein heißt nein</h4>\nIm Deutschen wäre „niemand weiß nichts\" ein Fehler. Im Russischen ist es die einzig richtige Form: das Verneinungswort <b>und</b> das не am Verb müssen beide da sein.<br>\n<i><b>Никто́</b> <b>не</b> зна́ет.</i> – Niemand weiß es.<br>\n<i>Я <b>ничего́</b> <b>не</b> ви́дел.</i> – Ich habe nichts gesehen.\n<h4>Die Familie der ни-Wörter</h4>\n<b>никто́</b> niemand · <b>ничего́</b> nichts · <b>никогда́</b> nie · <b>нигде́</b> nirgends · <b>никуда́</b> nirgendwohin · <b>никако́й</b> keinerlei · <b>ниче́й</b> niemandes\n<h4>Präposition in die Mitte</h4>\nKommt eine Präposition dazu, rutscht sie <b>zwischen</b> ни und den Rest:<br>\n<i><b>ни с кем</b> не говори́т</i> – spricht mit niemandem<br>\n<i><b>ни о чём</b> не ду́мает</i> – denkt an nichts\n<h4>ни … ни …</h4>\n<i>Он не лю́бит <b>ни</b> ко́фе, <b>ни</b> чай.</i> – Er mag weder Kaffee noch Tee.\n<h4>Aufpassen: не́чего und ни́чего</h4>\nDieselben Buchstaben, andere Betonung, andere Bedeutung:<br>\n• <b>ничего́</b> (hinten betont) + не: „nichts\" – <i>Я ничего́ не де́лаю.</i><br>\n• <b>не́чего</b> (vorn betont): „es gibt nichts zu …\" – <i>Мне не́чего де́лать.</i><br>\nGenauso: <b>не́куда</b> (nirgendwohin zu gehen), <b>не́когда</b> (keine Zeit).",
+svoj:"<h4>Das Wort, das nach hinten zeigt</h4>\nсвой heißt „der eigene\" und zeigt <b>immer auf das Subjekt des Satzes</b> zurück. его́ / её / их zeigen dagegen auf jemand anderen.\n<h4>Der Unterschied in einem Bild</h4>\n<i>Он взял <b>свою́</b> маши́ну.</i> – Er nahm <u>sein eigenes</u> Auto.<br>\n<i>Он взял <b>его́</b> маши́ну.</i> – Er nahm <u>das Auto eines anderen</u>.<br>\nIm Deutschen heißt beides „sein Auto\" – im Russischen sind das zwei verschiedene Sätze.\n<h4>Bei ich, du, wir, ihr</h4>\nDa kann nichts schiefgehen, weil мой und твой eindeutig sind. Trotzdem klingt свой natürlicher:<br>\n<i>Я люблю́ <b>свою́</b> рабо́ту.</i> statt <i>мою́ рабо́ту</i>.\n<h4>Die eine harte Regel</h4>\nсвой kann <b>nie im Subjekt stehen</b>. Es zeigt ja auf das Subjekt – es kann nicht auf sich selbst zeigen.<br>\n✗ <i>Свой брат живёт в Москве́.</i><br>\n✓ <i><b>Его́</b> брат живёт в Москве́.</i>\n<h4>Vorsicht im Nebensatz</h4>\nJeder Nebensatz hat sein eigenes Subjekt:<br>\n<i>Она́ сказа́ла, что <b>её</b> сын бо́лен.</i> – Im Nebensatz ist сын das Subjekt, свой hätte niemanden zum Zurückzeigen.",
+unpers:"<h4>Sätze, in denen niemand etwas tut</h4>\nDas Deutsche behilft sich mit „es\": <i>Es ist kalt.</i> Das Russische lässt das Subjekt einfach weg – und schickt die betroffene Person in den <b>Dativ</b>.<br>\n<i><b>Мне</b> хо́лодно.</i> – Mir ist kalt.\n<h4>Die Form auf -о</h4>\nDas Wort dazu ändert sich nie: хо́лодно, жа́рко, темно́, ску́чно, тру́дно, интере́сно, прия́тно, стра́шно.<br>\n<i>В ко́мнате бы́ло <b>темно́</b>.</i>\n<h4>Müssen, dürfen, nicht dürfen</h4>\n<b>на́до / ну́жно</b> – muss<br>\n<b>мо́жно</b> – darf, kann (Erlaubnis <i>und</i> Möglichkeit)<br>\n<b>нельзя́</b> – darf nicht, geht nicht<br>\nImmer mit Dativ und Infinitiv: <i><b>Нам на́до</b> идти́.</i> · <i><b>Мне мо́жно</b> войти́?</i>\n<h4>Vergangenheit und Zukunft</h4>\nMan hängt <b>бы́ло</b> oder <b>бу́дет</b> an – unveränderlich, egal wer betroffen ist:<br>\n<i>Мне <b>бы́ло</b> хо́лодно.</i> · <i>Нам <b>бу́дет</b> тру́дно.</i>\n<h4>Verben, die so funktionieren</h4>\n<b>хо́чется</b> (Lust haben), <b>ка́жется</b> (scheinen), <b>нра́вится</b> (gefallen), <b>удало́сь</b> (gelingen) – die Person steht im Dativ, nicht im Nominativ:<br>\n<i><b>Мне</b> ка́жется, что …</i> – Mir scheint, dass …",
+rekt:"<h4>Warum das kein Regelthema ist</h4>\nWelchen Fall ein Verb verlangt, kann man nicht ableiten – es gehört zum Verb dazu wie das Geschlecht zum Substantiv. Und es stimmt fast nie mit dem Deutschen überein.\n<h4>Verben mit Genitiv</h4>\n<b>боя́ться</b> (Angst haben vor) · <b>жела́ть</b> (wünschen) · <b>ждать</b> (warten auf, wenn ungewiss) · <b>зави́сеть от</b> (abhängen von) · <b>достига́ть</b> (erreichen)<br>\n<i>Я бою́сь <b>соба́ки</b>.</i>\n<h4>Verben mit Dativ</h4>\n<b>помога́ть</b> (helfen) · <b>ве́рить</b> (glauben) · <b>меша́ть</b> (stören) · <b>звони́ть</b> (anrufen) · <b>сове́товать</b> (raten) · <b>скуча́ть по</b> (vermissen) · <b>гото́виться к</b> (sich vorbereiten auf)<br>\n<i>Она́ ве́рит <b>мне</b>.</i> – Beachte: <u>anrufen</u> und <u>helfen</u> haben im Deutschen den Akkusativ.\n<h4>Verben mit Instrumental</h4>\n<b>интересова́ться</b> (sich interessieren für) · <b>занима́ться</b> (sich beschäftigen mit) · <b>по́льзоваться</b> (benutzen) · <b>горди́ться</b> (stolz sein auf) · <b>смея́ться над</b> (auslachen) · <b>поздравля́ть с</b> (gratulieren zu)<br>\n<i>Он по́льзуется <b>словарём</b>.</i> – „benutzen\" mit Instrumental ist für uns völlig unlogisch, aber so ist es.\n<h4>Feste Präpositionen</h4>\n<b>ду́мать о</b> + Präpositiv · <b>жени́ться на</b> + Präpositiv · <b>отвеча́ть за</b> + Akkusativ · <b>смотре́ть на</b> + Akkusativ<br>\n<i>Он жени́лся <b>на ней</b>.</i> – wörtlich „er heiratete auf ihr\".\n<h4>Lerntipp</h4>\nLerne solche Verben nie allein, sondern immer mit einem Beispielwort dahinter: nicht <i>боя́ться</i>, sondern <i>боя́ться соба́ки</i>.",
+pref:"<h4>Ein Baukasten</h4>\nNimm ein Bewegungsverb und setz ein Präfix davor – das Präfix sagt die Richtung. Dieselben Präfixe funktionieren bei идти́, е́хать, бежа́ть, лете́ть und vielen anderen gleich.\n<h4>Die zehn wichtigsten</h4>\n<b>в-</b> hinein → войти́, въе́хать<br>\n<b>вы-</b> hinaus → вы́йти, вы́ехать<br>\n<b>при-</b> ankommen → прийти́, прие́хать<br>\n<b>у-</b> weg (und bleibt weg) → уйти́, уе́хать<br>\n<b>под-</b> herantreten → подойти́, подъе́хать<br>\n<b>от-</b> ein Stück wegtreten → отойти́, отъе́хать<br>\n<b>пере-</b> hinüber; umziehen → перейти́, перее́хать<br>\n<b>до-</b> bis zu einem Ziel → дойти́, дое́хать<br>\n<b>об-</b> herum → обойти́, объе́хать<br>\n<b>за-</b> kurz vorbei → зайти́, зае́хать\n<h4>при- oder у-?</h4>\nDas ist das Paar, das man am häufigsten verwechselt:<br>\n<i>Он <b>пришёл</b>.</i> – Er ist gekommen (und ist da).<br>\n<i>Он <b>ушёл</b>.</i> – Er ist gegangen (und ist weg).\n<h4>Vorsicht: alle sind perfektiv</h4>\nMit Präfix wird das Verb <b>vollendet</b>. Für den Prozess gibt es eigene Formen mit -ход- / -езж-:<br>\n<i>войти́ – входи́ть</i> · <i>прийти́ – приходи́ть</i> · <i>уе́хать – уезжа́ть</i><br>\n<i>Он <b>вхо́дит</b> в ко́мнату.</i> (gerade jetzt) vs. <i>Он <b>вошёл</b>.</i> (fertig)\n<h4>Wo du sie triffst</h4>\nIn jedem Text, der eine Handlung erzählt. Wer die zehn Präfixe kennt, versteht auf einen Schlag hunderte Verben.",
+sup:"<h4>Der einfache Weg: са́мый</h4>\nса́мый vor das Adjektiv – fertig. Beide Wörter passen sich dem Substantiv an:<br>\n<i><b>са́мый</b> высо́кий дом</i> · <i><b>са́мая</b> интере́сная кни́га</i> · <i><b>са́мое</b> ва́жное реше́ние</i><br>\nUnd beide werden mitdekliniert: <i>в <b>са́мом</b> большо́м го́роде</i>.\n<h4>Feste Formen</h4>\nEin paar Adjektive haben eigene Superlative, die man statt са́мый benutzt:<br>\n<b>хоро́ший → лу́чший</b> (der beste) · <b>плохо́й → ху́дший</b> (der schlechteste) · <b>большо́й → бо́льший</b> · <b>ма́ленький → ме́ньший</b><br>\n<i>Он мой <b>лу́чший</b> друг.</i> – са́мый хоро́ший друг sagt man kaum.\n<h4>Beim Verb: Komparativ + всех / всего́</h4>\nWenn nicht ein Ding, sondern eine Tätigkeit die Spitze bildet:<br>\n<i>Она́ поёт <b>лу́чше всех</b>.</i> – Sie singt am besten von allen.<br>\n<i>Я <b>бо́льше всего́</b> люблю́ ле́то.</i> – Am liebsten mag ich den Sommer.<br>\nFaustregel: <b>всех</b> bei Personen, <b>всего́</b> bei Sachen und Tätigkeiten.\n<h4>Die Schriftform auf -ейший</h4>\nIn Büchern, Verträgen und feierlichen Texten:<br>\n<i>важне́йший вопро́с</i> · <i>краси́вейший го́род</i> · <i>интере́снейшая кни́га</i><br>\nGesprochen klingt das gehoben bis ironisch. Erkennen reicht.\n<h4>наибо́лее</h4>\nSchriftsprachliche Alternative zu са́мый: <i><b>наибо́лее</b> ва́жный пункт</i>.",
+cht:"<h4>Zwei Wörter, die im Deutschen beide „dass\" heißen</h4>\n<b>что</b> berichtet, <b>что́бы</b> will etwas. Am Deutschen erkennst du den Unterschied nicht – am Russischen an dem, was dahinter steht.\n<h4>что: eine Tatsache</h4>\nDanach steht ein ganz normaler Satz in jeder Zeit:<br>\n<i>Я зна́ю, <b>что</b> он до́ма.</i> – Ich weiß, dass er zu Hause ist.<br>\n<i>Он сказа́л, <b>что</b> уста́л.</i> – Er sagte, dass er müde sei.<br>\nTypische Verben davor: знать, ду́мать, ви́деть, слы́шать, сказа́ть, ве́рить, боя́ться.\n<h4>что́бы: ein Ziel oder ein Wunsch</h4>\nDanach steht <b>nie ein Präsens</b>, sondern:<br>\n• ein <b>Infinitiv</b>, wenn beide Sätze dasselbe Subjekt haben:<br>\n<i>Я пришёл, <b>что́бы</b> помо́чь.</i> – Ich bin gekommen, um zu helfen.<br>\n• die <b>Form auf -л</b>, wenn das Subjekt wechselt:<br>\n<i>Я хочу́, <b>что́бы</b> ты пришёл.</i> – Ich will, dass du kommst.<br>\nTypische Verben davor: хоте́ть, проси́ть, тре́бовать, ну́жно, ва́жно.\n<h4>Der Satz, an dem man es sieht</h4>\n<i>Он сказа́л, <b>что</b> я пришёл.</i> – Er sagte, dass ich gekommen sei. <span style=\"opacity:.7\">(Bericht)</span><br>\n<i>Он сказа́л, <b>что́бы</b> я пришёл.</i> – Er sagte, ich solle kommen. <span style=\"opacity:.7\">(Aufforderung)</span><br>\nEin Buchstabe mehr, ein völlig anderer Satz.\n<h4>Merksatz</h4>\nSteht hinter „dass\" im Deutschen ein <u>soll</u> oder ein <u>um … zu</u>, dann ist es что́бы.",
+negg:"<h4>Was nicht da ist, steht im Genitiv</h4>\nDas ist einer der eigenwilligsten Züge des Russischen: Bei Nichtvorhandensein <b>verschwindet das Subjekt</b> und das Ding rutscht in den Genitiv.<br>\n<i>Брат <b>до́ма</b>.</i> → <i><b>Бра́та</b> нет до́ма.</i><br>\nWörtlich: „Von Bruder gibt es nicht zu Hause.\"\n<h4>Die drei Zeiten</h4>\n<b>Gegenwart:</b> нет + Genitiv – <i>У меня́ <b>нет</b> вре́мени.</i><br>\n<b>Vergangenheit:</b> не́ было + Genitiv – <i>Его́ <b>не́ было</b> до́ма.</i><br>\n<b>Zukunft:</b> не бу́дет + Genitiv – <i>За́втра <b>не бу́дет</b> вре́мени.</i><br>\nне́ было und не бу́дет ändern sich <b>nie</b> – egal ob es um einen Mann, eine Frau oder zehn Leute geht. Genau da rutschen alle aus.\n<h4>Auch nach verneinten Verben</h4>\nBei abstrakten Dingen steht nach не + Verb gern der Genitiv statt des Akkusativs:<br>\n<i>Я не ви́жу <b>разни́цы</b>.</i> · <i>Он не зна́ет <b>отве́та</b>.</i><br>\nBei ganz konkreten Dingen bleibt der Akkusativ oft stehen: <i>Я не ви́жу <b>маши́ну</b>.</i> Beides hört man.\n<h4>Betonung merken</h4>\n<b>не́ было</b> wird vorn betont – das не zieht die Betonung an sich. Genauso: <b>не́ был</b>, <b>не́ были</b>.\n<h4>Und noch eins</h4>\n<i>Тако́й пробле́мы просто <b>не существу́ет</b>.</i> – существова́ть verhält sich genauso.",
+prich:"<h4>Formen zum Erkennen, nicht zum Bilden</h4>\nPartizipien sind Schriftsprache. Du wirst sie kaum selbst bauen – aber in jeder Geschichte, jedem Artikel und jedem Untertitel stolperst du darüber. Es reicht, sie sofort einordnen zu können.\n<h4>Partizip: ein Verb als Adjektiv</h4>\nEs beschreibt ein Substantiv und wird dekliniert wie ein Adjektiv.<br>\n<b>-ущий / -ющий / -ащий</b> – aktiv, jetzt: <i>чита́<b>ющий</b> челове́к</i> – der Mensch, <u>der liest</u><br>\n<b>-вший</b> – aktiv, abgeschlossen: <i>вы́игра<b>вший</b> приз</i> – der, <u>der gewonnen hat</u><br>\n<b>-нный / -тый</b> – passiv, fertig: <i>прочи́та<b>нный</b> рома́н</i> – der <u>gelesene</u> Roman\n<h4>Adverbialpartizip: zwei Handlungen auf einmal</h4>\nEs beschreibt kein Substantiv, sondern das Verb – und ändert sich <b>nie</b>.<br>\n<b>-я / -а</b> – gleichzeitig: <i><b>Идя́</b> домо́й, я ду́мал о тебе́.</i> – <u>Während</u> ich nach Hause ging …<br>\n<b>-в / -вши</b> – davor abgeschlossen: <i><b>Сказа́в</b> э́то, он ушёл.</i> – <u>Nachdem</u> er das gesagt hatte …\n<h4>Die Faustregel</h4>\nEndet die Form auf <b>-я</b> → gleichzeitig („während\", „dabei\").<br>\nEndet sie auf <b>-в</b> → vorher fertig („nachdem\").<br>\nDas ist derselbe Unterschied wie zwischen unvollendet und vollendet – und meistens die einzige Frage, die du beantworten musst.\n<h4>Im Deutschen</h4>\nWir lösen das fast immer mit einem Nebensatz auf: <i>der liest</i>, <i>nachdem er gesagt hatte</i>. Genau so übersetzt du auch – nicht Wort für Wort."
 };
 
 /* ================= Zustand ================= */
@@ -1486,15 +1680,15 @@ function startTopic(tid){
   renderItem();
 }
 function basisAvg(){ /* Durchschnitts-Fortschritt der Basis-Themen */
-  const b=TOPICS.filter(t=>t.sec!==2);
+  const b=TOPICS.filter(t=>!t.sec);
   return Math.round(b.reduce((n,t)=>n+topicProgress(t),0)/b.length);
 }
 function aufbauOpen(){return basisAvg()>=50}
 function topicStarted(tp){return tp.items.some((it,k)=>itemStat(tp.id,k))}
 function startMix(){
   /* Mix nur aus Themen, die du schon angefangen hast – gesperrte Aufbau-Themen nie */
-  let cands=TOPICS.filter(tp=>(tp.sec!==2||aufbauOpen())&&topicStarted(tp));
-  if(cands.length<2)cands=TOPICS.filter(tp=>tp.sec!==2).slice(0,4); /* Erststart: die ersten Basis-Themen */
+  let cands=TOPICS.filter(tp=>(!tp.sec||aufbauOpen())&&topicStarted(tp));
+  if(cands.length<2)cands=TOPICS.filter(tp=>!tp.sec).slice(0,4); /* Erststart: die ersten Basis-Themen */
   let pool=[];
   cands.forEach(tp=>{pool=pool.concat(pickItems(tp,3))});
   sess={q:shuffle(pool).slice(0,12),i:0,right:0,wrong:0,done:0,tid:null};
@@ -1525,10 +1719,11 @@ function renderItem(){
         '<div class="opts">'+cur.opts.map((o,k)=>'<button class="opt" data-k="'+k+'">'+acc(esc(o))+'</button>').join('')+'</div>';
     }
   }else if(itype==='mc2'){
-    cur.opts=it.o.slice();
-    cur.goodIdx=it.a;
+    const paar=shuffle(it.o.map((o,k)=>({o,ok:k===it.a})));
+    cur.opts=paar.map(e=>e.o);
+    cur.goodIdx=paar.findIndex(e=>e.ok);
     front='<div class="sent">'+acc(esc(it.q)).replace('___','<span class="gapx">___</span>')+'</div>'+
-      '<div class="qlabel">Prozess oder Ergebnis? Achte auf das Signalwort!</div>'+
+      '<div class="qlabel">'+esc(it.ask||tp.ask||'Was passt?')+'</div>'+
       '<div class="opts">'+cur.opts.map((o,k)=>'<button class="opt" data-k="'+k+'">'+acc(esc(o))+'</button>').join('')+'</div>';
   }else{ /* puzzle */
     cur.puz={picked:[],order:shuffle(it.w.map((w,k)=>k))};
@@ -1703,14 +1898,16 @@ function renderHome(){
     '<button class="btn btn-primary" onclick="startMix()">🎲 Mix-Training (12 Aufgaben)</button>'+
     '<div class="sub" style="margin-top:8px;font-size:.78rem">Der Mix enthält nur Themen, die du schon angefangen hast.</div></div>'+
     '<div class="sect">Basis</div>';
-  TOPICS.filter(t=>t.sec!==2).forEach(tp=>{html+=topicCard(tp)});
+  TOPICS.filter(t=>!t.sec).forEach(tp=>{html+=topicCard(tp)});
+  const karte=tp=>open?topicCard(tp):
+    '<div class="topic" style="opacity:.55;cursor:default"><span class="ic">🔒</span>'+
+    '<span class="m"><span class="t">'+esc(tp.t)+'</span><span class="s" style="display:block">'+esc(tp.s)+'</span></span></div>';
   html+='<div class="sect">Aufbau · Intermediate '+(open?'':'🔒')+'</div>';
   if(!open)html+='<p class="hint" style="margin:-4px 0 10px">Schaltet frei, wenn deine Basis-Themen im Schnitt <b>50 %</b> erreichen – aktuell '+avg+' %. Erst die Grundlagen, dann die harten Sachen!</p>';
-  TOPICS.filter(t=>t.sec===2).forEach(tp=>{
-    html+=open?topicCard(tp):
-      '<div class="topic" style="opacity:.55;cursor:default"><span class="ic">🔒</span>'+
-      '<span class="m"><span class="t">'+esc(tp.t)+'</span><span class="s" style="display:block">'+esc(tp.s)+'</span></span></div>';
-  });
+  TOPICS.filter(t=>t.sec===2).forEach(tp=>{html+=karte(tp)});
+  html+='<div class="sect">Fortgeschritten · so klingt echtes Russisch '+(open?'':'🔒')+'</div>';
+  if(!open)html+='<p class="hint" style="margin:-4px 0 10px">Das hier hörst du in Serien und echten Gesprächen ständig – Partikeln, Kurzformen, doppelte Verneinung. Schaltet zusammen mit dem Aufbau frei.</p>';
+  TOPICS.filter(t=>t.sec===3).forEach(tp=>{html+=karte(tp)});
   $('#view-lernen').innerHTML=html;
 }
 function showTopic(tid){
@@ -1751,9 +1948,11 @@ function renderStats(){
     return '<div class="trow"><span class="ic">'+tp.icon+'</span><span class="n">'+esc(tp.t)+'</span>'+
       '<span class="pb"><i style="width:'+p+'%"></i></span><span class="pc">'+p+' %</span></div>';
   };
-  TOPICS.filter(t=>t.sec!==2).forEach(tp=>{html+=trow(tp)});
+  TOPICS.filter(t=>!t.sec).forEach(tp=>{html+=trow(tp)});
   html+='<div class="sect">Aufbau · Intermediate'+(aufbauOpen()?'':' 🔒')+'</div>';
   TOPICS.filter(t=>t.sec===2).forEach(tp=>{html+=trow(tp)});
+  html+='<div class="sect">Fortgeschritten'+(aufbauOpen()?'':' 🔒')+'</div>';
+  TOPICS.filter(t=>t.sec===3).forEach(tp=>{html+=trow(tp)});
   html+='<p class="hint">„Gemeistert“ heißt: mindestens 2× richtig gelöst und beim letzten Mal richtig. Gemeisterte Lücken-Aufgaben musst du tippen statt klicken – so bleibt es fordernd.</p>';
   $('#view-statistik').innerHTML=html;
 }
