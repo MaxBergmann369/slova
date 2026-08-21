@@ -5436,6 +5436,25 @@ function markNeu(){
   S.nt.n++;
 }
 function neuHeute(){const t=todayStr();return (S.nt&&S.nt.day===t)?(S.nt.n||0):0}
+/* Das Tagesbudget für neue Wörter gilt für beide Apps zusammen. СЛОВА́ zieht ab,
+   was hier neu war – und umgekehrt lesen wir hier, was dort schon verbraucht
+   wurde. Nur so stimmt die Zahl, egal in welcher Reihenfolge du übst. */
+function budgetHeute(){
+  let npd=20,slNeu=0;
+  try{
+    const d=JSON.parse(localStorage.getItem('russisch-trainer-v1'));
+    if(d&&d.set&&+d.set.npd)npd=+d.set.npd;
+    if(d&&d.nt&&d.nt.day===todayStr())slNeu=+d.nt.n||0;
+  }catch(e){}
+  const benutzt=slNeu+neuHeute();
+  return {npd,slNeu,benutzt,frei:Math.max(0,npd-benutzt)};
+}
+/* Wie viele Wörter eines Pakets sind für dich wirklich neu? */
+function neuImPaket(p){
+  let n=0;
+  p.words.forEach((w,k)=>{const st=S.prog[wordKey(p.id,k)];if(!st)n++});
+  return n;
+}
 function actMark(kind){
   const t=todayStr();
   if(!S.act)S.act={};
@@ -7311,7 +7330,7 @@ function halfHtml(word){
 }
 /* ---- Mastery-Drill: üben, bis jedes Wort des Pakets sitzt ---- */
 const NEED=2; /* zwei richtige Antworten in verschiedenen Formaten */
-function startDrill(pid){
+function startDrill(pid,limit){
   const p=packById(pid);
   if(!p)return;
   const st={};
@@ -7319,12 +7338,21 @@ function startDrill(pid){
     const old=S.prog[wordKey(pid,k)];
     st[k]={ok:old&&old.c>=NEED?NEED:0}; /* schon gemeisterte Wörter zählen mit */
   });
-  const offen=p.words.map((w,k)=>k).filter(k=>st[k].ok<NEED);
+  let offen=p.words.map((w,k)=>k).filter(k=>st[k].ok<NEED);
   if(!offen.length){ /* alles sitzt schon → als Auffrischung alles zurücksetzen */
     p.words.forEach((w,k)=>{st[k].ok=0});
     offen.push(...p.words.map((w,k)=>k));
   }
-  sess={pid,drill:true,st,q:shuffle(offen),i:0,right:0,wrong:0,total:p.words.length};
+  let total=p.words.length;
+  if(limit&&limit>0&&limit<offen.length){
+    /* Tagesportion: nur so viele neue Wörter, wie ins Budget passen. Der Rest
+       des Pakets bleibt stehen – beim nächsten Mal geht es genau dort weiter,
+       weil gemeisterte Wörter oben schon als erledigt gezählt werden. */
+    const schon=Object.keys(st).filter(k=>st[k].ok>=NEED).length;
+    offen=shuffle(offen).slice(0,limit);
+    total=schon+offen.length;
+  }else offen=shuffle(offen);
+  sess={pid,drill:true,st,q:offen,i:0,right:0,wrong:0,total};
   renderCard();
 }
 function drillMastered(){
@@ -7884,10 +7912,19 @@ function showPack(pid){
       '<button class="btn-ghost" onclick="renderPacks()">Zurück zur Übersicht</button></div>';
     return;
   }
+  const neuN=neuImPaket(p),bud=budgetHeute();
+  const budZeile=neuN
+    ?'<div class="hint" style="text-align:left">Von den '+p.words.length+' Wörtern sind <b>'+neuN+'</b> neu für dich. '+
+       'Heute schon aufgenommen: <b>'+bud.benutzt+'</b> von '+bud.npd+
+       (bud.slNeu?' (davon '+bud.slNeu+' in СЛОВА́)':'')+'. '+
+       (bud.frei>=neuN?'Passt.':(bud.frei?'Frei sind noch <b>'+bud.frei+'</b>.':'Dein Tagesbudget ist aufgebraucht.'))+
+       '</div>'
+    :'';
   const steps=(p.url&&!seen)
     ?'<div class="sub" style="margin-top:14px;opacity:.5">Schritt 2 · Wörter üben &nbsp;·&nbsp; Schritt 3 · Fragen &nbsp;·&nbsp; Schritt 4 · nochmal ansehen</div>'
-    :'<div class="ctrow">'+
-     '<button class="btn btn-primary" onclick="startDrill(\''+p.id+'\')">'+(p.url?'Schritt 2 · ':'')+'Üben bis es sitzt</button>'+
+    :budZeile+'<div class="ctrow">'+
+     '<button class="btn btn-primary" onclick="startDrill(\''+p.id+'\')">'+(p.url?'Schritt 2 · ':'')+'Üben bis es sitzt'+(neuN?' ('+p.words.length+')':'')+'</button>'+
+     (neuN>bud.frei&&bud.frei>0?'<button class="btn-ghost" onclick="startDrill(\''+p.id+'\','+bud.frei+')">Nur '+bud.frei+' neue heute</button>':'')+
      (p.q&&p.q.length?'<button class="btn-ghost" onclick="startQuiz(\''+p.id+'\')">🧠 Fragen ('+p.q.length+')</button>':'')+
      '</div>'+
      '<div class="hint">Jedes Wort braucht 2 richtige Antworten in verschiedenen Formaten – erst erkennen, dann selbst schreiben. Falsch setzt das Wort zurück.</div>'+
