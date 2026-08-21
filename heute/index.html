@@ -308,11 +308,19 @@ function renderPlan(t,sl,gr,sk,se,seDue){
   const dSk=(sk&&sk.days&&sk.days[t])||0;
   const SER=appLink('/slova/serial/','serial-app.html');
   const steps=[];
-  if(seDue)steps.push({i:'🔁',t:'Auffrischung in СЕРИА́Л',
-    w:seDue+' Wörter sind heute fällig – die stehen genau auf der Kippe zwischen sitzt und weg.',
-    ok:(act.ref||0)>=10,href:SER,btn:'Auffrischen'});
+  /* Der Schritt bleibt stehen, sobald du heute aufgefrischt hast – sonst
+     verschwindet er, sobald nichts mehr fällig ist, und die erledigte Arbeit
+     zählt nirgends. Genau das ist vorher passiert: 0 von 6 wurde zu 0 von 5. */
+  if(seDue||(act.ref||0))steps.push({i:'🔁',t:'Auffrischung in СЕРИА́Л',
+    w:seDue?(seDue+' Wörter sind heute fällig – die stehen genau auf der Kippe zwischen sitzt und weg.')
+           :'Erledigt – heute ist nichts mehr fällig.',
+    ok:!seDue||(act.ref||0)>=10,href:SER,btn:'Auffrischen'});
+  const seNeu=(se&&se.nt&&se.nt.day===t)?(+se.nt.n||0):0;
+  const restNeu=Math.max(0,npd-seNeu);
   steps.push({i:'📘',t:'СЛОВА́ · Tagespensum',
-    w:'Wiederholungen plus bis zu '+npd+' neue Wörter. Neues gehört an den frischesten Kopf – heute: '+dSl+' von '+goal+' Karten.',
+    w:'Wiederholungen plus bis zu '+restNeu+' neue Wörter'+
+      (seNeu?' ('+seNeu+' von '+npd+' hast du heute schon in СЕРИА́Л angefangen)':'')+
+      '. Heute: '+dSl+' von '+goal+' Karten.',
     ok:dSl>=goal,href:appLink('/slova/','russisch-vokabeltrainer.html'),btn:'Karten lernen'});
   steps.push({i:'📖',t:'Eine Geschichte lesen',
     w:'Hier triffst du die Wörter im Zusammenhang wieder – das ist der Schritt, der aus Vokabeln Sprache macht. СКА́ЗКИ oder eine Kurzgeschichte in СЕРИА́Л.',

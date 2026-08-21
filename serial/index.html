@@ -5410,7 +5410,7 @@ const PACKS=[
 ];
 
 /* ================= Zustand ================= */
-let S={prog:{},days:{},act:{},sent:{},extras:[],watched:{},exam:{},sexam:{},open:{},gate:true,recall:true,noSlang:false};
+let S={prog:{},days:{},act:{},sent:{},nt:{day:null,n:0},extras:[],watched:{},exam:{},sexam:{},open:{},gate:true,recall:true,noSlang:false};
 let storeMode='none';
 function initStore(){
   try{const t='__ser_test';localStorage.setItem(t,'1');localStorage.removeItem(t);storeMode='local'}
@@ -5418,7 +5418,7 @@ function initStore(){
 }
 function load(){
   if(storeMode!=='local')return;
-  try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);S={...S,...d,prog:d.prog||{},days:d.days||{},act:d.act||{},sent:d.sent||{},extras:d.extras||[],watched:d.watched||{},
+  try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);S={...S,...d,prog:d.prog||{},days:d.days||{},act:d.act||{},sent:d.sent||{},nt:d.nt||{day:null,n:0},extras:d.extras||[],watched:d.watched||{},
     exam:d.exam||{},sexam:d.sexam||{},open:d.open||{},
     gate:d.gate!==false,recall:d.recall!==false,noSlang:!!d.noSlang}}}catch(e){}
 }
@@ -5427,6 +5427,15 @@ function save(){if(storeMode==='local')try{localStorage.setItem(KEY,JSON.stringi
    Nur ein Zähler pro Art und Tag, mehr braucht der Plan nicht.
    Arten: drill (Vokabeln), ref (Auffrischung), long (lange Wörter),
           dec (Sätze), conf (Verwechslungen), quiz (Fragen), story (Geschichte) */
+/* Wie viele Wörter hast du HEUTE zum ersten Mal angefasst? СЛОВА́ liest das
+   aus und zieht es von seinem eigenen Tagesbudget ab – sonst nimmst du an
+   einem Tag zwei volle Portionen neuer Wörter auf, aus zwei Apps. */
+function markNeu(){
+  const t=todayStr();
+  if(!S.nt||S.nt.day!==t)S.nt={day:t,n:0};
+  S.nt.n++;
+}
+function neuHeute(){const t=todayStr();return (S.nt&&S.nt.day===t)?(S.nt.n||0):0}
 function actMark(kind){
   const t=todayStr();
   if(!S.act)S.act={};
@@ -7488,7 +7497,9 @@ function resolve(ok){
   if(!cur||cur.answered)return;
   cur.answered=true;
   const key=wordKey(cur.p.id,cur.k);
+  const warNeu=!S.prog[key];
   const st=S.prog[key]||(S.prog[key]={c:0,w:0});
+  if(warNeu)markNeu();
   if(sess.longd){
     const d=sess.st[sess.q[sess.i]];
     if(ok){
@@ -7705,6 +7716,16 @@ function renderPacks(){
   const ps=allPacks();
   let html='<div class="hero"><div class="due-line">Was hast du <b>geschaut</b>?</div>'+
     '<div class="sub">Üb die Wörter aus deinen Folgen – und schau sie danach nochmal. Kein Transkript, nur Vokabeln und Fragen.</div></div>';
+  /* Ehrlicher Tagesstand: neue Wörter und der Berg, der noch fällig ist. */
+  const nH=neuHeute(),dueN=dueRefs().length;
+  if(nH||dueN){
+    const viel=nH>=25||dueN>=60;
+    html+='<div class="'+(viel?'confbox':'srsbox')+'" style="text-align:left">'+
+      '<div class="lk-t" style="text-align:center">'+(viel?'⚠️ Heute lieber nichts Neues mehr':'📊 Dein Tagesstand')+'</div>'+
+      '<div class="lk-s">Heute neu angefangen: <b>'+nH+'</b> Wörter · zur Auffrischung fällig: <b>'+dueN+'</b>.'+
+      (viel?'<br>Das reicht für einen Tag. Neue Vokabeln oben draufzupacken heißt nur, dass morgen mehr durchfällt – bau lieber erst den Rückstand ab.'
+           :'<br>Was du hier neu anfängst, zieht СЛОВА́ automatisch von seinem eigenen Tagesbudget ab.')+'</div></div>';
+  }
   const lang=longPool().length;
   if(lang)html+='<div class="ladbox"><div class="lk-t">🪜 '+lang+' lange Wörter warten</div>'+
     '<div class="lk-s">Nur Wörter, die du schon in einer Übung hattest. Vier Stufen pro Wort, und jede nimmt eine Stütze weg: Silben legen → abschreiben → Lückenschrift → frei tippen.</div>'+

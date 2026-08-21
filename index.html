@@ -2561,10 +2561,20 @@ function dispStreak(){return (S.lastDay===todayStr()||S.lastDay===yesterStr()||(
 /* ================= Session-Logik ================= */
 let sess=null;
 function offenN(){return Object.keys(S.part).filter(id=>byId(+id)&&!S.prog[id]).length}
+/* Neue Wörter aus СЕРИА́Л zählen mit: beide Apps teilen sich ein Tagesbudget.
+   Sonst nimmst du 20 neue Wörter hier und noch mal 20 dort auf – und wunderst
+   dich am nächsten Tag, warum so wenig hängengeblieben ist. Wer zuerst dran
+   war, ist egal; das Budget schrumpft in beide Richtungen. */
+function serialNeuHeute(){
+  try{
+    const d=JSON.parse(localStorage.getItem('russisch-serial-v1'));
+    return (d&&d.nt&&d.nt.day===todayStr())?(+d.nt.n||0):0;
+  }catch(e){return 0}
+}
 function newAllowance(){
   const t=todayStr();
   if(S.nt.day!==t)S.nt={day:t,n:0};
-  return Math.max(0,S.set.npd-S.nt.n);
+  return Math.max(0,S.set.npd-S.nt.n-serialNeuHeute());
 }
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a}
 function freshPool(n){
@@ -2742,6 +2752,7 @@ function renderHome(){
   }else{
     inner='<div class="due-line"><b>'+due.length+'</b> Wiederholung'+(due.length===1?'':'en')+' · <b>'+fresh.length+'</b> neue Wörter</div>'+
       (offenN()?'<div class="sub" style="color:var(--gzhel);font-weight:600">↩ '+offenN()+' angefangene Wörter warten – die machst du gleich fertig</div>':'')+
+      (serialNeuHeute()?'<div class="sub" style="font-size:.78rem">📺 '+serialNeuHeute()+' neue Wörter hast du heute schon in СЕРИА́Л angefangen – die zählen mit, deshalb kommen hier weniger neue.</div>':'')+
       '<div class="sub">≈ '+(due.length+fresh.length*3)+' Karten – jedes neue Wort kommt 3× in verschiedenen Formen · etwa '+Math.max(1,Math.round((due.length+fresh.length*3)*0.25))+' Minuten</div>'+goalLine+
       '<button class="btn btn-primary" onclick="startDaily()">Los geht’s</button>';
     if(probN)inner+='<br><button class="btn-ghost" onclick="startProblems()">Nur Problemwörter üben ('+probN+')</button>';
