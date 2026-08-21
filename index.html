@@ -3703,20 +3703,31 @@ function renderRadio(){
     '<button class="btn-ghost" onclick="startRadio(\'neu\')">Nur neue entdecken</button>'+
     (probN?'<button class="btn-ghost" onclick="startRadio(\'prob\')">Problemwörter ('+probN+')</button>':'')+
     '</div>'+
-    '<div class="sub" style="margin-top:8px;font-size:.78rem">„Schlau gemischt" richtet sich nach deinem Lernstand: schwache Wörter kommen öfter, sichere selten, plus ein paar neue. Jede Runde startet anders.</div>'+
+    '<div class="sub" style="margin-top:8px;font-size:.78rem">„Schlau gemischt" richtet sich nach deinem Lernstand: Wörter, bei denen du wirklich danebenlagst, kommen öfter – nicht die, die nur auf einer niedrigen Stufe stehen. Wörter, die schon sitzen, werden <b>umgedreht</b> abgespielt: erst Deutsch, dann holst du das russische Wort selbst.</div>'+
     '<label class="sub" style="display:block;margin-top:12px;cursor:pointer"><input type="checkbox" id="radioSent" checked> Beispielsätze mitspielen</label>'+
     '<button class="btn-ghost" onclick="renderHome()">Zurück</button></div>';
 }
 function radioWeighted(){
-  /* Gelernte Wörter, gewichtet: schwache & Problemwörter bis 3×, sichere nur 1× */
+  /* Gewichtet wird nach der ECHTEN Fehlerbilanz, nicht nach der SRS-Stufe.
+     Vorher zählte b<2 als schwach – dadurch landeten ausgerechnet die Kognaten
+     ganz oben, die über den ≈ DE/EN-Tab auf Stufe 1 eingestiegen sind und die
+     man längst kann (кофе, интерне́т …). Ein Wort, das nie danebenging, ist
+     kein Problemwort, egal auf welcher Stufe es steht. */
   const q=[];
   allWords().forEach(w=>{
     const p=S.prog[w.i];
     if(!p)return;
-    const n=(isProblem(p)||p.b<2)?3:(p.b<4?2:1);
+    const miss=p.w||0,hit=p.c||0;
+    const n=isProblem(p)?3:(miss>=2&&miss>=hit)?3:(miss>=1)?2:1;
     for(let k=0;k<n;k++)q.push(w.i);
   });
   return q;
+}
+/* Sitzt das Wort? Dann wird im Audio-Modus umgedreht: erst Deutsch, dann selbst
+   das russische Wort herholen. Das ist Abrufen statt Wiedererkennen. */
+function radioSitzt(w){
+  const p=S.prog[w.i];
+  return !!(p&&p.b>=3&&(p.w||0)<=(p.c||0)&&!isProblem(p));
 }
 function deDupeAdjacent(q){
   for(let k=1;k<q.length;k++){
@@ -3748,46 +3759,130 @@ function renderRadioPlayer(){
     '<div class="card" style="text-align:center">'+
     '<div class="word" id="rWord" style="min-height:1.3em">…</div>'+
     '<div class="mean" id="rMean" style="min-height:1.3em;color:var(--ink-soft)"></div>'+
+    '<div id="rDir" style="font-size:.75rem;color:var(--ink-faint);font-weight:600;margin-top:6px;min-height:1.2em"></div>'+
     '<button class="audio-big" id="rToggle" onclick="toggleRadio()" style="margin-top:18px;background:var(--gzhel);color:#fff">⏸</button>'+
-    '<div class="mic-status" id="rState">Läuft … einfach zuhören. Bildschirm anlassen, App im Vordergrund.</div>'+
+    '<div class="mic-status" id="rState">Läuft … einfach zuhören. Läuft auch weiter, wenn du das Handy weglegst – sofern dein Browser die Sprachausgabe im Hintergrund zulässt.</div>'+
     '</div>';
 }
-function updRadioUI(w){
+function updRadioUI(w,umgedreht){
   const el=$('#rWord');
   if(!el)return;
   el.innerHTML=acc(esc(w.r));
   $('#rMean').textContent=w.d;
   $('#rCount').textContent=radio.count;
+  const r=$('#rDir');
+  if(r)r.textContent=umgedreht?'🔁 Deutsch → Russisch (du holst es selbst)':'🇷🇺 Russisch → Deutsch';
+}
+/* ---- Abspielkette ----------------------------------------------------------
+   Früher hing die Kette an await + setTimeout. Sobald das Handy in den Standby
+   geht, drosselt der Browser genau diese Timer – die Kette blieb stehen.
+   Jetzt werden immer mehrere Wörter im Voraus in die Sprach-Warteschlange
+   gelegt; die läuft im Sprachdienst weiter, auch wenn die Seite eingefroren
+   wird. Die Denkpausen stecken als Kommas im Text, nicht in Timern.
+   Ehrliche Einschränkung: ob der Browser die Warteschlange im Standby wirklich
+   zu Ende spricht, entscheidet das Betriebssystem – garantieren lässt sich das
+   nicht. Deshalb bleibt der Wake Lock als zweite Absicherung an. */
+const PAUSE_LANG=' , , , , ,';   /* Kommas erzeugen echte Sprechpausen ohne Wörter */
+const PAUSE_KURZ=' , ,';
+function radioUtter(txt,de,onstart,onend){
+  const u=new SpeechSynthesisUtterance(String(txt).replace(/\u0301/g,''));
+  if(de){u.lang='de-DE';u.rate=1;if(!DE_VOICE)pickDeVoice();if(DE_VOICE)u.voice=DE_VOICE}
+  else{u.lang='ru-RU';u.rate=.85;if(!RU_VOICE)pickRuVoice();if(RU_VOICE)u.voice=RU_VOICE}
+  if(onstart)u.onstart=onstart;
+  if(onend){u.onend=onend;u.onerror=onend}
+  try{speechSynthesis.speak(u)}catch(e){if(onend)onend()}
+}
+function radioTeile(w){
+  /* Reihenfolge je nach Lernstand: was sitzt, wird umgedreht abgefragt. */
+  const de=w.d.split(/[(]/)[0];
+  const t=[];
+  if(radioSitzt(w)){
+    t.push({x:de+PAUSE_LANG,de:true});     /* Deutsch zuerst – selbst herholen */
+    t.push({x:w.r,de:false});
+    t.push({x:w.r+PAUSE_KURZ,de:false});
+  }else{
+    t.push({x:w.r+PAUSE_LANG,de:false});   /* Russisch zuerst – Bedeutung denken */
+    t.push({x:de,de:true});
+    t.push({x:w.r+PAUSE_KURZ,de:false});
+  }
+  if(radio&&radio.sent&&w.e){
+    t.push({x:w.e,de:false});
+    if(w.x)t.push({x:w.x+PAUSE_KURZ,de:true});
+  }
+  return t;
+}
+function radioNext(){
+  if(!radio||!radio.playing)return null;
+  if(radio.i>=radio.q.length){deDupeAdjacent(shuffle(radio.q));radio.i=0}
+  const w=byId(radio.q[radio.i]);
+  radio.i++;
+  if(!w)return radioNext();
+  return w;
+}
+function radioFeed(){
+  if(!radio||!radio.playing)return;
+  /* Notbremse: Wenn keine Stimme installiert ist, meldet der Browser jede
+     Äußerung sofort als beendet – dann würde die Warteschlange endlos
+     nachladen, ohne dass ein Ton kommt. Mehr als 40 Wörter in 5 Sekunden
+     kann kein echtes Vorlesen sein. */
+  const jetzt=Date.now();
+  if(!radio.fenster||jetzt-radio.fenster>5000){radio.fenster=jetzt;radio.imFenster=0}
+  if(radio.imFenster>40){
+    radio.playing=false;radio.pending=0;
+    try{speechSynthesis.cancel()}catch(e){}
+    const st=$('#rState');
+    if(st)st.innerHTML='Die Sprachausgabe liefert keinen Ton. Prüfe unter <b>Mehr → Stimme</b>, ob eine russische Stimme installiert ist.';
+    const b=$('#rToggle');if(b)b.textContent='▶';
+    return;
+  }
+  const tok=radioTok;
+  while(radio&&radio.playing&&radio.pending<3){
+    radio.imFenster=(radio.imFenster||0)+1;
+    const w=radioNext();
+    if(!w)return;
+    const teile=radioTeile(w);
+    radio.pending++;
+    teile.forEach((t,k)=>{
+      radioUtter(t.x,t.de,
+        k===0?()=>{if(radio&&radioTok===tok){radio.count++;if(radio.heard.indexOf(w.i)<0)radio.heard.push(w.i);updRadioUI(w,radioSitzt(w))}}:null,
+        k===teile.length-1?()=>{if(radio&&radioTok===tok){radio.pending--;radioFeed()}}:null);
+    });
+  }
 }
 async function radioLoop(){
-  const tok=++radioTok;
+  radioTok++;
+  radio.pending=0;
   try{if(navigator.wakeLock&&!wakeLock)wakeLock=await navigator.wakeLock.request('screen')}catch(e){}
-  while(radio&&radio.playing&&tok===radioTok){
-    if(radio.i>=radio.q.length){deDupeAdjacent(shuffle(radio.q));radio.i=0}
-    const w=byId(radio.q[radio.i]);
-    if(!w){radio.i++;continue}
-    radio.count++;
-    if(radio.heard.indexOf(w.i)<0)radio.heard.push(w.i);
-    updRadioUI(w);
-    try{speechSynthesis.cancel()}catch(e){}
-    await speakLang(w.r,false);
-    if(!radio||!radio.playing||tok!==radioTok)break;
-    await sleepR(1800); /* Pause: selbst an die Bedeutung denken */
-    if(!radio||!radio.playing||tok!==radioTok)break;
-    await speakLang(w.d.split(/[(]/)[0],true);
-    await sleepR(400);
-    if(!radio||!radio.playing||tok!==radioTok)break;
-    await speakLang(w.r,false);
-    if(radio.sent&&w.e){
-      await sleepR(500);
-      if(!radio||!radio.playing||tok!==radioTok)break;
-      await speakLang(w.e,false);
-      if(!radio||!radio.playing||tok!==radioTok)break;
-      if(w.x){await sleepR(400);await speakLang(w.x,true);} /* deutsche Übersetzung des Satzes */
-    }
-    await sleepR(1100);
-    if(radio)radio.i++;
-  }
+  radioKeepAlive(true);
+  radioMediaSession();
+  try{speechSynthesis.cancel();speechSynthesis.resume()}catch(e){}
+  radioFeed();
+}
+/* Stiller Dauerton: hält die Audio-Sitzung offen, damit das System die Seite
+   im Hintergrund nicht sofort schlafen legt, und schaltet die Sperrbildschirm-
+   Steuerung frei. */
+let radioSilent=null;
+function radioKeepAlive(an){
+  try{
+    if(an){
+      if(!radioSilent){
+        radioSilent=new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');
+        radioSilent.loop=true;radioSilent.volume=0.001;
+      }
+      radioSilent.play().catch(()=>{});
+    }else if(radioSilent){radioSilent.pause()}
+  }catch(e){}
+}
+function radioMediaSession(){
+  if(!('mediaSession' in navigator))return;
+  try{
+    navigator.mediaSession.metadata=new MediaMetadata({
+      title:'Аудио-Modus',artist:'СЛОВА́',album:'Russisch-Vokabeln'});
+    navigator.mediaSession.playbackState='playing';
+    navigator.mediaSession.setActionHandler('pause',()=>{if(radio&&radio.playing)toggleRadio()});
+    navigator.mediaSession.setActionHandler('play',()=>{if(radio&&!radio.playing)toggleRadio()});
+    navigator.mediaSession.setActionHandler('stop',()=>{if(radio)stopRadio()});
+  }catch(e){}
 }
 function toggleRadio(){
   if(!radio)return;
@@ -3796,13 +3891,20 @@ function toggleRadio(){
   if(b)b.textContent=radio.playing?'⏸':'▶';
   const st=$('#rState');
   if(st)st.textContent=radio.playing?'Läuft … einfach zuhören.':'Pausiert – ▶ zum Weiterhören.';
-  if(radio.playing)radioLoop();
-  else{radioTok++;try{speechSynthesis.cancel()}catch(e){}}
+  if(radio.playing){radioLoop()}
+  else{
+    radioTok++;radio.pending=0;
+    try{speechSynthesis.cancel()}catch(e){}
+    radioKeepAlive(false);
+    try{if('mediaSession' in navigator)navigator.mediaSession.playbackState='paused'}catch(e){}
+  }
 }
 let radioLast=[];
 function stopRadio(){
   const r=radio;
   radioTok++;radio=null;
+  radioKeepAlive(false);
+  try{if('mediaSession' in navigator)navigator.mediaSession.playbackState='none'}catch(e){}
   try{speechSynthesis.cancel()}catch(e){}
   try{if(wakeLock){wakeLock.release();wakeLock=null}}catch(e){}
   if(!r||!r.count){renderHome();return}

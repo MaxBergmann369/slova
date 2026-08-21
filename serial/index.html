@@ -7037,6 +7037,106 @@ function renderDecode(){
       '</div><div class="grade"><button onclick="nextDecode()">Weiter</button></div>';
   });
 }
+/* ================= Satz bauen (Deutsch -> Russisch) ==========================
+   Die Gegenrichtung zum Entschlüsseln. Entschlüsseln ist Verstehen, Bauen ist
+   Produzieren – und dabei entscheidet sich, ob du die Wortstellung und die
+   Endungen wirklich hast. Es kommen dieselben Sätze wie beim Entschlüsseln:
+   Zielwort geübt, mindestens 85 % bekannte Wörter. */
+let bau=null;
+function satzTeile(sent){
+  return String(sent).trim().split(/\s+/).filter(Boolean);
+}
+function bauAblenker(ziel,n){
+  /* Ablenker aus anderen Sätzen desselben Vorrats – also aus Wörtern, die du
+     auch kennst. Wörter, die im Zielsatz schon vorkommen, fallen raus. */
+  const drin=new Set(ziel.map(t=>t.replace(/[^А-Яа-яЁё\u0301-]/g,'').replace(/\u0301/g,'').toLowerCase()));
+  const topf=[];
+  decodePool(false).forEach(o=>{
+    if(!o.w.e)return;
+    satzTeile(o.w.e).forEach(t=>{
+      const k=t.replace(/[^А-Яа-яЁё\u0301-]/g,'').replace(/\u0301/g,'').toLowerCase();
+      if(!k||k.length<2||drin.has(k))return;
+      drin.add(k);topf.push(t.replace(/[.,!?;:]+$/,''));
+    });
+  });
+  return shuffle(topf).slice(0,n);
+}
+function startBau(){
+  _known=null;
+  const kandidaten=decodePool(true).filter(o=>knownShare(o.w.e)>=0.85&&satzTeile(o.w.e).length>=3&&satzTeile(o.w.e).length<=9);
+  if(kandidaten.length<4){
+    tab('packs');
+    $('#view-packs').innerHTML='<div class="hero"><div class="done-mark">🧱</div>'+
+      '<div class="due-line">Noch zu früh dafür</div>'+
+      '<div class="sub" style="margin-top:12px">Hier kommen nur Sätze aus Wörtern, die du schon geübt hast – drei bis neun Wörter lang. Gerade erfüllen das erst <b>'+kandidaten.length+'</b> Sätze. Üb ein paar Pakete durch, dann füllt sich das von selbst.</div>'+
+      '<button class="btn btn-primary" onclick="renderPacks()">Zurück zu den Paketen</button></div>';
+    return;
+  }
+  bau={q:shuffle(kandidaten).slice(0,8),i:0,right:0,wrong:0};
+  tab('packs');renderBau();
+}
+function renderBau(){
+  const c=bau.q[bau.i],w=c.w;
+  const ziel=satzTeile(w.e);
+  const nAbl=ziel.length<=4?4:3;          /* immer mindestens zwei Ablenker, meist drei bis vier */
+  const abl=bauAblenker(ziel,nAbl);
+  const tiles=shuffle(ziel.concat(abl));
+  bau.ziel=ziel;bau.tiles=tiles;bau.pick=[];bau.answered=false;
+  $('#view-packs').innerHTML=
+    '<div class="sess-top"><span class="cnt">'+(bau.i+1)+' / '+bau.q.length+'</span>'+
+    '<div class="bar"><i style="width:'+Math.round(100*bau.i/bau.q.length)+'%"></i></div>'+
+    '<button class="quit" onclick="bau=null;renderPacks()">Beenden</button></div>'+
+    '<div class="card"><div class="badges"><span class="chip">🧱 Satz bauen</span>'+
+    '<span class="chip st1">'+abl.length+' Wörter gehören nicht dazu</span></div>'+
+    '<div class="word-de" style="font-size:1.15rem">'+esc(w.x||'')+'</div>'+
+    '<div class="qlabel">Bau den russischen Satz – tippe die Wörter in der richtigen Reihenfolge an:</div>'+
+    '<div class="sylbuilt" id="bauBuilt">·</div>'+
+    '<div class="syls" id="bauPool">'+tiles.map((t,i)=>'<button class="syl" data-s="'+i+'">'+acc(esc(t))+'</button>').join('')+'</div>'+
+    '<div class="type-row" style="justify-content:center"><button class="btn-ghost" id="bauUndo">⌫ zurück</button><button class="check-btn" id="bauCheck">Prüfen</button></div>'+
+    '<div id="fbZone"></div></div>';
+  const draw=()=>{
+    const b=$('#bauBuilt');
+    b.innerHTML=bau.pick.length?acc(esc(bau.pick.map(i=>bau.tiles[i]).join(' '))):'·';
+    b.className='sylbuilt';
+    document.querySelectorAll('#bauPool .syl').forEach(x=>{x.disabled=bau.answered||bau.pick.indexOf(+x.dataset.s)>=0});
+  };
+  document.querySelectorAll('#bauPool .syl').forEach(b=>b.onclick=()=>{
+    if(bau.answered)return;
+    bau.pick.push(+b.dataset.s);draw();
+  });
+  $('#bauUndo').onclick=()=>{if(bau.answered)return;bau.pick.pop();draw()};
+  $('#bauCheck').onclick=()=>{
+    if(bau.answered)return;
+    const gebaut=bau.pick.map(i=>bau.tiles[i]).join(' ');
+    const ok=gebaut===bau.ziel.join(' ');
+    bau.answered=true;
+    if(ok)bau.right++;else bau.wrong++;
+    const t=todayStr();S.days[t]=(S.days[t]||0)+1;actMark('dec');save();
+    draw();
+    $('#bauBuilt').className='sylbuilt '+(ok?'inp-ok':'inp-no');
+    $('#fbZone').innerHTML='<div class="fb '+(ok?'fb-ok':'fb-no')+'">'+(ok?'✓ Richtig!':'✗ Nicht ganz.')+'</div>'+
+      '<div class="answer" style="text-align:left">'+
+      '<div class="mean" style="text-align:center">'+acc(esc(w.e))+' '+sayBtn(w.e,'speak')+'</div>'+
+      wordByWord(w.e)+
+      '</div><div class="grade"><button onclick="nextBau()">Weiter</button></div>';
+    speak(w.e);
+  };
+  draw();
+}
+function nextBau(){
+  bau.i++;
+  if(bau.i>=bau.q.length){
+    const r=bau.right,n=bau.q.length;bau=null;
+    $('#view-packs').innerHTML='<div class="hero"><div class="done-mark">🧱</div>'+
+      '<div class="due-line">'+r+' / '+n+' Sätze gebaut</div>'+
+      '<div class="sub" style="margin-top:12px">Einen Satz zu verstehen ist die leichtere Hälfte. Ihn selbst zusammenzusetzen zeigt, ob du Wortstellung und Endungen wirklich hast.</div>'+
+      '<button class="btn btn-primary" onclick="startBau()">Noch eine Runde</button><br>'+
+      '<button class="btn-ghost" onclick="startDecode()">🔍 Lieber entschlüsseln</button><br>'+
+      '<button class="btn-ghost" onclick="renderPacks()">Zurück zur Übersicht</button></div>';
+    return;
+  }
+  renderBau();
+}
 function wordByWord(sent){
   const toks=String(sent).match(/[А-Яа-яЁё́-]+/g)||[];
   const seen=new Set();
@@ -7610,8 +7710,9 @@ function renderPacks(){
     '<div class="lk-s">Nur Wörter, die du schon in einer Übung hattest. Vier Stufen pro Wort, und jede nimmt eine Stütze weg: Silben legen → abschreiben → Lückenschrift → frei tippen.</div>'+
     '<button class="btn btn-primary" onclick="startLongDrill()">Lange Wörter festigen</button></div>';
   html+='<div class="decbox"><div class="lk-t">🔍 Sätze entschlüsseln</div>'+
-    '<div class="lk-s">Ein ganzer russischer Satz statt einzelner Wörter: erst selbst verstehen, dann Wort für Wort auseinandernehmen. Antippen geht überall.</div>'+
-    '<button class="btn btn-primary" onclick="startDecode()">Satz-Training starten</button></div>';
+    '<div class="lk-s">Ein ganzer Satz statt einzelner Wörter – in beide Richtungen: <b>entschlüsseln</b> (Russisch verstehen, Wort für Wort auseinandernehmen) oder <b>bauen</b> (deutscher Satz, du setzt den russischen aus Wortkacheln zusammen – mit Wörtern dazwischen, die nicht hineingehören).</div>'+
+    '<button class="btn btn-primary" onclick="startDecode()">🔍 Satz entschlüsseln</button>'+
+    '<button class="btn-ghost" onclick="startBau()">🧱 Satz bauen (Deutsch → Russisch)</button></div>';
   const cp=livePairs().length;
   if(cp>=3)html+='<div class="confbox"><div class="lk-t">🔀 '+cp+' Wortpaare, die man leicht verwechselt</div>'+
     '<div class="lk-s">Wörter aus deinem Training, die sich in ein bis zwei Buchstaben unterscheiden. Hier stehen sie direkt nebeneinander – der einzige Weg, sie auseinanderzuhalten.</div>'+
