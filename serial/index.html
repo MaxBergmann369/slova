@@ -128,6 +128,9 @@ nav.tabsbar{position:sticky;top:0;z-index:20;background:var(--paper);padding:12p
 .ex .ru .acc{color:var(--rust)}
 .ex .de{font-size:.86rem;color:var(--ink-soft);margin-top:3px}
 .sp2{color:var(--rust);font-size:1rem;padding:2px 6px;border-radius:8px}
+.favb{color:var(--ink-faint);font-size:1.15rem;line-height:1;padding:2px 6px;border-radius:8px;background:none;border:0;cursor:pointer}
+.favb:hover{color:var(--rust)}
+.favb.on{color:#e0a800}
 .sp2:hover{background:var(--rust-soft)}
 .hearall{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;margin-top:12px;padding-top:10px;border-top:1px dashed var(--frost)}
 .hearall span{font-size:.74rem;color:var(--ink-faint);font-weight:700;width:100%;text-align:center;margin-bottom:2px}
@@ -5532,7 +5535,7 @@ const PACKS=[
 ];
 
 /* ================= Zustand ================= */
-let S={prog:{},days:{},act:{},sent:{},nt:{day:null,n:0},extras:[],watched:{},exam:{},sexam:{},open:{},gate:true,recall:true,noSlang:false};
+let S={prog:{},days:{},act:{},sent:{},nt:{day:null,n:0},extras:[],watched:{},exam:{},sexam:{},open:{},fav:{},gate:true,recall:true,noSlang:false};
 let storeMode='none';
 function initStore(){
   try{const t='__ser_test';localStorage.setItem(t,'1');localStorage.removeItem(t);storeMode='local'}
@@ -5938,6 +5941,33 @@ function formsBox(w){
     f.map(s=>{const p=s.split('|');
       return '<div class="fr"><span class="fru">'+acc(esc(p[0]))+'</span>'+sayBtn(p[0])+
         '<span class="fde">'+esc(p[1])+'</span></div>';}).join('')+'</div>';
+}
+function favKey(w){return String(w&&w.r||w).replace(/́/g,'').toLowerCase()}
+function isFav(w){return !!(S.fav&&S.fav[favKey(w)])}
+function favCount(){return S.fav?Object.keys(S.fav).length:0}
+function toggleFav(key,pid){
+  if(!S.fav)S.fav={};
+  if(S.fav[key])delete S.fav[key];else S.fav[key]=1;
+  save();
+  if(pid)showWords(pid);else renderPacks();
+}
+function favBtn(w){
+  const k=favKey(w);
+  return '<button class="favb'+(isFav(w)?' on':'')+'" title="Lernfokus" data-fav="'+esc(k)+'">'+(isFav(w)?'★':'☆')+'</button>';
+}
+/* Alle Favoriten als eigenes Paket – wie die Redewendungen. */
+function favPack(){
+  if(!favCount())return null;
+  const words=[],seen=new Set();
+  PACKS.concat(S.extras).forEach(p=>p.words.forEach(w=>{
+    const k=favKey(w);
+    if(!S.fav[k]||seen.has(k))return;
+    seen.add(k);words.push(w);
+  }));
+  if(!words.length)return null;
+  return{id:'favs',ic:'⭐',t:'Lernfokus · deine Favoriten',tru:'Избра́нное',
+    note:'Die Wörter und Wendungen, die du mit ★ markiert hast. Sie kommen in der Auffrischung zuerst dran und werden dir häufiger vorgelegt – der Abstand zwischen zwei Wiederholungen wächst hier nur bis '+FAV_IV+' Tage, statt bis 120.',
+    words,q:[]};
 }
 function idiomPack(){
   const want=new Set(IDIOMS);
@@ -7089,7 +7119,7 @@ function lockBox(n){
     '<div class="lk-h">Keine Lust auf Sperren? Unter „Mehr" kannst du sie ausschalten.</div></div>';
 }
 function allPacks(){
-  const v=idiomPack();
+  const v=idiomPack(),fv=favPack();
   const out=[];
   let curN=0;
   PACKS.forEach(p=>{
@@ -7099,7 +7129,7 @@ function allPacks(){
   });
   if(curN){const e=examOf(curN);if(e)out.push(e)}
   Object.keys(staffelList()).map(Number).forEach(st=>{const sx=staffelExam(st);if(sx)out.push(sx)});
-  return (v?[v]:[]).concat(out).concat(S.extras);
+  return (fv?[fv]:[]).concat(v?[v]:[]).concat(out).concat(S.extras);
 }
 function packById(id){return allPacks().find(p=>p.id===id)}
 const wordKey=(pid,k)=>pid+':'+k;
@@ -7132,6 +7162,9 @@ function startPack(pid,mode){
    was man nach einer Pause noch kann. Jedes gemeisterte Wort kommt deshalb am
    nächsten Tag wieder – und danach in immer größeren Abständen. */
 const addDays=n=>{const d=new Date();d.setDate(d.getDate()+n);return dstr(d)};
+/* Ein Favorit darf nie länger als FAV_IV Tage aus der Rotation verschwinden. */
+const FAV_IV=5;
+function ivCap(w){return isFav(w)?FAV_IV:120}
 function startRotation(st){if(!st.rd){st.iv=1;st.rd=addDays(1)}}
 function dueRefs(){
   const t=todayStr(),seen=new Set(),out=[];
@@ -7152,7 +7185,12 @@ function inRotation(){
   return n;
 }
 function startRefresh(){
-  const use=shuffle(dueRefs()).slice(0,40);
+  const alle=shuffle(dueRefs());
+  /* Favoriten vor den Rest – der Lernfokus soll auch dann greifen,
+     wenn mehr fällig ist, als in eine Runde passt. */
+  const w=r=>{const p=packById(r.pid);const wd=p&&p.words[r.k];return wd&&isFav(wd)?0:1};
+  alle.sort((a,b)=>w(a)-w(b));
+  const use=alle.slice(0,40);
   if(!use.length){renderPacks();return}
   sess={srs:true,refs:use,q:use.map((r,i)=>i),i:0,right:0,wrong:0,mode:'mix'};
   renderCard();
@@ -7867,7 +7905,7 @@ function resolve(ok){
   }
   else if(sess.srs){
     /* Auffrischung: richtig → Abstand wächst, falsch → zurück auf morgen */
-    if(ok){st.c=Math.max(st.c,NEED);st.iv=Math.min(120,Math.round((st.iv||1)*2.3)+1);st.rd=addDays(st.iv);sess.right++}
+    if(ok){st.c=Math.max(st.c,NEED);st.iv=Math.min(ivCap(cur.w),Math.round((st.iv||1)*2.3)+1);st.rd=addDays(st.iv);sess.right++}
     else{st.w++;st.c=1;st.iv=1;st.rd=addDays(1);sess.wrong++;sess.q.push(sess.q[sess.i])}
   }
   else if(sess.drill){
@@ -8281,9 +8319,11 @@ function showWords(pid){
         (w.e?'<div class="de" style="margin-top:4px;font-style:italic">'+acc(esc(w.e))+' '+sayBtn(w.e)+'</div>':'')+
         defBox(w)+bausteine(w)+formsBox(w)+
         '</div><div>'+(st&&st.c>=2?'<span style="color:var(--birch);font-weight:700">✓</span>':'')+'</div>'+
-        sayBtn(w.r)+'</div>';
+        favBtn(w)+sayBtn(w.r)+'</div>';
     }).join('')+
+    '<p class="hint">★ setzt den Lernfokus: markierte Wörter kommen in der Auffrischung zuerst dran, verschwinden nie länger als '+FAV_IV+' Tage aus der Rotation und stehen zusätzlich als eigenes Paket ganz oben in der Übersicht.</p>'+
     '<button class="btn-ghost" onclick="tab(\'packs\');showPack(\''+p.id+'\')">Zurück zum Paket</button>';
+  $('#view-liste').querySelectorAll('[data-fav]').forEach(b=>b.onclick=()=>toggleFav(b.dataset.fav,p.id));
 }
 /* Wie fest sitzt ein Wort? 0 = neu · 1 = einmal richtig · 2–3 = gemeistert · 4 = gemeistert + Folgenprüfung bestanden.
    СЛОВА́ liest daraus den Startabstand, damit dort nichts als „neu" nochmal von vorn anfängt. */

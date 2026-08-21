@@ -1741,6 +1741,32 @@ const TOPICS=[
 {"q":"Пи́шущий студе́нт","o":["der schreibende Student","der geschriebene Student"],"a":0,"de":"Der schreibende Student."},
 {"q":"Верну́вшись домо́й, я лёг спать.","o":["Nachdem ich heimgekommen war, legte ich mich schlafen.","Während ich heimkam, legte ich mich schlafen."],"a":0,"de":"Nachdem ich heimgekommen war, legte ich mich schlafen."},
 {"q":"Забы́в ключи́, он верну́лся.","o":["Nachdem er die Schlüssel vergessen hatte, kehrte er um.","Während er die Schlüssel vergaß, kehrte er um."],"a":0,"de":"Nachdem er die Schlüssel vergessen hatte, kehrte er um."}]}
+,
+{id:"hoefl",icon:"🙇",t:"Höflich fragen & bitten",s:"Мо́жно? · Не могли́ бы вы? · Вы не подска́жете?",sec:3,type:"gap",ask:"Was ist hier höflich?",intro:"Die russische Höflichkeit steckt nicht in Vokabeln, sondern in der Satzform: verneinte Frage, бы, Konjunktiv. Wörtlich übersetzt klingen diese Sätze im Deutschen komisch – im Russischen sind sie der normale Ton gegenüber Fremden.",items:[
+{"q":"___ мне войти́?","a":"Мо́жно","x":["Могу́","Уме́ю","До́лжен"],"de":"Darf ich hereinkommen?","h":"Мо́жно + Infinitiv ist die einfachste höfliche Frage."},
+{"q":"___ ва́шу ру́чку на мину́тку?","a":"Мо́жно","x":["Могу́","Хочу́","До́лжен"],"de":"Darf ich kurz Ihren Stift haben?","h":"Hier steht nicht einmal ein Verb – Мо́жно + Akkusativ reicht."},
+{"q":"Не ___ бы вы мне помо́чь?","a":"могли́","x":["мо́жете","мо́жно","уме́ли"],"de":"Könnten Sie mir helfen?","h":"Не могли́ бы вы – die höflichste Bitte überhaupt."},
+{"q":"Вы не ___, где здесь метро́?","a":"подска́жете","x":["подскажи́те","подсказа́ли","подска́зываете"],"de":"Könnten Sie mir sagen, wo hier die Metro ist?","h":"Fremde fragt man mit Вы не подска́жете, nicht mit Скажи́те!"},
+{"q":"___, пожа́луйста, как пройти́ к вокза́лу?","a":"Скажи́те","x":["Скажи́","Ска́жете","Сказа́ть"],"de":"Sagen Sie bitte, wie komme ich zum Bahnhof?"},
+{"q":"Вы не ___, кото́рый час?","a":"зна́ете","x":["зна́ешь","зна́йте","узна́ете"],"de":"Wissen Sie zufällig, wie spät es ist?","h":"Die verneinte Frage macht sie weicher – ein Nein fällt so leichter."},
+{"q":"У вас не ___ ме́лочи?","a":"бу́дет","x":["есть","был","бу́дут"],"de":"Hätten Sie vielleicht Kleingeld?","h":"Wörtlich „wird nicht sein\" – die russische Art, vorsichtig zu fragen."},
+{"q":"Вы не ___, е́сли я откро́ю окно́?","a":"про́тив","x":["про́тив бы","проти́вный","про́тиву"],"de":"Hätten Sie etwas dagegen, wenn ich das Fenster öffne?"},
+{"q":"___, е́сли я сяду здесь?","a":"Ничего́","x":["Ничему́","Ниче́м","Никако́й"],"de":"Ist es okay, wenn ich mich hierhin setze?","h":"Ничего́, е́сли …? ist der lockere Alltagston."},
+{"q":"___ добры́, закро́йте дверь.","a":"Бу́дьте","x":["Будь","Бу́дете","Бы́ли"],"de":"Seien Sie so gut und schließen Sie die Tür."},
+{"q":"Извини́те, что ___ вас.","a":"беспоко́ю","x":["беспоко́ить","беспоко́ишь","беспоко́ит"],"de":"Entschuldigen Sie die Störung."},
+{"q":"___ пойдём вме́сте!","a":"Дава́йте","x":["Дава́й","Даём","Да́йте"],"de":"Lassen Sie uns zusammen gehen!","h":"Дава́йте zu Fremden, дава́й zu Freunden."},
+{"q":"Не ___ ли вы ко́фе?","a":"хоти́те","x":["хо́чешь","хоти́м","хоте́ли"],"de":"Möchten Sie vielleicht einen Kaffee?","h":"Не … ли ist ein sehr höfliches Angebot."},
+{"q":"___ быть, встре́тимся за́втра?","a":"Мо́жет","x":["Мо́жно","Могу́","Мо́жем"],"de":"Vielleicht treffen wir uns morgen?"},
+{"q":"Мо́жно вас ___?","a":"попроси́ть","x":["проси́ть","попро́шу","попроси́те"],"de":"Darf ich Sie um etwas bitten?"},
+{"q":"Я ___ бы попроси́ть вас об одно́м.","a":"хоте́л","x":["хочу́","хоте́ть","захочу́"],"de":"Ich würde Sie gern um etwas bitten.","h":"хоте́л бы statt хочу́ – das ist der ganze Unterschied."},
+{"q":"___ вас, подожди́те мину́ту.","a":"Прошу́","x":["Проси́ть","Про́сит","Проси́те"],"de":"Ich bitte Sie, warten Sie eine Minute."},
+{"q":"Вы не ___ мне переда́ть соль?","a":"могли́ бы","x":["мо́жете бы","могли́","мо́жно бы"],"de":"Könnten Sie mir bitte das Salz reichen?"},
+{"q":"___ ли я зада́ть вам вопро́с?","a":"Мо́жно","x":["Могу́","Уме́ю","До́лжен"],"de":"Dürfte ich Ihnen eine Frage stellen?"},
+{"q":"Прости́те, вы не ___ мне?","a":"помо́жете","x":["помоги́те","помога́ли","помо́чь"],"de":"Verzeihung, könnten Sie mir helfen?"},
+{"q":"Бу́дьте ___, повтори́те ещё раз.","a":"любе́зны","x":["любе́зный","любе́зен","любе́зно"],"de":"Seien Sie so freundlich und wiederholen Sie das."},
+{"q":"Вам не ___ вопро́с?","a":"тру́дно отве́тить на","x":["тру́дный отве́т на","тру́дно отве́тить","тру́дно на"],"de":"Wäre es Ihnen nicht zu viel, die Frage zu beantworten?"},
+{"type":"mc2","q":"Du sprichst einen Fremden auf der Straße an.","o":["Вы не подска́жете, где апте́ка?","Скажи́, где апте́ка?"],"a":0,"de":"Könnten Sie mir sagen, wo die Apotheke ist?","e":"Zu Fremden immer вы und am besten die verneinte Frage."},
+{"type":"mc2","q":"Du willst deinen Freund um Hilfe bitten.","o":["Помо́жешь мне?","Не могли́ бы вы мне помо́чь?"],"a":0,"de":"Hilfst du mir?","e":"Unter Freunden wirkt die ganz höfliche Form steif und distanziert."}]}
 ];
 
 /* ================= Regel-Erklärungen pro Thema ================= */
@@ -2218,6 +2244,8 @@ sup:"<h4>Der einfache Weg: са́мый</h4>\nса́мый vor das Adjektiv – 
 cht:"<h4>Zwei Wörter, die im Deutschen beide „dass\" heißen</h4>\n<b>что</b> berichtet, <b>что́бы</b> will etwas. Am Deutschen erkennst du den Unterschied nicht – am Russischen an dem, was dahinter steht.\n<h4>что: eine Tatsache</h4>\nDanach steht ein ganz normaler Satz in jeder Zeit:<br>\n<i>Я зна́ю, <b>что</b> он до́ма.</i> – Ich weiß, dass er zu Hause ist.<br>\n<i>Он сказа́л, <b>что</b> уста́л.</i> – Er sagte, dass er müde sei.<br>\nTypische Verben davor: знать, ду́мать, ви́деть, слы́шать, сказа́ть, ве́рить, боя́ться.\n<h4>что́бы: ein Ziel oder ein Wunsch</h4>\nDanach steht <b>nie ein Präsens</b>, sondern:<br>\n• ein <b>Infinitiv</b>, wenn beide Sätze dasselbe Subjekt haben:<br>\n<i>Я пришёл, <b>что́бы</b> помо́чь.</i> – Ich bin gekommen, um zu helfen.<br>\n• die <b>Form auf -л</b>, wenn das Subjekt wechselt:<br>\n<i>Я хочу́, <b>что́бы</b> ты пришёл.</i> – Ich will, dass du kommst.<br>\nTypische Verben davor: хоте́ть, проси́ть, тре́бовать, ну́жно, ва́жно.\n<h4>Der Satz, an dem man es sieht</h4>\n<i>Он сказа́л, <b>что</b> я пришёл.</i> – Er sagte, dass ich gekommen sei. <span style=\"opacity:.7\">(Bericht)</span><br>\n<i>Он сказа́л, <b>что́бы</b> я пришёл.</i> – Er sagte, ich solle kommen. <span style=\"opacity:.7\">(Aufforderung)</span><br>\nEin Buchstabe mehr, ein völlig anderer Satz.\n<h4>Merksatz</h4>\nSteht hinter „dass\" im Deutschen ein <u>soll</u> oder ein <u>um … zu</u>, dann ist es что́бы.",
 negg:"<h4>Was nicht da ist, steht im Genitiv</h4>\nDas ist einer der eigenwilligsten Züge des Russischen: Bei Nichtvorhandensein <b>verschwindet das Subjekt</b> und das Ding rutscht in den Genitiv.<br>\n<i>Брат <b>до́ма</b>.</i> → <i><b>Бра́та</b> нет до́ма.</i><br>\nWörtlich: „Von Bruder gibt es nicht zu Hause.\"\n<h4>Die drei Zeiten</h4>\n<b>Gegenwart:</b> нет + Genitiv – <i>У меня́ <b>нет</b> вре́мени.</i><br>\n<b>Vergangenheit:</b> не́ было + Genitiv – <i>Его́ <b>не́ было</b> до́ма.</i><br>\n<b>Zukunft:</b> не бу́дет + Genitiv – <i>За́втра <b>не бу́дет</b> вре́мени.</i><br>\nне́ было und не бу́дет ändern sich <b>nie</b> – egal ob es um einen Mann, eine Frau oder zehn Leute geht. Genau da rutschen alle aus.\n<h4>Auch nach verneinten Verben</h4>\nBei abstrakten Dingen steht nach не + Verb gern der Genitiv statt des Akkusativs:<br>\n<i>Я не ви́жу <b>разни́цы</b>.</i> · <i>Он не зна́ет <b>отве́та</b>.</i><br>\nBei ganz konkreten Dingen bleibt der Akkusativ oft stehen: <i>Я не ви́жу <b>маши́ну</b>.</i> Beides hört man.\n<h4>Betonung merken</h4>\n<b>не́ было</b> wird vorn betont – das не zieht die Betonung an sich. Genauso: <b>не́ был</b>, <b>не́ были</b>.\n<h4>Und noch eins</h4>\n<i>Тако́й пробле́мы просто <b>не существу́ет</b>.</i> – существова́ть verhält sich genauso.",
 prich:"<h4>Formen zum Erkennen, nicht zum Bilden</h4>\nPartizipien sind Schriftsprache. Du wirst sie kaum selbst bauen – aber in jeder Geschichte, jedem Artikel und jedem Untertitel stolperst du darüber. Es reicht, sie sofort einordnen zu können.\n<h4>Partizip: ein Verb als Adjektiv</h4>\nEs beschreibt ein Substantiv und wird dekliniert wie ein Adjektiv.<br>\n<b>-ущий / -ющий / -ащий</b> – aktiv, jetzt: <i>чита́<b>ющий</b> челове́к</i> – der Mensch, <u>der liest</u><br>\n<b>-вший</b> – aktiv, abgeschlossen: <i>вы́игра<b>вший</b> приз</i> – der, <u>der gewonnen hat</u><br>\n<b>-нный / -тый</b> – passiv, fertig: <i>прочи́та<b>нный</b> рома́н</i> – der <u>gelesene</u> Roman\n<h4>Adverbialpartizip: zwei Handlungen auf einmal</h4>\nEs beschreibt kein Substantiv, sondern das Verb – und ändert sich <b>nie</b>.<br>\n<b>-я / -а</b> – gleichzeitig: <i><b>Идя́</b> домо́й, я ду́мал о тебе́.</i> – <u>Während</u> ich nach Hause ging …<br>\n<b>-в / -вши</b> – davor abgeschlossen: <i><b>Сказа́в</b> э́то, он ушёл.</i> – <u>Nachdem</u> er das gesagt hatte …\n<h4>Die Faustregel</h4>\nEndet die Form auf <b>-я</b> → gleichzeitig („während\", „dabei\").<br>\nEndet sie auf <b>-в</b> → vorher fertig („nachdem\").<br>\nDas ist derselbe Unterschied wie zwischen unvollendet und vollendet – und meistens die einzige Frage, die du beantworten musst.\n<h4>Im Deutschen</h4>\nWir lösen das fast immer mit einem Nebensatz auf: <i>der liest</i>, <i>nachdem er gesagt hatte</i>. Genau so übersetzt du auch – nicht Wort für Wort."
+,
+hoefl:"<h4>Höflichkeit steckt in der Satzform</h4>\nIm Russischen gibt es kein Zauberwort wie das deutsche „bitte\", das jeden Satz höflich macht. Der Ton kommt aus der <b>Konstruktion</b>: verneinte Frage, бы, Konjunktiv.\n<h4>Die vier Stufen</h4>\n<b>1. Direkt</b> (unter Freunden): <i>Дай ру́чку.</i> – Gib mir den Stift.<br>\n<b>2. Neutral</b>: <i><b>Мо́жно</b> ру́чку?</i> – Darf ich den Stift haben?<br>\n<b>3. Höflich</b>: <i><b>Вы не</b> дади́те мне ру́чку?</i> – Geben Sie mir wohl den Stift?<br>\n<b>4. Sehr höflich</b>: <i><b>Не могли́ бы вы</b> дать мне ру́чку?</i> – Könnten Sie mir den Stift geben?\n<h4>Der wichtigste Trick: die verneinte Frage</h4>\nWas im Deutschen unhöflich klänge, ist hier das Gegenteil. Das не lässt dem anderen die Tür offen, Nein zu sagen:<br>\n<i><b>Вы не</b> зна́ете, кото́рый час?</i> – Wissen Sie zufällig, wie spät es ist?<br>\n<i><b>У вас не</b> бу́дет ме́лочи?</i> – Hätten Sie vielleicht Kleingeld?<br>\n<i><b>Вы не</b> подска́жете, где метро́?</i> – Könnten Sie mir sagen, wo die Metro ist?<br>\nMerke: <b>Вы не подска́жете</b> ist die Standardformel, mit der man auf der Straße Fremde anspricht.\n<h4>бы macht alles weicher</h4>\n<i>Я <b>хочу́</b> попроси́ть вас …</i> klingt fordernd.<br>\n<i>Я <b>хоте́л бы</b> попроси́ть вас …</i> klingt wie eine Bitte.<br>\nDasselbe bei <i>Не <b>могли́ бы</b> вы …</i> statt <i>Вы <b>мо́жете</b> …</i>\n<h4>Feste Wendungen, die du auswendig können solltest</h4>\n<b>Скажи́те, пожа́луйста …</b> – Sagen Sie bitte …<br>\n<b>Бу́дьте добры́ / Бу́дьте любе́зны</b> – Seien Sie so gut / so freundlich<br>\n<b>Извини́те, что беспоко́ю</b> – Entschuldigen Sie die Störung<br>\n<b>Мо́жно вас попроси́ть?</b> – Darf ich Sie um etwas bitten?<br>\n<b>Вы не про́тив, е́сли …?</b> – Haben Sie etwas dagegen, wenn …?<br>\n<b>Ничего́, е́сли я …?</b> – Ist es okay, wenn ich …? (locker)\n<h4>ты oder вы?</h4>\nвы gilt für Fremde, Ältere, Vorgesetzte und im Dienstleistungskontakt – und man bleibt dabei, bis der andere ты anbietet. Aber Vorsicht in die andere Richtung: <b>Не могли́ бы вы</b> zu einem Freund klingt beleidigt oder ironisch. Unter Freunden reicht <i>Помо́жешь?</i>\n<h4>Vorschläge</h4>\n<b>Дава́йте</b> + wir-Form für Fremde, <b>дава́й</b> für Freunde: <i>Дава́йте начнём.</i> · <i>Дава́й пойдём.</i><br>\n<b>Мо́жет быть …?</b> – Vielleicht …? · <b>Не хоти́те ли вы …?</b> – Möchten Sie vielleicht …?"
 };
 
 /* ================= Zustand ================= */
@@ -2317,13 +2345,29 @@ function basisAvg(){ /* Durchschnitts-Fortschritt der Basis-Themen */
 }
 function aufbauOpen(){return basisAvg()>=50}
 function topicStarted(tp){return tp.items.some((it,k)=>itemStat(tp.id,k))}
+function gesehenPool(){
+  const out=[];
+  TOPICS.forEach(tp=>{
+    if(tp.sec&&!aufbauOpen())return;          /* Gesperrtes bleibt gesperrt */
+    tp.items.forEach((it,k)=>{if(itemStat(tp.id,k))out.push({tid:tp.id,k})});
+  });
+  return out;
+}
+function mixThemen(){
+  const set={};
+  gesehenPool().forEach(r=>{set[r.tid]=1});
+  return Object.keys(set).length;
+}
 function startMix(){
-  /* Mix nur aus Themen, die du schon angefangen hast – gesperrte Aufbau-Themen nie */
-  let cands=TOPICS.filter(tp=>(!tp.sec||aufbauOpen())&&topicStarted(tp));
-  if(cands.length<2)cands=TOPICS.filter(tp=>!tp.sec).slice(0,4); /* Erststart: die ersten Basis-Themen */
-  let pool=[];
-  cands.forEach(tp=>{pool=pool.concat(pickItems(tp,3))});
-  sess={q:shuffle(pool).slice(0,12),i:0,right:0,wrong:0,done:0,tid:null};
+  const pool=gesehenPool();
+  if(pool.length<4){renderHome();return}
+  /* dieselbe Gewichtung wie im Thema: zuletzt falsch zuerst, Gemeistertes zuletzt */
+  const arr=pool.map(r=>{
+    const st=itemStat(r.tid,r.k);
+    return{r,w:(st.l===0?0:(st.c>=2?2:1))+Math.random()*0.9};
+  });
+  arr.sort((a,b)=>a.w-b.w);
+  sess={q:shuffle(arr.slice(0,12).map(e=>e.r)),i:0,right:0,wrong:0,done:0,tid:null};
   renderItem();
 }
 function quitSession(){save(true);sess=null;renderHome()}
@@ -2525,10 +2569,13 @@ function renderHome(){
   const total=TOPICS.reduce((n,tp)=>n+tp.items.length,0);
   const dT=S.days[todayStr()]||0;
   const open=aufbauOpen(),avg=basisAvg();
+  const mixN=gesehenPool().length,mixT=mixThemen();
   let html='<div class="hero"><div class="due-line">Was übst du <b>heute</b>?</div>'+
     '<div class="sub">'+total+' Aufgaben in '+TOPICS.length+' Themen · heute schon '+dT+' gelöst</div>'+
-    '<button class="btn btn-primary" onclick="startMix()">🎲 Mix-Training (12 Aufgaben)</button>'+
-    '<div class="sub" style="margin-top:8px;font-size:.78rem">Der Mix enthält nur Themen, die du schon angefangen hast.</div></div>'+
+    (mixN>=4
+      ?'<button class="btn btn-primary" onclick="startMix()">🎲 Mix-Training (12 Aufgaben)</button>'+
+       '<div class="sub" style="margin-top:8px;font-size:.78rem">Gemischt aus <b>'+mixN+'</b> Aufgaben, die du schon geübt hast'+(mixT>1?' – aus '+mixT+' Themen':'')+'. Nichts Neues.</div>'
+      :'<div class="sub" style="margin-top:8px;font-size:.78rem">Der Mix wiederholt nur, was du schon geübt hast – dafür brauchst du erst ein paar Aufgaben aus einem Thema unten.</div>')+'</div>'+
     '<div class="sect">Basis</div>';
   TOPICS.filter(t=>!t.sec).forEach(tp=>{html+=topicCard(tp)});
   const karte=tp=>open?topicCard(tp):
