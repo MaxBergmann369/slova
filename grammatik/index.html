@@ -1766,7 +1766,19 @@ const TOPICS=[
 {"q":"Бу́дьте ___, повтори́те ещё раз.","a":"любе́зны","x":["любе́зный","любе́зен","любе́зно"],"de":"Seien Sie so freundlich und wiederholen Sie das."},
 {"q":"Вам не ___ вопро́с?","a":"тру́дно отве́тить на","x":["тру́дный отве́т на","тру́дно отве́тить","тру́дно на"],"de":"Wäre es Ihnen nicht zu viel, die Frage zu beantworten?"},
 {"type":"mc2","q":"Du sprichst einen Fremden auf der Straße an.","o":["Вы не подска́жете, где апте́ка?","Скажи́, где апте́ка?"],"a":0,"de":"Könnten Sie mir sagen, wo die Apotheke ist?","e":"Zu Fremden immer вы und am besten die verneinte Frage."},
-{"type":"mc2","q":"Du willst deinen Freund um Hilfe bitten.","o":["Помо́жешь мне?","Не могли́ бы вы мне помо́чь?"],"a":0,"de":"Hilfst du mir?","e":"Unter Freunden wirkt die ganz höfliche Form steif und distanziert."}]}
+{"type":"mc2","q":"Du willst deinen Freund um Hilfe bitten.","o":["Помо́жешь мне?","Не могли́ бы вы мне помо́чь?"],"a":0,"de":"Hilfst du mir?","e":"Unter Freunden wirkt die ganz höfliche Form steif und distanziert."},
+{"q":"___ пойти́ со мной в кафе́?","a":"Не хо́чешь","x":["Не хо́чет","Не хоти́шь","Нет хо́чешь"],"de":"Willst du mit mir ins Café gehen?","h":"Не хо́чешь …? ist die normale Einladung unter Freunden."},
+{"q":"___ схо́дим в кино́ сего́дня?","a":"Мо́жет,","x":["Мо́жно,","Могу́,","Мо́жем,"],"de":"Vielleicht gehen wir heute ins Kino?","h":"Мо́жет, … ist der lockerste Vorschlag überhaupt."},
+{"q":"Я ___ пригласи́ть тебя́ на у́жин.","a":"хоте́л бы","x":["хочу́ бы","хоте́ть бы","хоте́ла бы ты"],"de":"Ich würde dich gern zum Abendessen einladen."},
+{"q":"___ ко мне в го́сти в суббо́ту!","a":"Приходи́","x":["Прихо́дишь","Прийди́","Прихо́дь"],"de":"Komm am Samstag zu mir zu Besuch!"},
+{"q":"___ вме́сте пообе́даем?","a":"Дава́й","x":["Дава́йте","Даём","Дай"],"de":"Lass uns zusammen Mittag essen?","h":"дава́й zu Freunden, дава́йте zu Fremden und Vorgesetzten."},
+{"q":"Ты ___ за́втра ве́чером?","a":"свобо́ден","x":["свобо́дна","свобо́дны","свобо́дный"],"de":"Hast du morgen Abend Zeit?","h":"zu einem Mann; zu einer Frau свобо́дна"},
+{"q":"Вы ___ за́няты в суббо́ту?","a":"не","x":["ни","нет","неу́жели"],"de":"Sind Sie am Samstag vielleicht frei?","h":"Wieder die verneinte Frage – so lässt du dem anderen ein leichtes Nein."},
+{"q":"— Пойдём в кино́? — ___!","a":"С удово́льствием","x":["С удово́льствия","Удово́льствие","По удово́льствию"],"de":"– Gehen wir ins Kino? – Sehr gern!"},
+{"q":"— Пойдём? — ___, я за́нят.","a":"К сожале́нию","x":["К сожале́ния","Сожале́ние","До сожале́ния"],"de":"– Gehen wir? – Leider bin ich beschäftigt."},
+{"q":"Мо́жет быть, ___ по ко́фе?","a":"вы́пьем","x":["вы́пить","пить","пьём"],"de":"Vielleicht trinken wir einen Kaffee?"},
+{"q":"Я ___ тебя́ на день рожде́ния.","a":"приглаша́ю","x":["пригласи́ть","приглаше́ние","пригласи́"],"de":"Ich lade dich zum Geburtstag ein."},
+{"type":"mc2","q":"Du fragst deine Chefin, ob sie mittags mitkommt.","o":["Не хоти́те ли вы пообе́дать с на́ми?","Дава́й пообе́даем вме́сте!"],"a":0,"de":"Möchten Sie vielleicht mit uns zu Mittag essen?","e":"Zu Vorgesetzten nie дава́й – вы und Не хоти́те ли вы."}]}
 ];
 
 /* ================= Regel-Erklärungen pro Thema ================= */
@@ -1790,7 +1802,18 @@ Der Akkusativ ist der <b>faulste Fall</b> – meistens ändert sich gar nichts:<
 <h4>Typische Fehler</h4>
 • „Я ви́жу брат" ✗ – брат ist belebt → <b>бра́та</b> ✓<br>
 • „Я иду́ в шко́ле" ✗ – Richtung, nicht Ort → <b>в шко́лу</b> ✓<br>
-• Bei „у меня́ есть …" steht <b>kein</b> Akkusativ, sondern der Nominativ: у меня́ есть <b>соба́ка</b>.`,
+• Bei „у меня́ есть …" steht <b>kein</b> Akkusativ, sondern der Nominativ: у меня́ есть <b>соба́ка</b>.
+<h4>Im Plural</h4>
+Dieselbe Logik wie beim Maskulinum im Singular – nur gilt sie jetzt für <u>alle</u> Geschlechter:<br>
+• <b>unbelebt</b> → sieht aus wie der Nominativ: <i>Я чита́ю <b>кни́ги</b>.</i><br>
+• <b>belebt</b> → sieht aus wie der Genitiv Plural: <i>Я ви́жу <b>соба́к</b>.</i> · <i>Он лю́бит <b>дете́й</b>.</i> · <i>Мы пригласи́ли <b>сосе́дей</b>.</i>
+<h4>Mit Adjektiv oder mit мой</h4>
+Das Begleitwort macht die Endung mit:<br>
+<i>но́вая су́мка → <b>но́вую су́мку</b></i> · <i>ва́ша дочь → <b>ва́шу дочь</b></i> · <i>но́вая жизнь → <b>но́вую жизнь</b></i><br>
+Bei unbelebten Maskulina bleibt weiterhin alles stehen: <i>мой телефо́н → <b>мой телефо́н</b></i>.
+<h4>Pronomen im Akkusativ</h4>
+меня́ · тебя́ · его́ · её · нас · вас · их · всех<br>
+<i>Я жду <b>тебя́</b>.</i> · <i>Она́ спроси́ла <b>нас</b>.</i> · <i>Он позва́л <b>всех</b>.</i>`,
 
 prep:`<h4>Wozu ist der Präpositiv da?</h4>
 Er sagt, <b>wo</b> etwas ist oder <b>worüber</b> gesprochen wird. Er heißt so, weil er <b>nie ohne Präposition</b> steht – das ist die einfachste Erkennungsregel überhaupt.<br>
@@ -1810,7 +1833,17 @@ Drei Ausnahmen:<br>
 • ein paar Männer-Wörter mit <b>-у́</b>: в лес<b>у́</b>, в сад<b>у́</b>, в год<b>у́</b>
 <h4>Typische Fehler</h4>
 • Präpositiv ohne Präposition gibt es nicht – „Я живу́ Москве́" ✗ → <b>в</b> Москве́ ✓<br>
-• в oder на? Gebäude/Länder meist <b>в</b>, Flächen und Veranstaltungen <b>на</b>: на рабо́те, на по́чте, на конце́рте.`,
+• в oder на? Gebäude/Länder meist <b>в</b>, Flächen und Veranstaltungen <b>на</b>: на рабо́те, на по́чте, на конце́рте.
+<h4>Im Plural</h4>
+Alle Geschlechter bekommen <b>-ах / -ях</b>:<br>
+<i>о <b>де́тях</b></i> · <i>в больши́х <b>города́х</b></i> · <i>на <b>по́лках</b></i> · <i>о на́ших <b>пла́нах</b></i>
+<h4>Mit Adjektiv</h4>
+Maskulin und Neutrum <b>-ом / -ем</b>, feminin <b>-ой / -ей</b>:<br>
+<i>в <b>но́вом</b> фи́льме</i> · <i>в <b>ма́ленькой</b> дере́вне</i> · <i>в <b>сосе́днем</b> до́ме</i> (weiches Adjektiv)
+<h4>Pronomen</h4>
+обо мне́ · о тебе́ · о нём · о ней · о нас · о вас · о них<br>
+Vor <b>мне</b> wird aus о ein <b>обо</b>: <i><b>обо мне</b></i>. Vor <b>э́том</b> steht <b>об</b>: <i><b>об э́том</b></i>.<br>
+Nach einer Präposition bekommen er/sie/es ein н-: <i>о <b>нём</b></i>, nicht <i>о ём</i>.`,
 
 gen:`<h4>Wozu ist der Genitiv da?</h4>
 Er ist der <b>Verbindungs-Fall</b>: Er zeigt Besitz („das Auto <u>des Bruders</u>"), Abwesenheit und Mengen.<br>
@@ -1827,7 +1860,17 @@ Bonus: nach Mengen – мно́го, ма́ло, ско́лько, стака́�
 (nach к, г, х, ж, ш, щ, ч immer <b>-и</b>: кни́га → кни́г<b>и</b>)
 <h4>Typische Fehler</h4>
 • Der Haben-Satz dreht sich um: „Ich habe einen Hund" = <i>У <b>меня́</b> есть соба́ка</i> – die Person steht im Genitiv, der Hund im Nominativ!<br>
-• Verneintes Haben braucht Genitiv: <i>У меня́ нет <b>соба́ки</b></i> (nicht соба́ка).`,
+• Verneintes Haben braucht Genitiv: <i>У меня́ нет <b>соба́ки</b></i> (nicht соба́ка).
+<h4>Im Plural</h4>
+Der Genitiv Plural ist so eigen, dass er ein eigenes Thema hat (🧱 <b>Genitiv Plural</b>). Kurz:<br>
+maskulin meist <b>-ов</b> (домо́в), feminin auf -а meist <b>ohne Endung</b> (книг), auf -ь und nach ж ш ч щ <b>-ей</b> (друзе́й).<br>
+<i>Э́то маши́на на́ших <b>сосе́дей</b>.</i> · <i>оди́н из мои́х <b>друзе́й</b></i>
+<h4>Mit Adjektiv</h4>
+Maskulin und Neutrum <b>-ого / -его</b>, feminin <b>-ой / -ей</b>:<br>
+<i>кни́га <b>моего́</b> бра́та</i> · <i>фотогра́фия <b>ста́рого</b> го́рода</i> · <i>нача́ло <b>но́вой</b> исто́рии</i>
+<h4>Pronomen</h4>
+меня́ · тебя́ · его́ · её · нас · вас · их<br>
+Nach einer Präposition kommt ein н- davor: <i>у <b>неё</b></i>, <i>без <b>него́</b></i>, <i>для <b>них</b></i> – aber ohne Präposition <i>её кни́га</i>.`,
 
 dat:`<h4>Wozu ist der Dativ da?</h4>
 Er zeigt den <b>Empfänger</b> – wem etwas gegeben, gesagt oder wem geholfen wird.<br>
@@ -1845,7 +1888,17 @@ Frage: <b>кому́? чему́?</b> (wem?)
 • <b>feminin</b> → <b>-е</b>: ма́ма → ма́м<b>е</b> (aber -ия → -ии, -ь → -и)
 <h4>Typische Fehler</h4>
 • Im Deutschen „ich mag Tee", im Russischen <i>мне нра́вится чай</i> – wörtlich „mir gefällt Tee". Das Subjekt wechselt!<br>
-• звони́ть braucht Dativ, nicht Akkusativ: <i>Я звоню́ <b>ма́ме</b></i> ✓`,
+• звони́ть braucht Dativ, nicht Akkusativ: <i>Я звоню́ <b>ма́ме</b></i> ✓
+<h4>Im Plural</h4>
+Alle Geschlechter bekommen <b>-ам / -ям</b>:<br>
+<i>мои́м <b>роди́телям</b></i> · <i><b>де́тям</b></i> · <i>по <b>у́лицам</b></i> · <i>к <b>экза́менам</b></i>
+<h4>Mit Adjektiv</h4>
+Maskulin und Neutrum <b>-ому / -ему</b>, feminin <b>-ой / -ей</b>, Plural <b>-ым / -им</b>:<br>
+<i><b>моему́</b> дру́гу</i> · <i><b>э́тому</b> челове́ку</i> · <i>ста́рым роди́телям</i>
+<h4>Nicht vergessen</h4>
+Diese Verben verlangen den Dativ, obwohl das Deutsche den Akkusativ nimmt:<br>
+<b>звони́ть</b> (anrufen), <b>помога́ть</b> (helfen), <b>меша́ть</b> (stören), <b>учи́ть кого́ чему́</b> (jemanden etwas lehren).<br>
+Dazu <b>благодаря́</b> + Dativ (dank) und <b>по</b> + Dativ für Wiederholungen: <i>по <b>понеде́льникам</b></i> = montags.`,
 
 ins:`<h4>Wozu ist der Instrumental da?</h4>
 Er beantwortet <b>womit?</b> und <b>mit wem?</b> – das Werkzeug und die Begleitung.<br>
@@ -1862,7 +1915,19 @@ Außerdem: занима́ться <b>спо́ртом</b>, интересова�
 • <b>feminin</b> → <b>-ой/-ей</b>: ма́ма → ма́м<b>ой</b>
 <h4>Typische Fehler</h4>
 • „Я пишу́ с ру́чкой" ✗ – das hieße „ich schreibe gemeinsam mit dem Kuli". Werkzeug ohne с: <b>ру́чкой</b> ✓<br>
-• Beruf ohne „als": <i>Она́ ста́ла <b>врачо́м</b></i> – das Wort „als" steckt schon in der Endung.`,
+• Beruf ohne „als": <i>Она́ ста́ла <b>врачо́м</b></i> – das Wort „als" steckt schon in der Endung.
+<h4>Im Plural</h4>
+Alle Geschlechter bekommen <b>-ами / -ями</b>:<br>
+<i>с на́шими <b>друзья́ми</b></i> · <i>с интере́сными <b>людьми́</b></i> (unregelmäßig!) · <i>ме́жду <b>ни́ми</b></i>
+<h4>Zeitangaben ohne Präposition</h4>
+Tageszeiten und Jahreszeiten stehen einfach im Instrumental:<br>
+<b>у́тром</b> · <b>днём</b> · <b>ве́чером</b> · <b>но́чью</b> · <b>весно́й</b> · <b>ле́том</b> · <b>о́сенью</b> · <b>зимо́й</b><br>
+<i><b>Ве́чером</b> мы гуля́ли.</i> – Abends spazierten wir.
+<h4>Verkehrsmittel</h4>
+Auch hier reicht der bloße Instrumental: <i>Мы пое́хали <b>по́ездом</b>.</i> (neben <i>на по́езде</i>)
+<h4>Pronomen</h4>
+мной · тобо́й · им · ей · на́ми · ва́ми · и́ми<br>
+Vor <b>мной</b> wird aus с ein <b>со</b>: <i><b>со мной</b></i>. Nach Präposition wieder mit н-: <i>с <b>ним</b></i>, <i>ме́жду <b>ни́ми</b></i>.`,
 
 plu:`<h4>Wozu?</h4>
 Aus einem Tisch werden viele Tische. Hier geht es nur um den <b>Nominativ Plural</b> (die Nenn-Form).
@@ -1876,7 +1941,23 @@ Aus einem Tisch werden viele Tische. Hier geht es nur um den <b>Nominativ Plural
 ребёнок → <b>де́ти</b> · челове́к → <b>лю́ди</b>
 <h4>Typische Fehler</h4>
 • „книгы" ✗ – nach к steht nie ы → <b>кни́ги</b> ✓<br>
-• Betonung beachten: <b>о́</b>кна (Plural) vs. окн<b>о́</b> (Singular).`,
+• Betonung beachten: <b>о́</b>кна (Plural) vs. окн<b>о́</b> (Singular).
+<h4>Wörter auf -ь</h4>
+Immer <b>-и</b>, egal welches Geschlecht: <i>дверь → <b>две́ри</b></i> · <i>тетра́дь → <b>тетра́ди</b></i> · <i>ночь → <b>но́чи</b></i>
+<h4>Die Regel, die alles überschreibt</h4>
+Nach <b>ж ш ч щ к г х</b> steht nie -ы, immer <b>-и</b>:<br>
+<i>врач → <b>врачи́</b></i> · <i>нож → <b>ножи́</b></i> · <i>рука́ → <b>ру́ки</b></i> · <i>кни́жка → <b>кни́жки</b></i>
+<h4>Neutrum</h4>
+<b>-о → -а</b> (окно́ → о́кна), <b>-е → -я</b> (мо́ре → моря́, по́ле → поля́),<br>
+<b>-ие → -ия</b> (зда́ние → зда́ния). Feminin <b>-ия → -ии</b> (ста́нция → ста́нции).
+<h4>Die Sonderlinge</h4>
+<b>-мя</b> schiebt -ен- ein: <i>и́мя → <b>имена́</b></i>, <i>вре́мя → <b>времена́</b></i><br>
+<b>мать</b> und <b>дочь</b> schieben -ер- ein: <i><b>ма́тери</b></i>, <i><b>до́чери</b></i><br>
+<b>-ья</b>: <i>брат → <b>бра́тья</b></i>, <i>стул → <b>сту́лья</b></i>, <i>де́рево → <b>дере́вья</b></i>, <i>сын → <b>сыновья́</b></i>
+<h4>Betontes -а́</h4>
+Eine Gruppe Maskulina endet im Plural auf betontes <b>-а́/-я́</b>:<br>
+<i>дом → <b>дома́</b></i> · <i>го́род → <b>города́</b></i> · <i>по́езд → <b>поезда́</b></i> · <i>глаз → <b>глаза́</b></i> · <i>учи́тель → <b>учителя́</b></i><br>
+Aber: <i>год → <b>го́ды</b></i>. Das muss man einzeln lernen.`,
 
 adj:`<h4>Worum geht's?</h4>
 Adjektive und die Wörter мой/твой/наш/ваш <b>passen sich immer an ihr Substantiv an</b> – an Geschlecht, Zahl und Fall. Im Deutschen machen wir das auch („ein <u>neues</u> Auto"), im Russischen nur regelmäßiger.
@@ -1892,7 +1973,20 @@ Genauso: мой / моя́ / моё / мои́ · наш / на́ша / на́ш
 3. Adjektiv bekommt dieselbe „Farbe".
 <h4>Typische Fehler</h4>
 • Das Adjektiv richtet sich nach dem <b>Substantiv</b>, nicht nach dir: ein Mann sagt <i>моя́ ма́ма</i> (weil ма́ма feminin ist).<br>
-• Nach к, г, х, ж, ш, щ, ч steht <b>-ий/-ие</b> statt -ый/-ые: <i>ру́сский, хоро́шие</i>.`,
+• Nach к, г, х, ж, ш, щ, ч steht <b>-ий/-ие</b> statt -ый/-ые: <i>ру́сский, хоро́шие</i>.
+<h4>Weiche Adjektive auf -ний</h4>
+Sie haben überall ein weiches е oder я statt о und а:<br>
+<i>после́д<b>ний</b> вопро́с</i> · <i>после́д<b>няя</b> неде́ля</i> · <i>после́д<b>нее</b> сло́во</i> · <i>после́д<b>ние</b> дни</i><br>
+Genauso: сле́дующий, сосе́дний, си́ний, ра́нний, ле́тний.
+<h4>э́тот – dieser</h4>
+<b>э́тот</b> дом · <b>э́та</b> кни́га · <b>э́то</b> окно́ · <b>э́ти</b> де́ти<br>
+Nicht verwechseln mit dem <b>э́то</b> in „Das ist …": <i><b>Э́то</b> моя́ кни́га.</i> – das ändert sich nie.
+<h4>чей – wessen</h4>
+<b>чей</b> дом? · <b>чья</b> су́мка? · <b>чьё</b> ме́сто? · <b>чьи</b> ключи́?
+<h4>его́, её, их ändern sich nie</h4>
+Anders als мой und наш bleiben sie immer gleich:<br>
+<i><b>его́</b> брат · <b>его́</b> сестра́ · <b>его́</b> де́ти</i><br>
+Ein <i>и́хний</i> hört man zwar auf der Straße, es gilt aber als Fehler.`,
 
 pron:`<h4>Worum geht's?</h4>
 Auch <b>ich, du, er, sie</b> verändern sich in den Fällen – genau wie im Deutschen (ich → mich → mir), nur mit mehr Formen. Du brauchst sie in fast jedem Satz.
@@ -1910,7 +2004,21 @@ Nach einer <b>Präposition</b> bekommen die er/sie/es/sie-Formen ein <b>н-</b> 
 Genauso: с <b>ним</b>, к <b>ним</b>, о <b>них</b>, для <b>неё</b>.
 <h4>Typische Fehler</h4>
 • „у его́" ✗ → <b>у него́</b> ✓<br>
-• Bei Gefühlen steht der Dativ: <i><b>Мне</b> нра́вится</i>, nicht „я нра́влюсь" (das hieße „ich gefalle").`,
+• Bei Gefühlen steht der Dativ: <i><b>Мне</b> нра́вится</i>, nicht „я нра́влюсь" (das hieße „ich gefalle").
+<h4>себя́ – sich</h4>
+Ein Pronomen für alle Personen, ohne Nominativ. Es zeigt immer auf das Subjekt zurück:<br>
+<i>Он посмотре́л на <b>себя́</b>.</i> (Akkusativ) · <i>Он купи́л маши́ну <b>себе́</b>.</i> (Dativ) · <i>Возьми́ де́ньги <b>с собо́й</b>.</i> (Instrumental)
+<h4>кто und что werden dekliniert</h4>
+<b>кто</b> – кого́ – кому́ – кем – о ком<br>
+<b>что</b> – чего́ – чему́ – чем – о чём<br>
+<i><b>Кого́</b> ты ждёшь?</i> · <i><b>Кому́</b> ты помога́ешь?</i> · <i>С <b>кем</b> ты говори́л?</i> · <i>О <b>чём</b> ты ду́маешь?</i>
+<h4>э́тот wird mitdekliniert</h4>
+<i>э́того челове́ка</i> · <i>э́тому челове́ку</i> · <i>э́ту кни́гу</i> · <i>об э́том</i>
+<h4>весь – der ganze</h4>
+<b>весь</b> день · <b>вся</b> неде́ля · <b>всё</b> у́тро · <b>все</b> лю́ди · <i>Она́ рабо́тала <b>всю</b> ночь.</i>
+<h4>друг дру́га – einander</h4>
+Nur der zweite Teil verändert sich:<br>
+<i>Они́ лю́бят <b>друг дру́га</b>.</i> (Akk.) · <i>Они́ помога́ют <b>друг дру́гу</b>.</i> (Dat.) · <i>Они́ говоря́т <b>друг с дру́гом</b>.</i> – die Präposition rutscht in die Mitte.`,
 
 vpr:`<h4>Worum geht's?</h4>
 Das Präsens – was gerade oder regelmäßig passiert. Russisch hat nur <b>eine</b> Gegenwartsform (kein „I am working" vs. „I work").
@@ -1978,7 +2086,22 @@ Ein Mann sagt: <i>Я чита́<b>л</b>.</i> · Eine Frau sagt: <i>Я чита�
 Auch bei ты: <i>Ты чита́<b>ла</b>?</i> (zu einer Frau)
 <h4>Typische Fehler</h4>
 • Frauen vergessen oft das -а: „Я чита́л" von einer Frau ist falsch → <b>чита́ла</b> ✓<br>
-• быть in der Vergangenheit gibt es (anders als im Präsens): был / была́ / бы́ло / бы́ли.`,
+• быть in der Vergangenheit gibt es (anders als im Präsens): был / была́ / бы́ло / бы́ли.
+<h4>Verben mit eigener Vergangenheit</h4>
+Ein paar häufige Verben bilden sie nicht aus dem Infinitiv:<br>
+<b>идти́ → шёл, шла, шло, шли</b> – <i>Она́ <b>шла</b> по у́лице.</i><br>
+<b>мочь → мог, могла́, могли́</b> – <i>Она́ не <b>могла́</b> откры́ть дверь.</i><br>
+<b>есть → ел, е́ла, е́ли</b> · <b>нести́ → нёс, несла́</b> · <b>вести́ → вёл, вела́</b> · <b>найти́ → нашёл, нашла́</b><br>
+Merke das Muster: maskulin oft <b>ohne -л</b> (шёл, нёс, мог), feminin und Plural mit.
+<h4>Verben auf -нуть</h4>
+Sie verlieren das -ну- in der Vergangenheit:<br>
+<i>привы́кнуть → <b>привы́к</b></i> · <i>исче́знуть → <b>исче́з</b></i>
+<h4>Reflexive Verben</h4>
+Das -ся hängt hinten dran und wird nach Vokal zu <b>-сь</b>:<br>
+<i>он верну́л<b>ся</b></i> · <i>она́ верну́ла<b>сь</b></i> · <i>мы верну́ли<b>сь</b></i><br>
+Bei einigen wandert die Betonung: <i>нача́ться → уро́к <b>начался́</b>, ле́кция <b>начала́сь</b></i>.
+<h4>Vorsicht bei быть</h4>
+был · была́ · бы́ло · бы́ли – aber verneint zieht не die Betonung an sich: <b>не́ был</b>, <b>не́ было</b>, <b>не́ были</b> (nur <i>не была́</i> bleibt hinten betont).`,
 
 fut:`<h4>Worum geht's?</h4>
 Zwei Wege in die Zukunft – und welchen du nimmst, hängt vom <b>Aspekt</b> ab (siehe Thema „Aspekt").
@@ -2061,7 +2184,12 @@ Frag dich: <b>Bin ich gerade unterwegs zu einem Ziel?</b> → идти́/е́х�
 • Auch Regen und Schnee gehen: <i><b>Идёт</b> дождь.</i> = Es regnet.
 <h4>Typische Fehler</h4>
 • „Ка́ждый день я иду́ …" ✗ – regelmäßig → <b>хожу́</b> ✓<br>
-• Zu Fuß oder mit Fahrzeug? In der Stadt zwischen Ländern/Städten immer <b>е́хать</b>, auch wenn du im Zug sitzt.`,
+• Zu Fuß oder mit Fahrzeug? In der Stadt zwischen Ländern/Städten immer <b>е́хать</b>, auch wenn du im Zug sitzt.
+<h4>Dasselbe Paar bei anderen Verben</h4>
+Die Unterscheidung „jetzt in eine Richtung" gegen „regelmäßig, hin und zurück" gibt es nicht nur bei gehen und fahren:<br>
+<b>лете́ть – лета́ть</b> (fliegen): <i>Пти́цы <b>летя́т</b> на юг.</i> (gerade jetzt) · <i>Они́ <b>лета́ют</b> ка́ждую о́сень.</i><br>
+<b>бежа́ть – бе́гать</b> (laufen) · <b>нести́ – носи́ть</b> (tragen) · <b>вести́ – води́ть</b> (führen, fahren)<br>
+Die linke Spalte ist immer „einmal, in eine Richtung", die rechte „immer wieder oder allgemein".`,
 
 asp:`<h4>Warum ist das so ungewohnt?</h4>
 Weil es im Deutschen <b>nichts Vergleichbares</b> gibt. Wir sagen „ich las" und „ich habe gelesen" – das sind Zeiten. Der russische Aspekt sagt dagegen etwas ganz anderes: <b>Interessiert mich der Vorgang oder das Ergebnis?</b><br>
@@ -2087,7 +2215,16 @@ Ist etwas <b>fertig geworden</b> oder passiert genau einmal → <b>vollendet</b>
 3. Nach <b>на́чал / ко́нчил / продолжа́л</b> (begann, hörte auf) steht immer <b>unvollendet</b>.
 <h4>Typische Fehler</h4>
 • „Ка́ждый день я прочита́л" ✗ – Wiederholung → <b>чита́л</b> ✓<br>
-• „Я бу́ду прочита́ть" ✗ – niemals бу́ду + vollendet.`,
+• „Я бу́ду прочита́ть" ✗ – niemals бу́ду + vollendet.
+<h4>Der verneinte Imperativ</h4>
+Ein Verbot steht fast immer im <b>unvollendeten</b> Aspekt:<br>
+<i><b>Не открыва́й</b> окно́!</i> – Mach das Fenster nicht auf.<br>
+<i><b>Не говори́</b> так гро́мко!</i> – Sprich nicht so laut.<br>
+Der vollendete verneinte Imperativ existiert zwar, heißt aber etwas anderes: eine Warnung vor einem Versehen.<br>
+<i><b>Не забу́дь</b> ключи́!</i> – Vergiss bloß nicht die Schlüssel.
+<h4>Umgekehrt beim Bitten</h4>
+Eine einmalige Bitte steht im vollendeten Aspekt: <i><b>Откро́й</b> окно́, пожа́луйста.</i><br>
+Eine Einladung oder allgemeine Aufforderung im unvollendeten: <i><b>Проходи́те</b>, сади́тесь!</i>`,
 
 puz:`<h4>Worum geht's?</h4>
 Die russische Wortstellung ist <b>freier als die deutsche</b> – aber nicht beliebig.
@@ -2121,7 +2258,17 @@ Mit пожа́луйста klingt jeder Imperativ freundlich: <i>Скажи́т�
 Noch weicher: <i>Мо́жно …?</i> oder <i>Вы не могли́ бы …?</i>
 <h4>Typische Fehler</h4>
 • Verneinter Imperativ steht fast immer im <b>unvollendeten</b> Aspekt: <i>Не забыва́й!</i><br>
-• Zu Fremden immer die -те-Form – ohne wirkt es sehr direkt.`,
+• Zu Fremden immer die -те-Form – ohne wirkt es sehr direkt.
+<h4>быть hat einen eigenen Imperativ</h4>
+<b>будь</b> (du) · <b>бу́дьте</b> (Sie):<br>
+<i><b>Бу́дьте</b> осторо́жны!</i> – Seien Sie vorsichtig!<br>
+<i><b>Бу́дьте</b> добры́ …</i> · <i><b>Бу́дьте</b> любе́зны …</i> – zwei feste Höflichkeitsformeln.
+<h4>Einladen statt befehlen</h4>
+Bei einer Einladung nimmt man den unvollendeten Imperativ – der vollendete klingt wie ein Kommando:<br>
+<i><b>Сади́тесь</b>, пожа́луйста.</i> (freundlich) statt <i><b>Ся́дьте!</b></i> (Anweisung)<br>
+<i><b>Проходи́те!</b></i> – Kommen Sie herein.
+<h4>Unregelmäßiges</h4>
+<b>дать → дай, да́йте</b> · <b>есть → ешь, е́шьте</b> · <b>пить → пей, пе́йте</b> · <b>лечь → ляг, ля́гте</b> · <b>éхать → поезжа́й(те)</b> (ein éхай gibt es nicht).`,
 
 komp:`<h4>Worum geht's?</h4>
 Vergleiche: größer, besser, interessanter.
@@ -2176,7 +2323,15 @@ Weil es <b>drei verschiedene Endungen</b> gibt und die Wahl vom letzten Buchstab
 де́ти → <b>дете́й</b> · лю́ди → <b>люде́й</b> · де́ньги → <b>де́нег</b> · сёстры → <b>сестёр</b><br>
 Nach Zahlen: 20 <b>челове́к</b> (nicht „люде́й"!)
 <h4>Tipp</h4>
-Lern ihn nicht als Tabelle, sondern in <b>festen Wendungen</b>: мно́го люде́й, нет де́нег, ско́лько лет.`,
+Lern ihn nicht als Tabelle, sondern in <b>festen Wendungen</b>: мно́го люде́й, нет де́нег, ско́лько лет.
+<h4>Der eingeschobene Vokal</h4>
+Wenn nach dem Wegfall der Endung zwei Konsonanten aufeinanderstoßen, schiebt sich ein <b>е</b> oder <b>о</b> dazwischen:<br>
+<i>ру́чка → ру́ч<b>е</b>к</i> · <i>де́вушка → де́вуш<b>е</b>к</i> · <i>сестра́ → сест<b>ё</b>р</i> · <i>окно́ → о́к<b>о</b>н</i> · <i>де́ньги → де́н<b>е</b>г</i><br>
+Ohne Einschub wäre das unaussprechbar – deshalb passiert es fast automatisch, wenn man es einmal gehört hat.
+<h4>Die drei Endungen im Überblick</h4>
+<b>-ов / -ев</b>: maskulin auf Konsonant – домо́в, ме́сяцев, языко́в<br>
+<b>-ей</b>: auf -ь, ж, ш, ч, щ – друзе́й, ноче́й, матере́й, дочере́й<br>
+<b>ohne Endung</b>: feminin auf -а und Neutrum auf -о – книг, у́лиц, мест, слов, я́блок`,
 
 refl:`<h4>Worum geht's?</h4>
 Verben mit <b>-ся</b> am Ende. Im Deutschen entspricht das oft „sich" (sich treffen), oft aber auch gar nichts (учи́ться = lernen).
@@ -2210,7 +2365,17 @@ Akkusativ <b>-ую/-юю</b>, und in <u>allen anderen</u> Fällen einheitlich <b
 <h4>Die и-Regel</h4>
 Nach <b>к, г, х, ж, ш, щ, ч</b> steht immer <b>и</b> statt ы: ру́сск<b>им</b>, хоро́ш<b>им</b>, больш<b>и́м</b>.
 <h4>Vorgehen</h4>
-Erst das Substantiv in den richtigen Fall setzen, dann dem Adjektiv „dieselbe Farbe" geben. Die Reihenfolge im Kopf: <b>Fall → Geschlecht → Endung</b>.`,
+Erst das Substantiv in den richtigen Fall setzen, dann dem Adjektiv „dieselbe Farbe" geben. Die Reihenfolge im Kopf: <b>Fall → Geschlecht → Endung</b>.
+<h4>Im Plural</h4>
+Ein Satz Endungen für alle drei Geschlechter:<br>
+Nominativ <b>-ые/-ие</b> · Genitiv und Akkusativ (belebt) <b>-ых/-их</b> · Dativ <b>-ым/-им</b> · Instrumental <b>-ыми/-ими</b> · Präpositiv <b>-ых/-их</b><br>
+<i>ста́рых домо́в</i> · <i>ста́рым роди́телям</i> · <i>интере́сными людьми́</i> · <i>о тру́дных времена́х</i>
+<h4>Weiche Adjektive auf -ний</h4>
+Überall е statt о und я statt а:<br>
+<i>в сосе́д<b>нем</b> до́ме</i> (statt -ом) · <i>в сосе́д<b>ней</b> ко́мнате</i> · <i>си́<b>нюю</b> ру́чку</i> (statt -ую) · <i>си́<b>ней</b> ру́чкой</i>
+<h4>Die Sache mit -ого</h4>
+Im Genitiv und beim belebten Akkusativ schreibt man <b>-ого / -его</b>, spricht aber <b>-ово / -ево</b>:<br>
+<i>но́вого</i> klingt wie „nówawa", <i>моего́</i> wie „majewó".`,
 
 kond:`<h4>Worum geht's?</h4>
 „Wenn …, dann …" und „ich würde …". Russisch unterscheidet streng zwischen dem, was <b>passieren kann</b>, und dem, was <b>nur gedacht</b> ist.
@@ -2232,20 +2397,20 @@ Das бы kann vor oder nach dem Verb stehen – beides ist richtig.
 • „Е́сли бы бу́дет …" ✗ – nach е́сли бы steht immer die <b>Vergangenheit</b>.<br>
 • „Я хочу́, что́бы ты придёшь" ✗ → <b>что́бы ты пришёл</b> ✓ (auch wenn es Zukunft meint!).`
 ,
-part:"<h4>Wozu sind Partikeln da?</h4>\nSie ändern die Grammatik nicht – sie ändern die <b>Haltung</b> des Sprechers. Genau darum fehlen sie in Vokabellisten und stehen trotzdem in fast jedem gesprochenen Satz.\n<h4>Die wichtigsten</h4>\n<b>же</b> – verstärkt, oft Ärger oder Ungeduld. Steht direkt hinter dem betonten Wort.<br>\n<i>Где <b>же</b> ты был?</i> – Wo <u>warst</u> du denn?\n<h4></h4>\n<b>ведь</b> – „doch, ja schließlich\". Beruft sich auf etwas, das beide wissen.<br>\n<i>Пойдём, <b>ведь</b> уже́ по́здно.</i> – Gehen wir, es ist ja schon spät.\n<h4></h4>\n<b>ли</b> – „ob\". Nur in Nebensätzen ohne Fragewort. Steht hinter dem Wort, um das es geht.<br>\n<i>Не зна́ю, придёт <b>ли</b> он.</i> – Ich weiß nicht, ob er kommt.\n<h4></h4>\n<b>ра́зве / неуже́ли</b> – Zweifel und Staunen. ра́зве hat oft einen Vorwurf, неуже́ли reines Erstaunen.<br>\n<i><b>Ра́зве</b> ты не знал?</i> · <i><b>Неуже́ли</b> он ушёл?</i>\n<h4>-то und -нибудь</h4>\nBeide heißen „irgend-\", aber:<br>\n• <b>-то</b>: die Sache oder Person <b>gibt es</b>, ich weiß nur nicht, welche. <i>Кто́-<b>то</b> звони́л.</i> (jemand hat angerufen)<br>\n• <b>-нибудь</b>: <b>egal welche</b>, sie steht noch nicht fest. <i>Спроси́ кого́-<b>нибудь</b>.</i> (frag irgendwen)<br>\nFaustregel: Vergangenheit und Feststellung → <b>-то</b>. Frage, Bitte, Zukunft → <b>-нибудь</b>.\n<h4>-ка</h4>\nHängt sich an den Imperativ und macht ihn freundlich: <i>Дай-<b>ка</b> посмотре́ть.</i> – Lass mich mal schauen.",
-kotor:"<h4>Ein Wort für alle Nebensätze</h4>\nкото́рый ersetzt „der, die, das, welcher\". Es sieht aus wie ein normales Adjektiv und wird auch so dekliniert.\n<h4>Die Regel in zwei Schritten</h4>\n<b>1. Geschlecht und Zahl</b> kommen vom Wort <u>davor</u> im Hauptsatz.<br>\n<b>2. Der Fall</b> kommt von der Aufgabe <u>im Nebensatz</u>.<br>\nDiese beiden Dinge haben nichts miteinander zu tun – das ist der ganze Trick.\n<h4>Dasselbe Wort, vier Fälle</h4>\n<i>Челове́к, <b>кото́рый</b> живёт ря́дом …</i> – er wohnt → Subjekt → Nominativ<br>\n<i>Челове́к, <b>кото́рого</b> я ви́дел …</i> – ich sah ihn → Akkusativ (belebt)<br>\n<i>Челове́к, <b>кото́рому</b> я помога́ю …</i> – ich helfe ihm → Dativ<br>\n<i>Челове́к, о <b>кото́ром</b> ты говори́л …</i> – über ihn → Präpositiv\n<h4>Präposition vorn</h4>\nGehört zum Nebensatz eine Präposition, steht sie <b>vor</b> кото́рый, nicht am Satzende wie im Deutschen:<br>\n<i>Дом, <b>в кото́ром</b> мы жи́ли.</i> – Das Haus, in dem wir wohnten.\n<h4>Komma nicht vergessen</h4>\nVor кото́рый steht im Russischen <b>immer</b> ein Komma. Ohne Ausnahme.",
+part:"<h4>Wozu sind Partikeln da?</h4>\nSie ändern die Grammatik nicht – sie ändern die <b>Haltung</b> des Sprechers. Genau darum fehlen sie in Vokabellisten und stehen trotzdem in fast jedem gesprochenen Satz.\n<h4>Die wichtigsten</h4>\n<b>же</b> – verstärkt, oft Ärger oder Ungeduld. Steht direkt hinter dem betonten Wort.<br>\n<i>Где <b>же</b> ты был?</i> – Wo <u>warst</u> du denn?\n<h4></h4>\n<b>ведь</b> – „doch, ja schließlich\". Beruft sich auf etwas, das beide wissen.<br>\n<i>Пойдём, <b>ведь</b> уже́ по́здно.</i> – Gehen wir, es ist ja schon spät.\n<h4></h4>\n<b>ли</b> – „ob\". Nur in Nebensätzen ohne Fragewort. Steht hinter dem Wort, um das es geht.<br>\n<i>Не зна́ю, придёт <b>ли</b> он.</i> – Ich weiß nicht, ob er kommt.\n<h4></h4>\n<b>ра́зве / неуже́ли</b> – Zweifel und Staunen. ра́зве hat oft einen Vorwurf, неуже́ли reines Erstaunen.<br>\n<i><b>Ра́зве</b> ты не знал?</i> · <i><b>Неуже́ли</b> он ушёл?</i>\n<h4>-то und -нибудь</h4>\nBeide heißen „irgend-\", aber:<br>\n• <b>-то</b>: die Sache oder Person <b>gibt es</b>, ich weiß nur nicht, welche. <i>Кто́-<b>то</b> звони́л.</i> (jemand hat angerufen)<br>\n• <b>-нибудь</b>: <b>egal welche</b>, sie steht noch nicht fest. <i>Спроси́ кого́-<b>нибудь</b>.</i> (frag irgendwen)<br>\nFaustregel: Vergangenheit und Feststellung → <b>-то</b>. Frage, Bitte, Zukunft → <b>-нибудь</b>.\n<h4>-ка</h4>\nHängt sich an den Imperativ und macht ihn freundlich: <i>Дай-<b>ка</b> посмотре́ть.</i> – Lass mich mal schauen.\n<h4>Noch vier, die ständig vorkommen</h4>\n<b>да́же</b> – sogar, nicht einmal: <i>Он <b>да́же</b> не посмотре́л на меня́.</i><br>\n<b>то́лько</b> – nur, erst: <i>Оста́лось <b>то́лько</b> два дня.</i><br>\n<b>ну</b> – na, also; leitet eine Reaktion ein: <i><b>Ну</b> и что тепе́рь де́лать?</i><br>\n<b>вот</b> – da, genau das; zeigt auf etwas: <i><b>Вот</b> он и есть тот са́мый челове́к.</i>\n<h4>Wo sie im Satz stehen</h4>\nже, ведь, ли und -то hängen sich an das Wort, um das es geht – meistens an die erste betonte Stelle:<br>\n<i><b>Где же</b> мои́ ключи́?</i> (die Frage ist wo) · <i>Не зна́ю, <b>придёт ли</b> он.</i> (die Frage ist ob)<br>\nда́же und то́лько stehen dagegen direkt <u>vor</u> dem Wort, das sie hervorheben.",
+kotor:"<h4>Ein Wort für alle Nebensätze</h4>\nкото́рый ersetzt „der, die, das, welcher\". Es sieht aus wie ein normales Adjektiv und wird auch so dekliniert.\n<h4>Die Regel in zwei Schritten</h4>\n<b>1. Geschlecht und Zahl</b> kommen vom Wort <u>davor</u> im Hauptsatz.<br>\n<b>2. Der Fall</b> kommt von der Aufgabe <u>im Nebensatz</u>.<br>\nDiese beiden Dinge haben nichts miteinander zu tun – das ist der ganze Trick.\n<h4>Dasselbe Wort, vier Fälle</h4>\n<i>Челове́к, <b>кото́рый</b> живёт ря́дом …</i> – er wohnt → Subjekt → Nominativ<br>\n<i>Челове́к, <b>кото́рого</b> я ви́дел …</i> – ich sah ihn → Akkusativ (belebt)<br>\n<i>Челове́к, <b>кото́рому</b> я помога́ю …</i> – ich helfe ihm → Dativ<br>\n<i>Челове́к, о <b>кото́ром</b> ты говори́л …</i> – über ihn → Präpositiv\n<h4>Präposition vorn</h4>\nGehört zum Nebensatz eine Präposition, steht sie <b>vor</b> кото́рый, nicht am Satzende wie im Deutschen:<br>\n<i>Дом, <b>в кото́ром</b> мы жи́ли.</i> – Das Haus, in dem wir wohnten.\n<h4>Komma nicht vergessen</h4>\nVor кото́рый steht im Russischen <b>immer</b> ein Komma. Ohne Ausnahme.\n<h4>Im Plural</h4>\nWie ein Adjektiv im Plural, für alle Geschlechter gleich:<br>\n<i>кни́ги, <b>кото́рые</b> лежа́т …</i> (Nom.) · <i>де́ти, <b>кото́рых</b> мы ви́дели …</i> (Akk. belebt) ·\n<i>лю́ди, <b>кото́рым</b> мы помога́ем …</i> (Dat.) · <i>друзья́, без <b>кото́рых</b> …</i> (Gen.)\n<h4>dessen und deren</h4>\nDafür steht der <b>Genitiv</b> von кото́рый – und er steht, anders als im Deutschen, <u>hinter</u> dem Substantiv:<br>\n<i>дом, хозя́ин <b>кото́рого</b> уе́хал</i> – das Haus, <u>dessen</u> Besitzer weggefahren ist<br>\n<i>же́нщина, сын <b>кото́рой</b> у́чится со мной</i> – die Frau, <u>deren</u> Sohn mit mir studiert<br>\nAchtung: Das Geschlecht richtet sich hier nach dem <b>Besitzer</b> (дом → кото́рого), nicht nach dem Besessenen (хозя́ин).",
 kurz:"<h4>Lange und kurze Form</h4>\nViele Adjektive haben zwei Formen:<br>\n• <b>lang</b> (но́вый, за́нятый) – steht vor dem Substantiv: <i>но́вый дом</i><br>\n• <b>kurz</b> (нов, за́нят) – steht als Aussage im Satz: <i>Дом нов.</i>\n<h4>Wie sie gebildet wird</h4>\nMan streicht die Endung und hängt an:<br>\nmaskulin <b>–</b> · feminin <b>-а</b> · neutrum <b>-о</b> · Plural <b>-ы</b><br>\n<i>рад · ра́да · ра́до · ра́ды</i>\n<h4>Die, die du wirklich brauchst</h4>\nDiese kommen fast nur kurz vor:<br>\n<b>рад</b> (froh) · <b>до́лжен</b> (muss) · <b>гото́в</b> (bereit) · <b>прав</b> (hat recht) · <b>за́нят</b> (beschäftigt) · <b>свобо́ден</b> (frei) · <b>уве́рен</b> (sicher) · <b>согла́сен</b> (einverstanden) · <b>ну́жен</b> (nötig)\n<h4>Der Stolperstein: ну́жен</h4>\nну́жен richtet sich nach dem <b>gebrauchten Ding</b>, nicht nach dir. Du selbst stehst im Dativ:<br>\n<i>Мне <b>ну́жен</b> слова́рь.</i> (der ist maskulin)<br>\n<i>Мне <b>нужна́</b> по́мощь.</i> (die ist feminin)<br>\n<i>Мне <b>нужны́</b> де́ньги.</i> (Plural)<br>\n<i>Мне <b>ну́жно</b> идти́.</i> (vor Infinitiv immer -о)\n<h4>Typischer Fehler</h4>\n✗ <i>Я ра́дый тебя́ ви́деть.</i> → ✓ <i>Я <b>рад</b> тебя́ ви́деть.</i><br>\nDie lange Form beschreibt eine Eigenschaft, die kurze einen Zustand gerade jetzt.",
 neg:"<h4>Zweimal nein heißt nein</h4>\nIm Deutschen wäre „niemand weiß nichts\" ein Fehler. Im Russischen ist es die einzig richtige Form: das Verneinungswort <b>und</b> das не am Verb müssen beide da sein.<br>\n<i><b>Никто́</b> <b>не</b> зна́ет.</i> – Niemand weiß es.<br>\n<i>Я <b>ничего́</b> <b>не</b> ви́дел.</i> – Ich habe nichts gesehen.\n<h4>Die Familie der ни-Wörter</h4>\n<b>никто́</b> niemand · <b>ничего́</b> nichts · <b>никогда́</b> nie · <b>нигде́</b> nirgends · <b>никуда́</b> nirgendwohin · <b>никако́й</b> keinerlei · <b>ниче́й</b> niemandes\n<h4>Präposition in die Mitte</h4>\nKommt eine Präposition dazu, rutscht sie <b>zwischen</b> ни und den Rest:<br>\n<i><b>ни с кем</b> не говори́т</i> – spricht mit niemandem<br>\n<i><b>ни о чём</b> не ду́мает</i> – denkt an nichts\n<h4>ни … ни …</h4>\n<i>Он не лю́бит <b>ни</b> ко́фе, <b>ни</b> чай.</i> – Er mag weder Kaffee noch Tee.\n<h4>Aufpassen: не́чего und ни́чего</h4>\nDieselben Buchstaben, andere Betonung, andere Bedeutung:<br>\n• <b>ничего́</b> (hinten betont) + не: „nichts\" – <i>Я ничего́ не де́лаю.</i><br>\n• <b>не́чего</b> (vorn betont): „es gibt nichts zu …\" – <i>Мне не́чего де́лать.</i><br>\nGenauso: <b>не́куда</b> (nirgendwohin zu gehen), <b>не́когда</b> (keine Zeit).",
-svoj:"<h4>Das Wort, das nach hinten zeigt</h4>\nсвой heißt „der eigene\" und zeigt <b>immer auf das Subjekt des Satzes</b> zurück. его́ / её / их zeigen dagegen auf jemand anderen.\n<h4>Der Unterschied in einem Bild</h4>\n<i>Он взял <b>свою́</b> маши́ну.</i> – Er nahm <u>sein eigenes</u> Auto.<br>\n<i>Он взял <b>его́</b> маши́ну.</i> – Er nahm <u>das Auto eines anderen</u>.<br>\nIm Deutschen heißt beides „sein Auto\" – im Russischen sind das zwei verschiedene Sätze.\n<h4>Bei ich, du, wir, ihr</h4>\nDa kann nichts schiefgehen, weil мой und твой eindeutig sind. Trotzdem klingt свой natürlicher:<br>\n<i>Я люблю́ <b>свою́</b> рабо́ту.</i> statt <i>мою́ рабо́ту</i>.\n<h4>Die eine harte Regel</h4>\nсвой kann <b>nie im Subjekt stehen</b>. Es zeigt ja auf das Subjekt – es kann nicht auf sich selbst zeigen.<br>\n✗ <i>Свой брат живёт в Москве́.</i><br>\n✓ <i><b>Его́</b> брат живёт в Москве́.</i>\n<h4>Vorsicht im Nebensatz</h4>\nJeder Nebensatz hat sein eigenes Subjekt:<br>\n<i>Она́ сказа́ла, что <b>её</b> сын бо́лен.</i> – Im Nebensatz ist сын das Subjekt, свой hätte niemanden zum Zurückzeigen.",
-unpers:"<h4>Sätze, in denen niemand etwas tut</h4>\nDas Deutsche behilft sich mit „es\": <i>Es ist kalt.</i> Das Russische lässt das Subjekt einfach weg – und schickt die betroffene Person in den <b>Dativ</b>.<br>\n<i><b>Мне</b> хо́лодно.</i> – Mir ist kalt.\n<h4>Die Form auf -о</h4>\nDas Wort dazu ändert sich nie: хо́лодно, жа́рко, темно́, ску́чно, тру́дно, интере́сно, прия́тно, стра́шно.<br>\n<i>В ко́мнате бы́ло <b>темно́</b>.</i>\n<h4>Müssen, dürfen, nicht dürfen</h4>\n<b>на́до / ну́жно</b> – muss<br>\n<b>мо́жно</b> – darf, kann (Erlaubnis <i>und</i> Möglichkeit)<br>\n<b>нельзя́</b> – darf nicht, geht nicht<br>\nImmer mit Dativ und Infinitiv: <i><b>Нам на́до</b> идти́.</i> · <i><b>Мне мо́жно</b> войти́?</i>\n<h4>Vergangenheit und Zukunft</h4>\nMan hängt <b>бы́ло</b> oder <b>бу́дет</b> an – unveränderlich, egal wer betroffen ist:<br>\n<i>Мне <b>бы́ло</b> хо́лодно.</i> · <i>Нам <b>бу́дет</b> тру́дно.</i>\n<h4>Verben, die so funktionieren</h4>\n<b>хо́чется</b> (Lust haben), <b>ка́жется</b> (scheinen), <b>нра́вится</b> (gefallen), <b>удало́сь</b> (gelingen) – die Person steht im Dativ, nicht im Nominativ:<br>\n<i><b>Мне</b> ка́жется, что …</i> – Mir scheint, dass …",
-rekt:"<h4>Warum das kein Regelthema ist</h4>\nWelchen Fall ein Verb verlangt, kann man nicht ableiten – es gehört zum Verb dazu wie das Geschlecht zum Substantiv. Und es stimmt fast nie mit dem Deutschen überein.\n<h4>Verben mit Genitiv</h4>\n<b>боя́ться</b> (Angst haben vor) · <b>жела́ть</b> (wünschen) · <b>ждать</b> (warten auf, wenn ungewiss) · <b>зави́сеть от</b> (abhängen von) · <b>достига́ть</b> (erreichen)<br>\n<i>Я бою́сь <b>соба́ки</b>.</i>\n<h4>Verben mit Dativ</h4>\n<b>помога́ть</b> (helfen) · <b>ве́рить</b> (glauben) · <b>меша́ть</b> (stören) · <b>звони́ть</b> (anrufen) · <b>сове́товать</b> (raten) · <b>скуча́ть по</b> (vermissen) · <b>гото́виться к</b> (sich vorbereiten auf)<br>\n<i>Она́ ве́рит <b>мне</b>.</i> – Beachte: <u>anrufen</u> und <u>helfen</u> haben im Deutschen den Akkusativ.\n<h4>Verben mit Instrumental</h4>\n<b>интересова́ться</b> (sich interessieren für) · <b>занима́ться</b> (sich beschäftigen mit) · <b>по́льзоваться</b> (benutzen) · <b>горди́ться</b> (stolz sein auf) · <b>смея́ться над</b> (auslachen) · <b>поздравля́ть с</b> (gratulieren zu)<br>\n<i>Он по́льзуется <b>словарём</b>.</i> – „benutzen\" mit Instrumental ist für uns völlig unlogisch, aber so ist es.\n<h4>Feste Präpositionen</h4>\n<b>ду́мать о</b> + Präpositiv · <b>жени́ться на</b> + Präpositiv · <b>отвеча́ть за</b> + Akkusativ · <b>смотре́ть на</b> + Akkusativ<br>\n<i>Он жени́лся <b>на ней</b>.</i> – wörtlich „er heiratete auf ihr\".\n<h4>Lerntipp</h4>\nLerne solche Verben nie allein, sondern immer mit einem Beispielwort dahinter: nicht <i>боя́ться</i>, sondern <i>боя́ться соба́ки</i>.",
-pref:"<h4>Ein Baukasten</h4>\nNimm ein Bewegungsverb und setz ein Präfix davor – das Präfix sagt die Richtung. Dieselben Präfixe funktionieren bei идти́, е́хать, бежа́ть, лете́ть und vielen anderen gleich.\n<h4>Die zehn wichtigsten</h4>\n<b>в-</b> hinein → войти́, въе́хать<br>\n<b>вы-</b> hinaus → вы́йти, вы́ехать<br>\n<b>при-</b> ankommen → прийти́, прие́хать<br>\n<b>у-</b> weg (und bleibt weg) → уйти́, уе́хать<br>\n<b>под-</b> herantreten → подойти́, подъе́хать<br>\n<b>от-</b> ein Stück wegtreten → отойти́, отъе́хать<br>\n<b>пере-</b> hinüber; umziehen → перейти́, перее́хать<br>\n<b>до-</b> bis zu einem Ziel → дойти́, дое́хать<br>\n<b>об-</b> herum → обойти́, объе́хать<br>\n<b>за-</b> kurz vorbei → зайти́, зае́хать\n<h4>при- oder у-?</h4>\nDas ist das Paar, das man am häufigsten verwechselt:<br>\n<i>Он <b>пришёл</b>.</i> – Er ist gekommen (und ist da).<br>\n<i>Он <b>ушёл</b>.</i> – Er ist gegangen (und ist weg).\n<h4>Vorsicht: alle sind perfektiv</h4>\nMit Präfix wird das Verb <b>vollendet</b>. Für den Prozess gibt es eigene Formen mit -ход- / -езж-:<br>\n<i>войти́ – входи́ть</i> · <i>прийти́ – приходи́ть</i> · <i>уе́хать – уезжа́ть</i><br>\n<i>Он <b>вхо́дит</b> в ко́мнату.</i> (gerade jetzt) vs. <i>Он <b>вошёл</b>.</i> (fertig)\n<h4>Wo du sie triffst</h4>\nIn jedem Text, der eine Handlung erzählt. Wer die zehn Präfixe kennt, versteht auf einen Schlag hunderte Verben.",
+svoj:"<h4>Das Wort, das nach hinten zeigt</h4>\nсвой heißt „der eigene\" und zeigt <b>immer auf das Subjekt des Satzes</b> zurück. его́ / её / их zeigen dagegen auf jemand anderen.\n<h4>Der Unterschied in einem Bild</h4>\n<i>Он взял <b>свою́</b> маши́ну.</i> – Er nahm <u>sein eigenes</u> Auto.<br>\n<i>Он взял <b>его́</b> маши́ну.</i> – Er nahm <u>das Auto eines anderen</u>.<br>\nIm Deutschen heißt beides „sein Auto\" – im Russischen sind das zwei verschiedene Sätze.\n<h4>Bei ich, du, wir, ihr</h4>\nDa kann nichts schiefgehen, weil мой und твой eindeutig sind. Trotzdem klingt свой natürlicher:<br>\n<i>Я люблю́ <b>свою́</b> рабо́ту.</i> statt <i>мою́ рабо́ту</i>.\n<h4>Die eine harte Regel</h4>\nсвой kann <b>nie im Subjekt stehen</b>. Es zeigt ja auf das Subjekt – es kann nicht auf sich selbst zeigen.<br>\n✗ <i>Свой брат живёт в Москве́.</i><br>\n✓ <i><b>Его́</b> брат живёт в Москве́.</i>\n<h4>Vorsicht im Nebensatz</h4>\nJeder Nebensatz hat sein eigenes Subjekt:<br>\n<i>Она́ сказа́ла, что <b>её</b> сын бо́лен.</i> – Im Nebensatz ist сын das Subjekt, свой hätte niemanden zum Zurückzeigen.\n<h4>себя́ – der Verwandte von свой</h4>\nGenau dieselbe Idee, nur als Pronomen statt als Begleiter:<br>\n<i>Он ду́мает то́лько <b>о себе́</b>.</i> – Er denkt nur an sich.<br>\n<i>Он купи́л маши́ну <b>себе́</b>.</i> – Er hat sich ein Auto gekauft.<br>\nAuch себя́ zeigt immer aufs Subjekt und hat deshalb keinen Nominativ.\n<h4>Feste Wendungen mit свой</h4>\n<b>в свою́ о́чередь</b> – seinerseits · <b>своё вре́мя</b> – seine Zeit · <b>у ка́ждого свой путь</b> – jeder hat seinen eigenen Weg<br>\n<i>Ка́ждый ду́мает о <b>свои́х</b> пробле́мах.</i> – Nach ка́ждый, все und кто-то steht fast immer свой.",
+unpers:"<h4>Sätze, in denen niemand etwas tut</h4>\nDas Deutsche behilft sich mit „es\": <i>Es ist kalt.</i> Das Russische lässt das Subjekt einfach weg – und schickt die betroffene Person in den <b>Dativ</b>.<br>\n<i><b>Мне</b> хо́лодно.</i> – Mir ist kalt.\n<h4>Die Form auf -о</h4>\nDas Wort dazu ändert sich nie: хо́лодно, жа́рко, темно́, ску́чно, тру́дно, интере́сно, прия́тно, стра́шно.<br>\n<i>В ко́мнате бы́ло <b>темно́</b>.</i>\n<h4>Müssen, dürfen, nicht dürfen</h4>\n<b>на́до / ну́жно</b> – muss<br>\n<b>мо́жно</b> – darf, kann (Erlaubnis <i>und</i> Möglichkeit)<br>\n<b>нельзя́</b> – darf nicht, geht nicht<br>\nImmer mit Dativ und Infinitiv: <i><b>Нам на́до</b> идти́.</i> · <i><b>Мне мо́жно</b> войти́?</i>\n<h4>Vergangenheit und Zukunft</h4>\nMan hängt <b>бы́ло</b> oder <b>бу́дет</b> an – unveränderlich, egal wer betroffen ist:<br>\n<i>Мне <b>бы́ло</b> хо́лодно.</i> · <i>Нам <b>бу́дет</b> тру́дно.</i>\n<h4>Verben, die so funktionieren</h4>\n<b>хо́чется</b> (Lust haben), <b>ка́жется</b> (scheinen), <b>нра́вится</b> (gefallen), <b>удало́сь</b> (gelingen) – die Person steht im Dativ, nicht im Nominativ:<br>\n<i><b>Мне</b> ка́жется, что …</i> – Mir scheint, dass …\n<h4>Weitere unpersönliche Verben</h4>\n<b>приходи́лось / придётся</b> – müssen, ohne dass man wollte:<br>\n<i>Ему́ <b>приходи́лось</b> рабо́тать но́чью.</i> · <i>Вам <b>придётся</b> подожда́ть.</i><br>\n<b>сто́ит / не сто́ит</b> – es lohnt sich / man sollte lieber nicht:<br>\n<i>Мне <b>не сто́ит</b> э́того де́лать.</i><br>\n<b>повезло́</b> – Glück haben: <i>Нам <b>повезло́</b> с пого́дой.</i><br>\n<b>хвата́ет / не хвата́ет</b> – reichen / fehlen: <i>Мне <b>не хвата́ет</b> вре́мени.</i><br>\n<b>сле́дует</b> – sollte (gehoben): <i>Тебе́ не <b>сле́дует</b> так говори́ть.</i>\n<h4>Das Muster dahinter</h4>\nAlle diese Formen stehen in der <b>3. Person Singular</b> oder auf <b>-о</b> und ändern sich nie. Die Person, um die es geht, steht im Dativ. Wer das Muster einmal erkennt, versteht alle auf einmal.",
+rekt:"<h4>Warum das kein Regelthema ist</h4>\nWelchen Fall ein Verb verlangt, kann man nicht ableiten – es gehört zum Verb dazu wie das Geschlecht zum Substantiv. Und es stimmt fast nie mit dem Deutschen überein.\n<h4>Verben mit Genitiv</h4>\n<b>боя́ться</b> (Angst haben vor) · <b>жела́ть</b> (wünschen) · <b>ждать</b> (warten auf, wenn ungewiss) · <b>зави́сеть от</b> (abhängen von) · <b>достига́ть</b> (erreichen)<br>\n<i>Я бою́сь <b>соба́ки</b>.</i>\n<h4>Verben mit Dativ</h4>\n<b>помога́ть</b> (helfen) · <b>ве́рить</b> (glauben) · <b>меша́ть</b> (stören) · <b>звони́ть</b> (anrufen) · <b>сове́товать</b> (raten) · <b>скуча́ть по</b> (vermissen) · <b>гото́виться к</b> (sich vorbereiten auf)<br>\n<i>Она́ ве́рит <b>мне</b>.</i> – Beachte: <u>anrufen</u> und <u>helfen</u> haben im Deutschen den Akkusativ.\n<h4>Verben mit Instrumental</h4>\n<b>интересова́ться</b> (sich interessieren für) · <b>занима́ться</b> (sich beschäftigen mit) · <b>по́льзоваться</b> (benutzen) · <b>горди́ться</b> (stolz sein auf) · <b>смея́ться над</b> (auslachen) · <b>поздравля́ть с</b> (gratulieren zu)<br>\n<i>Он по́льзуется <b>словарём</b>.</i> – „benutzen\" mit Instrumental ist für uns völlig unlogisch, aber so ist es.\n<h4>Feste Präpositionen</h4>\n<b>ду́мать о</b> + Präpositiv · <b>жени́ться на</b> + Präpositiv · <b>отвеча́ть за</b> + Akkusativ · <b>смотре́ть на</b> + Akkusativ<br>\n<i>Он жени́лся <b>на ней</b>.</i> – wörtlich „er heiratete auf ihr\".\n<h4>Lerntipp</h4>\nLerne solche Verben nie allein, sondern immer mit einem Beispielwort dahinter: nicht <i>боя́ться</i>, sondern <i>боя́ться соба́ки</i>.\n<h4>на + Akkusativ</h4>\nEine ganze Gruppe von Verben verlangt <b>на</b> mit Akkusativ – im Deutschen steht dort oft etwas anderes:<br>\n<b>наде́яться на</b> (hoffen auf) · <b>серди́ться на</b> (böse sein auf) · <b>жа́ловаться на</b> (sich beklagen über) ·\n<b>похо́ж на</b> (ähnlich sehen) · <b>влия́ть на</b> (beeinflussen) · <b>отвеча́ть на</b> (antworten auf) ·\n<b>рассчи́тывать на</b> (rechnen mit) · <b>смотре́ть на</b> (anschauen)<br>\n<i>Она́ <b>похо́жа на</b> мать.</i> – wörtlich „ähnlich auf die Mutter\".\n<h4>в + Präpositiv</h4>\n<b>уча́ствовать в</b> (teilnehmen an) · <b>сомнева́ться в</b> (zweifeln an) · <b>нужда́ться в</b> (brauchen) ·\n<b>уве́рен в</b> (sicher sein) · <b>признава́ться в</b> (gestehen)<br>\n<i>Мы <b>уве́рены в</b> побе́де.</i>\n<h4>к + Dativ</h4>\n<b>гото́виться к</b> · <b>привы́кнуть к</b> · <b>относи́ться к</b> (eine Haltung haben zu) · <b>стреми́ться к</b>",
+pref:"<h4>Ein Baukasten</h4>\nNimm ein Bewegungsverb und setz ein Präfix davor – das Präfix sagt die Richtung. Dieselben Präfixe funktionieren bei идти́, е́хать, бежа́ть, лете́ть und vielen anderen gleich.\n<h4>Die zehn wichtigsten</h4>\n<b>в-</b> hinein → войти́, въе́хать<br>\n<b>вы-</b> hinaus → вы́йти, вы́ехать<br>\n<b>при-</b> ankommen → прийти́, прие́хать<br>\n<b>у-</b> weg (und bleibt weg) → уйти́, уе́хать<br>\n<b>под-</b> herantreten → подойти́, подъе́хать<br>\n<b>от-</b> ein Stück wegtreten → отойти́, отъе́хать<br>\n<b>пере-</b> hinüber; umziehen → перейти́, перее́хать<br>\n<b>до-</b> bis zu einem Ziel → дойти́, дое́хать<br>\n<b>об-</b> herum → обойти́, объе́хать<br>\n<b>за-</b> kurz vorbei → зайти́, зае́хать\n<h4>при- oder у-?</h4>\nDas ist das Paar, das man am häufigsten verwechselt:<br>\n<i>Он <b>пришёл</b>.</i> – Er ist gekommen (und ist da).<br>\n<i>Он <b>ушёл</b>.</i> – Er ist gegangen (und ist weg).\n<h4>Vorsicht: alle sind perfektiv</h4>\nMit Präfix wird das Verb <b>vollendet</b>. Für den Prozess gibt es eigene Formen mit -ход- / -езж-:<br>\n<i>войти́ – входи́ть</i> · <i>прийти́ – приходи́ть</i> · <i>уе́хать – уезжа́ть</i><br>\n<i>Он <b>вхо́дит</b> в ко́мнату.</i> (gerade jetzt) vs. <i>Он <b>вошёл</b>.</i> (fertig)\n<h4>Wo du sie triffst</h4>\nIn jedem Text, der eine Handlung erzählt. Wer die zehn Präfixe kennt, versteht auf einen Schlag hunderte Verben.\n<h4>Hinauf und hinunter</h4>\nBei Treppen und Etagen nimmt man zwei eigene Verben, nicht идти́ mit Präfix:<br>\n<b>подня́ться</b> – hinaufgehen: <i>Они́ <b>подняли́сь</b> на второ́й эта́ж.</i><br>\n<b>спусти́ться</b> – hinuntergehen: <i>Он <b>спусти́лся</b> вниз по ле́стнице.</i>\n<h4>раз- – auseinander</h4>\nMit -ся heißt раз- „in verschiedene Richtungen\":<br>\n<i>Го́сти <b>разъе́хались</b>.</i> – Die Gäste fuhren auseinander.<br>\n<i>Все <b>разошли́сь</b> по дома́м.</i> – Alle gingen nach Hause auseinander.\n<h4>Auch bei fliegen</h4>\nDieselben Präfixe funktionieren mit лете́ть:<br>\n<b>влете́ть</b> (hineinfliegen) · <b>вы́лететь</b> (abfliegen) · <b>прилете́ть</b> (ankommen) · <b>улете́ть</b> (wegfliegen) · <b>долете́ть</b> (bis wohin fliegen)<br>\nWer die zehn Präfixe kennt, kann sie auf jedes Bewegungsverb übertragen.",
 sup:"<h4>Der einfache Weg: са́мый</h4>\nса́мый vor das Adjektiv – fertig. Beide Wörter passen sich dem Substantiv an:<br>\n<i><b>са́мый</b> высо́кий дом</i> · <i><b>са́мая</b> интере́сная кни́га</i> · <i><b>са́мое</b> ва́жное реше́ние</i><br>\nUnd beide werden mitdekliniert: <i>в <b>са́мом</b> большо́м го́роде</i>.\n<h4>Feste Formen</h4>\nEin paar Adjektive haben eigene Superlative, die man statt са́мый benutzt:<br>\n<b>хоро́ший → лу́чший</b> (der beste) · <b>плохо́й → ху́дший</b> (der schlechteste) · <b>большо́й → бо́льший</b> · <b>ма́ленький → ме́ньший</b><br>\n<i>Он мой <b>лу́чший</b> друг.</i> – са́мый хоро́ший друг sagt man kaum.\n<h4>Beim Verb: Komparativ + всех / всего́</h4>\nWenn nicht ein Ding, sondern eine Tätigkeit die Spitze bildet:<br>\n<i>Она́ поёт <b>лу́чше всех</b>.</i> – Sie singt am besten von allen.<br>\n<i>Я <b>бо́льше всего́</b> люблю́ ле́то.</i> – Am liebsten mag ich den Sommer.<br>\nFaustregel: <b>всех</b> bei Personen, <b>всего́</b> bei Sachen und Tätigkeiten.\n<h4>Die Schriftform auf -ейший</h4>\nIn Büchern, Verträgen und feierlichen Texten:<br>\n<i>важне́йший вопро́с</i> · <i>краси́вейший го́род</i> · <i>интере́снейшая кни́га</i><br>\nGesprochen klingt das gehoben bis ironisch. Erkennen reicht.\n<h4>наибо́лее</h4>\nSchriftsprachliche Alternative zu са́мый: <i><b>наибо́лее</b> ва́жный пункт</i>.",
 cht:"<h4>Zwei Wörter, die im Deutschen beide „dass\" heißen</h4>\n<b>что</b> berichtet, <b>что́бы</b> will etwas. Am Deutschen erkennst du den Unterschied nicht – am Russischen an dem, was dahinter steht.\n<h4>что: eine Tatsache</h4>\nDanach steht ein ganz normaler Satz in jeder Zeit:<br>\n<i>Я зна́ю, <b>что</b> он до́ма.</i> – Ich weiß, dass er zu Hause ist.<br>\n<i>Он сказа́л, <b>что</b> уста́л.</i> – Er sagte, dass er müde sei.<br>\nTypische Verben davor: знать, ду́мать, ви́деть, слы́шать, сказа́ть, ве́рить, боя́ться.\n<h4>что́бы: ein Ziel oder ein Wunsch</h4>\nDanach steht <b>nie ein Präsens</b>, sondern:<br>\n• ein <b>Infinitiv</b>, wenn beide Sätze dasselbe Subjekt haben:<br>\n<i>Я пришёл, <b>что́бы</b> помо́чь.</i> – Ich bin gekommen, um zu helfen.<br>\n• die <b>Form auf -л</b>, wenn das Subjekt wechselt:<br>\n<i>Я хочу́, <b>что́бы</b> ты пришёл.</i> – Ich will, dass du kommst.<br>\nTypische Verben davor: хоте́ть, проси́ть, тре́бовать, ну́жно, ва́жно.\n<h4>Der Satz, an dem man es sieht</h4>\n<i>Он сказа́л, <b>что</b> я пришёл.</i> – Er sagte, dass ich gekommen sei. <span style=\"opacity:.7\">(Bericht)</span><br>\n<i>Он сказа́л, <b>что́бы</b> я пришёл.</i> – Er sagte, ich solle kommen. <span style=\"opacity:.7\">(Aufforderung)</span><br>\nEin Buchstabe mehr, ein völlig anderer Satz.\n<h4>Merksatz</h4>\nSteht hinter „dass\" im Deutschen ein <u>soll</u> oder ein <u>um … zu</u>, dann ist es что́бы.",
 negg:"<h4>Was nicht da ist, steht im Genitiv</h4>\nDas ist einer der eigenwilligsten Züge des Russischen: Bei Nichtvorhandensein <b>verschwindet das Subjekt</b> und das Ding rutscht in den Genitiv.<br>\n<i>Брат <b>до́ма</b>.</i> → <i><b>Бра́та</b> нет до́ма.</i><br>\nWörtlich: „Von Bruder gibt es nicht zu Hause.\"\n<h4>Die drei Zeiten</h4>\n<b>Gegenwart:</b> нет + Genitiv – <i>У меня́ <b>нет</b> вре́мени.</i><br>\n<b>Vergangenheit:</b> не́ было + Genitiv – <i>Его́ <b>не́ было</b> до́ма.</i><br>\n<b>Zukunft:</b> не бу́дет + Genitiv – <i>За́втра <b>не бу́дет</b> вре́мени.</i><br>\nне́ было und не бу́дет ändern sich <b>nie</b> – egal ob es um einen Mann, eine Frau oder zehn Leute geht. Genau da rutschen alle aus.\n<h4>Auch nach verneinten Verben</h4>\nBei abstrakten Dingen steht nach не + Verb gern der Genitiv statt des Akkusativs:<br>\n<i>Я не ви́жу <b>разни́цы</b>.</i> · <i>Он не зна́ет <b>отве́та</b>.</i><br>\nBei ganz konkreten Dingen bleibt der Akkusativ oft stehen: <i>Я не ви́жу <b>маши́ну</b>.</i> Beides hört man.\n<h4>Betonung merken</h4>\n<b>не́ было</b> wird vorn betont – das не zieht die Betonung an sich. Genauso: <b>не́ был</b>, <b>не́ были</b>.\n<h4>Und noch eins</h4>\n<i>Тако́й пробле́мы просто <b>не существу́ет</b>.</i> – существова́ть verhält sich genauso.",
 prich:"<h4>Formen zum Erkennen, nicht zum Bilden</h4>\nPartizipien sind Schriftsprache. Du wirst sie kaum selbst bauen – aber in jeder Geschichte, jedem Artikel und jedem Untertitel stolperst du darüber. Es reicht, sie sofort einordnen zu können.\n<h4>Partizip: ein Verb als Adjektiv</h4>\nEs beschreibt ein Substantiv und wird dekliniert wie ein Adjektiv.<br>\n<b>-ущий / -ющий / -ащий</b> – aktiv, jetzt: <i>чита́<b>ющий</b> челове́к</i> – der Mensch, <u>der liest</u><br>\n<b>-вший</b> – aktiv, abgeschlossen: <i>вы́игра<b>вший</b> приз</i> – der, <u>der gewonnen hat</u><br>\n<b>-нный / -тый</b> – passiv, fertig: <i>прочи́та<b>нный</b> рома́н</i> – der <u>gelesene</u> Roman\n<h4>Adverbialpartizip: zwei Handlungen auf einmal</h4>\nEs beschreibt kein Substantiv, sondern das Verb – und ändert sich <b>nie</b>.<br>\n<b>-я / -а</b> – gleichzeitig: <i><b>Идя́</b> домо́й, я ду́мал о тебе́.</i> – <u>Während</u> ich nach Hause ging …<br>\n<b>-в / -вши</b> – davor abgeschlossen: <i><b>Сказа́в</b> э́то, он ушёл.</i> – <u>Nachdem</u> er das gesagt hatte …\n<h4>Die Faustregel</h4>\nEndet die Form auf <b>-я</b> → gleichzeitig („während\", „dabei\").<br>\nEndet sie auf <b>-в</b> → vorher fertig („nachdem\").<br>\nDas ist derselbe Unterschied wie zwischen unvollendet und vollendet – und meistens die einzige Frage, die du beantworten musst.\n<h4>Im Deutschen</h4>\nWir lösen das fast immer mit einem Nebensatz auf: <i>der liest</i>, <i>nachdem er gesagt hatte</i>. Genau so übersetzt du auch – nicht Wort für Wort."
 ,
-hoefl:"<h4>Höflichkeit steckt in der Satzform</h4>\nIm Russischen gibt es kein Zauberwort wie das deutsche „bitte\", das jeden Satz höflich macht. Der Ton kommt aus der <b>Konstruktion</b>: verneinte Frage, бы, Konjunktiv.\n<h4>Die vier Stufen</h4>\n<b>1. Direkt</b> (unter Freunden): <i>Дай ру́чку.</i> – Gib mir den Stift.<br>\n<b>2. Neutral</b>: <i><b>Мо́жно</b> ру́чку?</i> – Darf ich den Stift haben?<br>\n<b>3. Höflich</b>: <i><b>Вы не</b> дади́те мне ру́чку?</i> – Geben Sie mir wohl den Stift?<br>\n<b>4. Sehr höflich</b>: <i><b>Не могли́ бы вы</b> дать мне ру́чку?</i> – Könnten Sie mir den Stift geben?\n<h4>Der wichtigste Trick: die verneinte Frage</h4>\nWas im Deutschen unhöflich klänge, ist hier das Gegenteil. Das не lässt dem anderen die Tür offen, Nein zu sagen:<br>\n<i><b>Вы не</b> зна́ете, кото́рый час?</i> – Wissen Sie zufällig, wie spät es ist?<br>\n<i><b>У вас не</b> бу́дет ме́лочи?</i> – Hätten Sie vielleicht Kleingeld?<br>\n<i><b>Вы не</b> подска́жете, где метро́?</i> – Könnten Sie mir sagen, wo die Metro ist?<br>\nMerke: <b>Вы не подска́жете</b> ist die Standardformel, mit der man auf der Straße Fremde anspricht.\n<h4>бы macht alles weicher</h4>\n<i>Я <b>хочу́</b> попроси́ть вас …</i> klingt fordernd.<br>\n<i>Я <b>хоте́л бы</b> попроси́ть вас …</i> klingt wie eine Bitte.<br>\nDasselbe bei <i>Не <b>могли́ бы</b> вы …</i> statt <i>Вы <b>мо́жете</b> …</i>\n<h4>Feste Wendungen, die du auswendig können solltest</h4>\n<b>Скажи́те, пожа́луйста …</b> – Sagen Sie bitte …<br>\n<b>Бу́дьте добры́ / Бу́дьте любе́зны</b> – Seien Sie so gut / so freundlich<br>\n<b>Извини́те, что беспоко́ю</b> – Entschuldigen Sie die Störung<br>\n<b>Мо́жно вас попроси́ть?</b> – Darf ich Sie um etwas bitten?<br>\n<b>Вы не про́тив, е́сли …?</b> – Haben Sie etwas dagegen, wenn …?<br>\n<b>Ничего́, е́сли я …?</b> – Ist es okay, wenn ich …? (locker)\n<h4>ты oder вы?</h4>\nвы gilt für Fremde, Ältere, Vorgesetzte und im Dienstleistungskontakt – und man bleibt dabei, bis der andere ты anbietet. Aber Vorsicht in die andere Richtung: <b>Не могли́ бы вы</b> zu einem Freund klingt beleidigt oder ironisch. Unter Freunden reicht <i>Помо́жешь?</i>\n<h4>Vorschläge</h4>\n<b>Дава́йте</b> + wir-Form für Fremde, <b>дава́й</b> für Freunde: <i>Дава́йте начнём.</i> · <i>Дава́й пойдём.</i><br>\n<b>Мо́жет быть …?</b> – Vielleicht …? · <b>Не хоти́те ли вы …?</b> – Möchten Sie vielleicht …?"
+hoefl:"<h4>Höflichkeit steckt in der Satzform</h4>\nIm Russischen gibt es kein Zauberwort wie das deutsche „bitte\", das jeden Satz höflich macht. Der Ton kommt aus der <b>Konstruktion</b>: verneinte Frage, бы, Konjunktiv.\n<h4>Die vier Stufen</h4>\n<b>1. Direkt</b> (unter Freunden): <i>Дай ру́чку.</i> – Gib mir den Stift.<br>\n<b>2. Neutral</b>: <i><b>Мо́жно</b> ру́чку?</i> – Darf ich den Stift haben?<br>\n<b>3. Höflich</b>: <i><b>Вы не</b> дади́те мне ру́чку?</i> – Geben Sie mir wohl den Stift?<br>\n<b>4. Sehr höflich</b>: <i><b>Не могли́ бы вы</b> дать мне ру́чку?</i> – Könnten Sie mir den Stift geben?\n<h4>Der wichtigste Trick: die verneinte Frage</h4>\nWas im Deutschen unhöflich klänge, ist hier das Gegenteil. Das не lässt dem anderen die Tür offen, Nein zu sagen:<br>\n<i><b>Вы не</b> зна́ете, кото́рый час?</i> – Wissen Sie zufällig, wie spät es ist?<br>\n<i><b>У вас не</b> бу́дет ме́лочи?</i> – Hätten Sie vielleicht Kleingeld?<br>\n<i><b>Вы не</b> подска́жете, где метро́?</i> – Könnten Sie mir sagen, wo die Metro ist?<br>\nMerke: <b>Вы не подска́жете</b> ist die Standardformel, mit der man auf der Straße Fremde anspricht.\n<h4>бы macht alles weicher</h4>\n<i>Я <b>хочу́</b> попроси́ть вас …</i> klingt fordernd.<br>\n<i>Я <b>хоте́л бы</b> попроси́ть вас …</i> klingt wie eine Bitte.<br>\nDasselbe bei <i>Не <b>могли́ бы</b> вы …</i> statt <i>Вы <b>мо́жете</b> …</i>\n<h4>Feste Wendungen, die du auswendig können solltest</h4>\n<b>Скажи́те, пожа́луйста …</b> – Sagen Sie bitte …<br>\n<b>Бу́дьте добры́ / Бу́дьте любе́зны</b> – Seien Sie so gut / so freundlich<br>\n<b>Извини́те, что беспоко́ю</b> – Entschuldigen Sie die Störung<br>\n<b>Мо́жно вас попроси́ть?</b> – Darf ich Sie um etwas bitten?<br>\n<b>Вы не про́тив, е́сли …?</b> – Haben Sie etwas dagegen, wenn …?<br>\n<b>Ничего́, е́сли я …?</b> – Ist es okay, wenn ich …? (locker)\n<h4>ты oder вы?</h4>\nвы gilt für Fremde, Ältere, Vorgesetzte und im Dienstleistungskontakt – und man bleibt dabei, bis der andere ты anbietet. Aber Vorsicht in die andere Richtung: <b>Не могли́ бы вы</b> zu einem Freund klingt beleidigt oder ironisch. Unter Freunden reicht <i>Помо́жешь?</i>\n<h4>Vorschläge</h4>\n<b>Дава́йте</b> + wir-Form für Fremde, <b>дава́й</b> für Freunde: <i>Дава́йте начнём.</i> · <i>Дава́й пойдём.</i><br>\n<b>Мо́жет быть …?</b> – Vielleicht …? · <b>Не хоти́те ли вы …?</b> – Möchten Sie vielleicht …?\n<h4>Einladen und vorschlagen</h4>\nAuch hier gibt es zwei Register. Unter Freunden:<br>\n<i><b>Не хо́чешь</b> пойти́ со мной в кафе́?</i> – Willst du mit mir ins Café gehen?<br>\n<i><b>Мо́жет,</b> схо́дим в кино́?</i> – Vielleicht gehen wir ins Kino?<br>\n<i><b>Дава́й</b> пообе́даем вме́сте.</i> – Lass uns zusammen Mittag essen.<br>\n<i><b>Приходи́</b> ко мне в го́сти!</i> – Komm mich besuchen!\n<h4>Und förmlich</h4>\n<i><b>Не хоти́те ли вы</b> пообе́дать с на́ми?</i> – Möchten Sie vielleicht mit uns essen?<br>\n<i>Я <b>хоте́л бы пригласи́ть</b> вас на у́жин.</i> – Ich würde Sie gern zum Abendessen einladen.<br>\n<i><b>Дава́йте</b> встре́тимся в семь.</i> – Treffen wir uns um sieben.<br>\nZu einer Chefin oder einem Fremden also nie <i>дава́й</i> – das klingt vertraulich bis unverschämt.\n<h4>Erst nach der Zeit fragen</h4>\nBevor man einlädt, testet man höflich, ob überhaupt Zeit ist – wieder mit не:<br>\n<i>Ты <b>свобо́ден</b> за́втра ве́чером?</i> (zu einem Mann; <i>свобо́дна</i> zu einer Frau)<br>\n<i>Вы <b>не за́няты</b> в суббо́ту?</i> – Sind Sie Samstag vielleicht frei?<br>\n<i>У тебя́ <b>есть вре́мя</b> в пя́тницу?</i>\n<h4>Annehmen und ablehnen</h4>\n<b>С удово́льствием!</b> – Sehr gern! (die Standardzusage)<br>\n<b>С ра́достью!</b> – Mit Freuden!<br>\n<b>К сожале́нию, я за́нят.</b> – Leider bin ich beschäftigt.<br>\n<b>В друго́й раз, хорошо́?</b> – Ein andermal, ja?<br>\nEin nacktes <i>нет</i> gilt als unhöflich – man nennt immer einen Grund oder verschiebt.\n<h4>Ein falscher Freund</h4>\n<i>Мо́жет быть</i> heißt „vielleicht\" und leitet einen Vorschlag ein. Als <u>Antwort</u> auf eine Einladung bedeutet es aber ein ausweichendes Nein – so wie das deutsche „mal schauen\"."
 };
 
 /* ================= Zustand ================= */
