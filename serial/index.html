@@ -5943,6 +5943,24 @@ function formsBox(w){
         '<span class="fde">'+esc(p[1])+'</span></div>';}).join('')+'</div>';
 }
 function favKey(w){return String(w&&w.r||w).replace(/́/g,'').toLowerCase()}
+/* ---- Gemeinsamer Wortindex ----------------------------------------------
+   СКА́ЗКИ hat keinen Zugriff auf VOCAB oder PACKS – die stehen in anderen
+   Dateien. Deshalb legt jede Vokabel-App beim Start ihre Wortliste (ohne
+   Betonungszeichen) unter einem gemeinsamen Schlüssel ab. Bleibt damit
+   automatisch aktuell, ohne dass irgendwo eine Kopie gepflegt werden muss. */
+const WORTINDEX_KEY='russisch-wortindex-v1';
+function wortindexSchreiben(feld,woerter){
+  try{
+    let j={};
+    const v=localStorage.getItem(WORTINDEX_KEY);
+    if(v)j=JSON.parse(v)||{};
+    const set=new Set();
+    woerter.forEach(w=>{const k=String(w).replace(/\u0301/g,'').toLowerCase().replace(/\u0451/g,'\u0435').trim();if(k)set.add(k)});
+    j[feld]=[...set].join(' ');
+    j[feld+'Ts']=new Date().toISOString().slice(0,10);
+    localStorage.setItem(WORTINDEX_KEY,JSON.stringify(j));
+  }catch(e){}
+}
 function isFav(w){return !!(S.fav&&S.fav[favKey(w)])}
 function favCount(){return S.fav?Object.keys(S.fav).length:0}
 function toggleFav(key,pid){
@@ -8497,6 +8515,7 @@ $('#recallChk').onchange=e=>{
   $('#recallChk').checked=S.recall!==false;
   $('#slangChk').checked=!!S.noSlang;
   migrateRotation();
+  {const alle=[];PACKS.concat(S.extras).forEach(p=>p.words.forEach(w=>alle.push(w.r)));wortindexSchreiben('serial',alle);}
   $('#doneN').textContent=totalDone();
   renderPacks();
 })();

@@ -2548,6 +2548,24 @@ function migrateProg(){ /* Alt-Daten (reines Leitner) bekommen Intervall + Ease 
   Object.values(S.prog).forEach(p=>{if(p&&p.iv==null){p.iv=INT[p.b]||1;p.ez=2.5}});
 }
 function allWords(){return VOCAB.concat(S.extras)}
+/* ---- Gemeinsamer Wortindex ----------------------------------------------
+   СКА́ЗКИ hat keinen Zugriff auf VOCAB oder PACKS – die stehen in anderen
+   Dateien. Deshalb legt jede Vokabel-App beim Start ihre Wortliste (ohne
+   Betonungszeichen) unter einem gemeinsamen Schlüssel ab. Bleibt damit
+   automatisch aktuell, ohne dass irgendwo eine Kopie gepflegt werden muss. */
+const WORTINDEX_KEY='russisch-wortindex-v1';
+function wortindexSchreiben(feld,woerter){
+  try{
+    let j={};
+    const v=localStorage.getItem(WORTINDEX_KEY);
+    if(v)j=JSON.parse(v)||{};
+    const set=new Set();
+    woerter.forEach(w=>{const k=String(w).replace(/\u0301/g,'').toLowerCase().replace(/\u0451/g,'\u0435').trim();if(k)set.add(k)});
+    j[feld]=[...set].join(' ');
+    j[feld+'Ts']=new Date().toISOString().slice(0,10);
+    localStorage.setItem(WORTINDEX_KEY,JSON.stringify(j));
+  }catch(e){}
+}
 function byId(id){return allWords().find(w=>w.i===id)}
 function isDue(id){const p=S.prog[id];return !!p&&p.d<=todayStr()}
 function isProblem(p){return !!p&&(p.c+p.w)>=3&&p.w>=2&&p.w/(p.c+p.w)>=.4}
@@ -4202,7 +4220,7 @@ function bridgeHinweis(){
   const el=document.getElementById('bridgeSlot');
   if(!el)return;
   const woher=r.pakete.length?r.pakete.slice(0,3).join(' · ')+(r.pakete.length>3?' …':''):'СЕРИА́Л';
-  el.innerHTML='<div class="bridgebox"><b>📥 '+(r.n||0)+' Wörter aus СЕРИА́Л übernommen</b>'+
+  el.innerHTML='<div class="bridgebox"><b>📥 '+(r.n||0)+' '+(r.n===1?'Wort':'Wörter')+' übernommen</b>'+
     '<p>Aus: '+esc(woher)+
     (r.mit?' · '+r.mit+' davon mit deinem Lernstand von dort – die starten hier nicht bei null.':'')+
     (r.dop?' · '+r.dop+' kanntest du hier schon.':'')+
@@ -4293,6 +4311,7 @@ function buildAppNav(cur){
   try{speechSynthesis.getVoices()}catch(e){}
   await load();
   $('#streakN').textContent=dispStreak();
+  wortindexSchreiben('slova',allWords().map(w=>w.r));
   $('#setNpd').value=S.set.npd;
   $('#setDir').value=S.set.dir;
   $('#setNpd').onchange=e=>{S.set.npd=+e.target.value;save();if(!sess)renderHome()};
