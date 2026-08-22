@@ -216,6 +216,8 @@ nav{position:sticky;top:0;z-index:20;background:var(--paper);padding:12px 0 14px
 #typeInp:focus{outline:2px solid var(--gzhel);border-color:transparent}
 #typeInp.inp-ok{border-color:var(--birch);background:var(--birch-soft)}
 #typeInp.inp-no{border-color:var(--kalina);background:var(--kalina-soft)}
+#typeInp.inp-fast{border-color:#e0a800;background:#fff8e1}
+.fb-fast{background:#fff8e1;color:#8a6100}
 .check-btn{background:var(--gzhel);color:#fff;border-radius:12px;padding:0 18px;font-weight:700}
 .kb{margin-top:10px}
 .kb-row{display:flex;gap:3px;margin-top:3px}
@@ -2569,8 +2571,11 @@ function wortindexSchreiben(feld,woerter){
 function byId(id){return allWords().find(w=>w.i===id)}
 function isDue(id){const p=S.prog[id];return !!p&&p.d<=todayStr()}
 const HARD_MODE={type:1,clozeType:1,syl:1,picSyl:1,speech:1};
-function prodN(p){return ((p&&p.hc)||0)+((p&&p.hw)||0)}
-function prodSchwach(p){const n=prodN(p);return n>=3&&(p.hw||0)>=2&&(p.hw||0)/n>=.4}
+function prodN(p){return ((p&&p.hc)||0)+((p&&p.hw)||0)+((p&&p.hf)||0)}
+function prodSchwach(p){
+  const n=prodN(p),miss=((p&&p.hw)||0)+0.5*((p&&p.hf)||0);
+  return n>=3&&miss>=2&&miss/n>=.4;
+}
 function isProblem(p){
   if(!p)return false;
   if((p.c+p.w)>=3&&p.w>=2&&p.w/(p.c+p.w)>=.4)return true;
@@ -2750,7 +2755,13 @@ function startFest(){
 function festNext(){
   const id=sess.q[sess.i],p=S.prog[id];
   if(p){
-    if(cur.ok){p.c++;sess.stats.right++}
+    if(cur.fast){
+      /* Schreibfehler an einer nicht hörbaren Stelle: kein Rückschritt beim
+         Abstand, aber die Karte kommt in dieser Runde noch einmal. */
+      p.c++;sess.stats.right++;
+      sess.q.splice(Math.min(sess.i+4+Math.floor(Math.random()*3),sess.q.length),0,id);
+    }
+    else if(cur.ok){p.c++;sess.stats.right++}
     else{
       /* Beim Produzieren danebengelegen: das Wort kommt morgen wieder in die
          normale Wiederholung, egal wie weit sein Abstand schon war. */
@@ -3379,6 +3390,68 @@ function kbWire(){
     else inp.value+=b.dataset.ch;
   });
 }
+/* Wo sitzt die Betonung? Nur unbetonte Vokale darf man verwechseln –
+   bei einem betonten Vokal hört man den Unterschied und muss ihn kennen. */
+function betontIdx(rAkzent){
+  const chars=[...String(rAkzent).toLowerCase().replace(/ё/g,'е')];
+  let idx=-1,pos=0;
+  for(let i=0;i<chars.length;i++){
+    const c=chars[i];
+    if(c==='\u0301'){idx=pos-1;continue}
+    if(/[а-я\- ]/.test(c))pos++;
+  }
+  return idx;
+}
+const VOK_RU='аеиоуыэюя';
+/* Vokalpaare, die im Russischen unbetont gleich klingen. */
+const REDUKT=[['а','о'],['е','и'],['е','я'],['и','я']];
+function reduktPaar(a,b){return REDUKT.some(pr=>(pr[0]===a&&pr[1]===b)||(pr[1]===a&&pr[0]===b))}
+/* Gibt zurück: {stufe:'ok'|'fast'|'falsch', note:'…'} */
+function tippUrteil(eingabe,zielNorm,zielAkzent){
+  if(eingabe===zielNorm)return{stufe:'ok'};
+  const bi=betontIdx(zielAkzent);
+  const a=[...eingabe],z=[...zielNorm];
+  /* ь und ъ sind nie Schönheitsfehler: sie machen ein anderes Wort daraus. */
+  const weich=x=>x.filter(c=>c==='ь'||c==='ъ').length;
+  if(weich(a)!==weich(z)){
+    return{stufe:'falsch',note:weich(a)<weich(z)
+      ?'Das ь fehlt – und das ist kein stummer Buchstabe: мать ≠ мат, есть ≠ ест, und bei Verben entscheidet es zwischen Infinitiv (-ться) und 3. Person (-тся).'
+      :'Hier steht ein ь zu viel – es verändert das Wort.'};
+  }
+  if(a.length===z.length){
+    const diff=[];
+    for(let i=0;i<z.length;i++)if(a[i]!==z[i])diff.push(i);
+    const istRedukt=i=>VOK_RU.indexOf(a[i])>=0&&VOK_RU.indexOf(z[i])>=0&&reduktPaar(a[i],z[i]);
+    /* Betonte Silbe daneben: den Unterschied hört man, der zählt voll. */
+    if(diff.some(i=>i===bi&&istRedukt(i)))
+      return{stufe:'falsch',note:'Der Unterschied liegt auf der <b>betonten</b> Silbe – den hört man, den muss man treffen.'};
+    /* Ein und derselbe Fehler mehrfach ist immer noch ein Fehler: молоко́ hat
+       zwei unbetonte о, die beide wie а klingen. */
+    const grenze=Math.max(2,Math.round(z.length/4));
+    if(diff.length&&diff.length<=grenze&&diff.every(istRedukt)){
+      const cz=z[diff[0]],ca=a[diff[0]];
+      return{stufe:'fast',note:'Unbetontes <b>'+cz+'</b> klingt wie <b>'+ca+'</b> – geschrieben wird trotzdem '+cz+
+        (diff.length>1?' (hier '+diff.length+'-mal).':'.')};
+    }
+    /* zwei benachbarte Zeichen vertauscht → Tippfehler */
+    if(diff.length===2&&diff[1]===diff[0]+1&&a[diff[0]]===z[diff[1]]&&a[diff[1]]===z[diff[0]])
+      return{stufe:'fast',note:'Zwei Buchstaben vertauscht – reiner Tippfehler.'};
+    return{stufe:'falsch'};
+  }
+  /* ein Zeichen zu viel oder zu wenig */
+  if(Math.abs(a.length-z.length)===1){
+    const lang=a.length>z.length?a:z, kurz=a.length>z.length?z:a;
+    let i=0;while(i<kurz.length&&lang[i]===kurz[i])i++;
+    const gleichDanach=lang.slice(i+1).join('')===kurz.slice(i).join('');
+    if(gleichDanach){
+      const c=lang[i];
+      /* Doppelkonsonant vergessen oder doppelt gesetzt */
+      if(VOK_RU.indexOf(c)<0&&(lang[i+1]===c||lang[i-1]===c))
+        return{stufe:'fast',note:'Ein Doppelkonsonant – hörbar ist da kein Unterschied.'};
+    }
+  }
+  return{stufe:'falsch'};
+}
 function checkTyped(){
   const inp=$('#typeInp');
   if(!inp||cur.answered)return;
@@ -3387,11 +3460,21 @@ function checkTyped(){
   const targets=[normRu(cur.w.r)];
   if(cur.mode==='clozeType'&&cur.cl)targets.push(normRu(cur.cl.answer));
   const ok=targets.indexOf(v)>=0;
+  /* Nicht exakt getroffen? Dann prüfen, ob es ein Schreibfehler oder ein
+     echter Fehler ist – das ist ein Unterschied ums Ganze. */
+  let urteil={stufe:ok?'ok':'falsch'};
+  if(!ok){
+    const zielAkz=cur.mode==='clozeType'&&cur.cl?cur.cl.answer:cur.w.r;
+    let best=null;
+    targets.forEach(t=>{const u=tippUrteil(v,t,zielAkz);if(!best||u.stufe==='fast')best=u});
+    urteil=best||urteil;
+  }
   inp.disabled=true;
-  inp.classList.add(ok?'inp-ok':'inp-no');
+  inp.classList.add(urteil.stufe==='falsch'?'inp-no':(urteil.stufe==='fast'?'inp-fast':'inp-ok'));
   const kb=$('#kb');if(kb)kb.style.display='none';
   const cb=$('#checkBtn');if(cb)cb.style.display='none';
-  resolveCard(ok);
+  cur.fast=(urteil.stufe==='fast');
+  resolveCard(urteil.stufe!=='falsch',urteil.note);
 }
 function resolveCard(ok,note){
   if(!cur||cur.answered)return;
@@ -3401,11 +3484,15 @@ function resolveCard(ok,note){
   const mrec=S.modeStats[cur.mode]||(S.modeStats[cur.mode]={r:0,w:0});
   ok?mrec.r++:mrec.w++;
   /* Produktionsbilanz des Wortes: nur Schreiben, Silben, Lücke, Sprechen */
-  if(cur.p&&HARD_MODE[cur.mode]){if(ok)cur.p.hc=(cur.p.hc||0)+1;else cur.p.hw=(cur.p.hw||0)+1}
+  if(cur.p&&HARD_MODE[cur.mode]){
+    if(cur.fast)cur.p.hf=(cur.p.hf||0)+1;     /* fast richtig zählt halb */
+    else if(ok)cur.p.hc=(cur.p.hc||0)+1;
+    else cur.p.hw=(cur.p.hw||0)+1;
+  }
   let btns;
   if(sess&&sess.fest){ /* Festigen: keine Selbstbewertung – geschrieben oder nicht */
     btns='<div class="grade on grade1"><button class="'+(ok?'g-k':'g-w')+'" onclick="festNext()">Weiter<small>'+
-      (ok?'✓ sitzt':'kommt gleich nochmal · morgen wieder fällig')+'</small></button></div>';
+      (cur.fast?'≈ kommt gleich nochmal – der Abstand bleibt':(ok?'✓ sitzt':'kommt gleich nochmal · morgen wieder fällig'))+'</small></button></div>';
   }else if(cur.st){ /* neues Wort: 3 Treffer nötig, keine Selbstbewertung */
     const nDone=cur.st.done+(ok?1:0);
     btns='<div class="grade on grade1"><button class="'+(ok?'g-k':'g-w')+'" onclick="passNext()">Weiter<small>'+
@@ -3416,7 +3503,7 @@ function resolveCard(ok,note){
       :'<div class="grade on grade1"><button class="g-w" onclick="grade(\'w\')">Weiter<small>kommt gleich nochmal</small></button></div>';
   }
   $('#fbZone').innerHTML=
-    '<div class="fb '+(ok?'fb-ok':'fb-no')+'">'+(ok?'✓ Richtig!':'✗ Nicht ganz.')+(note?' <span style="font-weight:600">'+note+'</span>':'')+'</div>'+
+    '<div class="fb '+(cur.fast?'fb-fast':(ok?'fb-ok':'fb-no'))+'">'+(cur.fast?'≈ Fast richtig':(ok?'✓ Richtig!':'✗ Nicht ganz.'))+(note?' <span style="font-weight:600">'+note+'</span>':'')+'</div>'+
     '<div class="answer on">'+answerBlock(cur.w)+'</div>'+btns;
   attachImg('imgSlot',cur.w.i);
   if(cur.mode!=='audio'&&cur.mode!=='audioSent'&&cur.mode!=='speech')speak(cur.w.r);
