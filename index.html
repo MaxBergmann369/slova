@@ -2568,7 +2568,14 @@ function wortindexSchreiben(feld,woerter){
 }
 function byId(id){return allWords().find(w=>w.i===id)}
 function isDue(id){const p=S.prog[id];return !!p&&p.d<=todayStr()}
-function isProblem(p){return !!p&&(p.c+p.w)>=3&&p.w>=2&&p.w/(p.c+p.w)>=.4}
+const HARD_MODE={type:1,clozeType:1,syl:1,picSyl:1,speech:1};
+function prodN(p){return ((p&&p.hc)||0)+((p&&p.hw)||0)}
+function prodSchwach(p){const n=prodN(p);return n>=3&&(p.hw||0)>=2&&(p.hw||0)/n>=.4}
+function isProblem(p){
+  if(!p)return false;
+  if((p.c+p.w)>=3&&p.w>=2&&p.w/(p.c+p.w)>=.4)return true;
+  return prodSchwach(p);   /* schwach beim Produzieren zählt genauso */
+}
 function freezeAvail(){ /* 🛡️ Streak-Schutz: höchstens 1 Fehltag pro Woche wird verziehen */
   if(!S.frzDay)return true;
   const d=new Date();d.setDate(d.getDate()-7);
@@ -2703,6 +2710,77 @@ function passNext(){ /* Weiter-Button bei neuen Wörtern (Mehrfach-Durchgänge) 
   if(sess.i>=sess.q.length)finishSession();else renderCard();
 }
 function startProblems(){startSession(allWords().filter(w=>isProblem(S.prog[w.i])).map(w=>w.i))}
+/* ---- Festigen ------------------------------------------------------------
+   Für den Moment, in dem für heute alles erledigt ist: keine neuen Wörter,
+   kein Multiple Choice, nur Produzieren. Wer die Bedeutung anklicken kann,
+   kann das Wort noch lange nicht schreiben – genau diese Lücke schliesst der
+   Modus, und nebenbei findet er Wörter, die nur beim Tippen wackeln. */
+function festPool(){
+  const out=[];
+  allWords().forEach(w=>{
+    const p=S.prog[w.i];
+    if(!p)return;                        /* nie gesehen → gehört nicht hierher */
+    if((p.c||0)<2)return;                /* noch im Aufbau */
+    out.push({id:w.i,w,p});
+  });
+  return out;
+}
+function festModi(w,p){
+  const m=[];
+  const cl=clozeFor(w);
+  m.push('type','type');
+  if(cl)m.push('clozeType');
+  if(syllables(w.r).length>=2)m.push('syl');
+  if(S.set.img!==false&&piktoFrage(w))m.push('picSyl');
+  return m;
+}
+function startFest(){
+  const pool=festPool();
+  if(!pool.length){renderHome();return}
+  /* Wacklige zuerst: Problemwörter, dann schwache Produktionsbilanz, dann Zufall */
+  pool.sort((a,b)=>{
+    const sa=(isProblem(a.p)?2:0)+(prodSchwach(a.p)?2:0)+((a.p.w||0)-(a.p.c||0))*0.1;
+    const sb=(isProblem(b.p)?2:0)+(prodSchwach(b.p)?2:0)+((b.p.w||0)-(b.p.c||0))*0.1;
+    return (sb+Math.random())-(sa+Math.random());
+  });
+  const use=pool.slice(0,15).map(o=>o.id);
+  sess={q:shuffle(use),i:0,stats:{right:0,wrong:0},done:new Set(),words:{},knownN:0,learnedN:0,pool:[],fest:true};
+  renderCard();
+}
+function festNext(){
+  const id=sess.q[sess.i],p=S.prog[id];
+  if(p){
+    if(cur.ok){p.c++;sess.stats.right++}
+    else{
+      /* Beim Produzieren danebengelegen: das Wort kommt morgen wieder in die
+         normale Wiederholung, egal wie weit sein Abstand schon war. */
+      p.w++;p.iv=1;p.d=addDays(1);p.b=Math.max(1,(p.b||1)-1);
+      sess.stats.wrong++;
+      sess.q.splice(Math.min(sess.i+3+Math.floor(Math.random()*3),sess.q.length),0,id);
+    }
+  }
+  sess.done.add(id);
+  const t=todayStr();S.days[t]=(S.days[t]||0)+1;
+  save();
+  sess.i++;
+  if(sess.i>=sess.q.length){festEnde();return}
+  renderCard();
+}
+function festEnde(){
+  const r=sess.stats.right,w=sess.stats.wrong,ges=r+w;
+  const neu=allWords().filter(x=>prodSchwach(S.prog[x.i])).length;
+  sess=null;cur=null;
+  $('#view-lernen').innerHTML='<div class="hero"><div class="done-mark">🔨</div>'+
+    '<div class="due-line">Festigen geschafft!</div>'+
+    '<div class="sumgrid">'+
+    '<div class="sumbox"><b>'+r+'</b><span>richtig geschrieben</span></div>'+
+    '<div class="sumbox"><b>'+(ges?Math.round(100*r/ges):0)+' %</b><span>Trefferquote</span></div>'+
+    '<div class="sumbox"><b>'+neu+'</b><span>wacklig beim Schreiben</span></div>'+
+    '</div>'+
+    '<div class="sub" style="text-align:left;margin-top:12px">Was du hier nicht schreiben konntest, steht morgen wieder in der normalen Wiederholung – auch wenn der Abstand vorher schon lang war.</div>'+
+    '<button class="btn btn-primary" onclick="startFest()">Noch eine Runde</button><br>'+
+    '<button class="btn-ghost" onclick="renderHome()">Zurück</button></div>';
+}
 function nextIv(p,kind){ /* nächstes Intervall in Tagen (SM-2-light: Erfolgsquote steuert den Abstand) */
   const iv=(!p||p.iv==null)?(INT[p?p.b:0]||1):p.iv,ez=(p&&p.ez)||2.5;
   if(kind==='w')return 1;
@@ -2758,6 +2836,7 @@ function quitSession(){save(true);sess=null;renderHome()}
 function renderHome(){
   const{due,fresh}=buildQueue();
   const probN=allWords().filter(w=>isProblem(S.prog[w.i])).length;
+  const festN=festPool().length,wackelN=allWords().filter(w=>prodSchwach(S.prog[w.i])).length;
   const total=due.length+fresh.length;
   const goal=S.set.goal||30,dT=S.days[todayStr()]||0;
   const goalLine='<div class="sub" style="margin-top:6px">🎯 Heute: '+dT+' / '+goal+' Karten'+(dT>=goal?' – Ziel erreicht!':'')+'</div>';
@@ -2766,6 +2845,9 @@ function renderHome(){
     inner='<div class="done-mark">☀️</div><div class="due-line">Für heute alles erledigt!</div>'+
       '<div class="sub">Молоде́ц! Komm morgen wieder – dann warten neue Wiederholungen.</div>'+goalLine;
     if(probN)inner+='<br><button class="btn-ghost" onclick="startProblems()">Problemwörter üben ('+probN+')</button>';
+    if(festN)inner+='<br><button class="btn btn-primary" onclick="startFest()">🔨 Festigen · schreiben statt anklicken</button>'+
+      '<div class="sub" style="font-size:.78rem">Nur Wörter, die du schon kannst – Schreiben, Silben, Lückentext. Kein Multiple Choice, keine neuen Wörter.'+
+      (wackelN?' <b>'+wackelN+'</b> Wörter wackeln zurzeit beim Schreiben.':'')+'</div>';
     inner+='<br><button class="btn-ghost" onclick="renderRadio()">📻 Audio-Modus (freihändig)</button>';
   }else{
     inner='<div class="due-line"><b>'+due.length+'</b> Wiederholung'+(due.length===1?'':'en')+' · <b>'+fresh.length+'</b> neue Wörter</div>'+
@@ -2774,6 +2856,7 @@ function renderHome(){
       '<div class="sub">≈ '+(due.length+fresh.length*3)+' Karten – jedes neue Wort kommt 3× in verschiedenen Formen · etwa '+Math.max(1,Math.round((due.length+fresh.length*3)*0.25))+' Minuten</div>'+goalLine+
       '<button class="btn btn-primary" onclick="startDaily()">Los geht’s</button>';
     if(probN)inner+='<br><button class="btn-ghost" onclick="startProblems()">Nur Problemwörter üben ('+probN+')</button>';
+    if(festN)inner+='<br><button class="btn-ghost" onclick="startFest()">🔨 Festigen · schreiben statt anklicken</button>';
     inner+='<br><button class="btn-ghost" onclick="renderRadio()">📻 Audio-Modus (freihändig)</button>';
   }
   $('#view-lernen').innerHTML='<div class="hero">'+inner+'</div>';
@@ -3142,7 +3225,8 @@ function renderCard(forceMode){
   const id=sess.q[sess.i],w=byId(id),p=S.prog[id];
   const cl=clozeFor(w);
   const st=sess.words?sess.words[id]:null; /* Mehrfach-Durchgänge nur für neue Wörter */
-  const mode=forceMode||(st?modeForPass(w,st,cl):pickMode(w,p,cl));
+  let mode=forceMode||(st?modeForPass(w,st,cl):pickMode(w,p,cl));
+  if(sess.fest&&!forceMode){const fm=festModi(w,p);mode=fm[Math.floor(Math.random()*fm.length)]}
   if(st)st.last=mode;
   cur={id,w,p,cl,st,mode,ok:false,answered:false,opts:null,goodIdx:-1,optRu:false};
   const chips=[];
@@ -3316,8 +3400,13 @@ function resolveCard(ok,note){
   /* Trefferquote je Kartentyp mitloggen (Format-Kalibrierung) */
   const mrec=S.modeStats[cur.mode]||(S.modeStats[cur.mode]={r:0,w:0});
   ok?mrec.r++:mrec.w++;
+  /* Produktionsbilanz des Wortes: nur Schreiben, Silben, Lücke, Sprechen */
+  if(cur.p&&HARD_MODE[cur.mode]){if(ok)cur.p.hc=(cur.p.hc||0)+1;else cur.p.hw=(cur.p.hw||0)+1}
   let btns;
-  if(cur.st){ /* neues Wort: 3 Treffer nötig, keine Selbstbewertung */
+  if(sess&&sess.fest){ /* Festigen: keine Selbstbewertung – geschrieben oder nicht */
+    btns='<div class="grade on grade1"><button class="'+(ok?'g-k':'g-w')+'" onclick="festNext()">Weiter<small>'+
+      (ok?'✓ sitzt':'kommt gleich nochmal · morgen wieder fällig')+'</small></button></div>';
+  }else if(cur.st){ /* neues Wort: 3 Treffer nötig, keine Selbstbewertung */
     const nDone=cur.st.done+(ok?1:0);
     btns='<div class="grade on grade1"><button class="'+(ok?'g-k':'g-w')+'" onclick="passNext()">Weiter<small>'+
       (ok?(nDone>=3?'✓ 3/3 – geschafft!':'✓ '+nDone+'/3'):'kommt gleich nochmal')+'</small></button></div>';
@@ -3331,7 +3420,9 @@ function resolveCard(ok,note){
     '<div class="answer on">'+answerBlock(cur.w)+'</div>'+btns;
   attachImg('imgSlot',cur.w.i);
   if(cur.mode!=='audio'&&cur.mode!=='audioSent'&&cur.mode!=='speech')speak(cur.w.r);
-  if(isLongWord(cur.w))setTimeout(()=>speakSlow(cur.w.r),1400); /* lange Wörter zusätzlich langsam */
+  /* Das Wort festhalten: der Timer feuert auch dann noch, wenn die Karte
+     inzwischen weg ist – sonst greift er auf ein null zu. */
+  {const lw=cur.w;if(isLongWord(lw))setTimeout(()=>speakSlow(lw.r),1400)}
 }
 function speakSlow(txt){ /* betont langsam – hilft beim Einprägen langer Wörter */
   try{
