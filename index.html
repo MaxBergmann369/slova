@@ -2473,7 +2473,7 @@ function speak(txt){
 try{pickRuVoice();speechSynthesis.onvoiceschanged=pickRuVoice}catch(e){}
 
 /* ================= Zustand & Speicher ================= */
-let S={prog:{},part:{},imgNo:{},extras:[],set:{npd:20,dir:'ru',goal:30},streak:0,lastDay:null,frzDay:null,nt:{day:null,n:0},days:{},game:{best:null,rounds:0},abc:{best:null,rounds:0},mnem:{},modeStats:{}};
+let S={prog:{},part:{},imgNo:{},mp:{r:0,w:0},extras:[],set:{npd:20,dir:'ru',goal:30},streak:0,lastDay:null,frzDay:null,nt:{day:null,n:0},days:{},game:{best:null,rounds:0},abc:{best:null,rounds:0},mnem:{},modeStats:{}};
 let saveT=null,saveFails=0;
 
 /* Speicher-Adapter: im Claude-Chat wird Claudes Speicher genutzt,
@@ -2859,6 +2859,7 @@ function renderHome(){
     if(festN)inner+='<br><button class="btn btn-primary" onclick="startFest()">🔨 Festigen · schreiben statt anklicken</button>'+
       '<div class="sub" style="font-size:.78rem">Nur Wörter, die du schon kannst – Schreiben, Silben, Lückentext. Kein Multiple Choice, keine neuen Wörter.'+
       (wackelN?' <b>'+wackelN+'</b> Wörter wackeln zurzeit beim Schreiben.':'')+'</div>';
+    inner+='<br><button class="btn-ghost" onclick="renderPaare()">🔍 Minimalpaare · мать ≠ мат</button>';
     inner+='<br><button class="btn-ghost" onclick="renderRadio()">📻 Audio-Modus (freihändig)</button>';
   }else{
     inner='<div class="due-line"><b>'+due.length+'</b> Wiederholung'+(due.length===1?'':'en')+' · <b>'+fresh.length+'</b> neue Wörter</div>'+
@@ -2868,6 +2869,7 @@ function renderHome(){
       '<button class="btn btn-primary" onclick="startDaily()">Los geht’s</button>';
     if(probN)inner+='<br><button class="btn-ghost" onclick="startProblems()">Nur Problemwörter üben ('+probN+')</button>';
     if(festN)inner+='<br><button class="btn-ghost" onclick="startFest()">🔨 Festigen · schreiben statt anklicken</button>';
+    inner+='<br><button class="btn-ghost" onclick="renderPaare()">🔍 Minimalpaare · мать ≠ мат</button>';
     inner+='<br><button class="btn-ghost" onclick="renderRadio()">📻 Audio-Modus (freihändig)</button>';
   }
   $('#view-lernen').innerHTML='<div class="hero">'+inner+'</div>';
@@ -3061,17 +3063,22 @@ function twinIndex(){
   const list=[],seen=new Set();
   allWords().forEach(w=>{
     const key=normRu(w.r);
-    if(!key||seen.has(key)||/[ -]/.test(key)||key.length<5)return;
+    if(!key||seen.has(key)||/[ -]/.test(key)||key.length<3)return;
     seen.add(key);list.push({w,key});
   });
   const byLen={};
   list.forEach(o=>{(byLen[o.key.length]=byLen[o.key.length]||[]).push(o)});
   list.forEach(a=>{
-    for(let L=a.key.length-2;L<=a.key.length+2;L++){
+    /* Bei kurzen Wörtern ist fast alles "zwei Buchstaben entfernt" – da wäre
+       мать mit ма́ма, март und матч verwandt. Deshalb skaliert der erlaubte
+       Abstand mit der Länge. */
+    const maxD=a.key.length<=4?1:2;
+    for(let L=a.key.length-maxD;L<=a.key.length+maxD;L++){
       (byLen[L]||[]).forEach(b=>{
         if(b.key<=a.key)return;
+        if(b.key.length<=4&&maxD>1)return;
         if(a.key[0]!==b.key[0]&&a.key.slice(-2)!==b.key.slice(-2))return;
-        if(editDist(a.key,b.key,2)>2)return;
+        if(editDist(a.key,b.key,maxD)>maxD)return;
         (_twinIdx[a.w.i]=_twinIdx[a.w.i]||[]).push(b.w);
         (_twinIdx[b.w.i]=_twinIdx[b.w.i]||[]).push(a.w);
       });
@@ -3897,6 +3904,113 @@ function speakLang(txt,de){
       setTimeout(res,12000);
     }catch(e){res()}
   });
+}
+
+/* ================= Minimalpaare =================
+   Wortpaare, die sich in genau einem Detail unterscheiden – und trotzdem
+   verschiedene Wörter sind. Die Verwechslungs-Anzeige im Training lässt
+   genau diese aus, weil sie zu kurz sind. Hier kann man sie hören und
+   gegeneinander üben, statt sie nur einmal nebeneinander zu sehen. */
+const PAARE=[{"k":"weich","a":{"r":"мать","t":"MATJ","d":"Mutter"},"b":{"r":"мат","t":"MAT","d":"Schimpfwörter; Matt (Schach)"},"n":"Das ь macht das т weich – die Zunge geht zum Gaumen. Ohne ь ist es ein völlig anderes Wort."},{"k":"weich","a":{"r":"есть","t":"JESTJ","d":"essen; es gibt"},"b":{"r":"ест","t":"JEST","d":"er isst"},"n":"Infinitiv gegen 3. Person – der ganze Unterschied ist das ь."},{"k":"weich","a":{"r":"у́голь","t":"U-galj","d":"Kohle"},"b":{"r":"у́гол","t":"U-gal","d":"Ecke, Winkel"},"n":"Hier hörst du es am deutlichsten: weiches ль gegen hartes л."},{"k":"weich","a":{"r":"быть","t":"BYTJ","d":"sein"},"b":{"r":"быт","t":"BYT","d":"Alltag, Lebensweise"},"n":"Das häufigste Verb der Sprache gegen ein Substantiv."},{"k":"weich","a":{"r":"сталь","t":"STALJ","d":"Stahl"},"b":{"r":"стал","t":"STAL","d":"er wurde"},"n":"Substantiv gegen Verb – im Satz sofort erkennbar, isoliert nur am ль."},{"k":"weich","a":{"r":"весь","t":"WJESJ","d":"ganz, der ganze"},"b":{"r":"вес","t":"WJES","d":"Gewicht"},"n":"весь день = den ganzen Tag. вес = das Gewicht."},{"k":"weich","a":{"r":"ель","t":"JELJ","d":"Tanne, Fichte"},"b":{"r":"ел","t":"JEL","d":"er aß"},"n":"Ein Baum gegen eine Verbform."},{"k":"weich","a":{"r":"цель","t":"ZELJ","d":"Ziel"},"b":{"r":"цел","t":"ZEL","d":"heil, unversehrt"},"n":"цель ist feminin – erkennbar am ь."},{"k":"weich","a":{"r":"брать","t":"BRATJ","d":"nehmen"},"b":{"r":"брат","t":"BRAT","d":"Bruder"},"n":"Auch hier: Infinitiv gegen Substantiv."},{"k":"weich","a":{"r":"шесть","t":"SCHESTJ","d":"sechs"},"b":{"r":"шест","t":"SCHEST","d":"Stange"},"n":"Die Zahl hat ein ь, die Stange nicht."},{"k":"weich","a":{"r":"по́лька","t":"POLJ-ka","d":"Polin; Polka (Tanz)"},"b":{"r":"по́лка","t":"POL-ka","d":"Regal, Brett"},"n":"Das ь steht mitten im Wort und macht das л weich."},{"k":"tsa","a":{"r":"учи́ться","t":"u-TSCHIT-sa","d":"lernen, studieren (Infinitiv)"},"b":{"r":"у́чится","t":"U-tschit-sa","d":"er/sie lernt"},"n":"Klingt gleich, ist es aber nicht. Merkregel: Passt „was tun?“ (что делать?), steht ь. Passt „was tut er?“ (что делает?), steht keins."},{"k":"tsa","a":{"r":"нра́виться","t":"NRA-wit-sa","d":"gefallen (Infinitiv)"},"b":{"r":"нра́вится","t":"NRA-wit-sa","d":"es gefällt"},"n":"Мне нра́вится = mir gefällt. Мне хо́чется нра́виться = ich möchte gefallen."},{"k":"tsa","a":{"r":"находи́ться","t":"na-cha-DIT-sa","d":"sich befinden (Infinitiv)"},"b":{"r":"нахо́дится","t":"na-CHO-dit-sa","d":"es befindet sich"},"n":"Hier verschiebt sich zusätzlich die Betonung – das kannst du als Eselsbrücke nehmen."},{"k":"tsa","a":{"r":"встре́титься","t":"FSTRJE-tit-sa","d":"sich treffen (Infinitiv)"},"b":{"r":"встре́тится","t":"FSTRJE-tit-sa","d":"er/sie wird sich treffen"},"n":"Nach мо́жно, хочу́, дава́й steht immer die Form mit ь."},{"k":"tsa","a":{"r":"гото́виться","t":"ga-TO-wit-sa","d":"sich vorbereiten (Infinitiv)"},"b":{"r":"гото́вится","t":"ga-TO-wit-sa","d":"er/sie bereitet sich vor"},"n":"Beide werden [-иц-ца] gesprochen. Nur die Frage entscheidet."},{"k":"beton","a":{"r":"за́мок","t":"SA-mak","d":"Burg, Schloss (Gebäude)"},"b":{"r":"замо́к","t":"za-MOK","d":"Schloss (an der Tür)"},"n":"Gleiche Buchstaben, verschiedene Wörter. Im Deutschen ist „Schloss“ genauso doppeldeutig – nur ohne Hörhilfe."},{"k":"beton","a":{"r":"мука́","t":"mu-KA","d":"Mehl"},"b":{"r":"му́ка","t":"MU-ka","d":"Qual, Pein"},"n":"Ein Buchstabe Betonung zwischen Backen und Leiden."},{"k":"beton","a":{"r":"сто́ит","t":"STO-it","d":"es kostet; es lohnt sich"},"b":{"r":"стои́т","t":"sta-IT","d":"er/sie/es steht"},"n":"Sehr häufig und leicht zu verwechseln: Ско́лько сто́ит? = Was kostet das?"},{"k":"beton","a":{"r":"пла́чу","t":"PLA-tschu","d":"ich weine"},"b":{"r":"плачу́","t":"pla-TSCHU","d":"ich zahle"},"n":"Я пла́чу, когда́ плачу́ – ich weine, wenn ich zahle. Der Klassiker."},{"k":"beton","a":{"r":"у́же","t":"U-sche","d":"enger (Komparativ von у́зкий)"},"b":{"r":"уже́","t":"u-SCHE","d":"schon, bereits"},"n":"Das zweite hörst du täglich, das erste selten – aber sie sehen gleich aus."},{"k":"beton","a":{"r":"о́рган","t":"OR-gan","d":"Organ (Körper)"},"b":{"r":"орга́н","t":"ar-GAN","d":"Orgel"},"n":"Im Deutschen zwei Wörter, im Russischen dieselben Buchstaben."},{"k":"beton","a":{"r":"по́том","t":"PO-tam","d":"mit Schweiß (von пот)"},"b":{"r":"пото́м","t":"pa-TOM","d":"danach, später"},"n":"Das zweite brauchst du ständig – umso wichtiger, die Betonung hinten zu halten."},{"k":"beton","a":{"r":"а́тлас","t":"AT-las","d":"Atlas (Kartenband)"},"b":{"r":"атла́с","t":"at-LAS","d":"Satin, Atlasstoff"},"n":"Selten, aber ein schönes Beispiel dafür, wie weit die Betonung trägt."},{"k":"yi","a":{"r":"был","t":"BYL","d":"er war"},"b":{"r":"бил","t":"BIL","d":"er schlug"},"n":"ы wird weiter hinten im Mund gebildet als и. Für deutsche Ohren der schwerste Laut überhaupt."},{"k":"yi","a":{"r":"мы́шка","t":"MYSCH-ka","d":"Mäuschen; Computermaus"},"b":{"r":"ми́шка","t":"MISCH-ka","d":"Bärchen, Teddy"},"n":"Ein Buchstabe zwischen Maus und Bär."},{"k":"yi","a":{"r":"мы́ло","t":"MY-la","d":"Seife"},"b":{"r":"ми́ло","t":"MI-la","d":"nett, lieb"},"n":"Übe das Paar laut – ы entsteht, wenn du bei „i“ die Zunge zurückziehst."},{"k":"hart","a":{"r":"лук","t":"LUK","d":"Zwiebel; Bogen (Waffe)"},"b":{"r":"люк","t":"LJUK","d":"Luke, Gully"},"n":"у nach hartem л, ю nach weichem л. Der Vokalbuchstabe zeigt an, wie der Konsonant davor klingt."},{"k":"hart","a":{"r":"нос","t":"NOS","d":"Nase"},"b":{"r":"нёс","t":"NJOS","d":"er trug"},"n":"о nach hartem н, ё nach weichem н."},{"k":"hart","a":{"r":"рад","t":"RAT","d":"froh (Kurzform)"},"b":{"r":"ряд","t":"RJAT","d":"Reihe"},"n":"а nach hartem р, я nach weichem р."},{"k":"hart","a":{"r":"плащ","t":"PLASCHTSCH","d":"Regenmantel"},"b":{"r":"плач","t":"PLATSCH","d":"das Weinen"},"n":"щ ist ein langes weiches sch, ч ein kurzes tsch."}];
+const PAAR_KAT={"weich":"ь am Wortende – hart oder weich","tsa":"-ться oder -тся – Infinitiv oder 3. Person","beton":"Betonung ändert die Bedeutung","yi":"ы oder и","hart":"Harter oder weicher Konsonant"};
+const HOERBAR={weich:1,yi:1,hart:1};
+let psess=null;
+function paarStat(){return S.mp||(S.mp={r:0,w:0})}
+function renderPaare(){
+  sess=null;psess=null;
+  const st=paarStat();
+  const ges=st.r+st.w;
+  const kats=Object.keys(PAAR_KAT).map(k=>{
+    const nn=PAARE.filter(x=>x.k===k).length;
+    return '<div class="ctrow" style="margin-bottom:6px">'+
+      '<button class="btn-ghost" onclick="startPaar(\'lesen\',\''+k+'\')">'+esc(PAAR_KAT[k])+' ('+nn+')</button>'+
+      (sndOn()&&HOERBAR[k]?'<button class="btn-ghost" onclick="startPaar(\'hoeren\',\''+k+'\')">🔊</button>':'')+
+      '</div>';
+  }).join('');
+  const hoerN=PAARE.filter(x=>HOERBAR[x.k]).length;
+  $('#view-lernen').innerHTML='<div class="hero"><div class="done-mark">🔍</div>'+
+    '<div class="due-line">Minimalpaare</div>'+
+    '<div class="sub" style="text-align:left">'+PAARE.length+' Wortpaare, die sich in genau einem Detail unterscheiden – ein ь, eine Betonung, ein Vokal. '+
+    'Genau die Stellen, an denen beim Schreiben und beim Hören etwas schiefgeht.</div>'+
+    '<div class="ctrow" style="margin-top:16px">'+
+    (sndOn()?'<button class="btn btn-primary" onclick="startPaar(\'hoeren\',\'alle\')">🔊 Hören: welches Wort war das? ('+hoerN+')</button>':'')+
+    '<button class="'+(sndOn()?'btn-ghost':'btn btn-primary')+'" onclick="startPaar(\'lesen\',\'alle\')">📖 Bedeutung zuordnen</button>'+
+    '</div>'+
+    (sndOn()?'<div class="sub" style="margin-top:8px;font-size:.78rem">Gehört wird nur, was man auch hören <b>kann</b>: ь, ы/и und harte gegen weiche Konsonanten. '+
+             'Betonungspaare bleiben aussen vor, weil die Sprachausgabe die Betonung nicht wiedergibt – und -ться/-тся klingt selbst im echten Russisch gleich. '+
+             'Diese beiden Gruppen übst du über die Bedeutung.</div>'
+            :'<div class="sub" style="margin-top:8px;font-size:.78rem">Zum Hören fehlt eine russische Stimme auf diesem Gerät – die Zuordnung geht trotzdem.</div>')+
+    '<div class="sect" style="margin-top:18px">Einzeln üben</div>'+kats+
+    (ges?'<div class="sub" style="margin-top:14px">Bisher: '+st.r+' von '+ges+' richtig ('+Math.round(100*st.r/ges)+' %)</div>':'')+
+    '<button class="btn-ghost" style="margin-top:10px" onclick="renderHome()">Zurück</button></div>';
+}
+function startPaar(art,kat){
+  let basis=kat==='alle'?PAARE:PAARE.filter(x=>x.k===kat);
+  if(art==='hoeren')basis=basis.filter(x=>HOERBAR[x.k]);
+  const pool=shuffle(basis.slice());
+  if(!pool.length){renderPaare();return}
+  psess={art,kat,q:pool.slice(0,12).map(pr=>({pr,ziel:Math.random()<.5?'a':'b'})),i:0,right:0,wrong:0,answered:false};
+  renderPaar();
+}
+function renderPaar(){
+  const c=psess.q[psess.i],pr=c.pr,ziel=pr[c.ziel];
+  const opts=shuffle([pr.a,pr.b]);
+  psess.opts=opts;
+  const kopf=psess.art==='hoeren'
+    ?'<div class="word" style="font-size:2.2rem">🔊</div>'+
+     '<button class="btn-ghost" onclick="speak(\''+esc(ziel.r).replace(/'/g,'')+'\')">nochmal abspielen</button>'+
+     '<div class="qlabel">Welches Wort war das?</div>'
+    :'<div class="word" style="font-size:1.5rem">'+esc(ziel.d)+'</div>'+
+     '<div class="qlabel">Welches Wort heißt das?</div>';
+  $('#view-lernen').innerHTML=
+    '<div class="sess-top"><span class="cnt">'+(psess.i+1)+' / '+psess.q.length+'</span>'+
+    '<div class="bar"><i style="width:'+Math.round(100*psess.i/psess.q.length)+'%"></i></div>'+
+    '<button class="quit" onclick="renderPaare()">Beenden</button></div>'+
+    '<div class="card" style="text-align:center">'+
+    '<div class="badges"><span class="chip mode">'+esc(PAAR_KAT[pr.k])+'</span></div>'+
+    kopf+
+    '<div class="opts">'+opts.map((o,k)=>'<button class="opt" data-k="'+k+'">'+acc(esc(o.r))+
+      (psess.art==='hoeren'?'':'<small style="display:block;font-family:var(--mono);font-size:.7rem;opacity:.7">['+esc(o.t)+']</small>')+
+      '</button>').join('')+'</div>'+
+    '<div id="pfb"></div></div>';
+  if(psess.art==='hoeren')setTimeout(()=>speak(ziel.r),200);
+  document.querySelectorAll('#view-lernen .opt').forEach(b=>b.onclick=()=>paarAntwort(+b.dataset.k));
+}
+function paarAntwort(k){
+  if(psess.answered)return;
+  psess.answered=true;
+  const c=psess.q[psess.i],pr=c.pr,ziel=pr[c.ziel];
+  const gewaehlt=psess.opts[k];
+  const ok=gewaehlt.r===ziel.r;
+  const st=paarStat();ok?st.r++:st.w++;save();
+  if(ok)psess.right++;else psess.wrong++;
+  document.querySelectorAll('#view-lernen .opt').forEach((b,i)=>{
+    b.disabled=true;
+    if(psess.opts[i].r===ziel.r)b.classList.add('right');
+  });
+  if(!ok)document.querySelectorAll('#view-lernen .opt')[k].classList.add('wrong');
+  $('#pfb').innerHTML='<div class="fb '+(ok?'fb-ok':'fb-no')+'">'+(ok?'✓ Richtig!':'✗ Nicht ganz.')+'</div>'+
+    '<div class="twin" style="margin-top:12px"><div class="ft">Der Unterschied</div>'+
+    '<div class="tw"><b>'+acc(esc(pr.a.r))+'</b><span>'+esc(pr.a.d)+'</span><button class="sp2" data-speak-raw="'+esc(pr.a.r)+'">🔊</button></div>'+
+    '<div class="tw"><b>'+acc(esc(pr.b.r))+'</b><span>'+esc(pr.b.d)+'</span><button class="sp2" data-speak-raw="'+esc(pr.b.r)+'">🔊</button></div>'+
+    '<div class="sub" style="text-align:left;margin-top:8px">'+esc(pr.n)+'</div></div>'+
+    '<div class="grade on grade1"><button class="'+(ok?'g-k':'g-w')+'" onclick="paarNext()">Weiter</button></div>';
+  /* Die 🔊-Knöpfe hängen am globalen Klick-Handler – nichts weiter zu tun. */
+}
+function paarNext(){
+  psess.answered=false;psess.i++;
+  if(psess.i<psess.q.length){renderPaar();return}
+  const r=psess.right,ges=psess.right+psess.wrong;
+  psess=null;
+  $('#view-lernen').innerHTML='<div class="hero"><div class="done-mark">🔍</div>'+
+    '<div class="due-line">Runde geschafft!</div>'+
+    '<div class="sumgrid">'+
+    '<div class="sumbox"><b>'+r+' / '+ges+'</b><span>richtig</span></div>'+
+    '<div class="sumbox"><b>'+(ges?Math.round(100*r/ges):0)+' %</b><span>Trefferquote</span></div>'+
+    '</div>'+
+    '<div class="sub" style="text-align:left;margin-top:12px">Diese Paare zu trennen ist Hörarbeit, keine Vokabelarbeit – kurze Runden öfter bringen mehr als eine lange.</div>'+
+    '<button class="btn btn-primary" onclick="renderPaare()">Noch eine Runde</button><br>'+
+    '<button class="btn-ghost" onclick="renderHome()">Zurück zum Lernen</button></div>';
 }
 function renderRadio(){
   sess=null;
