@@ -2473,7 +2473,7 @@ function speak(txt){
 try{pickRuVoice();speechSynthesis.onvoiceschanged=pickRuVoice}catch(e){}
 
 /* ================= Zustand & Speicher ================= */
-let S={prog:{},part:{},imgNo:{},mp:{r:0,w:0},extras:[],set:{npd:20,dir:'ru',goal:30},streak:0,lastDay:null,frzDay:null,nt:{day:null,n:0},days:{},game:{best:null,rounds:0},abc:{best:null,rounds:0},mnem:{},modeStats:{}};
+let S={prog:{},part:{},imgNo:{},mp:{r:0,w:0},act:{},extras:[],set:{npd:20,dir:'ru',goal:30},streak:0,lastDay:null,frzDay:null,nt:{day:null,n:0},days:{},game:{best:null,rounds:0},abc:{best:null,rounds:0},mnem:{},modeStats:{}};
 let saveT=null,saveFails=0;
 
 /* Speicher-Adapter: im Claude-Chat wird Claudes Speicher genutzt,
@@ -2720,6 +2720,12 @@ function startProblems(){startSession(allWords().filter(w=>isProblem(S.prog[w.i]
    kein Multiple Choice, nur Produzieren. Wer die Bedeutung anklicken kann,
    kann das Wort noch lange nicht schreiben – genau diese Lücke schliesst der
    Modus, und nebenbei findet er Wörter, die nur beim Tippen wackeln. */
+function actMark(kind){
+  const t=todayStr();
+  if(!S.act)S.act={};
+  if(!S.act[t]){S.act={};S.act[t]={}}   /* nur heute aufheben */
+  S.act[t][kind]=(S.act[t][kind]||0)+1;
+}
 function festPool(){
   const out=[];
   allWords().forEach(w=>{
@@ -2772,6 +2778,7 @@ function festNext(){
   }
   sess.done.add(id);
   const t=todayStr();S.days[t]=(S.days[t]||0)+1;
+  actMark('fest');
   save();
   sess.i++;
   if(sess.i>=sess.q.length){festEnde();return}
@@ -3985,7 +3992,7 @@ function paarAntwort(k){
   const c=psess.q[psess.i],pr=c.pr,ziel=pr[c.ziel];
   const gewaehlt=psess.opts[k];
   const ok=gewaehlt.r===ziel.r;
-  const st=paarStat();ok?st.r++:st.w++;save();
+  const st=paarStat();ok?st.r++:st.w++;actMark('paar');save();
   if(ok)psess.right++;else psess.wrong++;
   document.querySelectorAll('#view-lernen .opt').forEach((b,i)=>{
     b.disabled=true;

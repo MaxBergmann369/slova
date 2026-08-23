@@ -93,6 +93,7 @@ header{padding:22px 0 6px}
 /* ---- Tagesplan ---- */
 .planbox{background:var(--card);border:1px solid var(--frost);border-radius:var(--radius);padding:18px}
 .plan-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:4px}
+.planwarn{background:#FFF4E0;border:1px solid #E8C97A;border-radius:10px;padding:10px 12px;margin:10px 0 4px;font-size:.86rem;line-height:1.5;color:#7A5A10}
 .plan-head b{font-family:var(--serif);font-size:1.05rem}
 .plan-head span{font-size:.74rem;color:var(--ink-faint);font-weight:700;white-space:nowrap}
 .plan-bar{height:8px;background:var(--frost);border-radius:99px;overflow:hidden;margin:10px 0 14px}
@@ -145,6 +146,7 @@ header{padding:22px 0 6px}
 <div class="planbox">
   <div class="plan-head"><b id="planTitel">Reihenfolge</b><span id="planZaehler"></span></div>
   <div class="plan-bar"><i id="planBar" style="width:0%"></i></div>
+  <div id="planWarn" class="planwarn" style="display:none"></div>
   <div id="planSteps"></div>
   <p class="hint">Die Reihenfolge ist nicht beliebig: erst abrufen, was schon da ist, dann Neues, dann Lesen und Grammatik – und Sätze zum Schluss, wenn die Wörter frisch sind. Du musst nicht alles schaffen; von oben nach unten ist mehr wert als quer durch.</p>
 </div>
@@ -301,6 +303,7 @@ function planPause(){
 }
 function renderPlan(t,sl,gr,sk,se,seDue){
   const act=(se&&se.act&&se.act[t])||{};
+  const actSl=(sl&&sl.act&&sl.act[t])||{};
   const goal=(sl&&sl.set&&sl.set.goal)||30;
   const npd=(sl&&sl.set&&sl.set.npd)||20;
   const dSl=(sl&&sl.days&&sl.days[t])||0;
@@ -311,16 +314,27 @@ function renderPlan(t,sl,gr,sk,se,seDue){
   /* Der Schritt bleibt stehen, sobald du heute aufgefrischt hast – sonst
      verschwindet er, sobald nichts mehr fällig ist, und die erledigte Arbeit
      zählt nirgends. Genau das ist vorher passiert: 0 von 6 wurde zu 0 von 5. */
+  /* Ab dreissig fälligen Wörtern ist der Rückstand das eigentliche Problem. */
+  const stau=seDue>=30?'gross':seDue>=15?'mittel':'klein';
   if(seDue||(act.ref||0))steps.push({i:'🔁',t:'Auffrischung in СЕРИА́Л',
-    w:seDue?(seDue+' Wörter sind heute fällig – die stehen genau auf der Kippe zwischen sitzt und weg.')
+    w:seDue?(seDue+' Wörter sind fällig'+(seDue>20?' – die App teilt sie in Runden zu 20':'')+
+             '. Die stehen genau auf der Kippe zwischen sitzt und weg.'+
+             (stau==='gross'?' Das ist ein Rückstand – heute geht der vor.':''))
            :'Erledigt – heute ist nichts mehr fällig.',
-    ok:!seDue||(act.ref||0)>=10,href:SER,btn:'Auffrischen'});
+    ok:!seDue,href:SER,btn:'Auffrischen'});
   const seNeu=(se&&se.nt&&se.nt.day===t)?(+se.nt.n||0):0;
-  const restNeu=Math.max(0,npd-seNeu);
+  /* Neue Wörter drosseln, solange der Stapel steht. Zwanzig neue auf vierzig
+     unerledigte draufzulegen macht den Stapel nur schneller unlernbar. */
+  const budget=stau==='gross'?0:stau==='mittel'?Math.round(npd/2):npd;
+  const restNeu=Math.max(0,budget-seNeu);
   steps.push({i:'📘',t:'СЛОВА́ · Tagespensum',
-    w:'Wiederholungen plus bis zu '+restNeu+' neue Wörter'+
-      (seNeu?' ('+seNeu+' von '+npd+' hast du heute schon in СЕРИА́Л angefangen)':'')+
-      '. Heute: '+dSl+' von '+goal+' Karten.',
+    w:(stau==='gross'
+        ?'<b>Heute keine neuen Wörter.</b> Nur Wiederholungen – der Stapel in СЕРИА́Л muss erst runter.'
+        :stau==='mittel'
+        ?'Wiederholungen plus höchstens '+restNeu+' neue Wörter – halbes Pensum, bis der Rückstand weg ist.'
+        :'Wiederholungen plus bis zu '+restNeu+' neue Wörter.')+
+      (seNeu?' ('+seNeu+' hast du heute schon in СЕРИА́Л angefangen.)':'')+
+      ' Heute: '+dSl+' von '+goal+' Karten.',
     ok:dSl>=goal,href:appLink('/slova/','russisch-vokabeltrainer.html'),btn:'Karten lernen'});
   steps.push({i:'📖',t:'Eine Geschichte lesen',
     w:'Hier triffst du die Wörter im Zusammenhang wieder – das ist der Schritt, der aus Vokabeln Sprache macht. СКА́ЗКИ oder eine Kurzgeschichte in СЕРИА́Л.',
@@ -328,6 +342,10 @@ function renderPlan(t,sl,gr,sk,se,seDue){
   steps.push({i:'📺',t:'СЕРИА́Л · Vokabeln zur Folge',
     w:'Dein Hauptstoff: die Wörter aus der Folge, die du als Nächstes schaust.',
     ok:(act.drill||0)>=15,href:SER,btn:'Folge üben'});
+  steps.push({i:'🔨',t:'Festigen · schreiben statt anklicken',
+    w:'Wörter anklicken zu können heisst nicht, sie zu kennen. Eine kurze Runde, in der du sie schreiben musst – das deckt auf, was nur nach Wiedererkennen aussah.',
+    ok:(actSl.fest||0)>=10,
+    href:appLink('/slova/','russisch-vokabeltrainer.html'),btn:'Festigen'});
   steps.push({i:'✍️',t:'ГРАММА́ТИКА',
     w:'Ein Thema reicht. Regeln gehen auch dann noch rein, wenn du für neue Wörter schon zu müde bist.',
     ok:dGr>=10,href:appLink('/slova/grammatik/','grammatik-trainer.html'),btn:'Grammatik üben'});
@@ -335,6 +353,15 @@ function renderPlan(t,sl,gr,sk,se,seDue){
     w:'Zum Schluss, wenn die Wörter von heute noch frisch sind: ein ganzer Satz statt einzelner Vokabeln.',
     ok:(act.dec||0)>=5,href:SER,btn:'Satz-Training'});
 
+  const warn=$('#planWarn');
+  if(warn){
+    warn.style.display=stau==='klein'?'none':'block';
+    warn.innerHTML=stau==='gross'
+      ?'<b>⚠ '+seDue+' Wörter warten auf Auffrischung.</b> Heute keine neuen aufnehmen – sonst wächst der Stapel schneller, als du ihn abarbeiten kannst. Zwei Runden auffrischen sind mehr wert als zwanzig neue Wörter.'
+      :stau==='mittel'
+      ?'<b>'+seDue+' Wörter sind fällig.</b> Nimm heute höchstens halb so viele neue auf wie sonst.'
+      :'';
+  }
   const fertig=steps.filter(s=>s.ok).length;
   $('#planZaehler').textContent=fertig+' von '+steps.length+' erledigt';
   $('#planBar').style.width=Math.round(100*fertig/steps.length)+'%';

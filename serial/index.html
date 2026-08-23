@@ -7182,7 +7182,17 @@ function startPack(pid,mode){
 const addDays=n=>{const d=new Date();d.setDate(d.getDate()+n);return dstr(d)};
 /* Ein Favorit darf nie länger als FAV_IV Tage aus der Rotation verschwinden. */
 const FAV_IV=5;
-function ivCap(w){return isFav(w)?FAV_IV:120}
+const PROD_MODE={type:1,syl:1,half:1};
+const PROD_CAP=7;   /* Tage – solange das Wort nie selbst hergestellt wurde */
+function ivCap(w,st){
+  if(isFav(w))return FAV_IV;
+  if(!st||!((st.hc||0)>0))return PROD_CAP;
+  return 120;
+}
+function prodSchwachSer(st){
+  const nn=((st&&st.hc)||0)+((st&&st.hw)||0);
+  return nn>=3&&(st.hw||0)>=2&&(st.hw||0)/nn>=.4;
+}
 function startRotation(st){if(!st.rd){st.iv=1;st.rd=addDays(1)}}
 function dueRefs(){
   const t=todayStr(),seen=new Set(),out=[];
@@ -7208,7 +7218,7 @@ function startRefresh(){
      wenn mehr fällig ist, als in eine Runde passt. */
   const w=r=>{const p=packById(r.pid);const wd=p&&p.words[r.k];return wd&&isFav(wd)?0:1};
   alle.sort((a,b)=>w(a)-w(b));
-  const use=alle.slice(0,40);
+  const use=alle.slice(0,20);   /* vierzig am Stück sind keine Auffrischung mehr */
   if(!use.length){renderPacks();return}
   sess={srs:true,refs:use,q:use.map((r,i)=>i),i:0,right:0,wrong:0,mode:'mix'};
   renderCard();
@@ -7789,6 +7799,10 @@ function renderCard(){
   const ref=sess.refs?sess.refs[sess.q[sess.i]]:null;
   const p=ref?packById(ref.pid):packById(sess.pid),k=ref?ref.k:sess.q[sess.i],w=p.words[k];
   const st=S.prog[wordKey(p.id,k)];
+  const wk=wordKey(p.id,k);
+  if(!sess.gz)sess.gz={};
+  sess.gz[wk]=(sess.gz[wk]||0)+1;
+  const schonDa=sess.gz[wk]>1;
   let mode=sess.mode;
   if(sess.longd){mode=LADDER[Math.min(sess.st[sess.q[sess.i]].step,LADDER.length-1)]}
   else if(sess.drill){
@@ -7797,7 +7811,10 @@ function renderCard(){
     /* lange Wörter zuerst als Silbenpuzzle – 14 Buchstaben am Stück tippen hilft niemandem */
     if(sess.st[k].ok===1&&isLongWord(w)&&Math.random()<.6)mode='syl';
   }
-  else if(mode==='mix')mode=(st&&st.c>=2)?(Math.random()<.6?'type':'mcRev'):(Math.random()<.5?'mc':'mcRev');
+  else if(mode==='mix'){
+    if(schonDa)mode=(sylOK(w)&&Math.random()<.55)?'syl':'type';   /* zweite Begegnung: selbst herstellen */
+    else mode=(st&&st.c>=2)?(Math.random()<.6?'type':'mcRev'):(Math.random()<.5?'mc':'mcRev');
+  }
   if(mode==='type'&&sylOK(w)&&Math.random()<(isLongWord(w)?.6:.3))mode='syl';
   cur={p,k,w,mode,answered:false,opts:null,goodIdx:-1,optRu:(mode==='mcRev')};
   let front='';
@@ -7910,6 +7927,8 @@ function resolve(ok){
   const warNeu=!S.prog[key];
   const st=S.prog[key]||(S.prog[key]={c:0,w:0});
   if(warNeu)markNeu();
+  /* Produktionsbilanz: nur Schreiben, Silben, Lueckenwort */
+  if(PROD_MODE[cur.mode]){if(ok)st.hc=(st.hc||0)+1;else st.hw=(st.hw||0)+1}
   if(sess.longd){
     const d=sess.st[sess.q[sess.i]];
     if(ok){
@@ -7923,7 +7942,7 @@ function resolve(ok){
   }
   else if(sess.srs){
     /* Auffrischung: richtig → Abstand wächst, falsch → zurück auf morgen */
-    if(ok){st.c=Math.max(st.c,NEED);st.iv=Math.min(ivCap(cur.w),Math.round((st.iv||1)*2.3)+1);st.rd=addDays(st.iv);sess.right++}
+    if(ok){st.c=Math.max(st.c,NEED);st.iv=Math.min(ivCap(cur.w,st),Math.round((st.iv||1)*2.3)+1);st.rd=addDays(st.iv);sess.right++}
     else{st.w++;st.c=1;st.iv=1;st.rd=addDays(1);sess.wrong++;sess.q.push(sess.q[sess.i])}
   }
   else if(sess.drill){
