@@ -110,6 +110,8 @@ nav{position:sticky;top:0;z-index:20;background:var(--paper);padding:12px 0 14px
 .answer{display:none;border-top:1px dashed var(--frost);padding-top:16px;text-align:center}
 .answer.on{display:block;animation:fadeUp .2s ease}
 .trans{font-family:var(--mono);font-size:.95rem;color:var(--gzhel);font-weight:600;letter-spacing:.01em}
+.transhid{background:none;border:1px dashed var(--frost);border-radius:999px;padding:3px 12px;font-family:var(--sans);font-size:.72rem;font-weight:600;color:var(--ink-faint);cursor:pointer;margin:2px auto;display:block}
+.transhid:hover{color:var(--gzhel);border-color:var(--gzhel)}
 .mean{font-size:1.35rem;font-weight:700;margin-top:8px}
 .ex{margin-top:14px;background:var(--paper);border-radius:10px;padding:12px 14px;text-align:left}
 .ex .ru{font-size:1.02rem;font-weight:600}
@@ -350,6 +352,9 @@ textarea#impBox,textarea#bakBox{width:100%;min-height:110px;border:1px solid var
       <select id="setNpd"><option>5</option><option>10</option><option>15</option><option selected>20</option><option>30</option></select></div>
     <div class="setrow"><label>Abfragerichtung (Kognaten-Training)</label>
       <select id="setDir"><option value="ru">Russisch → Deutsch</option><option value="de">Deutsch → Russisch</option><option value="mix">Gemischt</option></select></div>
+    <div class="setrow"><label>Aussprache-Umschrift</label>
+      <select id="setTr"><option value="hide">Erst auf Knopfdruck</option><option value="show">Immer sichtbar</option></select></div>
+    <p class="hint" style="margin:-4px 0 10px">Die Umschrift steht direkt unter dem russischen Wort und zieht den Blick auf sich – man liest dann sie statt der Kyrillica. Eingeklappt lernst du schneller, das Schriftbild selbst zu lesen.</p>
     <div class="setrow"><label>Bilder &amp; Bild-Karten</label>
       <select id="setImg"><option value="1">An – Piktogramme offline, Fotos online</option><option value="0">Aus</option></select></div>
     <p class="hint" style="margin:-4px 0 10px">616 Wörter haben ein festes Piktogramm – das braucht kein Internet und kommt im Bild-Modus als Frage. Fotos von Wikipedia gibt es nur zusätzlich, nur online und nur für konkrete Substantive.</p>
@@ -2907,7 +2912,10 @@ function clozeFor(w){
 }
 function distractors(w,field,n){
   /* Ablenker: gleiche Wortklasse (Substantiv ja/nein) und ähnliche Länge bevorzugen */
-  const norm=o=>field==='d'?String(o.d).toLowerCase().split(/[,;(]/)[0].trim():normRu(o.r);
+  const optKey=r=>String(r).replace(/\s*\([^)]*\)/g,'').toLowerCase().replace(/[^а-яё́\- ]/g,'').replace(/\s+/g,' ').trim();
+  const norm=o=>field==='d'
+    ?String(o.d).toLowerCase().split(/[,;(]/)[0].trim()
+    :optKey(o.r);
   const self=norm(w);
   const isNoun=/^[A-ZÄÖÜ]/.test(String(w.d).trim());
   const len=String(field==='d'?w.d:w.r).length;
@@ -3219,11 +3227,19 @@ function familyHtml(w){ /* Wortfamilie: gleicher Stamm (5 Zeichen) – Wortbildu
   if(!fam.length)return '';
   return '<div class="famrow">👪 Wortfamilie: '+fam.map(o=>acc(esc(o.r))+' <span>('+esc(o.d)+')</span>').join(' · ')+'</div>';
 }
+/* Die Lautschrift steht direkt unter dem Wort und zieht den Blick auf sich –
+   dann liest man die Umschrift statt der Kyrillica. Deshalb standardmässig
+   eingeklappt; wer sie dauerhaft will, stellt das unter „Mehr“ um. */
+function transHtml(w){
+  if(!w||!w.t)return '';
+  if(S.set&&S.set.tr==='show')return '<div class="trans">['+esc(w.t)+']</div>';
+  return '<button class="trans transhid" data-trans="'+esc(w.t)+'">Aussprache zeigen</button>';
+}
 function answerBlock(w){
   return '<div class="cimgwrap" id="imgSlot" data-w="'+w.i+'"></div>'+
     '<div class="word" style="font-size:1.7rem;margin:2px 0 4px">'+acc(esc(w.r))+'</div>'+
     (isLongWord(w)?sylHtml(w):'')+
-    '<div class="trans">['+esc(w.t)+']</div>'+
+    transHtml(w)+
     '<div class="mean">'+esc(w.d)+'</div>'+
     (w.e?'<div class="ex"><div class="ru">'+acc(esc(w.e))+' <button class="sp2" data-speak-ex data-i="'+w.i+'" title="Satz anhören">🔊</button></div><div class="de">'+esc(w.x)+'</div></div>':'')+
     (w.n?'<div class="note">'+esc(w.n)+'</div>':'')+
@@ -3245,13 +3261,23 @@ function editMnem(id){
 }
 
 let cur=null;
+const WAHL_MODE={mc:1,mcRev:1,clozeMC:1};
 function renderCard(forceMode){
   if(!forceMode&&(sess.sinceGame||0)>=9&&sess.done.size>=5){startSessGame();return} /* 🎮 kurze Spielpause */
   const id=sess.q[sess.i],w=byId(id),p=S.prog[id];
+  if(!sess.gz)sess.gz={};
+  sess.gz[id]=(sess.gz[id]||0)+1;
+  const schonDa=sess.gz[id]>1;
   const cl=clozeFor(w);
   const st=sess.words?sess.words[id]:null; /* Mehrfach-Durchgänge nur für neue Wörter */
   let mode=forceMode||(st?modeForPass(w,st,cl):pickMode(w,p,cl));
   if(sess.fest&&!forceMode){const fm=festModi(w,p);mode=fm[Math.floor(Math.random()*fm.length)]}
+  /* Beim zweiten Mal in derselben Runde nicht wieder anklicken lassen: sonst
+     erkennt man die Antwort an ihrer Form, statt sie zu wissen. Neue Wörter
+     erst ab dem ersten Treffer – vorher wäre Tippen zu früh. */
+  if(!forceMode&&schonDa&&WAHL_MODE[mode]&&(!st||st.done>=1)){
+    mode=(cl&&Math.random()<.4)?'clozeType':((isLongWord(w)&&Math.random()<.5)?'syl':'type');
+  }
   if(st)st.last=mode;
   cur={id,w,p,cl,st,mode,ok:false,answered:false,opts:null,goodIdx:-1,optRu:false};
   const chips=[];
@@ -3327,7 +3353,7 @@ function renderCard(forceMode){
       '<button class="skiplink" onclick="skipAV()">🔇 Gerade unpassend – Karte wechseln</button>';
   }else{ /* speech */
     front='<div class="word">'+acc(esc(w.r))+'</div>'+
-      '<div class="trans" style="text-align:center">['+esc(w.t)+']</div>'+
+      transHtml(w)+
       '<div style="text-align:center;font-size:.95rem;color:var(--ink-soft);margin-top:4px">'+esc(w.d)+'</div>'+
       '<button class="mic-btn" id="micBtn" onclick="micStart()">🎤</button>'+
       '<div class="mic-status" id="micStatus">Tippe aufs Mikro und sprich das Wort.</div>'+
@@ -3743,7 +3769,7 @@ function renderCogCard(){
     :'<div class="word-de">'+esc(w.d)+'</div>';
   const ans=
     (dir==='de'?'<div class="word" style="font-size:1.9rem;margin:2px 0 6px">'+acc(esc(w.r))+'</div>':'')+
-    '<div class="trans">['+esc(w.t)+']</div>'+
+    transHtml(w)+
     (dir==='ru'?'<div class="mean">'+esc(w.d)+'</div>':'<button class="speak" data-speak data-i="'+id+'">🔊</button>')+
     (w.e?'<div class="ex"><div class="ru">'+acc(esc(w.e))+' <button class="sp2" data-speak-ex data-i="'+id+'" title="Satz anhören">🔊</button></div><div class="de">'+esc(w.x)+'</div></div>':'')+
     (w.n?'<div class="note">'+esc(w.n)+'</div>':'');
@@ -4448,6 +4474,8 @@ function tab(name){
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>tab(b.dataset.tab));
 
 document.addEventListener('click',e=>{
+  const tr=e.target.closest('[data-trans]');
+  if(tr){tr.outerHTML='<div class="trans">['+esc(tr.dataset.trans)+']</div>';return}
   const raw=e.target.closest('[data-speak-raw]');
   if(raw){speak(raw.dataset.speakRaw);return}
   const b=e.target.closest('[data-speak],[data-speak-ex]');
@@ -4619,6 +4647,8 @@ function buildAppNav(cur){
   $('#setDir').value=S.set.dir;
   $('#setNpd').onchange=e=>{S.set.npd=+e.target.value;save();if(!sess)renderHome()};
   $('#setDir').onchange=e=>{S.set.dir=e.target.value;save()};
+  $('#setTr').value=S.set.tr==='show'?'show':'hide';
+  $('#setTr').onchange=e=>{S.set.tr=e.target.value;save();if(!sess)renderHome()};
   $('#setImg').value=S.set.img===false?'0':'1';
   $('#setImg').onchange=e=>{S.set.img=e.target.value==='1';save()};
   $('#setGoal').value=String(S.set.goal||30);

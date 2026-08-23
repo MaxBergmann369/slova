@@ -7762,7 +7762,9 @@ function typeHtml(){
 function distract(p,k,field,n){
   const self=p.words[k][field];
   const isNoun=/^[A-ZÄÖÜ]/.test(String(p.words[k].d).trim());
-  const nrm=s=>String(s).replace(/́/g,'').toLowerCase();
+  /* Klammerzusätze weg, Betonung bleibt: есть (ем) und есть sind dasselbe
+     Wort, за́мок und замо́к sind zwei verschiedene. */
+  const nrm=s=>String(s).replace(/\s*\([^)]*\)/g,'').toLowerCase();
   const a=nrm(self);
   const scored=[];
   p.words.forEach((w,j)=>{
@@ -7770,6 +7772,7 @@ function distract(p,k,field,n){
     const v=w[field];
     if(!v||v===self)return;
     const b=nrm(v);
+    if(b===a)return;   /* gleiches Wort, nur anders annotiert */
     let s=0;
     if(/^[A-ZÄÖÜ]/.test(String(w.d).trim())===isNoun)s+=8;      /* Substantiv oder nicht */
     s+=Math.max(0,6-Math.abs(b.length-a.length));                /* ähnlich lang */
