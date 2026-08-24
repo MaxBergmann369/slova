@@ -93,6 +93,11 @@ header{padding:22px 0 6px}
 /* ---- Tagesplan ---- */
 .planbox{background:var(--card);border:1px solid var(--frost);border-radius:var(--radius);padding:18px}
 .plan-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:4px}
+.planmin{margin:0 0 14px;padding:11px 14px;border-radius:12px;font-size:.86rem;line-height:1.55;text-align:left}
+.planmin.offen{background:#EEF3FB;border:1px solid #C3D4EC;color:#2B4C6F}
+.planmin.erfuellt{background:#EEF6EC;border:1px solid #BFD9B8;color:#3E5C38}
+.planmin b{display:block;font-family:var(--serif,Georgia);font-size:.95rem;margin-bottom:2px}
+.abhak{display:inline-block;margin-top:9px;margin-left:8px;font-size:.8rem;font-weight:600;padding:7px 12px;border-radius:9px;border:1px solid var(--frost,#C3D4EC);background:transparent;cursor:pointer;color:inherit}
 .planwarn{background:#FFF4E0;border:1px solid #E8C97A;border-radius:10px;padding:10px 12px;margin:10px 0 4px;font-size:.86rem;line-height:1.5;color:#7A5A10}
 .plan-head b{font-family:var(--serif);font-size:1.05rem}
 .plan-head span{font-size:.74rem;color:var(--ink-faint);font-weight:700;white-space:nowrap}
@@ -147,6 +152,7 @@ header{padding:22px 0 6px}
   <div class="plan-head"><b id="planTitel">Reihenfolge</b><span id="planZaehler"></span></div>
   <div class="plan-bar"><i id="planBar" style="width:0%"></i></div>
   <div id="planWarn" class="planwarn" style="display:none"></div>
+  <div id="planMin"></div>
   <div id="planSteps"></div>
   <p class="hint">Die Reihenfolge ist nicht beliebig: erst abrufen, was schon da ist, dann Neues, dann Lesen und Grammatik – und Sätze zum Schluss, wenn die Wörter frisch sind. Du musst nicht alles schaffen; von oben nach unten ist mehr wert als quer durch.</p>
 </div>
@@ -301,6 +307,14 @@ function planPause(){
   }else slot.innerHTML='';
   return rest>0;
 }
+/* Lautes Sprechen kann die App nicht messen – es passiert im Zimmer, nicht
+   im Browser. Also hakt man es selbst ab; gespeichert wird nur das Datum. */
+const LAUT_KEY='russisch-laut-v1';
+function lautTag(){try{return localStorage.getItem(LAUT_KEY)||''}catch(e){return ''}}
+function lautFertig(){
+  try{localStorage.setItem(LAUT_KEY,dstr(new Date()))}catch(e){}
+  render();
+}
 function renderPlan(t,sl,gr,sk,se,seDue){
   const act=(se&&se.act&&se.act[t])||{};
   const actSl=(sl&&sl.act&&sl.act[t])||{};
@@ -349,9 +363,33 @@ function renderPlan(t,sl,gr,sk,se,seDue){
   steps.push({i:'✍️',t:'ГРАММА́ТИКА',
     w:'Ein Thema reicht. Regeln gehen auch dann noch rein, wenn du für neue Wörter schon zu müde bist.',
     ok:dGr>=10,href:appLink('/slova/grammatik/','grammatik-trainer.html'),btn:'Grammatik üben'});
+  steps.push({i:'🗣️',t:'Einmal laut',
+    w:'Nimm einen Satz von heute – aus einer Karte, einer Geschichte oder der Folge – und sprich ihn laut nach. Danach sag in einem Satz mit eigenen Worten, worum es ging. Auch holprig, auch mit Fehlern: was du selbst ausgesprochen hast, sitzt anders als was du nur wiedererkannt hast. Ein bis zwei Minuten reichen.',
+    ok:lautTag()===t,href:appLink('/slova/','russisch-vokabeltrainer.html'),btn:'Audio-Modus öffnen',
+    mark:'lautFertig()'});
   steps.push({i:'🔍',t:'Sätze entschlüsseln',
     w:'Zum Schluss, wenn die Wörter von heute noch frisch sind: ein ganzer Satz statt einzelner Vokabeln.',
     ok:(act.dec||0)>=5,href:SER,btn:'Satz-Training'});
+
+  /* Das Minimum ist bewusst winzig: nicht „gut gelernt“, sondern „heute nicht
+     bei null“. Wer nie einen ganzen Tag auslässt, kommt weiter als wer einmal
+     die Woche drei Stunden macht. */
+  const minTeile=[
+    {n:'10 Karten in СЛОВА́',    ist:dSl,                soll:10},
+    {n:'eine Auffrischrunde',   ist:(act.ref||0),       soll:1},
+    {n:'10 Grammatik-Aufgaben', ist:dGr,                soll:10},
+    {n:'eine Seite lesen',      ist:dSk+(act.story||0), soll:1}
+  ];
+  const minOk=minTeile.some(x=>x.ist>=x.soll);
+  const minBox=$('#planMin');
+  if(minBox){
+    minBox.className='planmin '+(minOk?'erfuellt':'offen');
+    minBox.innerHTML=minOk
+      ? '<b>✓ Tagesminimum steht</b>Der Tag zählt – egal, was vom Plan unten noch offen ist. Alles Weitere ist Zugabe.'
+      : '<b>Tagesminimum · rund drei Minuten</b>Eines davon reicht, damit der Tag zählt: '+
+        minTeile.map(x=>x.n).join(' · ')+'.<br>'+
+        'Zehn Minuten jeden Tag bringen mehr als drei Stunden am Samstag. Wichtig ist nur, keinen ganzen Tag ausfallen zu lassen.';
+  }
 
   const warn=$('#planWarn');
   if(warn){
@@ -387,6 +425,7 @@ function renderPlan(t,sl,gr,sk,se,seDue){
       '<div class="st">'+s.i+' <span class="stt">'+acc(s.t)+'</span></div>'+
       '<div class="sw">'+s.w+'</div>'+
       (i===jetzt&&!inPause?'<a class="go" href="'+s.href+'">'+s.btn+' →</a>':'')+
+      (i===jetzt&&!inPause&&s.mark?'<button class="abhak" onclick="'+s.mark+'">Hab ich gemacht</button>':'')+
       '</div></div>';
   }).join('');
 }
