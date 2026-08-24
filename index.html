@@ -410,7 +410,7 @@ textarea#impBox,textarea#bakBox{width:100%;min-height:110px;border:1px solid var
 
   <div class="panel">
     <h3>Wörter importieren</h3>
-    <p class="hint">Der Grundstock von 2000 Wörtern ist fest eingebaut, dazu 233 Ergänzungen aus den Wortfamilien. Über den Import kannst du trotzdem jederzeit eigene Wörter ergänzen (im JSON-Format, siehe grauer Beispieltext).<br>
+    <p class="hint">Der Grundstock von 2000 Wörtern ist fest eingebaut, dazu Ergänzungen aus den Wortfamilien und 67 Wörter für B1/B2-Themen. Über den Import kannst du trotzdem jederzeit eigene Wörter ergänzen (im JSON-Format, siehe grauer Beispieltext).<br>
       Wörter aus СЕРИА́Л bringen ihren Lernstand mit: Was du dort schon gemeistert hast, startet hier nicht bei null, sondern direkt im passenden Wiederholungsabstand – und zählt nicht gegen dein Tageslimit für neue Wörter.</p>
     <textarea id="impBox" placeholder='[{"r":"стол","t":"stol","d":"Tisch","e":"Э́то мой стол.","x":"Das ist mein Tisch.","g":0}]'></textarea>
     <button class="btn-sm" id="impBtn">Importieren</button>
@@ -433,7 +433,7 @@ textarea#impBox,textarea#bakBox{width:100%;min-height:110px;border:1px solid var
     <div class="msg" id="dataMsg"></div>
   </div>
 
-  <p class="foot">2000 Wörter nach Häufigkeit (angelehnt an gängige Frequenzlisten), dazu 233 Wörter aus den Wortfamilien.<br>≈ DE/EN markiert Wörter, die ähnlich wie im Deutschen oder Englischen klingen.</p>
+  <p class="foot">2000 Wörter nach Häufigkeit (angelehnt an gängige Frequenzlisten), dazu Wörter aus den Wortfamilien und 67 für B1/B2-Themen.<br>≈ DE/EN markiert Wörter, die ähnlich wie im Deutschen oder Englischen klingen.</p>
 </section>
 
 </div>
@@ -2808,7 +2808,78 @@ const FAM_WORDS=[
 {i:9231,r:"водопрово́д",t:"wa-da-pra-WOT",d:"Wasserleitung",e:"В до́ме есть водопрово́д.",x:"Im Haus gibt es fließendes Wasser.",n:"Aus вода́ und води́ть: was das Wasser führt."},
 {i:9232,r:"со́тый",t:"SSO-tyj",d:"der hundertste",e:"Сего́дня со́тый день.",x:"Heute ist der hundertste Tag.",n:"Ordnungszahl zu сто."},
 {i:9233,r:"времена́ми",t:"wri-mi-NA-mi",d:"zeitweise, ab und zu",e:"Времена́ми быва́ет тру́дно.",x:"Zeitweise ist es schwer.",n:"Instrumental Plural von вре́мя – als Adverb erstarrt."}];
-function allWords(){return VOCAB.concat(FAM_WORDS,S.extras)}
+/* Themenwortschatz B1/B2. Die Häufigkeitsliste deckt den Kern ab und
+   СЕРИА́Л die Erzählsprache – was fehlte, waren Arbeit, Wirtschaft, Umwelt
+   und die Mittel zum Argumentieren. Genau die verlangt B2. */
+const THEMA_WORDS=[
+{i:9501,r:"работода́тель",t:"ra-ba-ta-DA-tilj",d:"Arbeitgeber",e:"Мой работода́тель опла́чивает ку́рсы.",x:"Mein Arbeitgeber bezahlt die Kurse.",n:"Aus рабо́та und дать: wer Arbeit gibt. Der Arbeitnehmer ist рабо́тник oder сотру́дник."},
+{i:9502,r:"до́лжность",t:"DOLSCH-nastj",d:"Stelle, Position",e:"Он получи́л но́вую до́лжность.",x:"Er hat eine neue Stelle bekommen.",n:"Die Position im Betrieb, weiblich auf -ь. Von до́лжен: was man zu tun hat."},
+{i:9503,r:"вака́нсия",t:"wa-KAN-ssi-ja",d:"freie Stelle",e:"На са́йте есть интере́сная вака́нсия.",x:"Auf der Website gibt es eine interessante Stelle.",n:"Die ausgeschriebene Stelle. Aus dem Lateinischen: die leere."},
+{i:9504,r:"резюме́",t:"ri-sju-ME",d:"Lebenslauf",e:"Отпра́вьте резюме́ до пя́тницы.",x:"Schicken Sie den Lebenslauf bis Freitag.",n:"Unveränderlich: два резюме́. Aus dem Französischen. Nicht „Resümee“ im deutschen Sinn."},
+{i:9505,r:"стажиро́вка",t:"sta-schi-ROF-ka",d:"Praktikum",e:"Ле́том у меня́ была́ стажиро́вка в фи́рме.",x:"Im Sommer hatte ich ein Praktikum in der Firma.",n:"Das Praktikum im Beruf. Der Praktikant ist стажёр."},
+{i:9506,r:"испыта́тельный срок",t:"is-py-TA-tilj-nyj ssrok",d:"Probezeit",e:"Испыта́тельный срок — три ме́сяца.",x:"Die Probezeit dauert drei Monate.",n:"Aus испыта́ние, der Prüfung, und срок, der Frist."},
+{i:9507,r:"трудово́й догово́р",t:"tru-da-WOJ da-ga-WOR",d:"Arbeitsvertrag",e:"Мы подписа́ли трудово́й догово́р.",x:"Wir haben den Arbeitsvertrag unterschrieben.",n:"Von труд und догово́р. Betonung im zweiten Wort hinten: догово́р."},
+{i:9508,r:"увольне́ние",t:"u-walj-NJE-ni-je",d:"Kündigung, Entlassung",e:"Он не ожида́л увольне́ния.",x:"Er hat die Kündigung nicht erwartet.",n:"Von уво́лить. Selbst kündigen heißt уво́литься – dann sagt man увольне́ние по со́бственному жела́нию."},
+{i:9509,r:"повыше́ние",t:"pa-wy-SCHE-ni-je",d:"Beförderung; Erhöhung",e:"Она́ получи́ла повыше́ние.",x:"Sie wurde befördert.",n:"Von повы́сить: die Beförderung – und jede Erhöhung, повыше́ние цен."},
+{i:9510,r:"колле́ктив",t:"ka-lik-TIF",d:"Team, Belegschaft",e:"У нас дру́жный колле́ктив.",x:"Wir haben ein gutes Team.",n:"Die Belegschaft als Gruppe. Der einzelne Kollege ist колле́га."},
+{i:9511,r:"сотру́дничество",t:"sa-TRUD-ni-tschist-wa",d:"Zusammenarbeit",e:"Спаси́бо за сотру́дничество!",x:"Danke für die Zusammenarbeit!",n:"Aus со- und труд: gemeinsame Arbeit. Standardformel am Ende von Geschäftsbriefen."},
+{i:9512,r:"совеща́ние",t:"ssa-wi-SCHTSCHA-ni-je",d:"Besprechung, Sitzung",e:"Совеща́ние начина́ется в де́сять.",x:"Die Besprechung beginnt um zehn.",n:"Die förmliche Besprechung im Betrieb. Von сове́т, dem Rat."},
+{i:9513,r:"сверхуро́чные",t:"swirch-u-ROTSCH-ny-je",d:"Überstunden",e:"Сверхуро́чные опла́чиваются отде́льно.",x:"Überstunden werden extra bezahlt.",n:"Nur Plural, substantiviertes Adjektiv. Aus сверх (über) und уро́к im alten Sinn von Pensum."},
+{i:9514,r:"больни́чный",t:"balj-NITSCH-nyj",d:"Krankschreibung",e:"Я на больни́чном.",x:"Ich bin krankgeschrieben.",n:"Substantiviertes Adjektiv, verkürzt aus больни́чный лист. Von больни́ца."},
+{i:9515,r:"отве́тственность",t:"at-WJET-stwi-nastj",d:"Verantwortung",e:"Э́то больша́я отве́тственность.",x:"Das ist eine große Verantwortung.",n:"Von отве́т: wofür man Antwort geben muss. Verantwortung tragen heißt нести́ отве́тственность."},
+{i:9516,r:"на́вык",t:"NA-wyk",d:"Fertigkeit, Skill",e:"Э́то поле́зный на́вык.",x:"Das ist eine nützliche Fertigkeit.",n:"Die eingeübte Fähigkeit – von привы́чка, der Gewohnheit. Das Talent ist спосо́бность."},
+{i:9517,r:"квалифика́ция",t:"kwa-li-fi-KA-zy-ja",d:"Qualifikation",e:"Ему́ не хвата́ет квалифика́ции.",x:"Ihm fehlt die Qualifikation.",n:"Die formale Eignung. Sich weiterbilden heißt повы́сить квалифика́цию."},
+{i:9518,r:"предприя́тие",t:"prit-pri-JA-ti-je",d:"Betrieb, Unternehmen",e:"Он рабо́тает на большо́м предприя́тии.",x:"Er arbeitet in einem großen Betrieb.",n:"Von предприня́ть, unternehmen. Die kleine Firma ist фи́рма, der Konzern конце́рн."},
+{i:9519,r:"о́трасль",t:"O-trasslj",d:"Branche, Wirtschaftszweig",e:"Э́та о́трасль бы́стро растёт.",x:"Diese Branche wächst schnell.",n:"Weiblich auf -ь. Von расти́ – wörtlich ein Zweig, der herauswächst."},
+{i:9520,r:"конкуре́нция",t:"kan-ku-REN-zy-ja",d:"Konkurrenz, Wettbewerb",e:"На ры́нке си́льная конкуре́нция.",x:"Auf dem Markt herrscht starke Konkurrenz.",n:"Der Mitbewerber ist конкуре́нт. Der sportliche Wettkampf dagegen ist соревнова́ние."},
+{i:9521,r:"поставщи́к",t:"pa-staf-SCHTSCHIK",d:"Lieferant",e:"Поставщи́к задержа́л това́р.",x:"Der Lieferant hat die Ware verzögert.",n:"Von поста́вить, hinstellen: wer liefert. Die Lieferung ist поста́вка."},
+{i:9522,r:"дохо́д",t:"da-CHOT",d:"Einkommen, Einnahme",e:"У них небольшо́й дохо́д.",x:"Sie haben ein kleines Einkommen.",n:"Was hereinkommt – von доходи́ть. Das Gegenstück ist расхо́д."},
+{i:9523,r:"расхо́д",t:"ras-CHOT",d:"Ausgabe, Aufwand",e:"На́до сократи́ть расхо́ды.",x:"Man muss die Ausgaben senken.",n:"Was hinausgeht, meist Plural: расхо́ды. Das Gegenstück ist дохо́д."},
+{i:9524,r:"сто́имость",t:"STO-i-mastj",d:"Kosten, Wert",e:"Сто́имость биле́та вы́росла.",x:"Der Ticketpreis ist gestiegen.",n:"Weiblich auf -ь, von сто́ить. Sachlicher als цена́ – steht auf Rechnungen und in Verträgen."},
+{i:9525,r:"убы́ток",t:"u-BY-tak",d:"Verlust (finanziell)",e:"Фи́рма рабо́тала в убы́ток.",x:"Die Firma arbeitete mit Verlust.",n:"Flüchtiges о: убы́ток, aber убы́тка. Das Gegenstück ist при́быль."},
+{i:9526,r:"креди́т",t:"kri-DIT",d:"Kredit, Darlehen",e:"Мы взя́ли креди́т на кварти́ру.",x:"Wir haben einen Kredit für die Wohnung aufgenommen.",n:"Einen Kredit aufnehmen heißt взять креди́т, nicht „nehmen“ mit брать allein."},
+{i:9527,r:"инвести́ция",t:"in-wi-SSTI-zy-ja",d:"Investition",e:"Э́то хоро́шая инвести́ция в бу́дущее.",x:"Das ist eine gute Investition in die Zukunft.",n:"Meist Plural: инвести́ции. Investieren heißt вкла́дывать, wörtlich hineinlegen."},
+{i:9528,r:"нало́г",t:"na-LOK",d:"Steuer",e:"Нало́ги на́до плати́ть во́время.",x:"Steuern muss man rechtzeitig zahlen.",n:"Von налага́ть, auferlegen. Das Finanzamt ist нало́говая."},
+{i:9529,r:"окружа́ющая среда́",t:"a-kru-SCHA-ju-schtscha-ja ssri-DA",d:"Umwelt",e:"Мы должны́ бере́чь окружа́ющую среду́.",x:"Wir müssen die Umwelt schützen.",n:"Wörtlich „die umgebende Umgebung“ – von окружа́ть. Среда́ allein heißt auch Mittwoch."},
+{i:9530,r:"эколо́гия",t:"e-ka-LO-gi-ja",d:"Ökologie; Umweltlage",e:"В го́роде плоха́я эколо́гия.",x:"In der Stadt ist die Umweltlage schlecht.",n:"Im Russischen nicht nur die Wissenschaft – im Alltag steht es für den Zustand der Umwelt."},
+{i:9531,r:"загрязне́ние",t:"sa-gris-NJE-ni-je",d:"Verschmutzung",e:"Загрязне́ние во́здуха растёт.",x:"Die Luftverschmutzung nimmt zu.",n:"Von грязь, dem Schmutz. Verschmutzen heißt загрязня́ть."},
+{i:9532,r:"загрязня́ть",t:"sa-gris-NJATJ",d:"verschmutzen",e:"Заво́ды загрязня́ют ре́ку.",x:"Die Fabriken verschmutzen den Fluss.",n:"Von грязь. Einmal verschmutzt ist загрязни́ть."},
+{i:9533,r:"перерабо́тка",t:"pi-ri-ra-BOT-ka",d:"Recycling, Verarbeitung",e:"Пла́стик идёт на перерабо́тку.",x:"Das Plastik geht ins Recycling.",n:"Wörtlich „Umarbeitung“, von рабо́та. Auch: die Verarbeitung von Rohstoffen."},
+{i:9534,r:"сортиро́вка му́сора",t:"sar-ti-ROF-ka MU-ssa-ra",d:"Mülltrennung",e:"В на́шем до́ме есть сортиро́вка му́сора.",x:"In unserem Haus gibt es Mülltrennung.",n:"Wörtlich „Sortierung des Mülls“ – му́сор steht im Genitiv."},
+{i:9535,r:"вы́бросы",t:"WY-bra-ssy",d:"Emissionen",e:"На́до сократи́ть вы́бросы CO₂.",x:"Man muss die CO₂-Emissionen senken.",n:"Nur Plural, von вы́бросить, hinauswerfen. Wörtlich das Ausgeworfene."},
+{i:9536,r:"парнико́вый эффе́кт",t:"par-ni-KO-wyj e-FEKT",d:"Treibhauseffekt",e:"Парнико́вый эффе́кт ме́няет кли́мат.",x:"Der Treibhauseffekt verändert das Klima.",n:"Von парни́к, dem Treibhaus – und das von пар, dem Dampf."},
+{i:9537,r:"ресу́рс",t:"ri-SSURS",d:"Ressource",e:"Вода́ — це́нный ресу́рс.",x:"Wasser ist eine wertvolle Ressource.",n:"Meist Plural: приро́дные ресу́рсы, die Naturressourcen."},
+{i:9538,r:"возобновля́емый",t:"wa-sab-naw-LJA-i-myj",d:"erneuerbar",e:"Возобновля́емые исто́чники эне́ргии — бу́дущее.",x:"Erneuerbare Energiequellen sind die Zukunft.",n:"Von обнови́ть, erneuern. Fast nur in dieser einen Verbindung gebraucht."},
+{i:9539,r:"вымира́ние",t:"wy-mi-RA-ni-je",d:"Aussterben",e:"Мно́гим ви́дам грози́т вымира́ние.",x:"Vielen Arten droht das Aussterben.",n:"Von умере́ть. Aussterben als Verb ist вымира́ть."},
+{i:9540,r:"запове́дник",t:"sa-pa-WJED-nik",d:"Naturschutzgebiet",e:"Мы е́здили в запове́дник.",x:"Wir sind ins Naturschutzgebiet gefahren.",n:"Von за́поведь, dem Gebot: ein Ort, an dem etwas geboten ist."},
+{i:9541,r:"охра́на приро́ды",t:"a-CHRA-na pri-RO-dy",d:"Naturschutz",e:"Он рабо́тает в охра́не приро́ды.",x:"Er arbeitet im Naturschutz.",n:"Von охраня́ть, bewachen. Приро́да steht im Genitiv."},
+{i:9542,r:"ле́дник",t:"LJED-nik",d:"Gletscher",e:"Ледники́ та́ют ка́ждый год.",x:"Die Gletscher schmelzen jedes Jahr.",n:"Von лёд, dem Eis. Plural ледники́ mit Betonung hinten."},
+{i:9543,r:"за́суха",t:"SA-ssu-cha",d:"Dürre",e:"Ле́том была́ си́льная за́суха.",x:"Im Sommer gab es eine schwere Dürre.",n:"Von сухо́й, trocken. Das Gegenteil ist наводне́ние, die Überschwemmung."},
+{i:9544,r:"по́чва",t:"POTSCH-wa",d:"Boden, Erdreich",e:"Здесь плодоро́дная по́чва.",x:"Hier ist der Boden fruchtbar.",n:"Der Boden zum Bepflanzen. Der Fußboden ist пол, die Erde земля́."},
+{i:9545,r:"нефть",t:"njeftj",d:"Erdöl",e:"Цена́ на нефть упа́ла.",x:"Der Ölpreis ist gefallen.",n:"Weiblich auf -ь. Das Speiseöl dagegen ist ма́сло."},
+{i:9546,r:"то́пливо",t:"TOP-li-wa",d:"Brennstoff, Treibstoff",e:"Э́то то́пливо дорого́е.",x:"Dieser Treibstoff ist teuer.",n:"Von топи́ть, heizen. Der Sprit an der Tankstelle ist бензи́н."},
+{i:9547,r:"упако́вка",t:"u-pa-KOF-ka",d:"Verpackung",e:"Сли́шком мно́го упако́вки!",x:"Zu viel Verpackung!",n:"Von паковать, packen. Einpacken heißt упакова́ть."},
+{i:9548,r:"одноразо́вый",t:"ad-na-ra-SO-wyj",d:"Einweg-, Wegwerf-",e:"Одноразо́вая посу́да — э́то мно́го му́сора.",x:"Einweggeschirr bedeutet viel Müll.",n:"Aus оди́н und раз: „einmalig“. Das Gegenteil ist многоразо́вый."},
+{i:9549,r:"многоразо́вый",t:"mna-ga-ra-SO-wyj",d:"Mehrweg-, wiederverwendbar",e:"Я беру́ многоразо́вую буты́лку.",x:"Ich nehme eine Mehrwegflasche.",n:"Aus мно́го und раз: für viele Male. Das Gegenteil ist одноразо́вый."},
+{i:9550,r:"усто́йчивый",t:"u-STOJ-tschi-wyj",d:"nachhaltig; stabil",e:"Нам ну́жно усто́йчивое разви́тие.",x:"Wir brauchen nachhaltige Entwicklung.",n:"Von стоя́ть: was stehen bleibt. Nachhaltigkeit heißt усто́йчивость."},
+{i:9551,r:"влия́ние",t:"wli-JA-ni-je",d:"Einfluss",e:"Э́то си́льно влия́ет на кли́мат.",x:"Das beeinflusst das Klima stark.",n:"Wörtlich „das Hineingießen“, von лить. Einfluss haben heißt име́ть влия́ние."},
+{i:9552,r:"влия́ть",t:"wli-JATJ",d:"beeinflussen",e:"Пого́да влия́ет на настрое́ние.",x:"Das Wetter beeinflusst die Stimmung.",n:"Immer mit на + Akkusativ – nie mit direktem Objekt."},
+{i:9553,r:"сократи́ть",t:"sa-kra-TITJ",d:"reduzieren, kürzen",e:"Ну́жно сократи́ть расхо́ды.",x:"Man muss die Ausgaben senken.",n:"Von коро́ткий, kurz. Auch: Personal abbauen, einen Text kürzen."},
+{i:9554,r:"разви́тие",t:"raz-WI-ti-je",d:"Entwicklung",e:"Э́то ва́жно для разви́тия ребёнка.",x:"Das ist wichtig für die Entwicklung des Kindes.",n:"Von развива́ться. Auch der Verlauf einer Sache: разви́тие собы́тий."},
+{i:9555,r:"госуда́рство",t:"ga-ssu-DARST-wa",d:"Staat",e:"Госуда́рство подде́рживает семьи́.",x:"Der Staat unterstützt Familien.",n:"Von госуда́рь, dem Herrscher. Staatlich heißt госуда́рственный."},
+{i:9556,r:"вы́боры",t:"WY-ba-ry",d:"Wahl(en)",e:"Вы́боры бу́дут в ма́рте.",x:"Die Wahlen sind im März.",n:"Nur Plural, von вы́брать. Die Wahl im Sinn von Auswahl ist вы́бор, Singular."},
+{i:9557,r:"ра́венство",t:"RA-win-stwa",d:"Gleichheit",e:"Ра́венство пе́ред зако́ном.",x:"Gleichheit vor dem Gesetz.",n:"Von ра́вный, gleich. Die Ungleichheit ist нера́венство."},
+{i:9558,r:"утвержда́ть",t:"ut-wirsch-DATJ",d:"behaupten",e:"Он утвержда́ет, что был до́ма.",x:"Er behauptet, er sei zu Hause gewesen.",n:"Etwas als sicher hinstellen – und amtlich: genehmigen, bestätigen."},
+{i:9559,r:"аргуме́нт",t:"ar-gu-MENT",d:"Argument",e:"У тебя́ есть аргуме́нты?",x:"Hast du Argumente?",n:"Ein Argument anführen heißt приводи́ть аргуме́нт."},
+{i:9560,r:"то́чка зре́ния",t:"TOTSCH-ka SRJE-ni-ja",d:"Standpunkt, Sichtweise",e:"С мое́й то́чки зре́ния, э́то оши́бка.",x:"Aus meiner Sicht ist das ein Fehler.",n:"Wörtlich „Punkt des Sehens“, von зре́ние. Die feste Wendung lautet с то́чки зре́ния + Genitiv."},
+{i:9561,r:"кро́ме того́",t:"KRO-mi ta-WO",d:"außerdem",e:"Кро́ме того́, э́то до́рого.",x:"Außerdem ist es teuer.",n:"Verbindet Argumente. Als Einschub am Satzanfang, mit Komma."},
+{i:9562,r:"с одно́й стороны́",t:"ss ad-NOJ sta-ra-NY",d:"einerseits",e:"С одно́й стороны́, э́то удо́бно.",x:"Einerseits ist es bequem.",n:"Die Fortsetzung lautet с друго́й стороны́ – andererseits. Fast immer als Paar."},
+{i:9563,r:"тем не ме́нее",t:"tem ni MJE-ni-je",d:"dennoch, trotzdem",e:"Тем не ме́нее, я согла́сен.",x:"Dennoch stimme ich zu.",n:"Schriftsprachlich. Im Gespräch sagt man всё равно́ oder всё-таки."},
+{i:9564,r:"на мой взгляд",t:"na moj wsgljat",d:"meiner Ansicht nach",e:"На мой взгляд, э́то пра́вильно.",x:"Meiner Ansicht nach ist das richtig.",n:"Wörtlich „auf meinen Blick“. Etwas weicher als по-мо́ему."},
+{i:9565,r:"де́ло в том, что",t:"DJE-la f tom schta",d:"die Sache ist die, dass",e:"Де́ло в том, что я не успе́л.",x:"Die Sache ist die, dass ich es nicht geschafft habe.",n:"Leitet eine Erklärung ein – sehr häufig im Gespräch."},
+{i:9566,r:"сле́довательно",t:"SSLJE-da-wa-tilj-na",d:"folglich",e:"Он не пришёл, сле́довательно, заболе́л.",x:"Er kam nicht, folglich ist er krank geworden.",n:"Schriftsprachlich, von сле́довать. Im Gespräch sagt man зна́чит."},
+{i:9567,r:"обрати́ть внима́ние",t:"a-bra-TITJ wni-MA-ni-je",d:"aufmerksam machen, beachten",e:"Обрати́те внима́ние на дета́ли.",x:"Achten Sie auf die Details.",n:"Mit на + Akkusativ. Die Dauerform ist обраща́ть внима́ние."}];
+function allWords(){return VOCAB.concat(FAM_WORDS,THEMA_WORDS,S.extras)}
 /* ---- Gemeinsamer Wortindex ----------------------------------------------
    СКА́ЗКИ hat keinen Zugriff auf VOCAB oder PACKS – die stehen in anderen
    Dateien. Deshalb legt jede Vokabel-App beim Start ihre Wortliste (ohne
