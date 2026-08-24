@@ -402,7 +402,7 @@ textarea#impBox,textarea#bakBox{width:100%;min-height:110px;border:1px solid var
 
   <div class="panel">
     <h3>Wörter importieren</h3>
-    <p class="hint">Der Grundstock von 2000 Wörtern ist fest eingebaut, dazu 168 Ergänzungen aus den Wortfamilien. Über den Import kannst du trotzdem jederzeit eigene Wörter ergänzen (im JSON-Format, siehe grauer Beispieltext).<br>
+    <p class="hint">Der Grundstock von 2000 Wörtern ist fest eingebaut, dazu 199 Ergänzungen aus den Wortfamilien. Über den Import kannst du trotzdem jederzeit eigene Wörter ergänzen (im JSON-Format, siehe grauer Beispieltext).<br>
       Wörter aus СЕРИА́Л bringen ihren Lernstand mit: Was du dort schon gemeistert hast, startet hier nicht bei null, sondern direkt im passenden Wiederholungsabstand – und zählt nicht gegen dein Tageslimit für neue Wörter.</p>
     <textarea id="impBox" placeholder='[{"r":"стол","t":"stol","d":"Tisch","e":"Э́то мой стол.","x":"Das ist mein Tisch.","g":0}]'></textarea>
     <button class="btn-sm" id="impBtn">Importieren</button>
@@ -425,7 +425,7 @@ textarea#impBox,textarea#bakBox{width:100%;min-height:110px;border:1px solid var
     <div class="msg" id="dataMsg"></div>
   </div>
 
-  <p class="foot">2000 Wörter nach Häufigkeit (angelehnt an gängige Frequenzlisten), dazu 168 Wörter aus den Wortfamilien.<br>≈ DE/EN markiert Wörter, die ähnlich wie im Deutschen oder Englischen klingen.</p>
+  <p class="foot">2000 Wörter nach Häufigkeit (angelehnt an gängige Frequenzlisten), dazu 199 Wörter aus den Wortfamilien.<br>≈ DE/EN markiert Wörter, die ähnlich wie im Deutschen oder Englischen klingen.</p>
 </section>
 
 </div>
@@ -2734,7 +2734,38 @@ const FAM_WORDS=[
 {i:9165,r:"жена́тый",t:"schi-NA-tyj",d:"verheiratet (Mann)",e:"Он жена́т уже́ де́сять лет.",x:"Er ist seit zehn Jahren verheiratet.",n:"Nur über Männer. Eine verheiratete Frau ist за́мужем."},
 {i:9166,r:"вовле́чь",t:"wa-WLJETSCH",d:"hineinziehen, einbeziehen",e:"Его́ вовлекли́ в э́ту исто́рию.",x:"Man hat ihn in diese Sache hineingezogen.",n:"In eine Sache verwickeln – oft gegen den eigenen Willen."},
 {i:9167,r:"ме́тка",t:"MJET-ka",d:"Markierung, Kennzeichen",e:"На карма́не была́ ме́тка.",x:"An der Tasche war eine Markierung.",n:"Das angebrachte Zeichen. Von заме́тить, bemerken."},
-{i:9168,r:"досло́вно",t:"da-SSLOW-na",d:"wörtlich, Wort für Wort",e:"Переведи́ досло́вно.",x:"Übersetze wörtlich.",n:"Genau so, wie es dasteht. Von сло́во, dem Wort."}];
+{i:9168,r:"досло́вно",t:"da-SSLOW-na",d:"wörtlich, Wort für Wort",e:"Переведи́ досло́вно.",x:"Übersetze wörtlich.",n:"Genau so, wie es dasteht. Von сло́во, dem Wort."},
+{i:9169,r:"нача́ть",t:"na-TSCHATJ",d:"beginnen (einmal)",e:"Дава́й начнём!",x:"Lass uns anfangen!",n:"Einmal beginnen. Die Dauerform ist начина́ть. Unregelmäßig: начну́, начнёшь."},
+{i:9170,r:"пойти́",t:"paj-TI",d:"losgehen, hingehen",e:"Пойдём в кино́!",x:"Gehen wir ins Kino!",n:"Losgehen und einmal hingehen. Пойдём! ist die übliche Aufforderung."},
+{i:9171,r:"вы́йти",t:"WYJ-ti",d:"hinausgehen, aussteigen",e:"Я вы́йду на сле́дующей остано́вке.",x:"Ich steige an der nächsten Haltestelle aus.",n:"Hinausgehen – und aussteigen aus Bus oder Bahn."},
+{i:9172,r:"зайти́",t:"saj-TI",d:"vorbeikommen, hineingehen",e:"Зайди́ ко мне ве́чером.",x:"Komm heute Abend bei mir vorbei.",n:"Kurz irgendwo hineingehen – bei jemandem vorbeischauen, mit к + Dativ."},
+{i:9173,r:"вы́пить",t:"WY-pitj",d:"austrinken; einen trinken",e:"Дава́й вы́пьем за тебя́!",x:"Trinken wir auf dich!",n:"Austrinken – und einen heben. Beim Anstoßen: вы́пьем за…"},
+{i:9174,r:"пья́ный",t:"PJA-nyj",d:"betrunken",e:"Он был пья́ный.",x:"Er war betrunken.",n:"Von пить. Nüchtern ist тре́звый."},
+{i:9175,r:"съесть",t:"sjestj",d:"aufessen",e:"Я съел весь торт.",x:"Ich habe die ganze Torte aufgegessen.",n:"Ganz aufessen, mit Ergebnis. Die Dauerform ist есть."},
+{i:9176,r:"ручно́й",t:"rutsch-NOJ",d:"Hand-, handgemacht; zahm",e:"Ручна́я рабо́та.",x:"Handarbeit.",n:"Von рука́: was mit der Hand zu tun hat – und über Tiere: zahm."},
+{i:9177,r:"руководи́тель",t:"ru-ka-wa-DI-tilj",d:"Leiter, Chef",e:"Он руководи́тель прое́кта.",x:"Er ist der Projektleiter.",n:"Wörtlich „wer die Hand führt“ – aus рука́ und води́ть."},
+{i:9178,r:"рабо́чий",t:"ra-BO-tschij",d:"Arbeiter; Arbeits-",e:"Сего́дня рабо́чий день.",x:"Heute ist ein Arbeitstag.",n:"Substantiviertes Adjektiv: der Arbeiter – und als Adjektiv: Arbeits-."},
+{i:9179,r:"рабо́тник",t:"ra-BOT-nik",d:"Mitarbeiter, Beschäftigter",e:"Он хоро́ший рабо́тник.",x:"Er ist ein guter Mitarbeiter.",n:"Wer irgendwo beschäftigt ist. Der Kollege ist колле́га."},
+{i:9180,r:"безрабо́тный",t:"bis-ra-BOT-nyj",d:"arbeitslos",e:"Он сейча́с безрабо́тный.",x:"Er ist zurzeit arbeitslos.",n:"Mit без-, ohne: ohne Arbeit."},
+{i:9181,r:"ночева́ть",t:"na-tschi-WATJ",d:"übernachten",e:"Мо́жно у тебя́ переночева́ть?",x:"Kann ich bei dir übernachten?",n:"Die Nacht irgendwo verbringen. Einmal übernachten ist переночева́ть."},
+{i:9182,r:"ночно́й",t:"natsch-NOJ",d:"Nacht-, nächtlich",e:"Ночно́й авто́бус хо́дит ре́дко.",x:"Der Nachtbus fährt selten.",n:"Adjektiv zu ночь: ночно́й по́езд, ночна́я сме́на."},
+{i:9183,r:"у́тренний",t:"U-tri-nij",d:"morgendlich, Morgen-",e:"У́тренний ко́фе — свято́е.",x:"Der Morgenkaffee ist heilig.",n:"Adjektiv zu у́тро: у́тренняя газе́та, у́тренний рейс."},
+{i:9184,r:"во́дка",t:"WOT-ka",d:"Wodka",e:"Ру́сская во́дка изве́стна во всём ми́ре.",x:"Russischer Wodka ist weltweit bekannt.",n:"Verkleinerung von вода́ – wörtlich „Wässerchen“."},
+{i:9185,r:"наводне́ние",t:"na-wad-NJE-ni-je",d:"Überschwemmung",e:"По́сле дождя́ бы́ло наводне́ние.",x:"Nach dem Regen gab es eine Überschwemmung.",n:"Von вода́: wenn das Wasser über alles kommt."},
+{i:9186,r:"подво́дный",t:"pad-WOD-nyj",d:"Unterwasser-",e:"Подво́дный мир прекра́сен.",x:"Die Unterwasserwelt ist wunderschön.",n:"Unter dem Wasser: подво́дная ло́дка ist das U-Boot."},
+{i:9187,r:"погово́рка",t:"pa-ga-WOR-ka",d:"Redensart",e:"Есть така́я погово́рка.",x:"Es gibt so eine Redensart.",n:"Die feste Wendung ohne Lehre. Das Sprichwort mit Lehre ist посло́вица."},
+{i:9188,r:"ху́же",t:"CHU-sche",d:"schlechter",e:"Сего́дня мне ху́же.",x:"Heute geht es mir schlechter.",n:"Komparativ von плохо́й und пло́хо – aus einer anderen Wurzel, wie bei gut/besser."},
+{i:9189,r:"хо́чется",t:"CHO-tschi-za",d:"man möchte, mir ist danach",e:"Мне хо́чется спать.",x:"Ich möchte schlafen.",n:"Unpersönlich mit Dativ – weicher und weniger fordernd als я хочу́."},
+{i:9190,r:"захоте́ть",t:"sa-cha-TJETJ",d:"Lust bekommen",e:"Он вдруг захоте́л уе́хать.",x:"Er bekam plötzlich Lust wegzufahren.",n:"Der Moment, in dem der Wunsch entsteht. Die Dauerform ist хоте́ть."},
+{i:9191,r:"нужда́",t:"nusch-DA",d:"Not, Bedürfnis",e:"В слу́чае нужды́ звони́.",x:"Ruf an, wenn Not am Mann ist.",n:"Die Notlage und das Bedürfnis. Von ну́жно."},
+{i:9192,r:"простота́",t:"pra-sta-TA",d:"Einfachheit",e:"В простоте́ — красота́.",x:"In der Einfachheit liegt die Schönheit.",n:"Die Einfachheit als Eigenschaft. Von просто́й."},
+{i:9193,r:"ча́стный",t:"TSCHASS-nyj",d:"privat, Privat-",e:"Э́то ча́стный дом.",x:"Das ist ein Privathaus.",n:"Privat im Gegensatz zu staatlich. Persönlich im Sinn von „mich betreffend“ ist ли́чный."},
+{i:9194,r:"же́нский",t:"SCHEN-skij",d:"Frauen-, weiblich",e:"Э́то же́нский го́лос.",x:"Das ist eine Frauenstimme.",n:"Adjektiv zu же́нщина. In der Grammatik: же́нский род, das weibliche Geschlecht."},
+{i:9195,r:"первонача́льно",t:"pir-wa-na-TSCHALJ-na",d:"ursprünglich, anfangs",e:"Первонача́льно план был друго́й.",x:"Ursprünglich war der Plan ein anderer.",n:"Aus пе́рвый und нача́ло: am allerersten Anfang."},
+{i:9196,r:"протере́ть",t:"pra-ti-RJETJ",d:"durchwischen, abwischen",e:"Протри́ стол, пожа́луйста.",x:"Wisch bitte den Tisch ab.",n:"Mit einem Tuch drüberwischen. Von тере́ть, reiben."},
+{i:9197,r:"просла́виться",t:"pra-SSLA-wi-za",d:"berühmt werden",e:"Он просла́вился за оди́н год.",x:"Er wurde in einem Jahr berühmt.",n:"Zu Ruhm kommen. Von сла́ва."},
+{i:9198,r:"ужасну́ться",t:"u-schass-NU-za",d:"entsetzt sein",e:"Я ужасну́лся, когда́ уви́дел счёт.",x:"Ich war entsetzt, als ich die Rechnung sah.",n:"Vor Schreck erstarren. Von у́жас."},
+{i:9199,r:"по́льзователь",t:"POLJ-sa-wa-tilj",d:"Benutzer, Nutzer",e:"Но́вый по́льзователь зарегистри́рован.",x:"Ein neuer Nutzer wurde registriert.",n:"Fachwort aus der Technik. Von по́льзоваться."}];
 function allWords(){return VOCAB.concat(FAM_WORDS,S.extras)}
 /* ---- Gemeinsamer Wortindex ----------------------------------------------
    СКА́ЗКИ hat keinen Zugriff auf VOCAB oder PACKS – die stehen in anderen
@@ -3568,7 +3599,28 @@ const FAMILIEN=[
 {w:'-искус-',b:'Kunst, Können',m:[['иску́сство','Kunst'],['иску́сный','kunstfertig, meisterhaft'],['иску́сственный','künstlich']]},
 {w:'-вел-',b:'gebieten, befehlen',m:[['веле́ть','befehlen, anweisen'],['повелева́ть','gebieten'],['повели́тель','Gebieter, Herrscher']]},
 {w:'-определ-',b:'bestimmen',m:[['определи́ть','bestimmen, feststellen'],['определе́ние','Definition; Bestimmung'],['определённый','bestimmt, gewiss']]},
-{w:'-хвост-',b:'Schwanz',m:[['хвост','Schwanz'],['хво́стик','Zöpfchen, Pferdeschwanz']]}];
+{w:'-хвост-',b:'Schwanz',m:[['хвост','Schwanz'],['хво́стик','Zöpfchen, Pferdeschwanz']]},
+{w:'-дом-',b:'Haus',m:[['дом','Haus'],['до́ма','zu Hause (wo?)'],['домо́й','nach Hause (wohin?)'],['дома́шний','häuslich, Haus-'],['домохозя́йка','Hausfrau']]},
+{w:'-работ-',b:'Arbeit',m:[['рабо́та','Arbeit'],['рабо́тать','arbeiten; funktionieren'],['рабо́чий','Arbeiter; Arbeits-'],['рабо́тник','Mitarbeiter, Beschäftigter'],['безрабо́тный','arbeitslos'],['разрабо́тать','ausarbeiten, entwickeln']]},
+{w:'-ден- / -дн-',b:'Tag',m:[['день','Tag'],['днём','tagsüber, am Tag'],['сего́дня','heute – aus сего́ дня, „dieses Tages“'],['по́лдень','Mittag'],['дневни́к','Tagebuch'],['ежедне́вно','täglich']]},
+{w:'-ноч-',b:'Nacht',m:[['ночь','Nacht'],['но́чью','nachts, in der Nacht'],['ночева́ть','übernachten'],['полно́чь','Mitternacht'],['ночно́й','Nacht-, nächtlich']]},
+{w:'-утр-',b:'Morgen',m:[['у́тро','der Morgen'],['у́тром','morgens, am Morgen'],['за́втра','morgen – ursprünglich „за у́тра“, nach dem Morgen'],['за́втрак','Frühstück – dieselbe Wurzel'],['у́тренний','morgendlich']]},
+{w:'-час-',b:'Stunde, Zeitpunkt',m:[['час','Stunde; Uhr (Uhrzeit)'],['часы́','die Uhr am Handgelenk'],['сейча́с','jetzt – aus сей час, „diese Stunde“'],['полчаса́','eine halbe Stunde'],['часо́вня','Kapelle']]},
+{w:'-человек- / -люд-',b:'Mensch',m:[['челове́к','Mensch, Person'],['лю́ди','Leute – der Plural dazu, ein anderes Wort'],['челове́ческий','menschlich'],['челове́чество','Menschheit'],['людско́й','Menschen-, menschlich']]},
+{w:'-говор-',b:'sprechen',m:[['говори́ть','sprechen, sagen'],['разгова́ривать','sich unterhalten'],['разгово́р','Gespräch'],['догово́р','Vertrag – das Ausgesprochene'],['договори́ться','sich einigen, abmachen'],['угово́р','Absprache'],['погово́рка','Redensart']]},
+{w:'-хорош-',b:'gut',m:[['хоро́ший','gut (Adjektiv)'],['хорошо́','gut (Adverb); okay'],['лу́чше','besser – aus einer anderen Wurzel, wie im Deutschen gut/besser'],['похороше́ть','hübscher werden']]},
+{w:'-плох- / -худ-',b:'schlecht',m:[['плохо́й','schlecht (Adjektiv)'],['пло́хо','schlecht (Adverb); mir ist schlecht'],['ху́же','schlechter – aus einer anderen Wurzel'],['уху́дшиться','sich verschlechtern']]},
+{w:'-вод- (Wasser)',b:'Wasser',m:[['вода́','Wasser'],['во́дка','Wodka – wörtlich „Wässerchen“'],['подво́дный','Unterwasser-'],['водопрово́д','Wasserleitung'],['наводне́ние','Überschwemmung']]},
+{w:'-глав- / -голов-',b:'Kopf, Haupt',m:[['голова́','Kopf'],['гла́вный','Haupt-, wichtigster'],['глава́','Kapitel; Oberhaupt'],['заголо́вок','Überschrift'],['гла́вное','die Hauptsache']]},
+{w:'-рук-',b:'Hand',m:[['рука́','Hand, Arm'],['ру́чка','Kugelschreiber; Griff; Händchen'],['ручно́й','Hand-, handgemacht; zahm'],['руча́ться','sich verbürgen – die Hand dafür geben'],['руководи́тель','Leiter – wer die Hand führt'],['перча́тка','Handschuh']]},
+{w:'-ед- / -ес-',b:'essen',m:[['есть','essen'],['еда́','Essen, Speise'],['съесть','aufessen'],['пое́сть','etwas essen'],['обе́д','Mittagessen – wörtlich „um-essen“'],['обе́дать','zu Mittag essen']]},
+{w:'-пи-',b:'trinken',m:[['пить','trinken'],['вы́пить','austrinken, einen trinken'],['напи́ток','Getränk'],['пья́ный','betrunken'],['вы́пивка','Alkohol, das Getrunkene']]},
+{w:'-ид- / -йд-',b:'gehen (in eine Richtung)',m:[['идти́','gehen (gerade jetzt)'],['пойти́','losgehen'],['прийти́','ankommen (zu Fuß)'],['уйти́','weggehen'],['вы́йти','hinausgehen'],['зайти́','vorbeikommen, hineingehen'],['найти́','finden – wörtlich „drauf-gehen“']]},
+{w:'-быт-',b:'sein, werden',m:[['быть','sein'],['бу́дущее','die Zukunft – was sein wird'],['сбы́ться','in Erfüllung gehen'],['забы́ть','vergessen'],['привы́чка','Gewohnheit – woran man gewöhnt ist']]},
+{w:'-ст-',b:'hundert',m:[['сто','hundert'],['со́тня','Hundertergruppe'],['со́тый','der hundertste'],['проце́нт','Prozent – aus dem Lateinischen, „vom Hundert“']]},
+{w:'-хот-',b:'wollen, Lust',m:[['хоте́ть','wollen'],['хо́чется','man möchte, mir ist danach'],['захоте́ть','Lust bekommen'],['охо́тно','gern, bereitwillig']]},
+{w:'-долг- / -долж-',b:'Schuld, Pflicht, lang',m:[['до́лжен','muss, schuldet'],['долг','Schuld; Pflicht'],['до́лго','lange'],['продолжа́ть','fortsetzen – in die Länge ziehen'],['продолже́ние','Fortsetzung']]},
+{w:'-нач-',b:'anfangen',m:[['начина́ть','anfangen'],['нача́ть','beginnen (einmal)'],['нача́ло','der Anfang'],['снача́ла','zuerst; von vorn'],['нача́льник','Vorgesetzter – wer den Anfang macht']]}];
 /* Ein Wort kann nur in einer Familie stehen – der Index wird einmal gebaut. */
 let FAM_IDX=null;
 function famNorm(r){return String(r).replace(/\u0301/g,'').toLowerCase().replace(/ё/g,'е').replace(/[^а-я\- ]/g,'').trim()}
