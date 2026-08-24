@@ -180,6 +180,12 @@ nav.tabsbar{position:sticky;top:0;z-index:20;background:var(--paper);padding:12p
 .confbox .lk-s{font-size:.82rem;color:var(--ink-soft);margin:6px 0 12px;line-height:1.6}
 .knote{margin:10px 0;font-size:.84rem;line-height:1.55;color:#7A5A10;background:#FFF4E0;border:1px solid #E8C97A;border-radius:10px;padding:9px 12px;text-align:left}
 .knote .kn-i{display:block;font-size:.64rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;opacity:.75;margin-bottom:3px}
+.famrow{margin-top:10px;font-size:.82rem;line-height:1.5;text-align:left;background:#EEF6EC;border:1px solid #BFD9B8;border-radius:10px;padding:9px 12px;color:#3E5C38}
+.famrow>b{font-family:var(--serif);font-size:.9rem;color:#2F5128}
+.famlist{display:block;margin-top:7px}
+.famw{display:block;padding:3px 0;border-top:1px solid #D6E6D1}
+.famw:first-child{border-top:0}
+.famd{color:#5E7A57;margin-left:7px}
 .rdef{margin-top:10px;background:var(--card);border:1px solid var(--frost);border-radius:10px;padding:8px 12px;text-align:left}
 .rdef summary{cursor:pointer;font-size:.76rem;font-weight:800;letter-spacing:.04em;color:var(--rust);list-style:none}
 .rdef summary::-webkit-details-marker{display:none}
@@ -5979,6 +5985,75 @@ function notizBox(w){
   if(!w||!w.n)return '';
   return '<div class="knote"><span class="kn-i">Wann welches?</span> '+acc(esc(w.n))+'</div>';
 }
+const FAMILIEN=[
+{w:'-ним- / -ня-',b:'nehmen, fassen',m:[['взять','nehmen (einmal)'],['понима́ть','verstehen – wörtlich „er-fassen“'],['принима́ть','annehmen, empfangen'],['поднима́ть','hochheben – „auf-nehmen“'],['обнима́ть','umarmen – „um-fassen“'],['занима́ться','sich beschäftigen – „be-nommen sein“'],['отня́ть','wegnehmen'],['наня́ть','anheuern – „an-nehmen“'],['заня́тие','Beschäftigung, Unterricht'],['сня́ть','abnehmen, mieten']]},
+{w:'-пуск- / -пуст-',b:'lassen',m:[['пуска́ть','hereinlassen, lassen'],['впусти́ть','hereinlassen'],['выпуска́ть','hinauslassen, freilassen'],['запусти́ть','starten – „loslassen“'],['о́тпуск','Urlaub – wörtlich die Ent-lassung'],['про́пуск','Passierschein – was dich durch-lässt'],['упусти́ть','verpassen – „entwischen lassen“']]},
+{w:'-став- / -ста-',b:'stellen, stehen',m:[['ста́вить','stellen'],['стать','werden – „sich hin-stellen“'],['наста́ть','anbrechen (Zeit)'],['предста́вить','sich vorstellen – vor sich hin-stellen'],['заста́вить','zwingen – jemanden hin-stellen'],['доста́ть','besorgen, erreichen'],['оста́ться','bleiben – stehen bleiben'],['ста́вка','Einsatz, Wette'],['вы́ставка','Ausstellung – was heraus-gestellt wird'],['остано́вка','Haltestelle']]},
+{w:'-каз-',b:'zeigen, sagen',m:[['сказа́ть','sagen'],['показа́ть','zeigen'],['отказа́ться','sich weigern – „ab-sagen“'],['доказа́ть','beweisen – zu Ende zeigen'],['приказа́ть','befehlen – ansagen'],['наказа́ть','bestrafen – ursprünglich: anweisen'],['заказа́ть','bestellen – bestellen heißt ansagen'],['каза́ться','scheinen – sich zeigen'],['расска́з','Erzählung']]},
+{w:'-мен-',b:'wechseln, tauschen',m:[['меня́ть','ändern, tauschen'],['меня́ться','sich ändern'],['измени́ться','sich verändern'],['измене́ние','Änderung'],['отмени́ть','absagen – „ab-tauschen“'],['заме́на','Ersatz'],['поменя́ться','miteinander tauschen'],['переме́на','Pause in der Schule – der Wechsel'],['примени́ть','anwenden']]},
+{w:'-вер-',b:'glauben, trauen',m:[['ве́рить','glauben'],['ве́ра','Glaube'],['ве́рный','treu, richtig'],['доверя́ть','vertrauen'],['дове́рие','Vertrauen'],['прове́рить','überprüfen – nach-prüfen'],['уве́ренность','Sicherheit, Gewissheit']]},
+{w:'-вяз-',b:'binden',m:[['вяза́ть','stricken, binden'],['связа́ть','verbinden, zusammenbinden'],['привяза́ть','anbinden'],['развяза́ть','aufknoten, losbinden'],['завя́зывать','zubinden'],['повя́зка','Binde, Verband'],['навя́зываться','sich aufdrängen'],['обя́зан','verpflichtet – ge-bunden']]},
+{w:'-пис-',b:'schreiben',m:[['писа́ть','schreiben'],['подписа́ть','unterschreiben'],['по́дпись','Unterschrift'],['расписа́ние','Fahrplan, Stundenplan'],['расписа́ться','unterschreiben; heiraten'],['вы́писать','verschreiben, ausstellen'],['переписа́ть','umschreiben, neu schreiben'],['письмо́','Brief']]},
+{w:'-ступ-',b:'treten, schreiten',m:[['ступа́ть','schreiten, den Fuß setzen'],['поступа́ть','handeln – wie man auftritt'],['посту́пок','Tat, Handlung'],['наступи́ть','eintreten; drauftreten'],['вы́ступить','auftreten, vortragen'],['до́ступ','Zugang – wo man hin-treten darf'],['приступа́ть','herangehen an etwas'],['ступе́нька','Stufe']]},
+{w:'-вед- / -вод-',b:'führen',m:[['вести́','führen, lenken'],['води́ть','fahren, führen'],['провести́','durchführen; hereinlegen'],['переводи́ть','übersetzen – hinüber-führen'],['перево́дчик','Übersetzer'],['изводи́ть','quälen'],['произвести́','hervorbringen, erzeugen']]},
+{w:'-чин-',b:'ordnen, in Ordnung bringen',m:[['чини́ть','reparieren'],['почини́ть','reparieren (fertig)'],['почи́нка','Reparatur'],['причи́на','Ursache – was etwas in Gang setzt'],['подчиня́ться','gehorchen – sich einordnen'],['чин','Rang, Dienstgrad']]},
+{w:'-твор-',b:'machen, schaffen',m:[['твори́ть','erschaffen; anstellen'],['натвори́ть','etwas anrichten'],['творе́ц','Schöpfer'],['притворя́ться','so tun als ob – sich „hin-machen“'],['вытворя́ть','Unfug treiben'],['твори́ться','sich abspielen'],['творо́г','Quark – das Gemachte']]},
+{w:'-лик- / -лиц- / -лич-',b:'Gesicht, Gestalt',m:[['лицо́','Gesicht'],['ли́чный','persönlich'],['отлича́ться','sich unterscheiden – ein anderes Gesicht haben'],['отли́чный','ausgezeichnet'],['различа́ть','unterscheiden'],['прили́чный','anständig – wie es sich gehört'],['обли́чие','Gestalt, Erscheinung'],['нали́чка','Bargeld – was vor-liegt']]},
+{w:'-след-',b:'Spur',m:[['след','Spur, Fußabdruck'],['следи́ть','beobachten, verfolgen'],['сле́довать','folgen'],['вы́следить','aufspüren'],['сле́дствие','Ermittlung; Folge'],['рассле́дование','Untersuchung'],['сле́дующий','der nächste – der nach-folgende']]},
+{w:'-готов-',b:'fertig, bereit',m:[['гото́вый','fertig, bereit'],['гото́вить','kochen; vorbereiten'],['гото́виться','sich vorbereiten'],['пригото́вить','zubereiten, fertig machen'],['подгото́вка','Vorbereitung, Training']]},
+{w:'-гон- / -гна-',b:'treiben, jagen',m:[['гнать','treiben, rasen'],['гоня́ться','hinterherjagen'],['вы́гнать','rauswerfen'],['прогна́ть','vertreiben'],['обогна́ть','überholen – vorbei-treiben'],['догна́ть','einholen'],['пого́ня','Verfolgungsjagd']]},
+{w:'-стро-',b:'bauen, einrichten',m:[['стро́ить','bauen'],['постро́ить','fertig bauen'],['подстро́ить','einfädeln, fingieren'],['настрое́ние','Stimmung – wie man „gestimmt“ ist'],['расстро́иться','traurig werden – aus der Ordnung geraten'],['устро́йство','Aufbau; Gerät']]},
+{w:'-бер- / -бир- / -бра-',b:'nehmen, sammeln',m:[['брать','nehmen'],['забира́ть','abholen, mitnehmen'],['выбира́ть','auswählen – heraus-nehmen'],['собира́ться','sich versammeln; vorhaben'],['разбира́ть','auseinandernehmen'],['прибра́ть','aufräumen'],['добира́ться','hinkommen'],['убо́рка','Aufräumen, Putzen']]},
+{w:'-куп-',b:'kaufen',m:[['купи́ть','kaufen'],['покупа́ть','kaufen (regelmäßig)'],['поку́пка','Einkauf'],['подкупи́ть','bestechen – jemanden kaufen'],['купи́ться','hereinfallen – sich kaufen lassen']]},
+{w:'-коп-',b:'graben, anhäufen',m:[['копа́ть','graben'],['откопа́ть','ausgraben'],['закопа́ть','vergraben'],['покопа́ться','herumstöbern, herumwühlen'],['копи́ть','ansparen – anhäufen'],['накопи́ться','sich ansammeln']]},
+{w:'-чес- / -чёс-',b:'kratzen, kämmen',m:[['чеса́ться','jucken; sich kratzen'],['почеса́ть','kratzen'],['расчёсывать','kämmen'],['расчёска','Kamm'],['причёска','Frisur'],['прочеса́ть','durchkämmen, absuchen']]},
+{w:'-вин-',b:'Schuld',m:[['вина́','Schuld'],['винова́т','ich bin schuld; Verzeihung'],['обвини́ть','beschuldigen'],['обвине́ние','Anklage'],['извини́ться','sich entschuldigen – die Schuld abbitten'],['извини́те','entschuldigen Sie']]},
+{w:'-ум-',b:'Verstand',m:[['ум','Verstand, Klugheit'],['у́мный','klug'],['у́мник','Besserwisser'],['у́мница','kluges Kind'],['разу́мный','vernünftig'],['безу́мно','wahnsinnig – ohne Verstand'],['сумасше́дший','verrückt – wörtlich „vom Verstand abgekommen“']]},
+{w:'-игр-',b:'spielen',m:[['игра́ть','spielen'],['игра́','Spiel'],['игро́к','Spieler'],['вы́играть','gewinnen'],['проигра́ть','verlieren'],['разыгра́ть','ausspielen; veräppeln']]},
+{w:'-втор-',b:'zweiter, noch einmal',m:[['второ́й','der zweite'],['вто́рник','Dienstag – der zweite Tag'],['повтори́ть','wiederholen'],['повторя́ть','wiederholen (regelmäßig)'],['повтори́ться','sich wiederholen']]},
+{w:'-мер-',b:'messen, Maß',m:[['ме́рить','messen'],['примеря́ть','anprobieren'],['ме́риться','sich messen mit jemandem'],['измере́ние','Messung; Dimension'],['ме́ра','Maß']]},
+{w:'-держ-',b:'halten',m:[['держа́ть','halten'],['держи́сь','halt durch!'],['поддержа́ть','unterstützen – von unten halten'],['подде́ржка','Unterstützung'],['задержа́ть','aufhalten, festnehmen'],['удержа́ть','festhalten'],['продержа́ться','durchhalten'],['содержа́ние','Inhalt – was enthalten ist']]},
+{w:'-нос- / -нес-',b:'tragen',m:[['носи́ть','tragen'],['приноси́ть','bringen – her-tragen'],['переноси́ть','verschieben; ertragen'],['относи́ться','sich verhalten zu'],['наноси́ть','auftragen'],['разнести́','austragen; zerlegen'],['унести́','wegtragen']]},
+{w:'-род-',b:'Geburt, Herkunft',m:[['роди́ться','geboren werden'],['роди́тели','Eltern'],['родно́й','eigen, leiblich, vertraut'],['ро́дина','Heimat'],['приро́да','Natur – das von Natur aus Entstandene'],['поро́да','Rasse, Art'],['наро́д','Volk'],['родны́е','Angehörige']]},
+{w:'-мест-',b:'Platz, Ort',m:[['ме́сто','Platz, Ort'],['ме́стный','einheimisch, örtlich'],['вме́сте','zusammen – am selben Platz'],['вме́сто','anstelle von'],['перемести́ться','sich versetzen, umziehen']]},
+{w:'-слуш- / -слыш-',b:'hören',m:[['слу́шать','zuhören'],['слы́шать','hören'],['подслу́шать','belauschen'],['вы́слушать','zu Ende anhören'],['прислу́шаться','genau hinhören'],['слух','Gehör; Gerücht'],['послу́шный','gehorsam – wer hört']]},
+{w:'-тащ- / -таск-',b:'ziehen, schleppen',m:[['тащи́ть','schleppen, ziehen'],['таска́ть','herumschleppen; klauen'],['вы́тащить','herausziehen'],['притащи́ть','anschleppen'],['затащи́ть','hineinschleppen']]},
+{w:'-служ-',b:'dienen',m:[['служи́ть','dienen'],['слу́жба','Dienst; Gottesdienst'],['заслужи́ть','sich verdienen'],['заслу́живать','wert sein'],['обслу́живать','bedienen'],['услу́га','Dienstleistung, Gefallen']]},
+{w:'-уч-',b:'lernen, lehren',m:[['учи́ть','lernen; lehren'],['учи́ться','lernen, studieren'],['вы́учить','fertig lernen'],['научи́ть','beibringen'],['научи́ться','etwas erlernen'],['обучи́ть','ausbilden'],['учи́тель','Lehrer'],['учени́к','Schüler']]},
+{w:'-кус-',b:'beißen, Bissen',m:[['куса́ть','beißen'],['укуси́ть','einmal beißen'],['кусо́к','Stück – ein Bissen'],['заку́ска','Vorspeise'],['перекуси́ть','einen Happen essen'],['вку́сный','lecker – was gut zu beißen ist'],['вкус','Geschmack']]},
+{w:'-плат- / -плач-',b:'zahlen',m:[['плати́ть','bezahlen'],['заплати́ть','bezahlen (fertig)'],['беспла́тный','kostenlos – ohne Zahlung'],['опла́та','Bezahlung'],['отплати́ть','heimzahlen'],['распла́та','Vergeltung, Abrechnung'],['зарпла́та','Gehalt']]},
+{w:'-раст- / -рос-',b:'wachsen',m:[['расти́','wachsen'],['подрасти́','ein Stück wachsen'],['вы́расти','aufwachsen, groß werden'],['во́зраст','Alter'],['расте́ние','Pflanze'],['взро́слый','erwachsen – ausgewachsen'],['взросле́ть','erwachsen werden']]},
+{w:'-ман-',b:'locken, täuschen',m:[['мани́ть','locken'],['примани́ть','anlocken'],['вы́манить','herauslocken'],['обману́ть','betrügen'],['обма́н','Betrug'],['обма́нщик','Schwindler']]},
+{w:'-жа- / -жим-',b:'drücken, pressen',m:[['нажа́ть','drücken (Knopf)'],['нажима́ть','drücken (regelmäßig)'],['зажа́ть','einklemmen'],['отжа́ть','auspressen; abpressen'],['сжать','zusammendrücken'],['пожа́ть','die Hand drücken']]},
+{w:'-суд-',b:'urteilen, richten',m:[['суд','Gericht, Prozess'],['суди́ть','urteilen, richten'],['обсуди́ть','besprechen – gemeinsam beurteilen'],['рассу́док','klarer Verstand'],['су́дьба','Schicksal – das Zugeteilte'],['осуди́ть','verurteilen']]},
+{w:'-би-',b:'schlagen',m:[['бить','schlagen'],['уби́ть','töten'],['разби́ть','zerschlagen'],['разби́тый','zerbrochen'],['приби́ть','annageln; erschlagen'],['би́тва','Schlacht'],['бита́','Schläger']]},
+{w:'-дел- (machen)',b:'machen, Tat',m:[['де́лать','machen'],['де́ло','Sache, Angelegenheit'],['сде́лать','fertig machen'],['подде́лка','Fälschung – das Nachgemachte'],['переде́лать','umarbeiten'],['безде́льник','Faulenzer – ohne Tat'],['сде́лка','Deal, Abmachung']]},
+{w:'-дел- (teilen)',b:'teilen',m:[['дели́ть','teilen'],['дели́ться','abgeben, mitteilen'],['раздели́ть','aufteilen'],['отде́льный','separat, eigener'],['разде́льный','getrennt'],['неде́ля','Woche – ursprünglich der Ruhetag']]},
+{w:'-верн- / -ворот-',b:'drehen, wenden',m:[['верну́ть','zurückgeben – zurück-drehen'],['верну́ться','zurückkommen'],['разверну́ть','entfalten, auseinanderdrehen'],['переверну́ть','umdrehen'],['поверну́ть','abbiegen'],['поворо́т','Kurve, Abbiegung'],['воро́та','Tor – was sich dreht']]},
+{w:'-раз- / -раж-',b:'schlagen, treffen',m:[['порази́ть','verblüffen; treffen'],['отрази́ть','abwehren; spiegeln'],['зарази́ть','anstecken'],['зара́за','Ansteckung; Biest'],['вы́разить','ausdrücken'],['уда́р','Schlag']]},
+{w:'-жар- / -жёг-',b:'Hitze, brennen',m:[['жа́рко','es ist heiß (Luft)'],['жа́ркий','heiß (Wetter, Tag)'],['жара́','die Hitze'],['жа́рить','braten, frittieren'],['жа́реный','gebraten'],['пожа́р','Brand, Feuer']]}];
+/* Ein Wort kann nur in einer Familie stehen – der Index wird einmal gebaut. */
+let FAM_IDX=null;
+function famNorm(r){return String(r).replace(/\u0301/g,'').toLowerCase().replace(/ё/g,'е').replace(/[^а-я\- ]/g,'').trim()}
+function famIndex(){
+  if(FAM_IDX)return FAM_IDX;
+  FAM_IDX={};
+  FAMILIEN.forEach((f,i)=>f.m.forEach(m=>{const k=famNorm(m[0]);if(FAM_IDX[k]===undefined)FAM_IDX[k]=i}));
+  return FAM_IDX;
+}
+function famOf(r){
+  const i=famIndex()[famNorm(r)];
+  return i===undefined?null:FAMILIEN[i];
+}
+function famBox(w){
+  const f=w&&famOf(w.r);
+  if(!f)return '';
+  const mich=famNorm(w.r);
+  const rest=f.m.filter(m=>famNorm(m[0])!==mich);
+  if(!rest.length)return '';
+  return '<div class="famrow"><b>🌱 Wortfamilie '+esc(f.w)+'</b> – '+esc(f.b)+
+    '<span class="famlist">'+rest.map(m=>'<span class="famw">'+acc(esc(m[0]))+'<i class="famd">'+esc(m[1])+'</i></span>').join('')+'</span></div>';
+}
 function defBox(w){
   if(!w||!w.rd)return '';
   return '<details class="rdef"><summary>🇷🇺 Auf Russisch erklärt</summary>'+
@@ -8032,7 +8107,7 @@ function resolve(ok){
     '<div class="answer"><div class="word" style="font-size:1.6rem;margin:2px 0 4px">'+acc(esc(w.r))+' '+sayBtn(w.r,'speak')+'</div>'+
     '<div class="trans">['+esc(w.t)+']</div><div class="mean">'+esc(w.d)+'</div>'+regBadge(w)+
     (w.e?'<div class="ex"><div class="ru">'+acc(esc(w.e))+' '+sayBtn(w.e)+'</div><div class="de">'+esc(w.x||'')+'</div></div>':'')+
-    notizBox(w)+defBox(w)+twinBox(w)+bausteine(w)+formsBox(w)+
+    notizBox(w)+defBox(w)+twinBox(w)+famBox(w)+bausteine(w)+formsBox(w)+
     (cur.optRu?hearAll(cur.opts,'Alle Antwortmöglichkeiten anhören:'):'')+
     '</div><div class="grade"><button onclick="nextCard()">Weiter</button></div>';
   speak(w.r);
@@ -8450,7 +8525,7 @@ function showWords(pid){
       return '<div class="row"><div class="l"><div class="ru">'+acc(esc(w.r))+'</div>'+
         '<div class="tr">['+esc(w.t||'')+']</div><div class="de">'+esc(w.d)+' '+regBadge(w)+'</div>'+
         (w.e?'<div class="de" style="margin-top:4px;font-style:italic">'+acc(esc(w.e))+' '+sayBtn(w.e)+'</div>':'')+
-        notizBox(w)+defBox(w)+bausteine(w)+formsBox(w)+
+        notizBox(w)+defBox(w)+famBox(w)+bausteine(w)+formsBox(w)+
         '</div><div>'+(st&&st.c>=2?'<span style="color:var(--birch);font-weight:700">✓</span>':'')+'</div>'+
         favBtn(w)+sayBtn(w.r)+'</div>';
     }).join('')+
