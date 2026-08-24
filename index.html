@@ -129,6 +129,14 @@ nav{position:sticky;top:0;z-index:20;background:var(--paper);padding:12px 0 14px
 .mnb-add{display:inline-block;margin-top:10px;font-size:.76rem;font-weight:600;color:var(--ink-faint);padding:5px 10px;border-radius:8px}
 .mnb-add:hover{background:var(--paper);color:var(--ink-soft)}
 .asprow{margin-top:10px;font-size:.85rem;background:var(--gzhel-soft);color:var(--gzhel);display:inline-block;padding:6px 12px;border-radius:8px;font-weight:600}
+.nachsatz{font-size:1.15rem;line-height:1.9;margin:14px 0;text-align:left}
+.nachsatz .nw{padding:2px 5px;border-radius:6px;margin-right:2px;display:inline-block}
+.nachsatz .nw.tr{background:#EEF6EC;color:#2F5128}
+.nachsatz .nw.miss{background:#FBF0E4;color:#8A6A12}
+.nachhoert{font-family:var(--mono,monospace);font-size:.82rem;background:var(--paper,#F4F6FA);border-radius:9px;padding:8px 11px;margin-top:10px;text-align:left;word-break:break-word}
+.micbig{width:82px;height:82px;border-radius:50%;font-size:2rem;border:2px solid var(--gzhel,#2B4C9B);background:transparent;margin:6px auto;display:block}
+.micbig.rec{background:var(--gzhel,#2B4C9B);color:#fff;animation:pulse 1.1s infinite}
+@keyframes pulse{0%{opacity:1}50%{opacity:.55}100%{opacity:1}}
 .famrow{margin-top:10px;font-size:.82rem;line-height:1.5;text-align:left;background:#EEF6EC;border:1px solid #BFD9B8;border-radius:10px;padding:9px 12px;color:#3E5C38}
 .famrow>b{font-family:var(--serif);font-size:.9rem;color:#2F5128}
 .famlist{display:block;margin-top:7px}
@@ -3119,6 +3127,7 @@ function renderHome(){
       (wackelN?' <b>'+wackelN+'</b> Wörter wackeln zurzeit beim Schreiben.':'')+'</div>';
     inner+='<br><button class="btn-ghost" onclick="renderPaare()">🔍 Minimalpaare · мать ≠ мат</button>';
     inner+='<br><button class="btn-ghost" onclick="renderWurzel()">🌱 Wurzel-Training · woher kommt das Wort?</button>';
+    inner+='<br><button class="btn-ghost" onclick="renderNach()">🗣️ Nachsprechen · laut, mit Prüfung</button>';
     inner+='<br><button class="btn-ghost" onclick="renderRadio()">📻 Audio-Modus (freihändig)</button>';
   }else{
     inner='<div class="due-line"><b>'+due.length+'</b> Wiederholung'+(due.length===1?'':'en')+' · <b>'+fresh.length+'</b> neue Wörter</div>'+
@@ -3130,6 +3139,7 @@ function renderHome(){
     if(festN)inner+='<br><button class="btn-ghost" onclick="startFest()">🔨 Festigen · schreiben statt anklicken</button>';
     inner+='<br><button class="btn-ghost" onclick="renderPaare()">🔍 Minimalpaare · мать ≠ мат</button>';
     inner+='<br><button class="btn-ghost" onclick="renderWurzel()">🌱 Wurzel-Training · woher kommt das Wort?</button>';
+    inner+='<br><button class="btn-ghost" onclick="renderNach()">🗣️ Nachsprechen · laut, mit Prüfung</button>';
     inner+='<br><button class="btn-ghost" onclick="renderRadio()">📻 Audio-Modus (freihändig)</button>';
   }
   $('#view-lernen').innerHTML='<div class="hero">'+inner+'</div>';
@@ -4428,6 +4438,186 @@ function speakLang(txt,de){
       setTimeout(res,12000);
     }catch(e){res()}
   });
+}
+
+/* ================= Nachsprechen =================
+   Alles andere in der App ist Erkennen und Tippen. Hier muss der Satz durch
+   den eigenen Mund – und die Spracherkennung sagt, was davon angekommen ist. */
+let nsess=null,nrec=null;
+function nachNorm(x){
+  return String(x).replace(/\u0301/g,'').toLowerCase().replace(/ё/g,'е')
+    .replace(/[^а-я\s-]/g,' ').replace(/\s+/g,' ').trim();
+}
+function nachDist(a,b){
+  if(a===b)return 0;
+  const m=a.length,n=b.length;
+  if(Math.abs(m-n)>2)return 9;
+  const d=[];for(let i=0;i<=m;i++)d[i]=[i];
+  for(let j=0;j<=n;j++)d[0][j]=j;
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)
+    d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));
+  return d[m][n];
+}
+/* Kleine Abweichungen sind Erkennungsrauschen, keine Sprechfehler: die
+   Endung eines Wortes verschluckt die Erkennung ständig. */
+function nachTreffer(ziel,gehoert){
+  return gehoert.some(g=>{
+    if(g===ziel)return true;
+    const tol=ziel.length<=3?0:ziel.length<=6?1:2;
+    return nachDist(ziel,g)<=tol;
+  });
+}
+function nachPool(){
+  return allWords().filter(w=>w.e&&S.prog[w.i]&&String(w.e).split(/\s+/).length>=3);
+}
+function renderNach(){
+  sess=null;quiz=null;wsess=null;nsess=null;
+  const pool=nachPool();
+  const kann=speechOK();
+  $('#view-lernen').innerHTML='<div class="hero"><div class="done-mark">🗣️</div>'+
+    '<div class="due-line">Nachsprechen</div>'+
+    '<div class="sub" style="text-align:left;margin-top:12px;line-height:1.6">'+
+    'Erkennen und Tippen kannst du längst. Was fehlt, ist der Weg durch den eigenen Mund: '+
+    'Satz anhören, mitsprechen, und die Spracherkennung sagt dir Wort für Wort, was angekommen ist.<br><br>'+
+    'Gezogen wird nur aus Sätzen zu Wörtern, die du <b>schon geübt</b> hast.</div>'+
+    (kann
+      ? (pool.length>=5
+          ? '<div class="sub" style="margin-top:10px"><b>'+pool.length+'</b> Sätze stehen bereit.</div>'+
+            '<button class="btn btn-primary" onclick="startNach()">Runde starten (8 Sätze)</button>'
+          : '<div class="sub" style="margin-top:10px">Noch zu wenig: es braucht mindestens fünf geübte Wörter mit Beispielsatz. Aktuell sind es '+pool.length+'.</div>')
+      : '<div class="sub" style="margin-top:10px">Dieser Browser kann keine Spracherkennung. In Chrome auf Android oder am Rechner geht es – dort wird geprüft, was du gesagt hast.</div>')+
+    '<div class="sub" style="text-align:left;margin-top:14px;opacity:.85;font-size:.8rem">'+
+    'Die Erkennung braucht Mikrofon und Netz. Und sie ist kein Massstab für gutes Russisch: '+
+    'ein nicht erkanntes Wort heisst „nochmal, deutlicher“ – nicht „falsch“.</div>'+
+    '<br><button class="btn-ghost" onclick="renderHome()">Zurück zum Lernen</button></div>';
+}
+function startNach(){
+  const pool=shuffle(nachPool());
+  if(pool.length<5){renderNach();return}
+  nsess={q:pool.slice(0,8),i:0,punkte:0,ges:0,fertig:false};
+  renderNachFrage();
+}
+function renderNachFrage(){
+  const w=nsess.q[nsess.i];
+  nsess.fertig=false;nsess.letzt=null;
+  $('#view-lernen').innerHTML=
+    '<div class="sess-top"><span class="cnt">'+(nsess.i+1)+' / '+nsess.q.length+'</span>'+
+    '<div class="bar"><i style="width:'+Math.round(100*nsess.i/nsess.q.length)+'%"></i></div>'+
+    '<button class="quit" onclick="renderNach()">Beenden</button></div>'+
+    '<div class="card" style="text-align:center">'+
+    '<div class="badges"><span class="chip mode">Hören · Sprechen</span></div>'+
+    '<div class="mean" style="font-size:.95rem">'+esc(w.x||'')+'</div>'+
+    '<div class="nachsatz" id="nsatz">'+acc(esc(w.e))+'</div>'+
+    '<button class="btn-ghost" onclick="nachHoeren()">🔊 Satz anhören</button>'+
+    '<button class="micbig" id="nmic" onclick="nachSprechen()">🎤</button>'+
+    '<div class="sub" id="nstatus">Erst anhören, dann auf das Mikrofon tippen und den Satz nachsprechen.</div>'+
+    '<div id="nfb"></div></div>';
+  setTimeout(()=>nachHoeren(),350);
+}
+function nachHoeren(){
+  /* Der verzögerte Aufruf kann noch feuern, wenn die Runde schon vorbei ist. */
+  if(!nsess)return;
+  const w=nsess.q[nsess.i];
+  try{if(nrec)nrec.abort()}catch(e){}
+  speak(w.e);
+}
+function nachSprechen(){
+  if(!nsess||nsess.fertig)return;
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const st=$('#nstatus'),btn=$('#nmic');
+  if(!SR){st.textContent='Spracherkennung ist in diesem Browser nicht verfügbar.';nachSelbst();return}
+  try{if(nrec)nrec.abort()}catch(e){}
+  try{
+    nrec=new SR();
+    nrec.lang='ru-RU';nrec.interimResults=false;nrec.maxAlternatives=5;
+    btn.classList.add('rec');
+    st.textContent='Ich höre zu – sprich den Satz.';
+    nrec.onresult=ev=>{
+      btn.classList.remove('rec');
+      const res=ev.results[0];
+      let beste=null,bestN=-1;
+      for(let k=0;k<res.length;k++){
+        const g=nachNorm(res[k].transcript).split(' ').filter(Boolean);
+        const ziel=nachNorm(nsess.q[nsess.i].e).split(' ').filter(Boolean);
+        const n=ziel.filter(z=>nachTreffer(z,g)).length;
+        if(n>bestN){bestN=n;beste=res[k].transcript}
+      }
+      nachAuswerten(beste||'');
+    };
+    nrec.onerror=e=>{
+      btn.classList.remove('rec');
+      st.textContent=(e.error==='not-allowed'||e.error==='service-not-allowed')
+        ?'Kein Mikrofon-Zugriff. Du kannst trotzdem weitermachen und selbst einschätzen.'
+        :'Erkennung gerade nicht möglich ('+e.error+').';
+      nachSelbst();
+    };
+    nrec.onend=()=>btn.classList.remove('rec');
+    nrec.start();
+  }catch(e){st.textContent='Spracherkennung nicht verfügbar.';nachSelbst()}
+}
+function nachAuswerten(gehoertRoh){
+  if(!nsess)return;
+  const w=nsess.q[nsess.i];
+  const gehoert=nachNorm(gehoertRoh).split(' ').filter(Boolean);
+  /* Satz Wort für Wort einfärben – so sieht man, an welcher Stelle es hakt,
+     statt nur eine Prozentzahl zu bekommen. */
+  const teile=String(w.e).split(/(\s+)/);
+  let treffer=0,gesamt=0;
+  const html=teile.map(t=>{
+    const n=nachNorm(t);
+    if(!n)return esc(t);
+    gesamt++;
+    const ok=nachTreffer(n,gehoert);
+    if(ok)treffer++;
+    return '<span class="nw '+(ok?'tr':'miss')+'">'+acc(esc(t))+'</span>';
+  }).join('');
+  $('#nsatz').innerHTML=html;
+  nsess.fertig=true;
+  /* Was dieser Versuch beiträgt, merken – damit ein zweiter Versuch am selben
+     Satz den ersten ersetzt statt sich draufzuzählen. */
+  nsess.letzt={treffer,gesamt};
+  nsess.punkte+=treffer;nsess.ges+=gesamt;
+  actMark('nach');save();
+  const quote=gesamt?Math.round(100*treffer/gesamt):0;
+  $('#nstatus').textContent='';
+  $('#nfb').innerHTML=
+    '<div class="fb '+(quote>=70?'fb-ok':'fb-no')+'">'+treffer+' von '+gesamt+' Wörtern angekommen ('+quote+' %)</div>'+
+    (gehoertRoh?'<div class="nachhoert"><b>Verstanden:</b> '+esc(gehoertRoh)+'</div>':'')+
+    (quote<100?'<div class="sub" style="text-align:left;margin-top:10px">Die hellen Wörter sind nicht angekommen. Das kann an der Aussprache liegen – oder daran, dass die Erkennung unbetonte Endungen gern verschluckt. Hör den Satz nochmal und sprich die hellen Stellen deutlicher.</div>':'')+
+    '<div class="grade on grade1" style="grid-template-columns:1fr 1fr">'+
+    '<button class="g-w" onclick="nachNochmal()">Nochmal versuchen</button>'+
+    '<button class="g-k" onclick="nachNext()">Weiter</button></div>';
+}
+/* Ohne Mikrofon bleibt nur die Selbsteinschätzung – dann steht das auch so da. */
+function nachSelbst(){
+  if(!nsess)return;
+  nsess.fertig=true;
+  $('#nfb').innerHTML='<div class="sub" style="text-align:left;margin-top:10px">Ohne Erkennung kann die App nichts prüfen. Sprich den Satz trotzdem laut – und geh dann weiter.</div>'+
+    '<div class="grade on grade1"><button class="g-k" onclick="nachNext()">Weiter</button></div>';
+}
+function nachNochmal(){
+  if(nsess.letzt){
+    nsess.punkte-=nsess.letzt.treffer;
+    nsess.ges-=nsess.letzt.gesamt;
+    nsess.letzt=null;
+  }
+  renderNachFrage();
+}
+function nachNext(){
+  nsess.i++;
+  if(nsess.i<nsess.q.length){renderNachFrage();return}
+  const q=nsess.ges?Math.round(100*nsess.punkte/nsess.ges):0;
+  nsess=null;
+  try{if(nrec)nrec.abort()}catch(e){}
+  try{if(window.speechSynthesis)speechSynthesis.cancel()}catch(e){}
+  $('#view-lernen').innerHTML='<div class="hero"><div class="done-mark">🗣️</div>'+
+    '<div class="due-line">Runde geschafft!</div>'+
+    '<div class="sumgrid">'+
+    '<div class="sumbox"><b>'+q+' %</b><span>der Wörter kamen an</span></div>'+
+    '</div>'+
+    '<div class="sub" style="text-align:left;margin-top:12px">Diese Quote ist keine Note. Sie sagt, wie deutlich du für eine Maschine warst – und genau daran merkst du, welche Laute noch verwaschen sind. Kurze Runden öfter bringen mehr als eine lange.</div>'+
+    '<button class="btn btn-primary" onclick="startNach()">Noch eine Runde</button><br>'+
+    '<button class="btn-ghost" onclick="renderHome()">Zurück zum Lernen</button></div>';
 }
 
 /* ================= Wurzel-Training =================
