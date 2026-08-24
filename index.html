@@ -118,6 +118,11 @@ nav{position:sticky;top:0;z-index:20;background:var(--paper);padding:12px 0 14px
 .ex .ru .acc{color:var(--gzhel)}
 .ex .de{font-size:.86rem;color:var(--ink-soft);margin-top:3px}
 .note{margin-top:10px;font-size:.8rem;color:var(--amber);font-weight:600;background:var(--amber-soft);display:inline-block;padding:5px 12px;border-radius:8px}
+.rdef{margin:10px 0;text-align:left;border:1px solid var(--frost);border-radius:10px;background:var(--card)}
+.rdef summary{cursor:pointer;padding:8px 12px;font-size:.78rem;font-weight:700;color:var(--gzhel);list-style:none}
+.rdef summary::-webkit-details-marker{display:none}
+.rdb{padding:0 12px 10px;font-size:.9rem;line-height:1.5}
+.rdb .rdde{display:block;margin-top:5px;font-size:.78rem;color:var(--ink-faint)}
 .note.mnem{background:var(--gzhel-soft);color:var(--gzhel)}
 .note.mnem button{font-size:.8rem;padding:0 4px;color:inherit;opacity:.65}
 .note.mnem button:hover{opacity:1}
@@ -3231,6 +3236,15 @@ function familyHtml(w){ /* Wortfamilie: gleicher Stamm (5 Zeichen) – Wortbildu
 /* Die Lautschrift steht direkt unter dem Wort und zieht den Blick auf sich –
    dann liest man die Umschrift statt der Kyrillica. Deshalb standardmässig
    eingeklappt; wer sie dauerhaft will, stellt das unter „Mehr“ um. */
+/* Russische Erklärung – kommt mit den Wörtern aus СЕРИА́Л mit. Ein Wort
+   russisch erklärt zu bekommen, ist der letzte Schritt vor dem Denken in
+   der Sprache; deshalb steht sie hier genauso wie dort. */
+function rdBox(w){
+  if(!w||!w.rd)return '';
+  return '<details class="rdef"><summary>🇷🇺 Auf Russisch erklärt</summary>'+
+    '<div class="rdb">'+acc(esc(w.rd))+' <button class="sp2" data-speak-raw="'+esc(w.rd)+'">🔊</button>'+
+    '<span class="rdde">'+esc(w.d)+'</span></div></details>';
+}
 function transHtml(w){
   if(!w||!w.t)return '';
   if(S.set&&S.set.tr==='show')return '<div class="trans">['+esc(w.t)+']</div>';
@@ -3243,7 +3257,7 @@ function answerBlock(w){
     transHtml(w)+
     '<div class="mean">'+esc(w.d)+'</div>'+
     (w.e?'<div class="ex"><div class="ru">'+acc(esc(w.e))+' <button class="sp2" data-speak-ex data-i="'+w.i+'" title="Satz anhören">🔊</button></div><div class="de">'+esc(w.x)+'</div></div>':'')+
-    (w.n?'<div class="note">'+esc(w.n)+'</div>':'')+
+    (w.n?'<div class="note">'+esc(w.n)+'</div>':'')+rdBox(w)+
     twinBox(w)+aspectHtml(w)+familyHtml(w)+
     '<div id="mnemSlot">'+mnemHtml(w.i)+'</div>';
 }
@@ -4500,6 +4514,7 @@ function importWords(arr){
     seen.add(key);
     const item={i:++max,r:String(o.r),t:String(o.t||''),d:String(o.d),e:String(o.e||''),x:String(o.x||''),g:+o.g||0};
     if(o.n)item.n=String(o.n);
+    if(o.rd)item.rd=String(o.rd);
     S.extras.push(item);n++;
     /* Lernstand aus СЕРИА́Л übernehmen: was dort schon sitzt, startet hier nicht bei null */
     const m=Math.min(4,+o.m||0);
