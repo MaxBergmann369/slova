@@ -402,7 +402,7 @@ textarea#impBox,textarea#bakBox{width:100%;min-height:110px;border:1px solid var
 
   <div class="panel">
     <h3>Wörter importieren</h3>
-    <p class="hint">Der Grundstock von 2000 Wörtern ist fest eingebaut, dazu 133 Ergänzungen aus den Wortfamilien. Über den Import kannst du trotzdem jederzeit eigene Wörter ergänzen (im JSON-Format, siehe grauer Beispieltext).<br>
+    <p class="hint">Der Grundstock von 2000 Wörtern ist fest eingebaut, dazu 168 Ergänzungen aus den Wortfamilien. Über den Import kannst du trotzdem jederzeit eigene Wörter ergänzen (im JSON-Format, siehe grauer Beispieltext).<br>
       Wörter aus СЕРИА́Л bringen ihren Lernstand mit: Was du dort schon gemeistert hast, startet hier nicht bei null, sondern direkt im passenden Wiederholungsabstand – und zählt nicht gegen dein Tageslimit für neue Wörter.</p>
     <textarea id="impBox" placeholder='[{"r":"стол","t":"stol","d":"Tisch","e":"Э́то мой стол.","x":"Das ist mein Tisch.","g":0}]'></textarea>
     <button class="btn-sm" id="impBtn">Importieren</button>
@@ -425,7 +425,7 @@ textarea#impBox,textarea#bakBox{width:100%;min-height:110px;border:1px solid var
     <div class="msg" id="dataMsg"></div>
   </div>
 
-  <p class="foot">2000 Wörter nach Häufigkeit (angelehnt an gängige Frequenzlisten), dazu 133 Wörter aus den Wortfamilien.<br>≈ DE/EN markiert Wörter, die ähnlich wie im Deutschen oder Englischen klingen.</p>
+  <p class="foot">2000 Wörter nach Häufigkeit (angelehnt an gängige Frequenzlisten), dazu 168 Wörter aus den Wortfamilien.<br>≈ DE/EN markiert Wörter, die ähnlich wie im Deutschen oder Englischen klingen.</p>
 </section>
 
 </div>
@@ -1487,7 +1487,7 @@ const VOCAB=[
 {i:1054,r:"плюс",t:"pljuss",d:"Plus",e:"Большо́й плюс!",x:"Ein großes Plus!",g:3},
 {i:1055,r:"ноль",t:"nol'",d:"Null",e:"Ноль гра́дусов.",x:"Null Grad.",g:1},
 {i:1056,r:"игру́шка",t:"i-GRUSCH-ka",d:"Spielzeug",e:"Люби́мая игру́шка.",x:"Das Lieblingsspielzeug."},
-{i:1057,r:"мяч",t:"mjatsch",d:"Ball",e:"Игра́ем в мяч!",x:"Wir spielen Ball!"},
+{i:1057,r:"мяч",t:"mjatsch",d:"Ball",e:"Игра́ем в мяч!",x:"Wir spielen Ball!",n:"Der Ball zum Spielen. Der Ball als Tanzveranstaltung ist бал."},
 {i:1058,r:"ша́хматы",t:"SCHACH-ma-ty",d:"Schach",e:"Игра́ем в ша́хматы?",x:"Spielen wir Schach?",g:1},
 {i:1059,r:"зага́дка",t:"sa-GAT-ka",d:"Rätsel",e:"Интере́сная зага́дка!",x:"Ein interessantes Rätsel!",n:"Das Rätsel zum Lösen, auch als Spiel. Das ungelöste Geheimnis ist та́йна."},
 {i:1060,r:"приз",t:"priss",d:"Preis (Gewinn)",e:"Гла́вный приз!",x:"Der Hauptpreis!",g:1,n:"Der Gewinn im Wettbewerb: пе́рвый приз. Was etwas kostet, ist цена́."},
@@ -1785,7 +1785,7 @@ const VOCAB=[
 {i:1352,r:"забо́титься",t:"sa-BO-ti-za",d:"sich kümmern",e:"Забо́чусь о ба́бушке.",x:"Ich kümmere mich um Oma.",n:"о + Präpositiv"},
 {i:1353,r:"сажа́ть",t:"ssa-SHAT'",d:"pflanzen",e:"Са́жаем цветы́ в саду́.",x:"Wir pflanzen Blumen im Garten."},
 {i:1354,r:"пры́гать",t:"PRY-gat'",d:"springen",e:"Де́ти пры́гают от ра́дости.",x:"Die Kinder springen vor Freude.",n:"Wiederholt springen, hüpfen. Ein einzelner Sprung ist пры́гнуть."},
-{i:1355,r:"убежа́ть",t:"u-bi-SHAT'",d:"weglaufen",e:"Соба́ка убежа́ла!",x:"Der Hund ist weggelaufen!"},
+{i:1355,r:"убежа́ть",t:"u-bi-SHAT'",d:"weglaufen",e:"Соба́ка убежа́ла!",x:"Der Hund ist weggelaufen!",n:"Weglaufen und entwischen – Hund, Kind, Gefangener."},
 {i:1356,r:"уезжа́ть",t:"u-jis-SHAT'",d:"wegfahren, abreisen",e:"Мы уезжа́ем за́втра.",x:"Wir reisen morgen ab.",n:"vollendet: уе́хать"},
 {i:1357,r:"расска́зывать",t:"ra-SKA-sy-wat'",d:"erzählen",e:"Расскажи́ мне всё!",x:"Erzähl mir alles!",n:"vollendet: рассказа́ть"},
 {i:1358,r:"кра́сить",t:"KRA-ssit'",d:"streichen; färben",e:"Кра́сим сте́ну.",x:"Wir streichen die Wand.",n:"Streichen und färben: Wand, Haare, Ostereier."},
@@ -2008,7 +2008,7 @@ const VOCAB=[
 {i:1575,r:"карье́ра",t:"ka-RJE-ra",d:"Karriere",e:"Хоро́шая карье́ра.",x:"Eine gute Karriere.",g:3},
 {i:1576,r:"собесе́дование",t:"ssa-bi-SSJE-da-wa-ni-je",d:"Vorstellungsgespräch",e:"За́втра собесе́дование!",x:"Morgen ist das Vorstellungsgespräch!"},
 {i:1577,r:"сотру́дник",t:"ssa-TRUD-nik",d:"Mitarbeiter",e:"Но́вый сотру́дник.",x:"Ein neuer Mitarbeiter."},
-{i:1578,r:"партнёр",t:"part-NJOR",d:"Partner",e:"Наш партнёр из Берли́на.",x:"Unser Partner aus Berlin.",g:1},
+{i:1578,r:"партнёр",t:"part-NJOR",d:"Partner",e:"Наш партнёр из Берли́на.",x:"Unser Partner aus Berlin.",g:1,n:"Der Geschäfts- oder Lebenspartner. Der Arbeitspartner in der Schicht ist напа́рник."},
 {i:1579,r:"догово́р",t:"da-ga-WOR",d:"Vertrag",e:"Ва́жный догово́р.",x:"Ein wichtiger Vertrag."},
 {i:1580,r:"подпи́сывать",t:"pat-PI-ssy-wat'",d:"unterschreiben",e:"Подпиши́ здесь!",x:"Unterschreib hier!",n:"vollendet: подписа́ть"},
 {i:1581,r:"фо́рма",t:"FOR-ma",d:"Form; Formular; Trikot",e:"Спорти́вная фо́рма.",x:"Sportkleidung.",g:3,n:"Form, Gestalt, auch Uniform und Trikot. Das auszufüllende Formular ist бланк."},
@@ -2699,7 +2699,42 @@ const FAM_WORDS=[
 {i:9130,r:"теплота́",t:"ti-pla-TA",d:"Wärme (auch menschlich)",e:"Он говори́л с теплото́й.",x:"Er sprach mit Wärme.",n:"Die Wärme als Eigenschaft – physikalisch und menschlich."},
 {i:9131,r:"потепле́ние",t:"pa-ti-PLJE-ni-je",d:"Erwärmung",e:"На неде́ле ждём потепле́ния.",x:"In der Woche erwarten wir Erwärmung.",n:"Im Wetterbericht und beim Klima: глоба́льное потепле́ние."},
 {i:9132,r:"хо́лод",t:"CHO-lat",d:"Kälte",e:"На у́лице стра́шный хо́лод.",x:"Draußen ist eine furchtbare Kälte.",n:"Die Kälte als Sache. Kalt sein ist хо́лодно."},
-{i:9133,r:"похолода́ть",t:"pa-cha-la-DATJ",d:"kälter werden",e:"К ве́черу похолода́ло.",x:"Gegen Abend wurde es kälter.",n:"Unpersönlich, nur vom Wetter."}];
+{i:9133,r:"похолода́ть",t:"pa-cha-la-DATJ",d:"kälter werden",e:"К ве́черу похолода́ло.",x:"Gegen Abend wurde es kälter.",n:"Unpersönlich, nur vom Wetter."},
+{i:9134,r:"уви́деть",t:"u-WI-ditj",d:"erblicken, zu sehen bekommen",e:"Я уви́дел её издалека́.",x:"Ich erblickte sie von weitem.",n:"Einmal sehen, mit Ergebnis. Die Dauerform ist ви́деть."},
+{i:9135,r:"ви́димо",t:"WI-di-ma",d:"offenbar, anscheinend",e:"Ви́димо, он забы́л.",x:"Anscheinend hat er es vergessen.",n:"Vermutung aufgrund dessen, was man sieht. Von ви́деть."},
+{i:9136,r:"неви́димый",t:"ni-WI-di-myj",d:"unsichtbar",e:"Он стал неви́димым.",x:"Er wurde unsichtbar.",n:"Was man nicht sehen kann – wörtlich „nicht sichtbar“."},
+{i:9137,r:"вре́менно",t:"WRJE-mi-na",d:"vorübergehend, zeitweise",e:"Ли́фт вре́менно не рабо́тает.",x:"Der Aufzug funktioniert vorübergehend nicht.",n:"Auf Schildern und in Ansagen. Von вре́мя, der Zeit."},
+{i:9138,r:"новичо́к",t:"na-wi-TSCHOK",d:"Neuling, Anfänger",e:"Я здесь новичо́к.",x:"Ich bin hier neu.",n:"Wer neu dabei ist – im Job, im Sport, im Spiel."},
+{i:9139,r:"обнови́ть",t:"ab-na-WITJ",d:"erneuern, aktualisieren",e:"На́до обнови́ть прило́жение.",x:"Man muss die App aktualisieren.",n:"Auf den neuesten Stand bringen – auch technisch: das Update."},
+{i:9140,r:"но́вость",t:"NO-wastj",d:"Neuigkeit",e:"У меня́ хоро́шая но́вость!",x:"Ich habe eine gute Neuigkeit!",n:"Die einzelne Nachricht. Die Nachrichtensendung ist но́вости."},
+{i:9141,r:"одна́жды",t:"ad-NASCH-dy",d:"einmal, eines Tages",e:"Одна́жды он про́сто исче́з.",x:"Eines Tages verschwand er einfach.",n:"Erzählanfang wie „es war einmal“. Von оди́н."},
+{i:9142,r:"объедини́ть",t:"ab-ji-di-NITJ",d:"vereinen, zusammenschließen",e:"Му́зыка объединя́ет люде́й.",x:"Musik verbindet Menschen.",n:"Zu einem machen – von оди́н, eins."},
+{i:9143,r:"одино́кий",t:"a-di-NO-kij",d:"einsam",e:"Он о́чень одино́кий челове́к.",x:"Er ist ein sehr einsamer Mensch.",n:"Allein und ohne Menschen um sich. Von оди́н."},
+{i:9144,r:"про́сто",t:"PRO-sta",d:"einfach, nur",e:"Э́то про́сто недоразуме́ние.",x:"Das ist nur ein Missverständnis.",n:"Sehr häufig als Abschwächer: про́сто = einfach nur, halt."},
+{i:9145,r:"упрости́ть",t:"u-pra-SSTITJ",d:"vereinfachen",e:"На́до упрости́ть пра́вила.",x:"Man muss die Regeln vereinfachen.",n:"Einfacher machen. Von просто́й."},
+{i:9146,r:"окружа́ть",t:"a-kru-SCHATJ",d:"umgeben, umzingeln",e:"Нас окружа́ют го́ры.",x:"Uns umgeben Berge.",n:"Ringsum sein – von круг, dem Kreis. Die Umgebung ist окруже́ние."},
+{i:9147,r:"сочу́вствие",t:"ssa-TSCHUW-stwi-je",d:"Mitgefühl, Anteilnahme",e:"Прими́те моё сочу́вствие.",x:"Mein Beileid.",n:"Wörtlich „Mitfühlen“. Die feste Wendung bei Trauerfällen."},
+{i:9148,r:"чувстви́тельный",t:"tschust-WI-tilj-nyj",d:"empfindlich, empfindsam",e:"У меня́ чувстви́тельная ко́жа.",x:"Ich habe empfindliche Haut.",n:"Körperlich empfindlich – und seelisch feinfühlig."},
+{i:9149,r:"ожида́ть",t:"a-schi-DATJ",d:"erwarten",e:"Мы ожида́ем госте́й.",x:"Wir erwarten Gäste.",n:"Förmlicher als ждать – man rechnet mit etwas."},
+{i:9150,r:"ожида́ние",t:"a-schi-DA-ni-je",d:"das Warten, Erwartung",e:"Ожида́ние бы́ло до́лгим.",x:"Das Warten war lang.",n:"Das Warten als Zustand – und die Erwartung an etwas."},
+{i:9151,r:"неожи́данно",t:"ni-a-SCHI-da-na",d:"unerwartet, plötzlich",e:"Он неожи́данно верну́лся.",x:"Er kam unerwartet zurück.",n:"Wörtlich „nicht erwartet“. Von ждать."},
+{i:9152,r:"ну́жный",t:"NUSCH-nyj",d:"nötig, gebraucht",e:"Э́то о́чень ну́жная вещь.",x:"Das ist ein sehr nützliches Ding.",n:"Adjektiv am Substantiv. Unpersönlich „man muss“ ist ну́жно."},
+{i:9153,r:"нужда́ться",t:"nusch-DA-za",d:"brauchen, bedürfen",e:"Он нужда́ется в по́мощи.",x:"Er braucht Hilfe.",n:"Förmlich, mit в + Präpositiv. Alltäglich sagt man мне ну́жно."},
+{i:9154,r:"ужа́сно",t:"u-SCHASS-na",d:"furchtbar; sehr",e:"Я ужа́сно уста́л.",x:"Ich bin furchtbar müde.",n:"Adverb – und umgangssprachlich reiner Verstärker: ужа́сно ра́д."},
+{i:9155,r:"го́лод",t:"GO-lat",d:"Hunger",e:"Он почу́вствовал го́лод.",x:"Er spürte Hunger.",n:"Der Hunger als Zustand – auch die Hungersnot."},
+{i:9156,r:"голода́ть",t:"ga-la-DATJ",d:"hungern",e:"Никто́ не до́лжен голода́ть.",x:"Niemand soll hungern.",n:"Nichts zu essen haben – auch: fasten."},
+{i:9157,r:"це́нность",t:"ZEN-nastj",d:"Wert",e:"Э́то не име́ет це́нности.",x:"Das hat keinen Wert.",n:"Der Wert einer Sache – im Plural die Werte: се́мейные це́нности."},
+{i:9158,r:"уда́чный",t:"u-DATSCH-nyj",d:"gelungen, geglückt",e:"Э́то был уда́чный день.",x:"Das war ein gelungener Tag.",n:"Was gut ausgegangen ist. Von уда́ча."},
+{i:9159,r:"вы́тереть",t:"WY-ti-ritj",d:"abtrocknen, abwischen",e:"Вы́три ру́ки полоте́нцем.",x:"Trockne die Hände mit dem Handtuch ab.",n:"Trocken wischen. Nass putzen ist мыть."},
+{i:9160,r:"потеря́ть",t:"pa-ti-RJATJ",d:"verlieren (einmal)",e:"Я потеря́л ключи́.",x:"Ich habe die Schlüssel verloren.",n:"Einmal verloren. Die Dauerform ist теря́ть."},
+{i:9161,r:"поте́ря",t:"pa-TJE-rja",d:"Verlust",e:"Э́то больша́я поте́ря для всех нас.",x:"Das ist ein großer Verlust für uns alle.",n:"Der Verlust einer Sache oder eines Menschen."},
+{i:9162,r:"потеря́ться",t:"pa-ti-RJA-za",d:"verloren gehen, sich verirren",e:"Ребёнок потеря́лся в магази́не.",x:"Das Kind ist im Laden verloren gegangen.",n:"Selbst verloren gehen – Menschen, Tiere, Sachen."},
+{i:9163,r:"нарисова́ть",t:"na-ri-ssa-WATJ",d:"zeichnen (fertig)",e:"Нарису́й мне ба́рашка.",x:"Zeichne mir ein Schäfchen.",n:"Fertig gezeichnet. Die Dauerform ist рисова́ть."},
+{i:9164,r:"определённый",t:"a-pri-di-LJON-nyj",d:"bestimmt, gewiss",e:"В определённом смы́сле ты прав.",x:"In gewissem Sinne hast du recht.",n:"Festgelegt – und „ein gewisser“: определённые лю́ди."},
+{i:9165,r:"жена́тый",t:"schi-NA-tyj",d:"verheiratet (Mann)",e:"Он жена́т уже́ де́сять лет.",x:"Er ist seit zehn Jahren verheiratet.",n:"Nur über Männer. Eine verheiratete Frau ist за́мужем."},
+{i:9166,r:"вовле́чь",t:"wa-WLJETSCH",d:"hineinziehen, einbeziehen",e:"Его́ вовлекли́ в э́ту исто́рию.",x:"Man hat ihn in diese Sache hineingezogen.",n:"In eine Sache verwickeln – oft gegen den eigenen Willen."},
+{i:9167,r:"ме́тка",t:"MJET-ka",d:"Markierung, Kennzeichen",e:"На карма́не была́ ме́тка.",x:"An der Tasche war eine Markierung.",n:"Das angebrachte Zeichen. Von заме́тить, bemerken."},
+{i:9168,r:"досло́вно",t:"da-SSLOW-na",d:"wörtlich, Wort für Wort",e:"Переведи́ досло́вно.",x:"Übersetze wörtlich.",n:"Genau so, wie es dasteht. Von сло́во, dem Wort."}];
 function allWords(){return VOCAB.concat(FAM_WORDS,S.extras)}
 /* ---- Gemeinsamer Wortindex ----------------------------------------------
    СКА́ЗКИ hat keinen Zugriff auf VOCAB oder PACKS – die stehen in anderen
@@ -3507,7 +3542,33 @@ const FAMILIEN=[
 {w:'-свеж-',b:'frisch',m:[['све́жий','frisch'],['свежо́','es ist frisch, kühl'],['освежи́ть','erfrischen'],['све́жесть','Frische']]},
 {w:'-лёгк- / -легч-',b:'leicht',m:[['лёгкий','leicht'],['легко́','leicht, mühelos'],['облегче́ние','Erleichterung'],['поле́гче','sachte!, langsamer'],['облегчи́ть','erleichtern']]},
 {w:'-тепл-',b:'warm',m:[['тёплый','warm (am Substantiv)'],['тепло́','es ist warm; die Wärme'],['теплота́','Wärme (auch menschlich)'],['потепле́ние','Erwärmung']]},
-{w:'-холод-',b:'kalt',m:[['хо́лод','Kälte'],['холо́дный','kalt'],['хо́лодно','es ist kalt'],['холоди́льник','Kühlschrank'],['похолода́ть','kälter werden']]}];
+{w:'-холод-',b:'kalt',m:[['хо́лод','Kälte'],['холо́дный','kalt'],['хо́лодно','es ist kalt'],['холоди́льник','Kühlschrank'],['похолода́ть','kälter werden']]},
+{w:'-вид-',b:'sehen',m:[['ви́деть','sehen'],['уви́деть','erblicken, zu sehen bekommen'],['вид','Aussicht; Aussehen; Art'],['ви́димо','offenbar, anscheinend'],['свида́ние','Verabredung – wörtlich das Sich-Sehen'],['до свида́ния','auf Wiedersehen'],['неви́димый','unsichtbar']]},
+{w:'-врем-',b:'Zeit',m:[['вре́мя','Zeit'],['вре́менно','vorübergehend'],['во́время','rechtzeitig, pünktlich'],['совреме́нный','modern – „mit der Zeit gehend“'],['одновреме́нно','gleichzeitig'],['времена́ми','zeitweise']]},
+{w:'-нов-',b:'neu',m:[['но́вый','neu'],['но́вости','Nachrichten – das Neue'],['новичо́к','Neuling, Anfänger'],['обнови́ть','erneuern, aktualisieren'],['сно́ва','wieder, erneut'],['но́вость','Neuigkeit']]},
+{w:'-перв-',b:'erster',m:[['пе́рвый','der erste'],['сперва́','zuerst'],['впервы́е','zum ersten Mal'],['первонача́льно','ursprünglich, anfangs']]},
+{w:'-один- / -един-',b:'eins, einzig',m:[['оди́н','eins, allein'],['одна́жды','einmal, eines Tages'],['одина́ковый','gleich, identisch'],['еди́нственный','der einzige'],['объедини́ть','vereinen, zusammenschließen'],['одино́кий','einsam']]},
+{w:'-прост-',b:'einfach, gerade',m:[['просто́й','einfach'],['про́сто','einfach, nur'],['упрости́ть','vereinfachen'],['простота́','Einfachheit'],['прости́ть','verzeihen – ursprünglich „gerade machen“'],['проще́ние','Verzeihung']]},
+{w:'-круг-',b:'Kreis, rund',m:[['круг','Kreis'],['кру́глый','rund'],['вокру́г','ringsum, herum'],['окружа́ть','umgeben'],['кругово́й','Kreis-, rund']]},
+{w:'-слав-',b:'Ruhm, preisen',m:[['сла́ва','Ruhm'],['сла́вный','lieb, nett; ruhmreich'],['просла́виться','berühmt werden'],['сла́ва бо́гу','Gott sei Dank'],['знамени́тый','berühmt']]},
+{w:'-чув-',b:'fühlen, spüren',m:[['чу́вство','Gefühl; Sinn'],['чу́вствовать','fühlen, spüren'],['чу́вствовать себя́','sich fühlen'],['сочу́вствие','Mitgefühl'],['чувстви́тельный','empfindlich, empfindsam']]},
+{w:'-жд- / -жид-',b:'warten',m:[['ждать','warten'],['ожида́ть','erwarten'],['ожида́ние','das Warten, Erwartung'],['поджида́ть','abpassen, auflauern'],['неожи́данность','Überraschung – das Unerwartete'],['неожи́данно','unerwartet']]},
+{w:'-нужд-',b:'brauchen, Not',m:[['ну́жно','man muss, es ist nötig'],['ну́жный','nötig, gebraucht'],['нужда́','Not, Bedürfnis'],['нужда́ться','bedürfen, brauchen'],['нену́жный','überflüssig']]},
+{w:'-слов-',b:'Wort',m:[['сло́во','Wort'],['слова́рь','Wörterbuch'],['посло́вица','Sprichwort'],['усло́вие','Bedingung – was ausgemacht wurde'],['дать сло́во','sein Wort geben'],['досло́вно','wörtlich']]},
+{w:'-мысл- / -мышл-',b:'denken, Sinn',m:[['мысль','Gedanke'],['смысл','Sinn, Bedeutung'],['бессмы́слица','Unsinn – ohne Sinn'],['бессмы́сленно','sinnlos'],['заду́мать','sich etwas ausdenken'],['вы́думать','erfinden, sich ausdenken']]},
+{w:'-ужас-',b:'Entsetzen',m:[['у́жас','Entsetzen, Grauen'],['ужа́сный','schrecklich'],['ужа́сно','furchtbar; sehr'],['ужасну́ться','entsetzt sein']]},
+{w:'-голод-',b:'Hunger',m:[['го́лод','Hunger'],['голо́дный','hungrig'],['проголода́ться','hungrig werden'],['голода́ть','hungern']]},
+{w:'-здоров-',b:'gesund',m:[['здоро́вье','Gesundheit'],['здоро́вый','gesund; kräftig'],['здоро́ваться','grüßen'],['поздоро́ваться','Hallo sagen'],['здра́вствуйте','guten Tag – wörtlich „seien Sie gesund“'],['Будь здоро́в','Gesundheit!; bleib gesund']]},
+{w:'-волос-',b:'Haar',m:[['во́лосы','Haare'],['волосо́к','Härchen, einzelnes Haar'],['волоса́тый','behaart']]},
+{w:'-цен-',b:'Preis, Wert',m:[['цена́','Preis'],['це́нный','wertvoll'],['драгоце́нный','kostbar'],['оце́нка','Note; Einschätzung'],['оцени́ть','bewerten, einschätzen'],['це́нность','Wert']]},
+{w:'-удач-',b:'Glück, Gelingen',m:[['уда́ча','Glück, Erfolg'],['уда́чный','gelungen, geglückt'],['неуда́ча','Misserfolg, Pech'],['неуда́чник','Pechvogel, Versager'],['уда́чи','viel Glück!']]},
+{w:'-тер- (reiben)',b:'reiben, wischen',m:[['тере́ть','reiben, schrubben'],['стере́ть','wegwischen, löschen'],['вы́тереть','abtrocknen, abwischen'],['протере́ть','durchwischen']]},
+{w:'-тер- (verlieren)',b:'verlieren',m:[['теря́ть','verlieren'],['потеря́ть','verloren haben'],['поте́ря','Verlust'],['потеря́ться','verloren gehen, sich verirren']]},
+{w:'-рис-',b:'zeichnen',m:[['рисова́ть','zeichnen, malen'],['нарисова́ть','fertig zeichnen'],['рису́нок','Zeichnung; Muster'],['разрисова́ть','bemalen, ansprühen']]},
+{w:'-искус-',b:'Kunst, Können',m:[['иску́сство','Kunst'],['иску́сный','kunstfertig, meisterhaft'],['иску́сственный','künstlich']]},
+{w:'-вел-',b:'gebieten, befehlen',m:[['веле́ть','befehlen, anweisen'],['повелева́ть','gebieten'],['повели́тель','Gebieter, Herrscher']]},
+{w:'-определ-',b:'bestimmen',m:[['определи́ть','bestimmen, feststellen'],['определе́ние','Definition; Bestimmung'],['определённый','bestimmt, gewiss']]},
+{w:'-хвост-',b:'Schwanz',m:[['хвост','Schwanz'],['хво́стик','Zöpfchen, Pferdeschwanz']]}];
 /* Ein Wort kann nur in einer Familie stehen – der Index wird einmal gebaut. */
 let FAM_IDX=null;
 function famNorm(r){return String(r).replace(/\u0301/g,'').toLowerCase().replace(/ё/g,'е').replace(/[^а-я\- ]/g,'').trim()}
