@@ -2918,15 +2918,20 @@ function clozeFor(w){
 function distractors(w,field,n){
   /* Ablenker: gleiche Wortklasse (Substantiv ja/nein) und ähnliche Länge bevorzugen */
   const optKey=r=>String(r).replace(/\s*\([^)]*\)/g,'').toLowerCase().replace(/[^а-яё́\- ]/g,'').replace(/\s+/g,' ').trim();
-  const norm=o=>field==='d'
-    ?String(o.d).toLowerCase().split(/[,;(]/)[0].trim()
-    :optKey(o.r);
+  /* Satzzeichen weg: "Vorsicht!" und "Vorsicht, vorsichtig" sind dieselbe Antwort */
+  const deKey=d=>String(d).toLowerCase().split(/[,;(]/)[0].replace(/[!?.…]+/g,'').replace(/\s+/g,' ').trim();
+  const norm=o=>field==='d'?deKey(o.d):optKey(o.r);
   const self=norm(w);
+  /* Zwei Einträge zum selben russischen Wort dürfen nie gegeneinander
+     antreten – dann wären beide Antworten richtig. */
+  const selfRu=optKey(w.r);
+  const gleichesWort=o=>optKey(o.r)===selfRu;
   const isNoun=/^[A-ZÄÖÜ]/.test(String(w.d).trim());
   const len=String(field==='d'?w.d:w.r).length;
   const scored=[];
   for(const o of allWords()){
     if(o.i===w.i)continue;
+    if(gleichesWort(o))continue;
     const on=norm(o);
     if(!on||on===self)continue;
     /* je ähnlicher der Ablenker, desto weniger hilft reines Wiedererkennen:
@@ -2944,7 +2949,7 @@ function distractors(w,field,n){
   /* gelernter Zwilling kommt immer mit in die Auswahl – genau daran entscheidet sich,
      ob du das Wort kennst oder nur seine Form wiedererkennst */
   const tw=learnedTwin(w);
-  if(tw){const on=norm(tw);if(on&&on!==self){seen.add(on);out.push(tw)}}
+  if(tw&&!gleichesWort(tw)){const on=norm(tw);if(on&&on!==self){seen.add(on);out.push(tw)}}
   for(const e of scored){
     if(seen.has(e.on))continue;
     seen.add(e.on);out.push(e.o);

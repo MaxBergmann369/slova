@@ -2441,9 +2441,34 @@ function dispStreak(){return (S.lastDay===todayStr()||S.lastDay===yesterStr()||(
 /* ================= Fortschritt ================= */
 const itemId=(tid,k)=>tid+':'+k;
 function itemStat(tid,k){return S.it[itemId(tid,k)]}
+/* Eine Aufgabe gilt erst nach zwei richtigen Antworten als gemeistert – einmal
+   richtig kann Raten sein. Trotzdem muss man sehen, dass etwas passiert ist:
+   der erste Treffer zählt als halber Schritt. */
+function itemScore(tid,k){
+  const st=itemStat(tid,k);
+  if(!st||st.l===0)return 0;      /* nie geübt oder zuletzt falsch */
+  return st.c>=2?1:.5;
+}
+function zahlen(tp,von,bis){
+  const a=von||0,b=(bis===undefined?tp.items.length:bis);
+  let ganz=0,halb=0,falsch=0;
+  for(let k=a;k<b;k++){
+    const st=itemStat(tp.id,k),sc=itemScore(tp.id,k);
+    if(sc===1)ganz++;else if(sc)halb++;else if(st)falsch++;
+  }
+  return{ganz,halb,falsch,neu:(b-a)-ganz-halb-falsch,n:b-a};
+}
+function bilanz(z){
+  const t=[];
+  if(z.ganz)t.push(z.ganz+' gemeistert');
+  if(z.halb)t.push(z.halb+' einmal richtig');
+  if(z.falsch)t.push(z.falsch+' nochmal üben');
+  if(z.neu)t.push(z.neu+' neu');
+  return t.join(' · ');
+}
 function topicProgress(tp){
   let m=0;
-  tp.items.forEach((it,k)=>{const st=itemStat(tp.id,k);if(st&&st.c>=2&&st.l===1)m++});
+  tp.items.forEach((it,k)=>{m+=itemScore(tp.id,k)});
   return Math.round(100*m/tp.items.length);
 }
 
@@ -2462,7 +2487,7 @@ function packsOf(tp){
 }
 function packProgress(tp,pk){
   let m=0;
-  for(let k=pk.von;k<pk.bis;k++){const st=itemStat(tp.id,k);if(st&&st.c>=2&&st.l===1)m++}
+  for(let k=pk.von;k<pk.bis;k++)m+=itemScore(tp.id,k);
   return Math.round(100*m/(pk.bis-pk.von));
 }
 function packOffen(tp,pk){
@@ -2485,13 +2510,13 @@ function paketListe(tp){
   const pks=packsOf(tp);
   if(pks.length<2)return '';
   return '<div class="sect">Pakete</div>'+
-    '<p class="hint" style="margin:-4px 0 10px">Jedes Paket ist ein eigener Satz Aufgaben. So arbeitest du ein grosses Thema Stück für Stück durch, statt immer dieselben zehn zu ziehen.</p>'+
+    '<p class="hint" style="margin:-4px 0 10px">Jedes Paket ist ein eigener Satz Aufgaben. So arbeitest du ein grosses Thema Stück für Stück durch, statt immer dieselben zehn zu ziehen.<br>Eine Aufgabe zählt <b>halb</b>, sobald du sie einmal richtig hattest, und <b>ganz</b> ab dem zweiten Mal – einmal richtig kann Zufall sein.</p>'+
     pks.map((pk,i)=>{
-      const pr=packProgress(tp,pk),offen=packOffen(tp,pk);
+      const pr=packProgress(tp,pk),z=zahlen(tp,pk.von,pk.bis);
       return '<button class="topic" onclick="startTopic(\''+tp.id+'\','+i+')">'+
         '<span class="ic">'+(pr===100?'✅':(i+1))+'</span>'+
         '<span class="m"><span class="t">Paket '+(i+1)+'</span>'+
-        '<span class="s" style="display:block">'+(pk.bis-pk.von)+' Aufgaben'+(offen?' · '+offen+' noch offen':' · alle gemeistert')+'</span>'+
+        '<span class="s" style="display:block">'+z.n+' Aufgaben'+(pr===100?' · alle gemeistert':' · '+bilanz(z))+'</span>'+
         '<span class="pbar"><i style="width:'+pr+'%"></i></span></span>'+
         '<span class="pct">'+pr+' %</span></button>';
     }).join('');
@@ -2724,9 +2749,10 @@ function finishSession(){
 /* ================= Ansichten ================= */
 function topicCard(tp){
   const p=topicProgress(tp);
+  const z=zahlen(tp);
   return '<button class="topic" onclick="showTopic(\''+tp.id+'\')">'+
     '<span class="ic">'+tp.icon+'</span>'+
-    '<span class="m"><span class="t">'+esc(tp.t)+'</span><span class="s" style="display:block">'+esc(tp.s)+'</span>'+
+    '<span class="m"><span class="t">'+esc(tp.t)+'</span><span class="s" style="display:block">'+(z.neu===z.n?esc(tp.s):esc(bilanz(z)))+'</span>'+
     '<span class="pbar"><i style="width:'+p+'%"></i></span></span>'+
     '<span class="pct">'+p+' %</span></button>';
 }
@@ -2762,7 +2788,7 @@ function showTopic(tid){
     '<div class="hero"><div class="done-mark">'+tp.icon+'</div>'+
     '<div class="due-line">'+esc(tp.t)+'</div>'+
     '<div class="sub" style="text-align:left;margin-top:12px;line-height:1.6">'+esc(tp.intro)+'</div>'+
-    '<div class="sub" style="margin-top:10px">'+tp.items.length+' Aufgaben · '+p+' % gemeistert</div>'+
+    '<div class="sub" style="margin-top:10px">'+tp.items.length+' Aufgaben · '+p+' %<br>'+esc(bilanz(zahlen(tp)))+'</div>'+
     '<button class="btn btn-primary" onclick="startTopic(\''+tid+'\')">Alles gemischt ('+(tp.type==='puz'?6:10)+' Aufgaben)</button><br>'+
     '<button class="btn-ghost" onclick="renderHome()">Zurück</button></div>'+
     paketListe(tp)+

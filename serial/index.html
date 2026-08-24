@@ -7815,13 +7815,21 @@ function distract(p,k,field,n){
   const isNoun=/^[A-ZÄÖÜ]/.test(String(p.words[k].d).trim());
   /* Klammerzusätze weg, Betonung bleibt: есть (ем) und есть sind dasselbe
      Wort, за́мок und замо́к sind zwei verschiedene. */
-  const nrm=s=>String(s).replace(/\s*\([^)]*\)/g,'').toLowerCase();
+  const nrm=s=>String(s).replace(/\s*\([^)]*\)/g,'').toLowerCase().replace(/[!?.…]+/g,'').replace(/\s+/g,' ').trim();
+  /* nur die erste deutsche Bedeutung vergleichen: "Vorsicht!" und
+     "Vorsicht, vorsichtig" wären sonst zwei richtige Antworten */
+  const deKey=d=>nrm(String(d).split(/[,;]/)[0]);
+  const ruKey=r=>String(r).replace(/\s*\([^)]*\)/g,'').toLowerCase().replace(/[^а-яё́\- ]/g,'').replace(/\s+/g,' ').trim();
+  const selfRu=ruKey(p.words[k].r);
+  const selfDe=deKey(p.words[k].d);
   const a=nrm(self);
   const scored=[];
   p.words.forEach((w,j)=>{
     if(j===k)return;
     const v=w[field];
     if(!v||v===self)return;
+    if(ruKey(w.r)===selfRu)return;                    /* dasselbe Wort, anders geschrieben */
+    if(field==='d'&&deKey(w.d)===selfDe)return;       /* dieselbe Bedeutung */
     const b=nrm(v);
     if(b===a)return;   /* gleiches Wort, nur anders annotiert */
     let s=0;
