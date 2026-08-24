@@ -402,7 +402,7 @@ textarea#impBox,textarea#bakBox{width:100%;min-height:110px;border:1px solid var
 
   <div class="panel">
     <h3>Wörter importieren</h3>
-    <p class="hint">Alle 2000 Wörter sind fest eingebaut – der Trainer ist komplett! Über den Import kannst du trotzdem jederzeit eigene Wörter ergänzen (im JSON-Format, siehe grauer Beispieltext).<br>
+    <p class="hint">Der Grundstock von 2000 Wörtern ist fest eingebaut, dazu 80 Ergänzungen aus den Wortfamilien. Über den Import kannst du trotzdem jederzeit eigene Wörter ergänzen (im JSON-Format, siehe grauer Beispieltext).<br>
       Wörter aus СЕРИА́Л bringen ihren Lernstand mit: Was du dort schon gemeistert hast, startet hier nicht bei null, sondern direkt im passenden Wiederholungsabstand – und zählt nicht gegen dein Tageslimit für neue Wörter.</p>
     <textarea id="impBox" placeholder='[{"r":"стол","t":"stol","d":"Tisch","e":"Э́то мой стол.","x":"Das ist mein Tisch.","g":0}]'></textarea>
     <button class="btn-sm" id="impBtn">Importieren</button>
@@ -425,7 +425,7 @@ textarea#impBox,textarea#bakBox{width:100%;min-height:110px;border:1px solid var
     <div class="msg" id="dataMsg"></div>
   </div>
 
-  <p class="foot">Alle 2000 Wörter nach Häufigkeit (angelehnt an gängige Frequenzlisten).<br>≈ DE/EN markiert Wörter, die ähnlich wie im Deutschen oder Englischen klingen.</p>
+  <p class="foot">2000 Wörter nach Häufigkeit (angelehnt an gängige Frequenzlisten), dazu 80 Wörter aus den Wortfamilien.<br>≈ DE/EN markiert Wörter, die ähnlich wie im Deutschen oder Englischen klingen.</p>
 </section>
 
 </div>
@@ -1004,7 +1004,7 @@ const VOCAB=[
 {i:571,r:"ра́зный",t:"RAS-nyj",d:"verschieden",e:"Ра́зные лю́ди.",x:"Verschiedene Menschen."},
 {i:572,r:"сле́дующий",t:"SLJE-du-ju-schtschij",d:"nächster",e:"До сле́дующей встре́чи!",x:"Bis zum nächsten Mal!"},
 {i:573,r:"про́шлый",t:"PROSCH-lyj",d:"vergangen, letzter",e:"В про́шлом году́.",x:"Im letzten Jahr.",n:"Der vorige, vergangene: на про́шлой неде́ле. Der letzte einer Reihe ist после́дний."},
-{i:574,r:"отли́чный",t:"at-LITSCH-nyj",d:"ausgezeichnet",e:"Отли́чная рабо́та!",x:"Ausgezeichnete Arbeit!"},
+{i:574,r:"отли́чный",t:"at-LITSCH-nyj",d:"ausgezeichnet",e:"Отли́чная рабо́та!",x:"Ausgezeichnete Arbeit!",n:"Ausgezeichnet im Alltag: отли́чная рабо́та! Gehoben ist превосхо́дно."},
 {i:575,r:"прекра́сный",t:"pri-KRAS-nyj",d:"wunderbar",e:"Прекра́сный день!",x:"Ein wunderbarer Tag!"},
 {i:576,r:"ужа́сный",t:"u-SHAS-nyj",d:"schrecklich",e:"Ужа́сная пого́да!",x:"Schreckliches Wetter!",n:"Schrecklich im Sinn von sehr schlimm, auch übertreibend. Gruselig und Angst machend ist стра́шный."},
 {i:577,r:"жена́т",t:"shy-NAT",d:"verheiratet (Mann)",e:"Он жена́т.",x:"Er ist verheiratet.",n:"Frau: за́мужем"},
@@ -1421,7 +1421,7 @@ const VOCAB=[
 {i:988,r:"грамма́тика",t:"gra-MA-ti-ka",d:"Grammatik",e:"Грамма́тика — э́то не стра́шно!",x:"Grammatik ist nicht schlimm!",g:3},
 {i:989,r:"упражне́ние",t:"u-prash-NJE-ni-je",d:"Übung",e:"Ещё одно́ упражне́ние!",x:"Noch eine Übung!",n:"Die einzelne Übungsaufgabe. Praxis im Sinn von Erfahrung ist пра́ктика."},
 {i:990,r:"тетра́дь",t:"ti-TRAT'",d:"Heft",e:"Пиши́ в тетра́ди!",x:"Schreib ins Heft!"},
-{i:991,r:"ру́чка",t:"RUTSCH-ka",d:"Kugelschreiber; Griff",e:"Дай ру́чку, пожа́луйста.",x:"Gib mir bitte den Kuli."},
+{i:991,r:"ру́чка",t:"RUTSCH-ka",d:"Kugelschreiber; Griff",e:"Дай ру́чку, пожа́луйста.",x:"Gib mir bitte den Kuli.",n:"Drei Bedeutungen: der Kugelschreiber, der Griff an Tür oder Tasse – und das Händchen, Koseform von рука́."},
 {i:992,r:"каранда́ш",t:"ka-ran-DASCH",d:"Bleistift",e:"Рису́ю карандашо́м.",x:"Ich zeichne mit Bleistift."},
 {i:993,r:"бума́га",t:"bu-MA-ga",d:"Papier",e:"Лист бума́ги.",x:"Ein Blatt Papier."},
 {i:994,r:"страни́ца",t:"stra-NI-za",d:"Seite (Buch)",e:"Откро́йте страни́цу пять!",x:"Öffnet Seite fünf!",n:"Die Seite im Buch oder im Netz: пе́рвая страни́ца. Die Seite im Raum ist сторона́."},
@@ -1448,7 +1448,7 @@ const VOCAB=[
 {i:1015,r:"за́яц",t:"SA-jiz",d:"Hase",e:"Бы́стрый за́яц.",x:"Ein schneller Hase."},
 {i:1016,r:"мышь",t:"mysch",d:"Maus",e:"Ко́шка ви́дит мышь.",x:"Die Katze sieht die Maus.",g:3,n:"urverwandt mit „Maus/mouse“"},
 {i:1017,r:"коро́ва",t:"ka-RO-wa",d:"Kuh",e:"В дере́вне коро́вы.",x:"Im Dorf gibt es Kühe."},
-{i:1018,r:"ло́шадь",t:"LO-schat'",d:"Pferd",e:"Краси́вая ло́шадь.",x:"Ein schönes Pferd."},
+{i:1018,r:"ло́шадь",t:"LO-schat'",d:"Pferd",e:"Краси́вая ло́шадь.",x:"Ein schönes Pferd.",n:"Das Pferd, neutral und alltäglich. Gehoben und im Schach ist es конь."},
 {i:1019,r:"слон",t:"sslon",d:"Elefant",e:"В зоопа́рке слоны́.",x:"Im Zoo gibt es Elefanten."},
 {i:1020,r:"та́нец",t:"TA-niz",d:"Tanz",e:"Наро́дный та́нец.",x:"Ein Volkstanz.",g:1},
 {i:1021,r:"ого́нь",t:"a-GON'",d:"Feuer",e:"Не игра́й с огнём!",x:"Spiel nicht mit dem Feuer!",n:"Feuer als Flamme, auch Licht und Feuer geben. Der Brand, der Schaden anrichtet, ist пожа́р."},
@@ -1757,7 +1757,7 @@ const VOCAB=[
 {i:1324,r:"добавля́ть",t:"da-baw-LJAT'",d:"hinzufügen",e:"Доба́вь со́ли!",x:"Gib Salz dazu!",n:"vollendet: доба́вить"},
 {i:1325,r:"корми́ть",t:"kar-MIT'",d:"füttern",e:"Пора́ корми́ть кота́!",x:"Zeit, den Kater zu füttern!"},
 {i:1326,r:"чи́стить",t:"TSCHI-stit'",d:"putzen; schälen",e:"Чи́щу зу́бы два ра́за в день.",x:"Ich putze zweimal täglich die Zähne.",n:"Das Verb: чи́стить зу́бы, чи́стить карто́шку. Das Substantiv ist убо́рка."},
-{i:1327,r:"ве́шать",t:"WJE-schat'",d:"aufhängen",e:"Ве́шаю ку́ртку в шкаф.",x:"Ich hänge die Jacke in den Schrank."},
+{i:1327,r:"ве́шать",t:"WJE-schat'",d:"aufhängen",e:"Ве́шаю ку́ртку в шкаф.",x:"Ich hänge die Jacke in den Schrank.",n:"Aufhängen, Dauerform. Einmal aufgehängt ist пове́сить."},
 {i:1328,r:"поднима́ть",t:"pad-ni-MAT'",d:"heben",e:"Подними́ ру́ку!",x:"Heb die Hand!",n:"vollendet: подня́ть"},
 {i:1329,r:"броса́ть",t:"bra-SSAT'",d:"werfen; aufgeben",e:"Брось мяч!",x:"Wirf den Ball!",n:"бро́сить кури́ть = mit dem Rauchen aufhören · Werfen und etwas aufgeben oder verlassen. Sich geschlagen geben ist сдава́ться."},
 {i:1330,r:"лови́ть",t:"la-WIT'",d:"fangen",e:"Лови́!",x:"Fang!"},
@@ -1822,7 +1822,7 @@ const VOCAB=[
 {i:1389,r:"невозмо́жный",t:"ni-was-MOSH-nyj",d:"unmöglich",e:"Э́то невозмо́жно!",x:"Das ist unmöglich!",n:"Adjektiv beim Substantiv: невозмо́жная зада́ча. Unpersönlich „es geht nicht\" ist невозмо́жно."},
 {i:1390,r:"ли́шний",t:"LISCH-nij",d:"überflüssig, übrig",e:"Нет ли́шнего биле́тика?",x:"Haben Sie ein Ticket übrig?",n:"klassische Frage vor Konzerten"},
 {i:1391,r:"одина́ковый",t:"a-di-NA-ka-wyj",d:"gleich, identisch",e:"Одина́ковые футбо́лки.",x:"Identische T-Shirts.",n:"Gleich im Sinn von identisch: одина́ковые ту́фли. Gleich im Sinn von bald ist сейча́с."},
-{i:1392,r:"чужо́й",t:"tschu-SHOJ",d:"fremd",e:"Чужа́я су́мка.",x:"Eine fremde Tasche."},
+{i:1392,r:"чужо́й",t:"tschu-SHOJ",d:"fremd",e:"Чужа́я су́мка.",x:"Eine fremde Tasche.",n:"Fremd im Sinn von: gehört jemand anderem. Unbekannt für mich ist незнако́мый."},
 {i:1393,r:"со́бственный",t:"SSOPST-wi-nyj",d:"eigener",e:"Со́бственная кварти́ра.",x:"Eine eigene Wohnung.",n:"Eigen im Sinn von mir gehörend: со́бственный дом. Getrennt und separat ist отде́льный."},
 {i:1394,r:"еди́нственный",t:"ji-DINST-wi-nyj",d:"einziger",e:"Еди́нственный сын.",x:"Der einzige Sohn."},
 {i:1395,r:"ре́дкий",t:"RJET-kij",d:"selten (Adjektiv)",e:"Ре́дкая пти́ца.",x:"Ein seltener Vogel.",n:"Adjektiv am Substantiv: ре́дкий слу́чай. Am Verb steht ре́дко."},
@@ -2563,7 +2563,91 @@ function save(now){
 function migrateProg(){ /* Alt-Daten (reines Leitner) bekommen Intervall + Ease fürs adaptive SRS */
   Object.values(S.prog).forEach(p=>{if(p&&p.iv==null){p.iv=INT[p.b]||1;p.ez=2.5}});
 }
-function allWords(){return VOCAB.concat(S.extras)}
+/* Wörter aus den Wortfamilien, die in keiner App trainierbar waren.
+   Index ab 9001: importierte Wörter zählen von 2001 hoch und kommen sich
+   damit nie in die Quere. */
+const FAM_WORDS=[
+{i:9001,r:"взять",t:"wsjatj",d:"nehmen (einmal)",e:"Мо́жно взять твою́ ру́чку?",x:"Darf ich deinen Stift nehmen?",n:"Einmal nehmen, mit Ergebnis. Die Dauerform ist брать."},
+{i:9002,r:"оста́ться",t:"a-STA-za",d:"bleiben, übrig bleiben",e:"Оста́нься ещё на час!",x:"Bleib noch eine Stunde!",n:"Bleiben, wo man ist – und übrig bleiben: оста́лось два дня."},
+{i:9003,r:"показа́ть",t:"pa-ka-SATJ",d:"zeigen (einmal)",e:"Покажи́ мне доро́гу.",x:"Zeig mir den Weg.",n:"Einmal zeigen. Die Dauerform ist пока́зывать."},
+{i:9004,r:"заказа́ть",t:"sa-ka-SATJ",d:"bestellen (einmal)",e:"Я заказа́л ко́фе.",x:"Ich habe einen Kaffee bestellt.",n:"Im Restaurant und im Netz. Die Bestellung selbst ist зака́з."},
+{i:9005,r:"вяза́ть",t:"wi-SATJ",d:"stricken; binden",e:"Ба́бушка вя́жет ша́рфы.",x:"Oma strickt Schals.",n:"Die Wurzel für alles Gebundene – auch связа́ть und обя́зан."},
+{i:9006,r:"подписа́ть",t:"pat-pi-SSATJ",d:"unterschreiben (einmal)",e:"Подпиши́те здесь, пожа́луйста.",x:"Unterschreiben Sie bitte hier.",n:"Ein Dokument unterschreiben. Mit -ся heißt es sich verpflichten."},
+{i:9007,r:"ступе́нька",t:"sstu-PJEN-ka",d:"Stufe",e:"Осторо́жно, здесь ступе́нька!",x:"Vorsicht, hier ist eine Stufe!",n:"Die einzelne Treppenstufe. Die Stufe als Niveau ist у́ровень."},
+{i:9008,r:"води́ть",t:"wa-DITJ",d:"fahren (Auto); führen",e:"Ты уме́ешь води́ть маши́ну?",x:"Kannst du Auto fahren?",n:"Selbst am Steuer sitzen – nicht mitfahren. Mitfahren ist е́хать."},
+{i:9009,r:"произвести́",t:"pra-is-wis-TI",d:"hervorbringen, erzeugen",e:"Он произвёл хоро́шее впечатле́ние.",x:"Er hat einen guten Eindruck gemacht.",n:"Herstellen – und einen Eindruck machen: произвести́ впечатле́ние."},
+{i:9010,r:"чин",t:"tschin",d:"Rang, Dienstgrad",e:"Он получи́л но́вый чин.",x:"Er hat einen neuen Dienstgrad bekommen.",n:"Der Rang im Militär oder Amt – die Wurzel von почини́ть und подчиня́ться."},
+{i:9011,r:"постро́ить",t:"pa-STRO-itj",d:"bauen (fertig)",e:"Они́ постро́или но́вый дом.",x:"Sie haben ein neues Haus gebaut.",n:"Fertig gebaut. Die Dauerform ist стро́ить."},
+{i:9012,r:"копа́ть",t:"ka-PATJ",d:"graben",e:"Соба́ка ко́пает я́му.",x:"Der Hund gräbt ein Loch.",n:"Mit Schaufel oder Pfoten. Übertragen auch: nachforschen."},
+{i:9013,r:"извини́ться",t:"is-wi-NI-za",d:"sich entschuldigen",e:"Тебе́ на́до извини́ться.",x:"Du musst dich entschuldigen.",n:"Von вина́, der Schuld: die Schuld abbitten. Mit пе́ред + Instrumental."},
+{i:9014,r:"ме́ра",t:"MJE-ra",d:"Maß, Maßnahme",e:"Всё хорошо́ в ме́ру.",x:"Alles ist gut in Maßen.",n:"Das Maß – und die Maßnahme: приня́ть ме́ры."},
+{i:9015,r:"содержа́ние",t:"ssa-dir-SCHA-ni-je",d:"Inhalt",e:"Содержа́ние кни́ги о́чень интере́сное.",x:"Der Inhalt des Buches ist sehr interessant.",n:"Was drin ist – und das Inhaltsverzeichnis. Von держа́ть, halten."},
+{i:9016,r:"унести́",t:"u-nis-TI",d:"wegtragen, forttragen",e:"Унеси́ э́ти коро́бки, пожа́луйста.",x:"Trag diese Kartons bitte weg.",n:"Von hier wegtragen. Herbringen ist принести́."},
+{i:9017,r:"послу́шный",t:"pa-SSLUSCH-nyj",d:"gehorsam, brav",e:"Кака́я послу́шная соба́ка!",x:"Was für ein braver Hund!",n:"Wörtlich: wer hört. Über Kinder und Tiere."},
+{i:9018,r:"служи́ть",t:"sslu-SCHITJ",d:"dienen",e:"Он слу́жит в а́рмии.",x:"Er dient in der Armee.",n:"Beim Militär oder in einem Amt – und dienen als: служи́ть приме́ром."},
+{i:9019,r:"учени́к",t:"u-tschi-NIK",d:"Schüler",e:"Он лу́чший учени́к в кла́ссе.",x:"Er ist der beste Schüler der Klasse.",n:"Der Schüler und der Lehrling. Die Schülerin ist учени́ца."},
+{i:9020,r:"куса́ть",t:"ku-SSATJ",d:"beißen",e:"Э́та соба́ка не куса́ет.",x:"Dieser Hund beißt nicht.",n:"Beißen als Vorgang. Einmal zubeißen ist укуси́ть."},
+{i:9021,r:"заплати́ть",t:"sa-pla-TITJ",d:"bezahlen (fertig)",e:"Я уже́ заплати́л за ко́фе.",x:"Ich habe den Kaffee schon bezahlt.",n:"Fertig bezahlt. Die Dauerform ist плати́ть. Bezahlt wird за + Akkusativ."},
+{i:9022,r:"опла́та",t:"a-PLA-ta",d:"Bezahlung, Gebühr",e:"Опла́та при получе́нии.",x:"Bezahlung bei Erhalt.",n:"Die Bezahlung als Vorgang – auf Rechnungen und Schildern."},
+{i:9023,r:"вы́расти",t:"WY-ras-ti",d:"aufwachsen, groß werden",e:"Он вы́рос в дере́вне.",x:"Er ist auf dem Dorf aufgewachsen.",n:"Groß geworden sein. Die Dauerform ist расти́."},
+{i:9024,r:"расте́ние",t:"ras-TJE-ni-je",d:"Pflanze",e:"У меня́ до́ма мно́го расте́ний.",x:"Ich habe viele Pflanzen zu Hause.",n:"Wörtlich „das Wachsende“, von расти́."},
+{i:9025,r:"мани́ть",t:"ma-NITJ",d:"locken, anziehen",e:"Его́ мани́ло мо́ре.",x:"Das Meer lockte ihn.",n:"Anziehend wirken – die Wurzel von обману́ть, betrügen."},
+{i:9026,r:"сжать",t:"schatj",d:"zusammendrücken",e:"Он сжал кулаки́.",x:"Er ballte die Fäuste.",n:"Fest zusammenpressen – auch eine Datei komprimieren."},
+{i:9027,r:"пожа́ть",t:"pa-SCHATJ",d:"die Hand drücken",e:"Он пожа́л мне ру́ку.",x:"Er hat mir die Hand gedrückt.",n:"Fast nur in zwei Wendungen: пожа́ть ру́ку und пожа́ть плеча́ми, mit den Schultern zucken."},
+{i:9028,r:"осуди́ть",t:"a-ssu-DITJ",d:"verurteilen",e:"Его́ осуди́ли на два го́да.",x:"Er wurde zu zwei Jahren verurteilt.",n:"Vor Gericht – und moralisch verurteilen."},
+{i:9029,r:"бить",t:"bitj",d:"schlagen",e:"Не бей его́!",x:"Schlag ihn nicht!",n:"Schlagen und prügeln – auch von der Uhr: часы́ бьют."},
+{i:9030,r:"сде́лать",t:"SDJE-latj",d:"machen (fertig)",e:"Я сде́лал дома́шнее зада́ние.",x:"Ich habe die Hausaufgabe gemacht.",n:"Fertig gemacht, mit Ergebnis. Die Dauerform ist де́лать."},
+{i:9031,r:"поверну́ть",t:"pa-wir-NUTJ",d:"abbiegen; umdrehen",e:"Поверни́те напра́во.",x:"Biegen Sie rechts ab.",n:"Im Verkehr abbiegen – und einen Schlüssel drehen."},
+{i:9032,r:"поворо́т",t:"pa-wa-ROT",d:"Kurve, Abbiegung",e:"За поворо́том нас ждал сюрпри́з.",x:"Hinter der Kurve wartete eine Überraschung.",n:"Die Kurve im Weg – und die Wende im Leben."},
+{i:9033,r:"вы́разить",t:"WY-ra-sitj",d:"ausdrücken",e:"Я не могу́ вы́разить свои́ чу́вства.",x:"Ich kann meine Gefühle nicht ausdrücken.",n:"In Worte fassen – Gefühle, Dank, Meinung."},
+{i:9034,r:"жа́ркий",t:"SCHAR-kij",d:"heiß (Wetter)",e:"Э́то был са́мый жа́ркий день ле́та.",x:"Das war der heißeste Tag des Sommers.",n:"Adjektiv fürs Wetter: жа́ркий день. Heiß zum Anfassen ist горя́чий."},
+{i:9035,r:"привезти́",t:"pri-wis-TI",d:"mitbringen (im Fahrzeug)",e:"Он привёз нам пода́рки.",x:"Er hat uns Geschenke mitgebracht.",n:"Mit Auto, Zug oder Flugzeug herbringen. Zu Fuß bringt man mit принести́."},
+{i:9036,r:"перевози́ть",t:"pi-ri-wa-SITJ",d:"transportieren",e:"Э́тот гру́зовик перево́зит мебель.",x:"Dieser Lastwagen transportiert Möbel.",n:"Von A nach B fahren – Waren, Menschen, Umzugsgut."},
+{i:9037,r:"упа́сть",t:"u-PASTJ",d:"hinfallen",e:"Осторо́жно, не упади́!",x:"Vorsicht, fall nicht hin!",n:"Einmal hinfallen. Die Dauerform ist па́дать."},
+{i:9038,r:"чистота́",t:"tschis-ta-TA",d:"Sauberkeit",e:"В до́ме идеа́льная чистота́.",x:"Im Haus herrscht perfekte Sauberkeit.",n:"Der Zustand, nicht das Putzen – das ist убо́рка."},
+{i:9039,r:"спу́тник",t:"SSPUT-nik",d:"Begleiter; Satellit",e:"Пе́рвый спу́тник запусти́ли в 1957 году́.",x:"Der erste Satellit wurde 1957 gestartet.",n:"Wörtlich der Mitreisende, von путь. Daher auch der Satellit."},
+{i:9040,r:"попу́тчик",t:"pa-PUT-tschik",d:"Weggefährte, Mitfahrer",e:"В по́езде я нашёл прия́тного попу́тчика.",x:"Im Zug fand ich einen netten Mitreisenden.",n:"Wer zufällig denselben Weg hat."},
+{i:9041,r:"запу́таться",t:"sa-PU-ta-za",d:"sich verheddern; den Faden verlieren",e:"Я совсе́м запу́тался.",x:"Ich bin völlig durcheinander.",n:"Wörtlich sich verheddern – und im Kopf durcheinanderkommen."},
+{i:9042,r:"пу́таница",t:"PU-ta-ni-za",d:"Durcheinander, Verwirrung",e:"В докуме́нтах кака́я-то пу́таница.",x:"In den Unterlagen ist irgendein Durcheinander.",n:"Das Chaos, das entsteht, wenn etwas verwechselt wurde."},
+{i:9043,r:"гляде́ть",t:"gli-DJETJ",d:"schauen, gucken",e:"Гляди́, кто пришёл!",x:"Schau mal, wer da ist!",n:"Umgangssprachlicher als смотре́ть – vor allem im Imperativ: Гляди́!"},
+{i:9044,r:"взгляд",t:"wsgljat",d:"Blick; Ansicht",e:"На мой взгляд, э́то оши́бка.",x:"Meiner Ansicht nach ist das ein Fehler.",n:"Der Blick der Augen – und die Meinung: на мой взгляд."},
+{i:9045,r:"свали́ться",t:"ssva-LI-za",d:"umkippen, herunterfallen",e:"Ва́за свали́лась со стола́.",x:"Die Vase ist vom Tisch gefallen.",n:"Schwer und plötzlich herunterfallen – auch: krank umfallen."},
+{i:9046,r:"прочита́ть",t:"pra-tschi-TATJ",d:"durchlesen, fertig lesen",e:"Я прочита́л всю кни́гу за два дня.",x:"Ich habe das ganze Buch in zwei Tagen gelesen.",n:"Zu Ende gelesen. Die Dauerform ist чита́ть."},
+{i:9047,r:"посади́ть",t:"pa-ssa-DITJ",d:"hinsetzen; pflanzen",e:"Мы посади́ли де́рево в саду́.",x:"Wir haben einen Baum im Garten gepflanzt.",n:"Jemanden setzen und etwas pflanzen – und salopp: einsperren."},
+{i:9048,r:"тайко́м",t:"taj-KOM",d:"heimlich, hinter dem Rücken",e:"Он тайко́м чита́л её пи́сьма.",x:"Er las heimlich ihre Briefe.",n:"Adverb: ohne dass jemand es merkt. Von та́йна."},
+{i:9049,r:"помо́чь",t:"pa-MOTSCH",d:"helfen (einmal)",e:"Помоги́ мне, пожа́луйста!",x:"Hilf mir bitte!",n:"Einmal helfen, mit Dativ. Die Dauerform ist помога́ть."},
+{i:9050,r:"смешно́",t:"ssmisch-NO",d:"komisch, zum Lachen",e:"Э́то совсе́м не смешно́.",x:"Das ist überhaupt nicht witzig.",n:"Unpersönlich: Мне смешно́ = ich muss lachen. Auch: lächerlich."},
+{i:9051,r:"насмеши́ть",t:"nas-mi-SCHITJ",d:"zum Lachen bringen",e:"Ты меня́ насмеши́л!",x:"Du hast mich zum Lachen gebracht!",n:"Jemanden zum Lachen bringen – absichtlich oder nicht."},
+{i:9052,r:"я́сный",t:"JASS-nyj",d:"klar, deutlich",e:"Сего́дня я́сное не́бо.",x:"Heute ist der Himmel klar.",n:"Klar am Himmel und klar im Kopf. Als Antwort: Я́сно! = Verstanden."},
+{i:9053,r:"навстре́чу",t:"na-FSTRJE-tschu",d:"entgegen",e:"Он шёл мне навстре́чу.",x:"Er kam mir entgegen.",n:"Mit Dativ – auch übertragen: jemandem entgegenkommen."},
+{i:9054,r:"спроси́ть",t:"sspra-SSITJ",d:"fragen (einmal)",e:"Мо́жно спроси́ть?",x:"Darf ich etwas fragen?",n:"Einmal fragen. Die Dauerform ist спра́шивать. Bitten ist проси́ть."},
+{i:9055,r:"про́сьба",t:"PROSS-ba",d:"Bitte (die)",e:"У меня́ к тебе́ про́сьба.",x:"Ich habe eine Bitte an dich.",n:"Die Bitte als Sache. Das höfliche „bitte“ ist пожа́луйста."},
+{i:9056,r:"ушиби́ться",t:"u-schi-BI-za",d:"sich stoßen, sich prellen",e:"Я ушиби́лся о стол.",x:"Ich habe mich am Tisch gestoßen.",n:"Sich wehtun, ohne dass etwas bricht."},
+{i:9057,r:"затра́ты",t:"sa-TRA-ty",d:"Kosten, Aufwand",e:"Затра́ты бы́ли сли́шком больши́е.",x:"Die Kosten waren zu hoch.",n:"Plural: was man aufwendet – Geld, Zeit, Kraft."},
+{i:9058,r:"пла́вно",t:"PLAW-na",d:"fließend, geschmeidig",e:"Маши́на пла́вно останови́лась.",x:"Das Auto hielt sanft an.",n:"Ohne Ruck – Bewegung, Übergang, Musik."},
+{i:9059,r:"дополни́тельно",t:"da-pal-NI-tilj-na",d:"zusätzlich, extra",e:"За э́то на́до плати́ть дополни́тельно.",x:"Dafür muss man zusätzlich zahlen.",n:"Obendrauf, zu dem, was schon da ist. Von по́лный, voll."},
+{i:9060,r:"сове́товаться",t:"ssa-WJE-ta-va-za",d:"sich beraten, um Rat fragen",e:"Он всегда́ сове́туется с жено́й.",x:"Er berät sich immer mit seiner Frau.",n:"Mit с + Instrumental. Einen Rat geben ist сове́товать."},
+{i:9061,r:"умыва́ться",t:"u-my-WA-za",d:"sich das Gesicht waschen",e:"Я умыва́юсь холо́дной водо́й.",x:"Ich wasche mir das Gesicht mit kaltem Wasser.",n:"Nur Gesicht und Hände. Duschen ist принима́ть душ."},
+{i:9062,r:"лезть",t:"ljestj",d:"klettern, kriechen",e:"Не лезь туда́!",x:"Kletter da nicht rauf!",n:"Klettern und kriechen – umgangssprachlich auch: sich einmischen."},
+{i:9063,r:"ряд",t:"rjat",d:"Reihe",e:"Мы сиде́ли в пе́рвом ряду́.",x:"Wir saßen in der ersten Reihe.",n:"Die Reihe im Kino und im Regal – und „eine Reihe von“: ряд вопро́сов."},
+{i:9064,r:"рвать",t:"rwatj",d:"reißen, zerreißen",e:"Не рви э́ту бума́гу!",x:"Zerreiß dieses Papier nicht!",n:"Reißen und pflücken – und umgangssprachlich: sich übergeben."},
+{i:9065,r:"прерва́ть",t:"prir-WATJ",d:"unterbrechen",e:"Прости́, что прерва́л тебя́.",x:"Entschuldige, dass ich dich unterbrochen habe.",n:"Ein Gespräch, eine Verbindung, eine Reise abbrechen."},
+{i:9066,r:"зави́симость",t:"sa-WI-ssi-mastj",d:"Abhängigkeit",e:"У него́ зави́симость от телефо́на.",x:"Er ist vom Handy abhängig.",n:"Die Abhängigkeit – auch die Sucht. Von висе́ть, hängen."},
+{i:9067,r:"греме́ть",t:"gri-MJETJ",d:"donnern, scheppern",e:"На у́лице греми́т гром.",x:"Draußen donnert es.",n:"Vom Donner und von Geschirr – alles, was laut rumpelt."},
+{i:9068,r:"разгла́дить",t:"ras-GLA-ditj",d:"glatt streichen",e:"Разгла́дь ска́терть, пожа́луйста.",x:"Streich bitte die Tischdecke glatt.",n:"Falten wegbekommen – mit der Hand oder dem Bügeleisen."},
+{i:9069,r:"боле́знь",t:"ba-LJESNJ",d:"Krankheit",e:"Э́то серьёзная боле́знь.",x:"Das ist eine ernste Krankheit.",n:"Die Krankheit als Sache. Krank sein ist боле́ть."},
+{i:9070,r:"рубль",t:"rublj",d:"Rubel",e:"Э́то сто́ит сто рубле́й.",x:"Das kostet hundert Rubel.",n:"Von руби́ть, hacken: ursprünglich ein abgehacktes Stück Silber."},
+{i:9071,r:"корм",t:"korm",d:"Futter",e:"Ку́пим корм для ко́шки.",x:"Kaufen wir Futter für die Katze.",n:"Tierfutter. Füttern ist корми́ть."},
+{i:9072,r:"согла́сен",t:"ssa-GLA-ssin",d:"einverstanden",e:"Я согла́сен с тобо́й.",x:"Ich bin mit dir einverstanden.",n:"Kurzform, passt sich an: согла́сна (sie), согла́сны (wir). Wörtlich „gleichstimmig“."},
+{i:9073,r:"согласи́ться",t:"ssa-gla-SSI-za",d:"zustimmen, einwilligen",e:"Он согласи́лся помо́чь.",x:"Er hat zugestimmt zu helfen.",n:"Ja sagen zu etwas, mit с + Instrumental oder на + Akkusativ."},
+{i:9074,r:"врун",t:"wrun",d:"Lügner",e:"Не верь ему́, он врун!",x:"Glaub ihm nicht, er ist ein Lügner!",n:"Umgangssprachlich, oft halb im Scherz. Die Frau ist вру́нья."},
+{i:9075,r:"ве́село",t:"WJE-ssi-la",d:"lustig, fröhlich (es ist)",e:"Нам бы́ло о́чень ве́село.",x:"Wir hatten viel Spaß.",n:"Unpersönlich: Мне ве́село = mir ist fröhlich zumute."},
+{i:9076,r:"поте́ха",t:"pa-TJE-cha",d:"Spaß, Vergnügen",e:"Де́лу вре́мя, поте́хе час.",x:"Erst die Arbeit, dann das Vergnügen.",n:"Etwas altmodisch, lebt vor allem in dem Sprichwort weiter."},
+{i:9077,r:"ко́нчить",t:"KON-tschitj",d:"beenden, fertig werden",e:"Я ко́нчил рабо́ту в шесть.",x:"Ich war um sechs mit der Arbeit fertig.",n:"Zu Ende bringen. Heute sagt man meist зако́нчить."},
+{i:9078,r:"оконча́ние",t:"a-kan-TSCHA-ni-je",d:"Abschluss; Endung",e:"По́сле оконча́ния шко́лы он уе́хал.",x:"Nach dem Schulabschluss ist er weggezogen.",n:"Das Ende einer Sache – und in der Grammatik die Wortendung."},
+{i:9079,r:"тяну́ть",t:"ti-NUTJ",d:"ziehen",e:"Не тяни́ меня́ за рука́в!",x:"Zieh mich nicht am Ärmel!",n:"Ziehen und zerren – auch: in die Länge ziehen, hinauszögern."},
+{i:9080,r:"притяже́ние",t:"pri-ti-SCHE-ni-je",d:"Anziehungskraft",e:"Земно́е притяже́ние.",x:"Die Erdanziehung.",n:"In der Physik und zwischen Menschen."}];
+function allWords(){return VOCAB.concat(FAM_WORDS,S.extras)}
 /* ---- Gemeinsamer Wortindex ----------------------------------------------
    СКА́ЗКИ hat keinen Zugriff auf VOCAB oder PACKS – die stehen in anderen
    Dateien. Deshalb legt jede Vokabel-App beim Start ihre Wortliste (ohne
