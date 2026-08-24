@@ -402,7 +402,7 @@ textarea#impBox,textarea#bakBox{width:100%;min-height:110px;border:1px solid var
 
   <div class="panel">
     <h3>Wörter importieren</h3>
-    <p class="hint">Der Grundstock von 2000 Wörtern ist fest eingebaut, dazu 80 Ergänzungen aus den Wortfamilien. Über den Import kannst du trotzdem jederzeit eigene Wörter ergänzen (im JSON-Format, siehe grauer Beispieltext).<br>
+    <p class="hint">Der Grundstock von 2000 Wörtern ist fest eingebaut, dazu 133 Ergänzungen aus den Wortfamilien. Über den Import kannst du trotzdem jederzeit eigene Wörter ergänzen (im JSON-Format, siehe grauer Beispieltext).<br>
       Wörter aus СЕРИА́Л bringen ihren Lernstand mit: Was du dort schon gemeistert hast, startet hier nicht bei null, sondern direkt im passenden Wiederholungsabstand – und zählt nicht gegen dein Tageslimit für neue Wörter.</p>
     <textarea id="impBox" placeholder='[{"r":"стол","t":"stol","d":"Tisch","e":"Э́то мой стол.","x":"Das ist mein Tisch.","g":0}]'></textarea>
     <button class="btn-sm" id="impBtn">Importieren</button>
@@ -425,7 +425,7 @@ textarea#impBox,textarea#bakBox{width:100%;min-height:110px;border:1px solid var
     <div class="msg" id="dataMsg"></div>
   </div>
 
-  <p class="foot">2000 Wörter nach Häufigkeit (angelehnt an gängige Frequenzlisten), dazu 80 Wörter aus den Wortfamilien.<br>≈ DE/EN markiert Wörter, die ähnlich wie im Deutschen oder Englischen klingen.</p>
+  <p class="foot">2000 Wörter nach Häufigkeit (angelehnt an gängige Frequenzlisten), dazu 133 Wörter aus den Wortfamilien.<br>≈ DE/EN markiert Wörter, die ähnlich wie im Deutschen oder Englischen klingen.</p>
 </section>
 
 </div>
@@ -568,7 +568,7 @@ const VOCAB=[
 {i:135,r:"и́мя",t:"I-mja",d:"Vorname",e:"Како́е краси́вое и́мя!",x:"Was für ein schöner Name!"},
 {i:136,r:"фами́лия",t:"fa-MI-li-ja",d:"Nachname",e:"Ва́ша фами́лия?",x:"Ihr Nachname?",n:"falscher Freund: NICHT Familie!"},
 {i:137,r:"сло́во",t:"SLO-wa",d:"Wort",e:"Э́то но́вое сло́во.",x:"Das ist ein neues Wort."},
-{i:138,r:"язы́к",t:"ji-SYK",d:"Sprache; Zunge",e:"Ру́сский язы́к краси́вый.",x:"Die russische Sprache ist schön."},
+{i:138,r:"язы́к",t:"ji-SYK",d:"Sprache; Zunge",e:"Ру́сский язы́к краси́вый.",x:"Die russische Sprache ist schön.",n:"Zwei Bedeutungen: die Sprache – und die Zunge im Mund. Die Rede, die man hält, ist речь."},
 {i:139,r:"по-ру́сски",t:"pa-RUS-ki",d:"auf Russisch",e:"Скажи́ э́то по-ру́сски.",x:"Sag das auf Russisch."},
 {i:140,r:"по-неме́цки",t:"pa-ni-MJEZ-ki",d:"auf Deutsch",e:"Мы говори́м по-неме́цки.",x:"Wir sprechen Deutsch."},
 {i:141,r:"вопро́с",t:"wa-PROSS",d:"Frage",e:"У меня́ вопро́с.",x:"Ich habe eine Frage."},
@@ -1307,7 +1307,7 @@ const VOCAB=[
 {i:874,r:"борщ",t:"borschtsch",d:"Borschtsch",e:"Ба́бушкин борщ — са́мый вку́сный!",x:"Omas Borschtsch ist der beste!",g:1,n:"die berühmte Rote-Bete-Suppe"},
 {i:875,r:"шни́цель",t:"SCHNI-zel'",d:"Schnitzel",e:"Ве́нский шни́цель!",x:"Wiener Schnitzel!",g:1,n:"direkt aus dem Deutschen"},
 {i:876,r:"соси́ска",t:"ssa-SSIS-ka",d:"Würstchen",e:"Де́ти лю́бят соси́ски.",x:"Kinder lieben Würstchen.",g:2,n:"vgl. franz. saucisse"},
-{i:877,r:"лимона́д",t:"li-ma-NAT",d:"Limonade",e:"Холо́дный лимона́д.",x:"Kalte Limonade.",g:3},
+{i:877,r:"лимона́д",t:"li-ma-NAT",d:"Limonade",e:"Холо́дный лимона́д.",x:"Kalte Limonade.",g:3,n:"Die Limonade als Getränk. Umgangssprachlich für Sprudel: газиро́вка."},
 {i:878,r:"шампа́нское",t:"scham-PAN-ska-je",d:"Sekt, Champagner",e:"Шампа́нское на Но́вый год!",x:"Sekt zu Silvester!",g:3},
 {i:879,r:"пече́нье",t:"pi-TSCHJE-nje",d:"Kekse, Gebäck",e:"Чай с пече́ньем.",x:"Tee mit Keksen."},
 {i:880,r:"му́сор",t:"MU-ssar",d:"Müll",e:"Вы́неси му́сор, пожа́луйста!",x:"Bring bitte den Müll raus!",g:1,n:"klingt wie „Müll“ – gute Eselsbrücke"},
@@ -1388,7 +1388,7 @@ const VOCAB=[
 {i:955,r:"поздравля́ть",t:"pa-sdraw-LJAT'",d:"gratulieren",e:"Поздравля́ю!",x:"Herzlichen Glückwunsch!",n:"с + Instr.: с пра́здником!"},
 {i:956,r:"благодари́ть",t:"bla-ga-da-RIT'",d:"danken (förmlich)",e:"Благодарю́ вас!",x:"Ich danke Ihnen!"},
 {i:957,r:"дари́ть",t:"da-RIT'",d:"schenken",e:"Что тебе́ подари́ть?",x:"Was soll ich dir schenken?"},
-{i:958,r:"получи́ться",t:"pa-lu-TSCHI-za",d:"klappen, gelingen",e:"Всё получи́лось!",x:"Es hat alles geklappt!"},
+{i:958,r:"получи́ться",t:"pa-lu-TSCHI-za",d:"klappen, gelingen",e:"Всё получи́лось!",x:"Es hat alles geklappt!",n:"Klappen und gelingen, unpersönlich: всё получи́лось. Funktionieren im technischen Sinn ist срабо́тать."},
 {i:959,r:"привыка́ть",t:"pri-wy-KAT'",d:"sich gewöhnen",e:"Я уже́ привы́к.",x:"Ich habe mich schon daran gewöhnt.",n:"vollendet: привы́кнуть"},
 {i:960,r:"скуча́ть",t:"sku-TSCHAT'",d:"vermissen; sich langweilen",e:"Я скуча́ю по тебе́.",x:"Ich vermisse dich.",n:"скуча́ть по + Dativ"},
 {i:961,r:"мечта́ть",t:"mitsch-TAT'",d:"träumen (von etwas)",e:"Мечта́ю о мо́ре.",x:"Ich träume vom Meer.",n:"Träumen im Sinn von sich etwas wünschen: мечта́ть о путеше́ствии. Nachts träumen ist сни́ться."},
@@ -2646,7 +2646,60 @@ const FAM_WORDS=[
 {i:9077,r:"ко́нчить",t:"KON-tschitj",d:"beenden, fertig werden",e:"Я ко́нчил рабо́ту в шесть.",x:"Ich war um sechs mit der Arbeit fertig.",n:"Zu Ende bringen. Heute sagt man meist зако́нчить."},
 {i:9078,r:"оконча́ние",t:"a-kan-TSCHA-ni-je",d:"Abschluss; Endung",e:"По́сле оконча́ния шко́лы он уе́хал.",x:"Nach dem Schulabschluss ist er weggezogen.",n:"Das Ende einer Sache – und in der Grammatik die Wortendung."},
 {i:9079,r:"тяну́ть",t:"ti-NUTJ",d:"ziehen",e:"Не тяни́ меня́ за рука́в!",x:"Zieh mich nicht am Ärmel!",n:"Ziehen und zerren – auch: in die Länge ziehen, hinauszögern."},
-{i:9080,r:"притяже́ние",t:"pri-ti-SCHE-ni-je",d:"Anziehungskraft",e:"Земно́е притяже́ние.",x:"Die Erdanziehung.",n:"In der Physik und zwischen Menschen."}];
+{i:9080,r:"притяже́ние",t:"pri-ti-SCHE-ni-je",d:"Anziehungskraft",e:"Земно́е притяже́ние.",x:"Die Erdanziehung.",n:"In der Physik und zwischen Menschen."},
+{i:9081,r:"дать",t:"datj",d:"geben (einmal)",e:"Дай мне ру́ку.",x:"Gib mir die Hand.",n:"Einmal geben. Die Dauerform ist дава́ть. Die Wurzel steckt in prода́ть, отда́ть, переда́ть."},
+{i:9082,r:"отда́ть",t:"at-DATJ",d:"zurückgeben, hergeben",e:"Отда́й мне мою́ кни́гу!",x:"Gib mir mein Buch zurück!",n:"Weggeben, was jemandem gehört – und hergeben, was man selbst hatte."},
+{i:9083,r:"переда́ть",t:"pi-ri-DATJ",d:"weitergeben, ausrichten",e:"Переда́й ей приве́т от меня́.",x:"Richte ihr Grüße von mir aus.",n:"Etwas an den Nächsten weitergeben – und Grüße ausrichten."},
+{i:9084,r:"прода́ть",t:"pra-DATJ",d:"verkaufen",e:"Он про́дал свою́ маши́ну.",x:"Er hat sein Auto verkauft.",n:"Wörtlich „weggeben“ – про- + дать. Kaufen ist купи́ть."},
+{i:9085,r:"изда́ние",t:"is-DA-ni-je",d:"Ausgabe, Auflage",e:"Э́то пе́рвое изда́ние кни́ги.",x:"Das ist die erste Auflage des Buches.",n:"Was herausgegeben wurde – Buch, Zeitschrift, Neuauflage."},
+{i:9086,r:"получи́ть",t:"pa-lu-TSCHITJ",d:"bekommen (einmal)",e:"Я получи́л твоё письмо́.",x:"Ich habe deinen Brief bekommen.",n:"Einmal erhalten. Die Dauerform ist получа́ть."},
+{i:9087,r:"случи́ться",t:"sslu-TSCHI-za",d:"geschehen, passieren",e:"Что случи́лось?",x:"Was ist passiert?",n:"Die häufigste Frage nach einem Vorfall. Verwandt mit слу́чай, dem Fall."},
+{i:9088,r:"лете́ть",t:"li-TJETJ",d:"fliegen (gerade jetzt)",e:"Мы лети́м в Москву́.",x:"Wir fliegen nach Moskau.",n:"In eine Richtung unterwegs. Umherfliegen oder regelmäßig ist лета́ть."},
+{i:9089,r:"прилете́ть",t:"pri-li-TJETJ",d:"ankommen (mit dem Flugzeug)",e:"Самолёт прилете́л во́время.",x:"Das Flugzeug ist pünktlich angekommen.",n:"Fliegend ankommen. Zu Fuß kommt man mit прийти́."},
+{i:9090,r:"улете́ть",t:"u-li-TJETJ",d:"wegfliegen, abfliegen",e:"Пти́цы улете́ли на юг.",x:"Die Vögel sind nach Süden geflogen.",n:"Wegfliegen – Vögel, Flugzeuge, und umgangssprachlich Menschen."},
+{i:9091,r:"полёт",t:"pa-LJOT",d:"Flug",e:"Прия́тного полёта!",x:"Guten Flug!",n:"Der Flug als Vorgang. Der Wunsch vor dem Abflug lautet Прия́тного полёта!"},
+{i:9092,r:"лить",t:"litj",d:"gießen",e:"Дождь льёт как из ведра́.",x:"Es regnet wie aus Eimern.",n:"Wörtlich „aus dem Eimer“ – die russische Version von Bindfäden regnen."},
+{i:9093,r:"вы́лить",t:"WY-litj",d:"ausgießen, wegschütten",e:"Вы́лей во́ду из ва́зы.",x:"Gieß das Wasser aus der Vase.",n:"Herausgießen, damit nichts drin bleibt."},
+{i:9094,r:"ли́вень",t:"LI-winj",d:"Platzregen, Wolkenbruch",e:"Начался́ си́льный ли́вень.",x:"Ein heftiger Platzregen setzte ein.",n:"Der kurze, heftige Regen. Von лить, gießen."},
+{i:9095,r:"освети́ть",t:"a-ssvi-TITJ",d:"beleuchten",e:"Фона́рь освети́л доро́гу.",x:"Die Laterne beleuchtete den Weg.",n:"Licht auf etwas werfen – auch übertragen: ein Thema beleuchten."},
+{i:9096,r:"звон",t:"swon",d:"Geläut, Klingen",e:"Слы́шен звон колоколо́в.",x:"Man hört das Läuten der Glocken.",n:"Der Klang von Glocken und Metall."},
+{i:9097,r:"зво́нкий",t:"SWON-kij",d:"hell klingend",e:"У неё зво́нкий го́лос.",x:"Sie hat eine helle Stimme.",n:"Hell und klar – in der Grammatik auch: stimmhafter Laut."},
+{i:9098,r:"увлека́ться",t:"u-wli-KA-za",d:"sich begeistern für",e:"Он увлека́ется фотогра́фией.",x:"Er begeistert sich für Fotografie.",n:"Ein Hobby haben, mit Instrumental. Wörtlich: hineingezogen werden."},
+{i:9099,r:"мечта́тель",t:"mitsch-TA-tilj",d:"Träumer",e:"Он вечный мечта́тель.",x:"Er ist ein ewiger Träumer.",n:"Wer viel träumt und wenig tut – meist gutmütig gemeint."},
+{i:9100,r:"пря́тать",t:"PRJA-tatj",d:"verstecken (Dauerform)",e:"Она́ пря́чет конфе́ты от дете́й.",x:"Sie versteckt die Bonbons vor den Kindern.",n:"Immer wieder verstecken. Einmal versteckt ist спря́тать."},
+{i:9101,r:"пря́тки",t:"PRJAT-ki",d:"Versteckspiel",e:"Дава́й игра́ть в пря́тки!",x:"Lass uns Verstecken spielen!",n:"Immer Plural: игра́ть в пря́тки."},
+{i:9102,r:"споко́йно",t:"sspa-KOJ-na",d:"ruhig, in Ruhe",e:"Говори́ споко́йно.",x:"Sprich ruhig.",n:"Adverb: gelassen und ohne Hast. Auch beruhigend: Споко́йно! = Ganz ruhig!"},
+{i:9103,r:"беспоко́иться",t:"bis-pa-KO-i-za",d:"sich Sorgen machen",e:"Не беспоко́йся обо мне.",x:"Mach dir keine Sorgen um mich.",n:"Wörtlich „ohne Ruhe sein“, von поко́й. Mit о + Präpositiv."},
+{i:9104,r:"попыта́ться",t:"pa-py-TA-za",d:"einen Versuch machen",e:"Попыта́йся ещё раз.",x:"Versuch es noch einmal.",n:"Einmal versuchen. Die Dauerform ist пыта́ться."},
+{i:9105,r:"стра́шно",t:"STRASCH-na",d:"es ist furchtbar; sehr",e:"Мне стра́шно.",x:"Ich habe Angst.",n:"Unpersönlich – und umgangssprachlich verstärkend: стра́шно интере́сно, wahnsinnig interessant."},
+{i:9106,r:"ги́бель",t:"GI-bilj",d:"Untergang, Tod",e:"Кора́бль шёл к ги́бели.",x:"Das Schiff fuhr in den Untergang.",n:"Der gewaltsame Untergang – von Schiffen, Reichen, Menschen."},
+{i:9107,r:"отве́тить",t:"at-WJE-titj",d:"antworten",e:"Отве́ть на мой вопро́с.",x:"Antworte auf meine Frage.",n:"Antworten, mit на + Akkusativ. Die Antwort selbst ist отве́т."},
+{i:9108,r:"ухо́д",t:"u-CHOT",d:"Weggehen; Pflege",e:"Э́тому цветку́ ну́жен ухо́д.",x:"Diese Blume braucht Pflege.",n:"Zwei Bedeutungen: das Weggehen – und die Pflege, das Sich-Kümmern."},
+{i:9109,r:"мо́лча",t:"MOL-tscha",d:"schweigend",e:"Он мо́лча вы́шел из ко́мнаты.",x:"Er verließ schweigend das Zimmer.",n:"Adverb: ohne ein Wort zu sagen."},
+{i:9110,r:"замолча́ть",t:"sa-mal-TSCHATJ",d:"verstummen",e:"Все вдруг замолча́ли.",x:"Alle verstummten plötzlich.",n:"Aufhören zu reden – im Imperativ auch grob: Замолчи́! = Halt den Mund."},
+{i:9111,r:"молчали́вый",t:"mal-tscha-LI-wyj",d:"schweigsam",e:"Он молчали́вый, но до́брый.",x:"Er ist schweigsam, aber gutmütig.",n:"Als Charaktereigenschaft – nicht negativ gemeint."},
+{i:9112,r:"молча́ние",t:"mal-TSCHA-ni-je",d:"Schweigen, Stille",e:"В ко́мнате наступи́ло молча́ние.",x:"Im Zimmer trat Schweigen ein.",n:"Das Schweigen zwischen Menschen. Die Stille ohne Lärm ist тишина́."},
+{i:9113,r:"свобо́дно",t:"ssva-BOD-na",d:"frei; fließend",e:"Он свобо́дно говори́т по-ру́сски.",x:"Er spricht fließend Russisch.",n:"Frei verfügbar – und fließend bei Sprachen: свобо́дно говори́ть."},
+{i:9114,r:"труд",t:"trut",d:"Arbeit, Mühe",e:"Без труда́ не вы́тащишь и ры́бку из пруда́.",x:"Ohne Mühe zieht man nicht einmal ein Fischlein aus dem Teich.",n:"Die Arbeit als Mühe – das Sprichwort ist die russische Version von „ohne Fleiß kein Preis“."},
+{i:9115,r:"тру́дно",t:"TRUD-na",d:"es ist schwer",e:"Мне тру́дно э́то объясни́ть.",x:"Es fällt mir schwer, das zu erklären.",n:"Unpersönlich mit Dativ: мне тру́дно = es fällt mir schwer."},
+{i:9116,r:"тру́дность",t:"TRUD-nastj",d:"Schwierigkeit",e:"У нас возни́кли тру́дности.",x:"Bei uns sind Schwierigkeiten aufgetreten.",n:"Meist im Plural: тру́дности, die Schwierigkeiten."},
+{i:9117,r:"уси́лие",t:"u-SSI-li-je",d:"Anstrengung, Mühe",e:"Он сде́лал после́днее уси́лие.",x:"Er machte eine letzte Anstrengung.",n:"Die einzelne Kraftanstrengung. Von си́ла, der Kraft."},
+{i:9118,r:"наси́лие",t:"na-SSI-li-je",d:"Gewalt",e:"Мы про́тив вся́кого наси́лия.",x:"Wir sind gegen jede Gewalt.",n:"Gewalt gegen Menschen – ernstes Wort. Wörtlich: Kraft auf jemanden."},
+{i:9119,r:"си́льно",t:"SSILJ-na",d:"stark, sehr",e:"Он си́льно уста́л.",x:"Er ist sehr müde.",n:"Adverb: stark – und als Verstärker „sehr“, си́льно боли́т."},
+{i:9120,r:"старе́ть",t:"ssta-RJETJ",d:"altern, alt werden",e:"Мы все старе́ем.",x:"Wir werden alle älter.",n:"Von Menschen und Dingen. Das Gegenteil ist молоде́ть."},
+{i:9121,r:"добро́",t:"da-BRO",d:"das Gute; Hab und Gut",e:"Добро́ всегда́ побежда́ет зло.",x:"Das Gute siegt immer über das Böse.",n:"Das Gute als Prinzip – und umgangssprachlich der Besitz: всё моё добро́."},
+{i:9122,r:"одо́брить",t:"a-DO-britj",d:"billigen, gutheißen",e:"Роди́тели одо́брили его́ вы́бор.",x:"Die Eltern hießen seine Wahl gut.",n:"Von до́брый: für gut befinden, zustimmen."},
+{i:9123,r:"зло́ба",t:"SLO-ba",d:"Bosheit, Groll",e:"В его́ слова́х была́ зло́ба.",x:"In seinen Worten lag Bosheit.",n:"Der angestaute Groll – stärker und dauerhafter als Wut im Moment."},
+{i:9124,r:"свежо́",t:"ssvi-SCHO",d:"es ist frisch, kühl",e:"У́тром бы́ло свежо́.",x:"Am Morgen war es frisch.",n:"Unpersönlich über die Luft – angenehm kühl, nicht kalt."},
+{i:9125,r:"освежи́ть",t:"a-ssvi-SCHITJ",d:"erfrischen",e:"Холо́дная вода́ освежи́ла меня́.",x:"Das kalte Wasser hat mich erfrischt.",n:"Erfrischen – auch das Gedächtnis: освежи́ть па́мять."},
+{i:9126,r:"све́жесть",t:"SSWJE-schistj",d:"Frische",e:"Мне нра́вится све́жесть у́тра.",x:"Ich mag die Frische des Morgens.",n:"Die Frische von Luft, Essen und Eindrücken."},
+{i:9127,r:"легко́",t:"lich-KO",d:"leicht, mühelos",e:"Э́то бы́ло легко́!",x:"Das war leicht!",n:"Adverb und unpersönlich: мне легко́ = mir fällt es leicht."},
+{i:9128,r:"облегче́ние",t:"a-blich-TSCHE-ni-je",d:"Erleichterung",e:"Я вздохну́л с облегче́нием.",x:"Ich atmete erleichtert auf.",n:"Das Gefühl, wenn eine Last abfällt. Von лёгкий, leicht."},
+{i:9129,r:"облегчи́ть",t:"a-blich-TSCHITJ",d:"erleichtern",e:"Э́то облегчи́т твою́ рабо́ту.",x:"Das wird deine Arbeit erleichtern.",n:"Leichter machen – Arbeit, Schmerz, Verständnis."},
+{i:9130,r:"теплота́",t:"ti-pla-TA",d:"Wärme (auch menschlich)",e:"Он говори́л с теплото́й.",x:"Er sprach mit Wärme.",n:"Die Wärme als Eigenschaft – physikalisch und menschlich."},
+{i:9131,r:"потепле́ние",t:"pa-ti-PLJE-ni-je",d:"Erwärmung",e:"На неде́ле ждём потепле́ния.",x:"In der Woche erwarten wir Erwärmung.",n:"Im Wetterbericht und beim Klima: глоба́льное потепле́ние."},
+{i:9132,r:"хо́лод",t:"CHO-lat",d:"Kälte",e:"На у́лице стра́шный хо́лод.",x:"Draußen ist eine furchtbare Kälte.",n:"Die Kälte als Sache. Kalt sein ist хо́лодно."},
+{i:9133,r:"похолода́ть",t:"pa-cha-la-DATJ",d:"kälter werden",e:"К ве́черу похолода́ло.",x:"Gegen Abend wurde es kälter.",n:"Unpersönlich, nur vom Wetter."}];
 function allWords(){return VOCAB.concat(FAM_WORDS,S.extras)}
 /* ---- Gemeinsamer Wortindex ----------------------------------------------
    СКА́ЗКИ hat keinen Zugriff auf VOCAB oder PACKS – die stehen in anderen
@@ -3417,7 +3470,44 @@ const FAMILIEN=[
 {w:'-жи-',b:'leben',m:[['жить','leben, wohnen'],['жизнь','Leben'],['живо́й','lebendig; live'],['пережи́ть','durchmachen; überleben'],['вы́жить','überleben'],['жи́тель','Bewohner'],['живо́тное','Tier – das Lebewesen']]},
 {w:'-теш-',b:'trösten, erfreuen',m:[['уте́шить','trösten'],['утеша́ть','immer wieder trösten'],['безуте́шный','untröstlich'],['поте́ха','Vergnügen, Spaß']]},
 {w:'-кон-',b:'Ende, Grenze, Gesetz',m:[['коне́ц','Ende'],['ко́нчить','beenden'],['наконе́ц','endlich'],['зако́н','Gesetz – was die Grenze setzt'],['зако́нный','gesetzlich'],['оконча́ние','Abschluss, Endung']]},
-{w:'-тяг- / -тян-',b:'ziehen, Last',m:[['тяну́ть','ziehen'],['затя́гивать','hineinziehen; in die Länge ziehen'],['растя́гиваться','sich dehnen'],['оття́гиваться','abhängen, sich vergnügen'],['тяжёлый','schwer – was zieht'],['притяже́ние','Anziehungskraft']]}];
+{w:'-тяг- / -тян-',b:'ziehen, Last',m:[['тяну́ть','ziehen'],['затя́гивать','hineinziehen; in die Länge ziehen'],['растя́гиваться','sich dehnen'],['оття́гиваться','abhängen, sich vergnügen'],['тяжёлый','schwer – was zieht'],['притяже́ние','Anziehungskraft']]},
+{w:'-лет-',b:'fliegen',m:[['лета́ть','fliegen (umher, regelmäßig)'],['лете́ть','fliegen (gerade jetzt)'],['прилете́ть','ankommen (per Flug)'],['улете́ть','wegfliegen'],['самолёт','Flugzeug – wörtlich „Selbstflieger“'],['полёт','Flug']]},
+{w:'-зр- / -зор-',b:'sehen, Blick',m:[['зре́ние','Sehkraft, Sehen'],['зри́тель','Zuschauer'],['позо́р','Schande – wörtlich das Angestarrte'],['позо́рный','schändlich'],['дозо́рный','Wachposten'],['подозре́ние','Verdacht – was man durchschaut'],['подозрева́ть','verdächtigen, ahnen']]},
+{w:'-жен-',b:'Frau, heiraten',m:[['жена́','Ehefrau'],['же́нщина','Frau'],['жени́ться','heiraten (der Mann)'],['жени́х','Bräutigam'],['жена́тый','verheiratet (Mann)'],['же́нский','Frauen-, weiblich']]},
+{w:'-част-',b:'Teil',m:[['часть','Teil, Stück'],['ча́сто','oft – wörtlich „in vielen Teilen“'],['отча́сти','teilweise'],['уча́ствовать','teilnehmen'],['ча́стный','privat, Privat-']]},
+{w:'-ли-',b:'gießen',m:[['лить','gießen'],['налива́ть','eingießen'],['полива́ть','gießen (Blumen)'],['залива́ть','übergießen, volllaufen lassen'],['вы́лить','ausgießen'],['ли́вень','Platzregen']]},
+{w:'-свет-',b:'Licht',m:[['свет','Licht; Welt'],['све́тлый','hell'],['рассве́т','Morgengrauen – wenn es hell wird'],['свеча́','Kerze'],['освети́ть','beleuchten'],['засвети́ться','aufleuchten; auffliegen']]},
+{w:'-зна-',b:'wissen, kennen',m:[['знать','wissen, kennen'],['зна́ние','Wissen'],['узна́ть','erfahren; wiedererkennen'],['знако́мый','bekannt, vertraut'],['познако́миться','sich kennenlernen'],['знак','Zeichen'],['зна́чит','das heißt, also'],['значе́ние','Bedeutung']]},
+{w:'-звон-',b:'klingeln, läuten',m:[['звони́ть','anrufen; klingeln'],['звоно́к','Anruf; Klingel'],['перезвони́ть','zurückrufen'],['звон','Geläut, Klingen'],['зво́нкий','hell klingend – auch: stimmhafter Laut']]},
+{w:'-бег- / -беж-',b:'laufen',m:[['бежа́ть','rennen (gerade jetzt)'],['бе́гать','herumrennen, regelmäßig laufen'],['убежа́ть','weglaufen'],['избежа́ть','vermeiden – ausweichen'],['побе́г','Flucht, Ausbruch'],['бе́гство','Flucht'],['бего́м','im Laufschritt']]},
+{w:'-влек- / -влеч-',b:'ziehen, anziehen',m:[['привлека́ть','anziehen, anlocken'],['отвле́чь','ablenken – wegziehen'],['развлече́ние','Unterhaltung – was einen zerstreut'],['увлека́ться','sich begeistern für'],['вовле́чь','hineinziehen, einbeziehen']]},
+{w:'-мечт-',b:'träumen, wünschen',m:[['мечта́','Wunschtraum'],['мечта́ть','träumen, sich wünschen'],['мечта́тель','Träumer']]},
+{w:'-прят-',b:'verstecken',m:[['пря́тать','verstecken'],['спря́тать','verstecken (einmal)'],['пря́таться','sich verstecken'],['пря́тки','Versteckspiel']]},
+{w:'-против-',b:'gegen, entgegen',m:[['про́тив','gegen'],['напро́тив','gegenüber; im Gegenteil'],['проти́вный','widerlich; Gegen-'],['сопротивля́ться','sich wehren'],['сопротивле́ние','Widerstand'],['противоре́чить','widersprechen']]},
+{w:'-пок-',b:'Ruhe',m:[['поко́й','Ruhe, Ungestörtsein'],['споко́йный','ruhig, gelassen'],['споко́йно','ruhig, in Ruhe'],['успока́ивать','beruhigen'],['успоко́иться','sich beruhigen'],['беспоко́иться','sich Sorgen machen']]},
+{w:'-пыт-',b:'versuchen, prüfen',m:[['пыта́ться','versuchen'],['попыта́ться','einen Versuch machen'],['попы́тка','Versuch'],['испыта́ть','am eigenen Leib erfahren'],['испыта́ние','Prüfung, Bewährungsprobe'],['о́пыт','Erfahrung; Experiment'],['опы́тный','erfahren']]},
+{w:'-пол- (halb)',b:'halb',m:[['полови́на','Hälfte'],['полови́нка','die bessere Hälfte'],['попола́м','halbe-halbe'],['наполови́ну','zur Hälfte']]},
+{w:'-польз-',b:'Nutzen',m:[['по́льза','Nutzen'],['поле́зный','nützlich, gesund'],['бесполе́зный','nutzlos'],['по́льзоваться','benutzen (mit Instrumental)'],['испо́льзовать','verwenden (mit Akkusativ)'],['по́льзователь','Benutzer']]},
+{w:'-страх- / -страш-',b:'Angst',m:[['страх','Angst, Furcht'],['стра́шный','furchteinflößend'],['стра́шно','es ist furchtbar; sehr'],['устраши́ть','einschüchtern'],['страхо́вка','Versicherung – Absicherung gegen die Angst'],['подстрахова́ться','sich absichern']]},
+{w:'-мет- / -меч-',b:'markieren, bemerken',m:[['замеча́ть','bemerken'],['заме́тить','bemerken (einmal)'],['заме́тка','Notiz'],['отмеча́ть','feiern; markieren'],['приме́та','Vorzeichen, Aberglaube'],['подмета́ть','fegen – zusammenkehren'],['ме́тка','Markierung']]},
+{w:'-губ- / -гиб-',b:'zugrunde gehen',m:[['погиба́ть','umkommen'],['поги́бнуть','ums Leben kommen'],['погуби́ть','zugrunde richten'],['загуби́ть','ruinieren'],['ги́бель','Untergang, Tod']]},
+{w:'-вет- / -вещ-',b:'sagen, künden',m:[['отве́т','Antwort'],['отве́тить','antworten'],['приве́т','Gruß, hallo'],['обеща́ть','versprechen'],['навеща́ть','besuchen'],['завеща́ние','Testament'],['завеща́ть','vermachen, hinterlassen']]},
+{w:'-луч-',b:'erhalten, sich fügen',m:[['получа́ть','bekommen'],['получи́ть','bekommen (einmal)'],['получи́ться','klappen, gelingen'],['случи́ться','geschehen'],['слу́чай','Fall, Gelegenheit'],['разлучи́ть','trennen']]},
+{w:'-ход-',b:'gehen',m:[['ходи́ть','gehen (regelmäßig)'],['вы́ход','Ausgang'],['вход','Eingang'],['похо́д','Wanderung; Feldzug'],['находи́ть','finden'],['происходи́ть','geschehen'],['подходи́ть','passen; herantreten'],['ухо́д','Weggehen; Pflege']]},
+{w:'-да-',b:'geben',m:[['дать','geben'],['дава́ть','geben (regelmäßig)'],['отда́ть','zurückgeben, hergeben'],['переда́ть','weitergeben, ausrichten'],['прода́ть','verkaufen – „weggeben“'],['сдать','abgeben; eine Prüfung bestehen'],['зада́ние','Aufgabe – das Aufgegebene'],['изда́ние','Ausgabe, Auflage']]},
+{w:'-молч-',b:'schweigen',m:[['молча́ть','schweigen'],['мо́лча','schweigend'],['замолча́ть','verstummen'],['молчали́вый','schweigsam'],['молча́ние','Schweigen']]},
+{w:'-друг- / -друж-',b:'Freund',m:[['друг','Freund'],['подру́га','Freundin'],['дру́жба','Freundschaft'],['дружи́ть','befreundet sein'],['дружелю́бный','freundlich, umgänglich'],['дружи́ще','alter Freund (Anrede)']]},
+{w:'-свобод-',b:'frei',m:[['свобо́да','Freiheit'],['свобо́дный','frei'],['свобо́дно','frei; fließend (Sprache)'],['освободи́ть','befreien']]},
+{w:'-труд-',b:'Arbeit, Mühe',m:[['труд','Arbeit, Mühe'],['тру́дный','schwierig'],['тру́дно','es ist schwer'],['труди́ться','sich mühen, arbeiten'],['сотру́дник','Mitarbeiter – der Mitarbeitende'],['тру́дность','Schwierigkeit']]},
+{w:'-сил-',b:'Kraft',m:[['си́ла','Kraft'],['си́льный','stark'],['уси́лие','Anstrengung'],['наси́лие','Gewalt'],['уси́лить','verstärken'],['си́льно','stark, sehr']]},
+{w:'-молод-',b:'jung',m:[['молодо́й','jung'],['мо́лодость','Jugendzeit'],['молодёжь','die Jugend, junge Leute'],['молоде́ц','gut gemacht! – wörtlich der junge Kerl'],['молодцы́','gut gemacht! (an mehrere)']]},
+{w:'-стар-',b:'alt',m:[['ста́рый','alt'],['стари́к','alter Mann'],['стару́шка','alte Dame'],['старе́ть','altern'],['стари́нный','antik, aus alter Zeit'],['старьё','Gerümpel, alter Kram']]},
+{w:'-добр-',b:'gut, gütig',m:[['до́брый','gütig, lieb'],['доброта́','Güte'],['добро́','das Gute; Hab und Gut'],['по-до́брому','gütig, nachsichtig'],['одо́брить','billigen, gutheißen']]},
+{w:'-зл-',b:'böse, Wut',m:[['зло','das Böse'],['злой','böse, wütend'],['зли́ться','wütend sein'],['разозли́ться','wütend werden'],['зло́ба','Bosheit, Groll'],['зло́стный','böswillig']]},
+{w:'-свеж-',b:'frisch',m:[['све́жий','frisch'],['свежо́','es ist frisch, kühl'],['освежи́ть','erfrischen'],['све́жесть','Frische']]},
+{w:'-лёгк- / -легч-',b:'leicht',m:[['лёгкий','leicht'],['легко́','leicht, mühelos'],['облегче́ние','Erleichterung'],['поле́гче','sachte!, langsamer'],['облегчи́ть','erleichtern']]},
+{w:'-тепл-',b:'warm',m:[['тёплый','warm (am Substantiv)'],['тепло́','es ist warm; die Wärme'],['теплота́','Wärme (auch menschlich)'],['потепле́ние','Erwärmung']]},
+{w:'-холод-',b:'kalt',m:[['хо́лод','Kälte'],['холо́дный','kalt'],['хо́лодно','es ist kalt'],['холоди́льник','Kühlschrank'],['похолода́ть','kälter werden']]}];
 /* Ein Wort kann nur in einer Familie stehen – der Index wird einmal gebaut. */
 let FAM_IDX=null;
 function famNorm(r){return String(r).replace(/\u0301/g,'').toLowerCase().replace(/ё/g,'е').replace(/[^а-я\- ]/g,'').trim()}

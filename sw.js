@@ -1,7 +1,7 @@
 /* Service Worker für die Russisch-Lern-Suite:
    cached alle vier Apps beim ersten Besuch → danach komplett offline nutzbar.
    Strategie: Cache zuerst (sofort da, auch offline), Netz-Update im Hintergrund. */
-const CACHE='slova-v57';
+const CACHE='slova-v58';
 const ASSETS=['/slova/','/slova/grammatik/','/slova/skazki/','/slova/heute/','/slova/serial/'];
 
 self.addEventListener('install',e=>{
