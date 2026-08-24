@@ -5773,9 +5773,43 @@ function baseIndex(){
    отпусти́ть kommt von пусти́ть (lassen), nicht von пусто́й (leer). */
 const BAU_STOP=new Set(['отпустить','выпустить','пропустить','допустить','впустить','запросто',
 'обалдеть','назначить','налоговый','опередить','разоблачить']);
+const SUFFIXE=[["ание","Vorgang oder Ergebnis eines Verbs – wie deutsch -ung"],["ение","Vorgang oder Ergebnis eines Verbs – wie deutsch -ung"],["тель","die Person oder das Gerät, das etwas tut – wie deutsch -er"],["ость","die Eigenschaft dazu – wie deutsch -heit oder -keit"],["ство","Zustand oder Gesamtheit – wie deutsch -schaft oder -tum"],["щик","Berufs- oder Tätigkeitsbezeichnung – wie deutsch -er"],["чик","Berufsbezeichnung; oder Verkleinerung"],["ник","Person oder Gegenstand für etwas"],["ница","weibliche Form eines Berufs oder einer Rolle (помо́щник → помо́щница)"],["ушк","bildet Substantive: Koseform (де́душка) oder das Ding zur Tätigkeit (игра́ть → игру́шка)"],["овать","bildet Verben – oft aus Substantiven oder Fremdwörtern (рисова́ть, аресто́вывать)"],["евать","bildet Verben – oft aus Substantiven oder Fremdwörtern (танцева́ть)"],["ыва","wiederholte oder unvollendete Handlung"],["ива","wiederholte oder unvollendete Handlung"]];
+/* Endung erkennen und erklären – auch dann, wenn kein Vorsilben-Treffer da ist. */
+function suffixTeil(plain){
+  const roh=plain.replace(/(ся|сь)$/,'');
+  for(const sb of SUFFIXE){
+    const su=sb[0];
+    const i=roh.lastIndexOf(su);
+    if(i<3)continue;                       /* Endung darf nicht das halbe Wort sein */
+    /* Muss wirklich am Ende stehen – höchstens eine kurze Grammatikendung
+       danach. Sonst bekäme кани́кулы ein „-ник", nur weil die Buchstaben
+       zufällig in der Mitte vorkommen. */
+    if(i+su.length<roh.length-2)continue;
+    return {su,txt:sb[1],stamm:roh.slice(0,i)};
+  }
+  return null;
+}
 function bausteine(w){
   const plain=String(w.r).replace(/́/g,'').toLowerCase();
-  if(plain.length<8||/\s|-/.test(plain)||BAU_STOP.has(plain))return '';
+  if(plain.length<6||/\s|-/.test(plain)||BAU_STOP.has(plain))return '';
+  const refl=/(ся|сь)$/.test(plain);
+  const suf=suffixTeil(plain);
+  /* Grundwort zur Endung suchen: же́нщина → ? – meist gibt es keins, dann
+     bleibt die Erklärung der Endung allein stehen. */
+  let sufBase=null;
+  if(suf&&suf.stamm.length>=4){
+    for(const k of stemKeys(suf.stamm)){
+      const b=baseIndex()[k];
+      if(!b)continue;
+      const bp=b.r.replace(/́/g,'').toLowerCase();
+      if(bp===plain||bp.length>=plain.length)continue;
+      sufBase=b;break;
+    }
+  }
+  const zusatz=[];
+  if(suf)zusatz.push('<div class="bl"><b>-'+esc(suf.su)+'</b><span>'+esc(suf.txt)+'</span></div>');
+  if(sufBase)zusatz.push('<div class="bl"><b>'+acc(esc(sufBase.r))+'</b><span>'+esc(sufBase.d)+'</span>'+sayBtn(sufBase.r)+'</div>');
+  if(refl)zusatz.push('<div class="bl"><b>-ся</b><span>rückbezüglich: die Handlung trifft den, der sie tut</span></div>');
   for(const pb of PREFIXE){
     const pre=pb[0];
     if(plain.indexOf(pre)!==0||plain.length-pre.length<5)continue;
@@ -5788,8 +5822,15 @@ function bausteine(w){
       return '<div class="bau"><div class="ft">🧩 Wortbausteine</div>'+
         '<div class="bl"><b>'+esc(pre)+'-</b><span>'+esc(pb[1])+'</span></div>'+
         '<div class="bl"><b>'+acc(esc(base.r))+'</b><span>'+esc(base.d)+'</span>'+sayBtn(base.r)+'</div>'+
+        zusatz.join('')+
         '<div class="bh">'+esc(pre)+'- + '+acc(esc(base.r))+' → '+acc(esc(w.r))+'</div></div>';
     }
+  }
+  /* Keine Vorsilbe getroffen – aber vielleicht eine Endung. */
+  if(zusatz.length){
+    return '<div class="bau"><div class="ft">🧩 Wortbausteine</div>'+zusatz.join('')+
+      (sufBase?'<div class="bh">'+acc(esc(sufBase.r))+' + -'+esc(suf.su)+' → '+acc(esc(w.r))+'</div>':'')+
+      '</div>';
   }
   return '';
 }
@@ -5923,7 +5964,9 @@ function sylTiles(p,parts){
     });
   });
   pool.sort((a,b)=>Math.abs(a.replace(/́/g,'').length-avg)-Math.abs(b.replace(/́/g,'').length-avg));
-  const n=parts.length<=3?2:3;
+  /* So viele Ablenker wie Silben: sonst verrät schon die Kachelzahl, wie
+     lang das Wort ist, und man setzt es ohne Wortwissen zusammen. */
+  const n=Math.max(3,parts.length);
   return shuffle(parts.concat(shuffle(pool.slice(0,n*3)).slice(0,n)));
 }
 /* Russische Erklärung: aufklappbar, damit du erst selbst versuchst, sie zu verstehen.
@@ -7815,8 +7858,10 @@ function renderCard(){
     if(sess.st[k].ok===1&&isLongWord(w)&&Math.random()<.6)mode='syl';
   }
   else if(mode==='mix'){
-    if(schonDa)mode=(sylOK(w)&&Math.random()<.55)?'syl':'type';   /* zweite Begegnung: selbst herstellen */
-    else mode=(st&&st.c>=2)?(Math.random()<.6?'type':'mcRev'):(Math.random()<.5?'mc':'mcRev');
+    const r=Math.random();
+    if(schonDa)mode=(sylOK(w)&&r<.55)?'syl':'type';        /* zweite Begegnung: immer selbst herstellen */
+    else if(st&&st.c>=2)mode=r<.55?'type':(r<.8&&sylOK(w)?'syl':(r<.8?'type':'mcRev'));  /* bekannt: 80 % herstellen */
+    else mode=r<.4?'mc':(r<.65?'mcRev':'type');            /* frisch: erkennen darf noch führen */
   }
   if(mode==='type'&&sylOK(w)&&Math.random()<(isLongWord(w)?.6:.3))mode='syl';
   cur={p,k,w,mode,answered:false,opts:null,goodIdx:-1,optRu:(mode==='mcRev')};
@@ -7883,7 +7928,8 @@ function renderCard(){
     document.querySelectorAll('#sylPool .syl').forEach(b=>b.onclick=()=>{
       if(cur.answered)return;
       cur.pick.push(+b.dataset.s);draw();
-      if(cur.pick.length===cur.need)checkSyl();
+      /* Kein automatisches Prüfen mehr: sonst weiss man an der Stelle, an der
+         die App abschickt, dass die Silbenzahl stimmt. */
     });
     $('#sylUndo').onclick=()=>{if(cur.answered)return;cur.pick.pop();draw()};
     $('#sylCheck').onclick=checkSyl;
@@ -7898,7 +7944,7 @@ function renderCard(){
   }
 }
 function checkSyl(){
-  if(!cur||cur.answered||cur.pick.length<cur.need)return;
+  if(!cur||cur.answered||!cur.pick.length)return;
   const built=cur.pick.map(i=>cur.tiles[i]).join('');
   const ok=normRu(built)===normRu(cur.w.r);
   document.querySelectorAll('#sylPool .syl').forEach(b=>b.disabled=true);

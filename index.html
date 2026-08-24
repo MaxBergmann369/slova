@@ -3142,7 +3142,8 @@ function sylTiles(w,parts){
     });
   });
   pool.sort((a,b)=>Math.abs(a.replace(/́/g,'').length-avg)-Math.abs(b.replace(/́/g,'').length-avg));
-  const n=parts.length<=3?2:3;
+  /* So viele Ablenker wie Silben – sonst ist die Kachelzahl die halbe Lösung. */
+  const n=Math.max(3,parts.length);
   const fake=shuffle(pool.slice(0,Math.max(n,n*3))).slice(0,n);   /* aus den ähnlichsten zufällig wählen */
   return shuffle(parts.concat(fake));
 }
@@ -3411,7 +3412,8 @@ function wireSyl(){
     b.classList.add('used');
     cur.syl.picked.push(+b.dataset.k);
     upd();
-    if(cur.syl.picked.length===cur.syl.need)checkSyl();
+    /* Nicht automatisch prüfen: die Stelle, an der die App abschickt, wäre
+       sonst die Bestätigung, dass die Silbenzahl stimmt. */
   });
   $('#sylCheck').onclick=checkSyl;
   upd();
