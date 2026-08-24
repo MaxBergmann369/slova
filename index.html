@@ -3118,6 +3118,7 @@ function renderHome(){
       '<div class="sub" style="font-size:.78rem">Nur Wörter, die du schon kannst – Schreiben, Silben, Lückentext. Kein Multiple Choice, keine neuen Wörter.'+
       (wackelN?' <b>'+wackelN+'</b> Wörter wackeln zurzeit beim Schreiben.':'')+'</div>';
     inner+='<br><button class="btn-ghost" onclick="renderPaare()">🔍 Minimalpaare · мать ≠ мат</button>';
+    inner+='<br><button class="btn-ghost" onclick="renderWurzel()">🌱 Wurzel-Training · woher kommt das Wort?</button>';
     inner+='<br><button class="btn-ghost" onclick="renderRadio()">📻 Audio-Modus (freihändig)</button>';
   }else{
     inner='<div class="due-line"><b>'+due.length+'</b> Wiederholung'+(due.length===1?'':'en')+' · <b>'+fresh.length+'</b> neue Wörter</div>'+
@@ -3128,6 +3129,7 @@ function renderHome(){
     if(probN)inner+='<br><button class="btn-ghost" onclick="startProblems()">Nur Problemwörter üben ('+probN+')</button>';
     if(festN)inner+='<br><button class="btn-ghost" onclick="startFest()">🔨 Festigen · schreiben statt anklicken</button>';
     inner+='<br><button class="btn-ghost" onclick="renderPaare()">🔍 Minimalpaare · мать ≠ мат</button>';
+    inner+='<br><button class="btn-ghost" onclick="renderWurzel()">🌱 Wurzel-Training · woher kommt das Wort?</button>';
     inner+='<br><button class="btn-ghost" onclick="renderRadio()">📻 Audio-Modus (freihändig)</button>';
   }
   $('#view-lernen').innerHTML='<div class="hero">'+inner+'</div>';
@@ -4426,6 +4428,134 @@ function speakLang(txt,de){
       setTimeout(res,12000);
     }catch(e){res()}
   });
+}
+
+/* ================= Wurzel-Training =================
+   Die Wortfamilien stehen sonst nur auf der Rückseite. Hier werden sie
+   abgefragt – erst dabei zeigt sich, ob die Wurzel wirklich sitzt. */
+let wsess=null;
+/* Nur Familien, aus denen schon ein Wort im Training war. Sonst wäre es
+   eine Runde neuer Vokabeln statt eine Runde Verstehen. */
+function famPool(){
+  const idx=famIndex(),bekannt={};
+  allWords().forEach(w=>{
+    if(!S.prog[w.i])return;
+    const i=idx[famNorm(w.r)];
+    if(i!==undefined)bekannt[i]=(bekannt[i]||0)+1;
+  });
+  return Object.keys(bekannt).map(i=>+i).filter(i=>FAMILIEN[i].m.length>=4);
+}
+function renderWurzel(){
+  sess=null;quiz=null;wsess=null;
+  const pool=famPool();
+  const ges=FAMILIEN.length;
+  $('#view-lernen').innerHTML='<div class="hero"><div class="done-mark">🌱</div>'+
+    '<div class="due-line">Wurzel-Training</div>'+
+    '<div class="sub" style="text-align:left;margin-top:12px;line-height:1.6">'+
+    'Ein russisches Wort mit bekannter Wurzel ist kein neues Wort mehr, sondern eine Variante. '+
+    'Wer die Wurzel <b>-пуск-</b> („lassen“) kennt, muss о́тпуск und про́пуск nicht mehr einzeln lernen.<br><br>'+
+    'Hier kommen nur Familien dran, aus denen du <b>schon ein Wort geübt</b> hast – nichts Neues, nur besser verstehen.</div>'+
+    (pool.length>=4
+      ?'<div class="sub" style="margin-top:10px"><b>'+pool.length+'</b> von '+ges+' Familien sind für dich freigeschaltet.</div>'+
+       '<button class="btn btn-primary" onclick="startWurzel()">Runde starten (10 Aufgaben)</button>'
+      :'<div class="sub" style="margin-top:10px">Noch nicht genug: es braucht mindestens vier Familien, aus denen du ein Wort geübt hast. Aktuell sind es '+pool.length+'.</div>')+
+    '<br><button class="btn-ghost" onclick="renderHome()">Zurück zum Lernen</button></div>';
+}
+function startWurzel(){
+  const pool=shuffle(famPool());
+  if(pool.length<4){renderWurzel();return}
+  const q=pool.slice(0,10).map((i,k)=>({fam:i,art:k%2?'glied':'wurzel'}));
+  wsess={q:shuffle(q),i:0,right:0,wrong:0,answered:false};
+  renderWurzelFrage();
+}
+function renderWurzelFrage(){
+  const c=wsess.q[wsess.i],f=FAMILIEN[c.fam];
+  const andere=FAMILIEN.map((x,i)=>i).filter(i=>i!==c.fam);
+  let kopf,opts;
+  if(c.art==='wurzel'){
+    /* Ein Wort der Familie zeigen, die Wurzelbedeutung suchen lassen */
+    const w=f.m[Math.floor(Math.random()*f.m.length)];
+    c.wort=w;
+    kopf='<div class="word" style="font-size:1.7rem">'+acc(esc(w[0]))+'</div>'+
+      '<div class="mean">'+esc(w[1])+'</div>'+
+      '<div class="qlabel">Aus welcher Wurzel kommt das Wort?</div>';
+    opts=shuffle([f].concat(shuffle(andere).slice(0,3).map(i=>FAMILIEN[i])))
+      .map(x=>({t:'<b>'+esc(x.w)+'</b> – '+esc(x.b),ok:x===f}));
+  }else{
+    /* Drei Mitglieder zeigen, das vierte suchen lassen */
+    const m=shuffle(f.m.slice());
+    const zeigen=m.slice(0,3),ziel=m[3];
+    c.ziel=ziel;
+    /* Die Wurzel selbst bleibt verdeckt – stünde sie da, reichte ein Blick
+       auf die Buchstaben. Nur ihre Bedeutung wird verraten. */
+    kopf='<div class="famrow" style="text-align:left"><b>🌱 Wurzelbedeutung: '+esc(f.b)+'</b>'+
+      '<span class="famlist">'+zeigen.map(x=>'<span class="famw">'+acc(esc(x[0]))+'<i class="famd">'+esc(x[1])+'</i></span>').join('')+'</span></div>'+
+      '<div class="qlabel">Welches Wort gehört noch dazu?</div>';
+    /* Ablenker sollen dem Zielwort ähnlich sehen: gleicher Anfang, gleiche
+       Endung, ähnliche Länge. Sonst gewinnt Buchstabenraten statt Verstehen. */
+    const zn=famNorm(ziel[0]);
+    const kand=[];
+    andere.forEach(i=>FAMILIEN[i].m.forEach(x=>{
+      const xn=famNorm(x[0]);
+      if(!xn||xn===zn)return;
+      let a=0;while(a<Math.min(zn.length,xn.length)&&zn[a]===xn[a])a++;
+      let e=0;while(e<Math.min(zn.length,xn.length)&&zn[zn.length-1-e]===xn[xn.length-1-e])e++;
+      kand.push({x,s:a*4+e*3-Math.abs(zn.length-xn.length)+Math.random()*2});
+    }));
+    kand.sort((u,v)=>v.s-u.s);
+    const fremd=[],gesehen=new Set([zn]);
+    for(const e of kand){
+      const k=famNorm(e.x[0]);
+      if(gesehen.has(k))continue;
+      gesehen.add(k);fremd.push(e.x);
+      if(fremd.length>=3)break;
+    }
+    opts=shuffle([ziel].concat(fremd)).map(x=>({t:acc(esc(x[0]))+' <span style="opacity:.7">'+esc(x[1])+'</span>',ok:x===ziel}));
+  }
+  wsess.opts=opts;
+  $('#view-lernen').innerHTML=
+    '<div class="sess-top"><span class="cnt">'+(wsess.i+1)+' / '+wsess.q.length+'</span>'+
+    '<div class="bar"><i style="width:'+Math.round(100*wsess.i/wsess.q.length)+'%"></i></div>'+
+    '<button class="quit" onclick="renderWurzel()">Beenden</button></div>'+
+    '<div class="card" style="text-align:center">'+
+    '<div class="badges"><span class="chip mode">'+(c.art==='wurzel'?'Wurzel finden':'Familie ergänzen')+'</span></div>'+
+    kopf+
+    '<div class="opts">'+opts.map((o,k)=>'<button class="opt" data-k="'+k+'" style="text-align:left">'+o.t+'</button>').join('')+'</div>'+
+    '<div id="wfb"></div></div>';
+  document.querySelectorAll('#view-lernen .opt').forEach(b=>b.onclick=()=>wurzelAntwort(+b.dataset.k));
+}
+function wurzelAntwort(k){
+  if(wsess.answered)return;
+  wsess.answered=true;
+  const c=wsess.q[wsess.i],f=FAMILIEN[c.fam];
+  const ok=wsess.opts[k].ok;
+  if(ok)wsess.right++;else wsess.wrong++;
+  actMark('wurzel');save();
+  document.querySelectorAll('#view-lernen .opt').forEach((b,i)=>{
+    b.disabled=true;
+    if(wsess.opts[i].ok)b.classList.add('right');
+  });
+  if(!ok)document.querySelectorAll('#view-lernen .opt')[k].classList.add('wrong');
+  /* Immer die ganze Familie zeigen – auch wenn richtig geraten wurde */
+  $('#wfb').innerHTML='<div class="fb '+(ok?'fb-ok':'fb-no')+'">'+(ok?'✓ Richtig!':'✗ Nicht ganz.')+'</div>'+
+    '<div class="famrow" style="text-align:left"><b>🌱 Wortfamilie '+esc(f.w)+'</b> – '+esc(f.b)+
+    '<span class="famlist">'+f.m.map(m=>'<span class="famw">'+acc(esc(m[0]))+'<i class="famd">'+esc(m[1])+'</i></span>').join('')+'</span></div>'+
+    '<div class="grade on grade1"><button class="'+(ok?'g-k':'g-w')+'" onclick="wurzelNext()">Weiter</button></div>';
+}
+function wurzelNext(){
+  wsess.answered=false;wsess.i++;
+  if(wsess.i<wsess.q.length){renderWurzelFrage();return}
+  const r=wsess.right,ges=wsess.right+wsess.wrong;
+  wsess=null;
+  $('#view-lernen').innerHTML='<div class="hero"><div class="done-mark">🌱</div>'+
+    '<div class="due-line">Runde geschafft!</div>'+
+    '<div class="sumgrid">'+
+    '<div class="sumbox"><b>'+r+' / '+ges+'</b><span>richtig</span></div>'+
+    '<div class="sumbox"><b>'+(ges?Math.round(100*r/ges):0)+' %</b><span>Trefferquote</span></div>'+
+    '</div>'+
+    '<div class="sub" style="text-align:left;margin-top:12px">Wurzeln lernt man nicht auswendig, sondern indem man sie wiedererkennt. Jede Runde macht das nächste unbekannte Wort ein Stück durchschaubarer.</div>'+
+    '<button class="btn btn-primary" onclick="startWurzel()">Noch eine Runde</button><br>'+
+    '<button class="btn-ghost" onclick="renderHome()">Zurück zum Lernen</button></div>';
 }
 
 /* ================= Minimalpaare =================
