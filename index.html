@@ -410,7 +410,7 @@ textarea#impBox,textarea#bakBox{width:100%;min-height:110px;border:1px solid var
 
   <div class="panel">
     <h3>Wörter importieren</h3>
-    <p class="hint">Der Grundstock von 2000 Wörtern ist fest eingebaut, dazu Ergänzungen aus den Wortfamilien und 67 Wörter für B1/B2-Themen. Über den Import kannst du trotzdem jederzeit eigene Wörter ergänzen (im JSON-Format, siehe grauer Beispieltext).<br>
+    <p class="hint">Der Grundstock von 2000 Wörtern ist fest eingebaut, dazu Ergänzungen aus den Wortfamilien und 126 Wörter für B1/B2-Themen. Über den Import kannst du trotzdem jederzeit eigene Wörter ergänzen (im JSON-Format, siehe grauer Beispieltext).<br>
       Wörter aus СЕРИА́Л bringen ihren Lernstand mit: Was du dort schon gemeistert hast, startet hier nicht bei null, sondern direkt im passenden Wiederholungsabstand – und zählt nicht gegen dein Tageslimit für neue Wörter.</p>
     <textarea id="impBox" placeholder='[{"r":"стол","t":"stol","d":"Tisch","e":"Э́то мой стол.","x":"Das ist mein Tisch.","g":0}]'></textarea>
     <button class="btn-sm" id="impBtn">Importieren</button>
@@ -433,7 +433,7 @@ textarea#impBox,textarea#bakBox{width:100%;min-height:110px;border:1px solid var
     <div class="msg" id="dataMsg"></div>
   </div>
 
-  <p class="foot">2000 Wörter nach Häufigkeit (angelehnt an gängige Frequenzlisten), dazu Wörter aus den Wortfamilien und 67 für B1/B2-Themen.<br>≈ DE/EN markiert Wörter, die ähnlich wie im Deutschen oder Englischen klingen.</p>
+  <p class="foot">2000 Wörter nach Häufigkeit (angelehnt an gängige Frequenzlisten), dazu Wörter aus den Wortfamilien und 126 für B1/B2-Themen.<br>≈ DE/EN markiert Wörter, die ähnlich wie im Deutschen oder Englischen klingen.</p>
 </section>
 
 </div>
@@ -2878,7 +2878,66 @@ const THEMA_WORDS=[
 {i:9564,r:"на мой взгляд",t:"na moj wsgljat",d:"meiner Ansicht nach",e:"На мой взгляд, э́то пра́вильно.",x:"Meiner Ansicht nach ist das richtig.",n:"Wörtlich „auf meinen Blick“. Etwas weicher als по-мо́ему."},
 {i:9565,r:"де́ло в том, что",t:"DJE-la f tom schta",d:"die Sache ist die, dass",e:"Де́ло в том, что я не успе́л.",x:"Die Sache ist die, dass ich es nicht geschafft habe.",n:"Leitet eine Erklärung ein – sehr häufig im Gespräch."},
 {i:9566,r:"сле́довательно",t:"SSLJE-da-wa-tilj-na",d:"folglich",e:"Он не пришёл, сле́довательно, заболе́л.",x:"Er kam nicht, folglich ist er krank geworden.",n:"Schriftsprachlich, von сле́довать. Im Gespräch sagt man зна́чит."},
-{i:9567,r:"обрати́ть внима́ние",t:"a-bra-TITJ wni-MA-ni-je",d:"aufmerksam machen, beachten",e:"Обрати́те внима́ние на дета́ли.",x:"Achten Sie auf die Details.",n:"Mit на + Akkusativ. Die Dauerform ist обраща́ть внима́ние."}];
+{i:9567,r:"обрати́ть внима́ние",t:"a-bra-TITJ wni-MA-ni-je",d:"aufmerksam machen, beachten",e:"Обрати́те внима́ние на дета́ли.",x:"Achten Sie auf die Details.",n:"Mit на + Akkusativ. Die Dauerform ist обраща́ть внима́ние."},
+{i:9568,r:"обуче́ние",t:"a-bu-TSCHE-ni-je",d:"Ausbildung, Unterricht",e:"Обуче́ние дли́тся два го́да.",x:"Die Ausbildung dauert zwei Jahre.",n:"Der organisierte Lernprozess – von обучи́ть. Die Bildung als Ergebnis ist образова́ние."},
+{i:9569,r:"сте́пень",t:"SSTJE-pinj",d:"Grad, Abschluss",e:"У неё сте́пень магистра.",x:"Sie hat einen Masterabschluss.",n:"Weiblich auf -ь. Der akademische Grad – und der Grad allgemein: в како́й-то сте́пени, gewissermaßen."},
+{i:9570,r:"преподава́тель",t:"pri-pa-da-WA-tilj",d:"Dozent, Lehrkraft",e:"Наш преподава́тель объясня́ет хорошо́.",x:"Unser Dozent erklärt gut.",n:"An Hochschule und Sprachkurs. Der Schullehrer ist учи́тель."},
+{i:9571,r:"зачёт",t:"sa-TSCHOT",d:"Testat, Leistungsnachweis",e:"Я сдал зачёт по грамма́тике.",x:"Ich habe das Testat in Grammatik bestanden.",n:"Die kleine Prüfung ohne Note – bestanden oder nicht. Die große mit Note ist экза́мен."},
+{i:9572,r:"поступи́ть",t:"pa-stu-PITJ",d:"aufgenommen werden; handeln",e:"Он поступи́л в университе́т.",x:"Er wurde an der Uni aufgenommen.",n:"Mit в + Akkusativ: an einer Hochschule angenommen werden. Ohne das heißt поступа́ть handeln."},
+{i:9573,r:"самообразова́ние",t:"ssa-ma-ab-ra-za-WA-ni-je",d:"Selbststudium",e:"Языки́ мо́жно вы́учить самообразова́нием.",x:"Sprachen kann man im Selbststudium lernen.",n:"Aus сам und образова́ние: sich selbst bilden."},
+{i:9574,r:"сре́дства ма́ссовой информа́ции",t:"SSRJET-stwa MA-ssa-waj in-far-MA-zy-i",d:"Massenmedien",e:"Об э́том писа́ли все сре́дства ма́ссовой информа́ции.",x:"Darüber schrieben alle Medien.",n:"Abgekürzt СМИ, gesprochen „ess-em-i“. Die feste Formel der Nachrichtensprache."},
+{i:9575,r:"социа́льные се́ти",t:"ssa-zy-ALJ-ny-je SSJE-ti",d:"soziale Netzwerke",e:"Он мно́го вре́мени прово́дит в социа́льных сетя́х.",x:"Er verbringt viel Zeit in sozialen Netzwerken.",n:"Immer Plural. Umgangssprachlich verkürzt zu соцсе́ти."},
+{i:9576,r:"да́нные",t:"DAN-ny-je",d:"Daten",e:"Мои́ да́нные защищены́.",x:"Meine Daten sind geschützt.",n:"Nur Plural, substantiviertes Partizip von дать: das Gegebene."},
+{i:9577,r:"подпи́ска",t:"pat-PIS-ka",d:"Abo, Abonnement",e:"У меня́ подпи́ска на э́тот кана́л.",x:"Ich habe ein Abo für diesen Kanal.",n:"Von подписа́ться. Abonnieren heißt подписа́ться на + Akkusativ."},
+{i:9578,r:"досто́верный",t:"da-STA-wjer-nyj",d:"zuverlässig, glaubwürdig",e:"Э́то досто́верный исто́чник.",x:"Das ist eine glaubwürdige Quelle.",n:"Aus до- und ве́ра: worauf man sich verlassen kann. Über Quellen und Angaben."},
+{i:9579,r:"распространя́ть",t:"ras-pra-stra-NJATJ",d:"verbreiten",e:"Не распространя́й слу́хи!",x:"Verbreite keine Gerüchte!",n:"Von простра́нство, dem Raum: in die Breite bringen. Sich verbreiten ist распространя́ться."},
+{i:9580,r:"пита́ние",t:"pi-TA-ni-je",d:"Ernährung",e:"Пра́вильное пита́ние — э́то ва́жно.",x:"Richtige Ernährung ist wichtig.",n:"Von пита́ться, sich ernähren. Das Essen als Sache ist еда́."},
+{i:9581,r:"о́браз жи́зни",t:"O-bras SCHI-sni",d:"Lebensstil",e:"Он ведёт здоро́вый о́браз жи́зни.",x:"Er führt einen gesunden Lebensstil.",n:"Feste Wendung – wörtlich „Bild des Lebens“. Führen heißt hier вести́, nicht име́ть."},
+{i:9582,r:"диа́гноз",t:"di-AG-nas",d:"Diagnose",e:"Врач поста́вил диа́гноз.",x:"Der Arzt hat die Diagnose gestellt.",n:"Eine Diagnose stellt man mit поста́вить – wörtlich „hinstellen“, nicht „machen“."},
+{i:9583,r:"симпто́м",t:"ssimp-TOM",d:"Symptom",e:"Каки́е у вас симпто́мы?",x:"Welche Symptome haben Sie?",n:"Die Standardfrage beim Arzt. Betonung hinten: симпто́м."},
+{i:9584,r:"вы́здороветь",t:"WYS-da-ra-witj",d:"gesund werden",e:"Скоре́е вы́здоравливай!",x:"Werde schnell wieder gesund!",n:"Von здоро́вый. Der Genesungswunsch lautet выздора́вливай, in der Dauerform."},
+{i:9585,r:"приви́вка",t:"pri-WIF-ka",d:"Impfung",e:"Мне сде́лали приви́вку.",x:"Ich wurde geimpft.",n:"Wörtlich „das Aufpfropfen“, wie beim Baum. Geimpft werden heißt сде́лать приви́вку – wörtlich „machen“."},
+{i:9586,r:"снима́ть кварти́ру",t:"ssni-MATJ kwar-TI-ru",d:"eine Wohnung mieten",e:"Мы снима́ем кварти́ру в це́нтре.",x:"Wir mieten eine Wohnung im Zentrum.",n:"Mieten heißt снима́ть – wörtlich „abnehmen“. Vermieten ist сдава́ть."},
+{i:9587,r:"сдава́ть кварти́ру",t:"ssda-WATJ kwar-TI-ru",d:"eine Wohnung vermieten",e:"Она́ сдаёт кварти́ру студе́нтам.",x:"Sie vermietet die Wohnung an Studenten.",n:"Von сдать, abgeben. Achtung: сдава́ть экза́мен heißt eine Prüfung ablegen."},
+{i:9588,r:"аре́нда",t:"a-REN-da",d:"Miete, Pacht",e:"Аре́нда сто́ит две́сти е́вро.",x:"Die Miete kostet zweihundert Euro.",n:"Die Miete als Vertragsverhältnis. Der monatliche Betrag heißt auch кварти́рная пла́та."},
+{i:9589,r:"общежи́тие",t:"ab-schi-SCHI-ti-je",d:"Wohnheim",e:"Он живёт в общежи́тии.",x:"Er wohnt im Wohnheim.",n:"Aus о́бщий und жить: gemeinsames Wohnen. Umgangssprachlich общага."},
+{i:9590,r:"ипоте́ка",t:"i-pa-TJE-ka",d:"Hypothek, Immobilienkredit",e:"Мы взя́ли ипоте́ку на два́дцать лет.",x:"Wir haben eine Hypothek über zwanzig Jahre aufgenommen.",n:"Aufnehmen heißt взять ипоте́ку. Aus dem Griechischen."},
+{i:9591,r:"коммуна́льные услу́ги",t:"ka-mu-NALJ-ny-je u-SSLU-gi",d:"Nebenkosten",e:"Коммуна́льные услу́ги пла́тим отде́льно.",x:"Die Nebenkosten zahlen wir extra.",n:"Strom, Wasser, Heizung. Umgangssprachlich verkürzt zu коммуна́лка."},
+{i:9592,r:"ую́т",t:"u-JUT",d:"Gemütlichkeit",e:"В э́том до́ме есть ую́т.",x:"In diesem Haus ist es gemütlich.",n:"Die Gemütlichkeit als Sache – gemütlich ist ую́тный."},
+{i:9593,r:"сосе́дство",t:"ssa-SSJET-stwa",d:"Nachbarschaft",e:"Мы живём по сосе́дству.",x:"Wir wohnen in der Nachbarschaft.",n:"По сосе́дству heißt „nebenan“. Der Nachbar ist сосе́д."},
+{i:9594,r:"досмо́тр",t:"da-SSMOTR",d:"Kontrolle (am Flughafen)",e:"Пройди́те досмо́тр, пожа́луйста.",x:"Gehen Sie bitte durch die Kontrolle.",n:"Die Sicherheitskontrolle – von смотре́ть. Die Zollkontrolle ist тамо́женный досмо́тр."},
+{i:9595,r:"посо́льство",t:"pa-SSOLJ-stwa",d:"Botschaft (Amt)",e:"Ви́зу де́лают в посо́льстве.",x:"Das Visum bekommt man in der Botschaft.",n:"Von посо́л, dem Botschafter. Die Nachricht dagegen ist посла́ние – dieselbe Wurzel сла́ть."},
+{i:9596,r:"заселе́ние",t:"sa-ssi-LJE-ni-je",d:"Check-in (Hotel)",e:"Заселе́ние с двух часо́в.",x:"Check-in ab vierzehn Uhr.",n:"Von сели́ться, sich niederlassen. Der Check-out ist вы́езд."},
+{i:9597,r:"взаимопонима́ние",t:"wsa-i-ma-pa-ni-MA-ni-je",d:"gegenseitiges Verständnis",e:"В семье́ ва́жно взаимопонима́ние.",x:"In der Familie ist gegenseitiges Verständnis wichtig.",n:"Aus взаи́мный (gegenseitig) und понима́ние. Genauso gebaut: взаимопо́мощь."},
+{i:9598,r:"расста́ться",t:"ras-STA-za",d:"sich trennen",e:"Они́ расста́лись год наза́д.",x:"Sie haben sich vor einem Jahr getrennt.",n:"Von стать: auseinandertreten. Mit с + Instrumental: расста́ться с ним."},
+{i:9599,r:"разво́д",t:"raz-WOT",d:"Scheidung",e:"По́сле разво́да он перее́хал.",x:"Nach der Scheidung ist er umgezogen.",n:"Von развести́сь, sich scheiden lassen – wörtlich „auseinanderführen“, von вести́."},
+{i:9600,r:"ревнова́ть",t:"riw-na-WATJ",d:"eifersüchtig sein",e:"Он ревну́ет её к дру́гу.",x:"Er ist eifersüchtig auf ihren Freund.",n:"Mit к + Dativ – auf wen man eifersüchtig ist, steht im Dativ. Die Eifersucht ist ре́вность."},
+{i:9601,r:"одино́чество",t:"a-di-NO-tschist-wa",d:"Einsamkeit",e:"Он бои́тся одино́чества.",x:"Er hat Angst vor der Einsamkeit.",n:"Von оди́н. Das Alleinsein als Wahl heißt eher уедине́ние."},
+{i:9602,r:"заба́виться",t:"sa-BA-wi-za",d:"sich vergnügen",e:"Де́ти забавля́лись во дворе́.",x:"Die Kinder vergnügten sich im Hof.",n:"Von заба́ва, dem Zeitvertreib. Häufiger ist die Dauerform забавля́ться."},
+{i:9603,r:"приве́тливый",t:"pri-WJET-li-wyj",d:"freundlich, zugewandt",e:"Он о́чень приве́тливый челове́к.",x:"Er ist ein sehr freundlicher Mensch.",n:"Von приве́т: wer freundlich grüßt. Über das Wesen, nicht über eine einzelne Geste."},
+{i:9604,r:"надёжный",t:"na-DJOSCH-nyj",d:"zuverlässig, verlässlich",e:"Э́то надёжный друг.",x:"Das ist ein verlässlicher Freund.",n:"Von наде́жда, der Hoffnung: worauf man hoffen kann. Über Menschen und Dinge."},
+{i:9605,r:"предупреди́тельный",t:"pri-du-pri-DI-tilj-nyj",d:"zuvorkommend",e:"Официа́нт был о́чень предупреди́телен.",x:"Der Kellner war sehr zuvorkommend.",n:"Von предупреди́ть: wer vorher merkt, was gebraucht wird. Nicht „warnend“."},
+{i:9606,r:"обстоя́тельство",t:"ap-sta-JA-tilj-stwa",d:"Umstand",e:"По семе́йным обстоя́тельствам он уе́хал.",x:"Aus familiären Gründen ist er weggefahren.",n:"Meist Plural. Von стоя́ть: wie die Dinge stehen."},
+{i:9607,r:"вероя́тно",t:"wi-ra-JAT-na",d:"wahrscheinlich",e:"Вероя́тно, он опозда́ет.",x:"Wahrscheinlich kommt er zu spät.",n:"Von ве́рить. Schriftsprachlicher als наве́рное."},
+{i:9608,r:"предположи́ть",t:"prit-pa-la-SCHITJ",d:"vermuten, annehmen",e:"Мо́жно предположи́ть, что он прав.",x:"Man kann annehmen, dass er recht hat.",n:"Von положи́ть: etwas voraus-legen. Die Vermutung ist предположе́ние."},
+{i:9609,r:"учи́тывать",t:"u-TSCHI-ty-watj",d:"berücksichtigen",e:"На́до учи́тывать все фа́кторы.",x:"Man muss alle Faktoren berücksichtigen.",n:"Von счита́ть, zählen: mitrechnen. Учи́тывая, что… = in Anbetracht dessen, dass…"},
+{i:9610,r:"осуществи́ть",t:"a-ssu-schtschist-WITJ",d:"verwirklichen, umsetzen",e:"Он осуществи́л свою́ мечту́.",x:"Er hat seinen Traum verwirklicht.",n:"Von существо́: etwas in die Wirklichkeit bringen. Gehoben – im Alltag sagt man сде́лать."},
+{i:9611,r:"име́ть в виду́",t:"i-MJETJ w wi-DU",d:"meinen, im Sinn haben",e:"Что ты име́ешь в виду́?",x:"Was meinst du damit?",n:"Feste Wendung – виду́ mit Betonung hinten, obwohl вид vorn betont ist."},
+{i:9612,r:"по кра́йней ме́ре",t:"pa KRAJ-nij MJE-ri",d:"zumindest, wenigstens",e:"По кра́йней ме́ре, мы попро́бовали.",x:"Zumindest haben wir es versucht.",n:"Wörtlich „nach äußerstem Maß“. Häufiger Einschub, immer mit Komma."},
+{i:9613,r:"в тече́ние",t:"f ti-TSCHE-ni-je",d:"im Laufe von, während",e:"В тече́ние го́да всё измени́лось.",x:"Im Laufe des Jahres hat sich alles verändert.",n:"Mit Genitiv. Von тече́ние, der Strömung – wörtlich „im Fluss von“."},
+{i:9614,r:"благодаря́ тому́ что",t:"bla-ga-da-RJA ta-MU schta",d:"dank dessen, dass",e:"Благодаря́ тому́ что он помо́г, всё получи́лось.",x:"Dank seiner Hilfe hat alles geklappt.",n:"Nur für gute Folgen. Bei schlechten steht из-за того́ что."},
+{i:9615,r:"вме́сто того́ что́бы",t:"WMJE-sta ta-WO SCHTO-by",d:"anstatt zu",e:"Вме́сто того́ что́бы спо́рить, дава́й поду́маем.",x:"Anstatt zu streiten, lass uns nachdenken.",n:"Danach folgt der Infinitiv. Von вме́сто, anstelle."},
+{i:9616,r:"в результа́те",t:"w ri-sulj-TA-ti",d:"infolgedessen, als Ergebnis",e:"В результа́те мы опозда́ли.",x:"Infolgedessen kamen wir zu spät.",n:"Auch mit Genitiv: в результа́те оши́бки, infolge des Fehlers."},
+{i:9617,r:"в отли́чие от",t:"w at-LI-tschi-je at",d:"im Unterschied zu",e:"В отли́чие от бра́та, он споко́йный.",x:"Im Unterschied zu seinem Bruder ist er ruhig.",n:"Mit Genitiv. Von отлича́ться, sich unterscheiden."},
+{i:9618,r:"име́ет смысл",t:"i-MJE-jit ssmyssl",d:"es ist sinnvoll",e:"Име́ет смысл попро́бовать ещё раз.",x:"Es ist sinnvoll, es noch einmal zu versuchen.",n:"Verneint: не име́ет смы́сла – dann steht смысл im Genitiv."},
+{i:9619,r:"на пе́рвый взгляд",t:"na PJER-wyj wsgljat",d:"auf den ersten Blick",e:"На пе́рвый взгляд э́то легко́.",x:"Auf den ersten Blick ist das leicht.",n:"Leitet oft einen Widerspruch ein: … но на са́мом де́ле нет."},
+{i:9620,r:"в любо́м слу́чае",t:"w lju-BOM SSLU-tscha-i",d:"auf jeden Fall",e:"В любо́м слу́чае, спаси́бо!",x:"Auf jeden Fall danke!",n:"Das Gegenstück ist ни в ко́ем слу́чае, auf keinen Fall."},
+{i:9621,r:"ста́вить це́ли",t:"STA-witj ZE-li",d:"sich Ziele setzen",e:"Ва́жно ста́вить реа́льные це́ли.",x:"Es ist wichtig, sich realistische Ziele zu setzen.",n:"Von ста́вить, stellen – im Russischen „stellt“ man Ziele, wie im Deutschen."},
+{i:9622,r:"доби́ться",t:"da-BI-za",d:"erreichen, durchsetzen",e:"Он доби́лся своего́.",x:"Er hat sein Ziel erreicht.",n:"Mit Genitiv: доби́ться успе́ха. Von бить – sich etwas erkämpfen."},
+{i:9623,r:"справля́ться",t:"sspraw-LJA-za",d:"zurechtkommen, bewältigen",e:"Он хорошо́ справля́ется с рабо́той.",x:"Er kommt mit der Arbeit gut zurecht.",n:"Mit с + Instrumental. Einmal geschafft ist спра́виться."},
+{i:9624,r:"приде́рживаться",t:"pri-DJER-schi-wa-za",d:"sich halten an",e:"Он приде́рживается пра́вил.",x:"Er hält sich an die Regeln.",n:"Mit Genitiv, von держа́ть. Auch: eine Meinung vertreten."},
+{i:9625,r:"име́ть отноше́ние к",t:"i-MJETJ at-na-SCHE-ni-je k",d:"zu tun haben mit",e:"Э́то не име́ет отноше́ния к де́лу.",x:"Das hat nichts mit der Sache zu tun.",n:"Verneint steht отноше́ние im Genitiv: не име́ет отноше́ния."},
+{i:9626,r:"зави́сит от",t:"sa-WI-ssit at",d:"hängt ab von",e:"Всё зави́сит от пого́ды.",x:"Alles hängt vom Wetter ab.",n:"Mit Genitiv. Von висе́ть, hängen – dasselbe Bild wie im Deutschen."}];
 function allWords(){return VOCAB.concat(FAM_WORDS,THEMA_WORDS,S.extras)}
 /* ---- Gemeinsamer Wortindex ----------------------------------------------
    СКА́ЗКИ hat keinen Zugriff auf VOCAB oder PACKS – die stehen in anderen
