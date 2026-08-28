@@ -305,7 +305,7 @@ textarea{width:100%;min-height:110px;border:1px solid var(--frost);border-radius
       <b>1.</b> Folge auf Russisch schauen – ruhig mit Untertiteln, ruhig eine Folge, die du schon kennst.<br>
       <b>2.</b> Danach das passende Wortpaket hier üben (5 Minuten reichen).<br>
       <b>3.</b> Dieselbe Folge nochmal schauen – du wirst überrascht sein, wie viel mehr du verstehst.<br>
-      <b>4.</b> Um den Rest musst du dich nicht kümmern: Sobald ein Paket sitzt, wandern die Wörter <b>von selbst</b> nach СЛОВА́ und kommen dort in die normale Wiederholung – dein Lernstand von hier wandert mit.</p>
+      <b>4.</b> Um den Rest musst du dich nicht kümmern: Sobald du ein Paket durchgearbeitet hast, wandern die Wörter <b>von selbst</b> nach СЛОВА́ und kommen dort in die normale Wiederholung – dein Lernstand wandert mit. Hier gibt es bewusst keine zweite Wiederholungsliste.</p>
   </div>
   <div class="panel">
     <h3>Folgen-Sperre</h3>
@@ -7476,7 +7476,29 @@ function prodSchwachSer(st){
   const nn=((st&&st.hc)||0)+((st&&st.hw)||0);
   return nn>=3&&(st.hw||0)>=2&&(st.hw||0)/nn>=.4;
 }
-function startRotation(st){if(!st.rd){st.iv=1;st.rd=addDays(1)}}
+/* Früher begann hier die eigene Rotation von СЕРИА́Л. Wiederholt wird jetzt
+   ausschliesslich in СЛОВА́ – ein Wort, ein Zyklus, ein Ort. */
+function startRotation(st){}
+/* Was bisher in der Rotation von СЕРИА́Л lag, geht einmalig an СЛОВА́ – und
+   zwar mitsamt Lernstand, damit dort nichts bei null anfängt. Danach sind
+   die rd-Felder leer und bleiben es. */
+function rotationAbgeben(){
+  if(S.migRot)return null;
+  const pids=new Set();
+  let offen=0;
+  Object.keys(S.prog).forEach(k=>{
+    const st=S.prog[k];
+    if(!st||!st.rd)return;
+    offen++;
+    const pid=String(k).slice(0,String(k).lastIndexOf(':'));
+    pids.add(pid);
+  });
+  let n=0;
+  pids.forEach(pid=>{const r=bridgePush(pid);if(r)n+=r.n});
+  Object.keys(S.prog).forEach(k=>{const st=S.prog[k];if(st){delete st.rd;delete st.iv}});
+  S.migRot=1;save();
+  return {offen,n};
+}
 function dueRefs(){
   const t=todayStr(),seen=new Set(),out=[];
   allPacks().forEach(p=>{
@@ -7490,6 +7512,9 @@ function dueRefs(){
   });
   return out;
 }
+/* Wie viele Pakete sind schon an СЛОВА́ übergeben? Ersetzt die alte Zahl
+   der faelligen Auffrischungen, die es hier nicht mehr geben soll. */
+function uebergeben(){return Object.keys(S.sent||{}).length}
 function inRotation(){
   let n=0;
   Object.keys(S.prog).forEach(k=>{if(S.prog[k].rd)n++});
@@ -7930,9 +7955,9 @@ function nextConf(){
       '<div class="sumbox"><b>'+r+'</b><span>richtig</span></div>'+
       '<div class="sumbox"><b>'+w+'</b><span>verwechselt</span></div>'+
       '<div class="sumbox"><b>'+livePairs().length+'</b><span>Paare gesamt</span></div>'+
-      '<div class="sumbox"><b>'+dueRefs().length+'</b><span>Auffrischung fällig</span></div>'+
+      '<div class="sumbox"><b>'+uebergeben()+'</b><span>an СЛОВА́ übergeben</span></div>'+
       '</div>'+
-      '<div class="sub" style="margin-top:14px">Was du hier verwechselt hast, kommt morgen in der Auffrischung wieder.</div>'+
+      '<div class="sub" style="margin-top:14px">Was du hier verwechselt hast, bleibt im Verwechslungs-Training – wiederholt werden die Wörter selbst in СЛОВА́.</div>'+
       '<button class="btn btn-primary" onclick="startConf()">Noch eine Runde</button><br>'+
       '<button class="btn-ghost" onclick="zurueckUeben()">Zurück zur Übersicht</button></div>';
   }else renderConf();
@@ -8290,10 +8315,11 @@ function finishSess(){
   /* Nach der Lektion wandern die Wörter von selbst nach СЛОВА́ – einmal pro Paket,
      sobald genug davon sitzt. Kein Kopieren, kein Tab-Wechsel. */
   let uebergabe='';
-  if(!p.exam&&!p.sexam&&!(S.sent&&S.sent[p.id])&&(war||packProgress(p)>=70)){
+  if(!p.exam&&!p.sexam&&!(S.sent&&S.sent[p.id])){
     const r=bridgePush(p.id);
     if(r&&r.n)uebergabe='<div class="hint" style="text-align:left;margin-top:12px">📥 <b>'+r.n+' Wörter sind auf dem Weg zu СЛОВА́.</b> '+
-      'Sie erscheinen dort automatisch, wenn du die App das nächste Mal öffnest – dein Lernstand von hier wandert mit.</div>';
+      'Sie erscheinen dort automatisch, wenn du die App das nächste Mal öffnest – mit deinem Lernstand von hier. '+
+      'Wiederholt wird ab jetzt drüben: Hier gehst du ein Paket durch, dort entscheidet sich, ob es sitzt.</div>';
   }
   $('#doneN').textContent=totalDone();
   if(sess.sexam){finishStaffelExam(p,accy);return}
@@ -8359,8 +8385,8 @@ function finishStaffelExam(p,accy){
     '</div>'+
     (ok
       ?'<div class="sub" style="margin-top:14px">'+(nx?'🔓 <b>Staffel '+nx+' ist jetzt frei.</b> Eine ganze Staffel Wortschatz sitzt – das ist der größte Sprung, den du bisher gemacht hast.':'Das war die letzte Staffel, die es hier gibt.')+'</div>'
-      :'<div class="sub" style="margin-top:14px">Über eine ganze Staffel hinweg ist das normal. Frisch die fälligen Wörter auf und komm wieder – die Prüfung nimmt immer deine schwächsten zuerst.</div>')+
-    '<button class="btn btn-primary" onclick="'+(ok?'renderPacks()':'startRefresh()')+'">'+(ok?'Weiter zur Übersicht':'🔁 Erst auffrischen')+'</button><br>'+
+      :'<div class="sub" style="margin-top:14px">Über eine ganze Staffel hinweg ist das normal. Übe die Wörter in СЛОВА́ und komm wieder – die Prüfung nimmt immer deine schwächsten zuerst.</div>')+
+    '<button class="btn btn-primary" onclick="renderPacks()">Zur Übersicht</button><br>'+
     '<button class="btn-ghost" onclick="startStaffelExam('+st+')">Prüfung wiederholen</button><br>'+
     '<button class="btn-ghost" onclick="renderPacks()">Zur Übersicht</button></div>';
 }
@@ -8375,10 +8401,10 @@ function finishLong(){
     '<div class="sumbox"><b>'+richtig+'</b><span>richtig</span></div>'+
     '<div class="sumbox"><b>4</b><span>Stufen je Wort</span></div>'+
     '<div class="sumbox"><b>'+longPool().length+'</b><span>lange Wörter im Training</span></div>'+
-    '<div class="sumbox"><b>'+dueRefs().length+'</b><span>Auffrischung fällig</span></div>'+
+    '<div class="sumbox"><b>'+uebergeben()+'</b><span>an СЛОВА́ übergeben</span></div>'+
     '</div>'+
     '<div class="sub" style="margin-top:14px;text-align:left">Diesmal dabei: '+woerter.map(r=>acc(esc(r))).join(' · ')+
-    '<br><br>Was du bis Stufe 4 geschafft hast, kommt morgen in der Auffrischung wieder – erst dann sitzt es wirklich.</div>'+
+    '<br><br>Was du bis Stufe 4 geschafft hast, kommt in СЛОВА́ wieder – erst nach einer Pause zeigt sich, ob es sitzt.</div>'+
     '<button class="btn btn-primary" onclick="startLongDrill()">Nächste sechs Wörter</button><br>'+
     '<button class="btn-ghost" onclick="zurueckUeben()">Zurück zur Übersicht</button></div>';
 }
@@ -8450,6 +8476,9 @@ function nextQ(){
 /* ================= Übungen =================
    Alles, was nicht an ein einzelnes Paket gebunden ist: auffrischen, lange
    Wörter, Sätze, Verwechslungen. Vorher lag das verstreut über den Paketen. */
+function slovaLink(){
+  return location.pathname.indexOf('/serial/')>=0?'../':'russisch-vokabeltrainer.html';
+}
 function zurueckUeben(){tab('ueben');renderUeben()}
 function renderUeben(){
   sess=null;quiz=null;
@@ -8460,11 +8489,11 @@ function renderUeben(){
     (rot?'<div class="sub" style="margin-top:8px"><b>'+rot+'</b> Wörter sind in der Wiederholungs-Rotation.':'')+
     '</div>';
 
-  html+='<div class="srsbox"><div class="lk-t">🔁 Auffrischen'+(due?' · '+due+' fällig':'')+'</div>'+
-    '<div class="lk-s">'+(due
-      ?'Die Wörter stehen genau auf der Kippe zwischen sitzt und weg. Eine Runde umfasst 20 Karten; wer ein Wort nicht wusste, bekommt es danach zum Schreiben, nicht zum Anklicken.'
-      :'Heute ist nichts fällig – das heißt, alles sitzt gerade da, wo es soll. Morgen wieder.')+'</div>'+
-    (due?'<button class="btn btn-primary" onclick="startRefresh()">Jetzt auffrischen</button>':'')+'</div>';
+  html+='<div class="srsbox"><div class="lk-t">🔁 Wiederholt wird in СЛОВА́</div>'+
+    '<div class="lk-s">Hier arbeitest du ein Paket einmal durch – danach wandern die Wörter samt Lernstand nach СЛОВА́ und kommen dort im normalen Zyklus wieder. '+
+    'So gibt es nur eine Wiederholungsliste statt zweier, die sich gegenseitig aufstauen.'+
+    (due?'<br><br><b>'+due+'</b> Wörter liegen noch aus der alten Rotation hier. Sie werden beim nächsten Öffnen an СЛОВА́ übergeben.':'')+'</div>'+
+    '<a class="btn btn-primary" href="'+slovaLink()+'">СЛОВА́ öffnen</a></div>';
 
   html+='<div class="decbox"><div class="lk-t">🧱 Satzbau</div>'+
     '<div class="lk-s">Ein ganzer Satz statt einzelner Wörter, in beide Richtungen: <b>entschlüsseln</b> nimmt einen russischen Satz Wort für Wort auseinander, <b>bauen</b> gibt dir den deutschen Satz und du setzt den russischen aus Wortkacheln zusammen – mit Wörtern dazwischen, die nicht hineingehören.</div>'+
@@ -8491,22 +8520,18 @@ function renderPacks(){
   let html='<div class="hero"><div class="due-line">Was hast du <b>geschaut</b>?</div>'+
     '<div class="sub">Üb die Wörter aus deinen Folgen – und schau sie danach nochmal. Kein Transkript, nur Vokabeln und Fragen.</div></div>';
   /* Ehrlicher Tagesstand: neue Wörter und der Berg, der noch fällig ist. */
-  const nH=neuHeute(),dueN=dueRefs().length;
-  if(nH||dueN){
-    const viel=nH>=25||dueN>=60;
+  const nH=neuHeute();
+  if(nH){
+    const viel=nH>=25;
     html+='<div class="'+(viel?'confbox':'srsbox')+'" style="text-align:left">'+
       '<div class="lk-t" style="text-align:center">'+(viel?'⚠️ Heute lieber nichts Neues mehr':'📊 Dein Tagesstand')+'</div>'+
-      '<div class="lk-s">Heute neu angefangen: <b>'+nH+'</b> Wörter · zur Auffrischung fällig: <b>'+dueN+'</b>.'+
-      (viel?'<br>Das reicht für einen Tag. Neue Vokabeln oben draufzupacken heißt nur, dass morgen mehr durchfällt – bau lieber erst den Rückstand ab.'
+      '<div class="lk-s">Heute neu angefangen: <b>'+nH+'</b> Wörter.'+
+      (viel?'<br>Das reicht für einen Tag. Neue Vokabeln oben draufzupacken heißt nur, dass morgen in СЛОВА́ mehr durchfällt.'
            :'<br>Was du hier neu anfängst, zieht СЛОВА́ automatisch von seinem eigenen Tagesbudget ab.')+'</div></div>';
   }
   /* Die Übungen haben einen eigenen Tab. Hier steht nur noch der Hinweis,
      wenn wirklich etwas fällig ist – der Rest würde die Pakete verdecken. */
-  const due=dueRefs().length;
-  if(due)html+='<div class="srsbox"><div class="lk-t">🔁 '+due+' Wörter sind zur Auffrischung fällig</div>'+
-    '<div class="lk-s">Die hattest du schon. Heute entscheidet sich, ob sie wirklich sitzen.</div>'+
-    '<button class="btn btn-primary" onclick="startRefresh()">Jetzt auffrischen</button>'+
-    '<button class="btn-ghost" onclick="tab(\'ueben\')">Alle Übungen</button></div>';
+  /* Kein Auffrischungs-Kasten mehr: wiederholt wird in СЛОВА́. */
   html+='<div class="sect">Deine Pakete</div>';
   if(!ps.length)html+='<p class="hint">Noch keine Pakete. Unter „Mehr" kannst du eins einfügen.</p>';
   const packHtml=p=>{
@@ -8874,6 +8899,7 @@ $('#recallChk').onchange=e=>{
   $('#slangChk').checked=!!S.noSlang;
   migrateRotation();
   {const alle=[];PACKS.concat(S.extras).forEach(p=>p.words.forEach(w=>alle.push(w.r)));wortindexSchreiben('serial',alle);}
+  try{rotationAbgeben()}catch(e){}
   $('#doneN').textContent=totalDone();
   renderPacks();
 })();

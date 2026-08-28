@@ -5440,12 +5440,28 @@ document.addEventListener('click',e=>{
    zeichen, damit "рабо́та" und "работа" als dasselbe Wort gelten. */
 function importWords(arr){
   if(!Array.isArray(arr))throw new Error('kein Array');
-  let max=Math.max(...allWords().map(w=>w.i)),n=0,mit=0,dop=0;
+  let max=Math.max(...allWords().map(w=>w.i)),n=0,mit=0,dop=0,uebern=0;
   const seen=new Set(allWords().map(w=>String(w.r).replace(/\u0301/g,'')));
+  /* Wer schon hier steht, braucht keinen zweiten Eintrag – wohl aber den
+     Lernstand von drüben, sonst fängt ein längst sitzendes Wort bei null an. */
+  const nachId={};
+  allWords().forEach(w=>{nachId[String(w.r).replace(/\u0301/g,'')]=w.i});
+  const standSetzen=(id,m,mw)=>{
+    const b=m>=4?3:m>=2?2:1;
+    const iv=b===3?7:b===2?3:1;
+    S.prog[id]={b,iv,ez:2.5,d:addDays(iv),c:m,w:+mw||0};
+  };
   arr.forEach(o=>{
     if(!o||!o.r||!o.d)return;
     const key=String(o.r).replace(/\u0301/g,'');
-    if(seen.has(key)){dop++;return}
+    if(seen.has(key)){
+      dop++;
+      const id=nachId[key],m=Math.min(4,+o.m||0);
+      /* Nur seeden, wenn hier noch nichts steht: ein vorhandener Stand aus
+         СЛОВА́ ist für den hiesigen Zyklus die bessere Auskunft. */
+      if(id!==undefined&&m>0&&!S.prog[id]){standSetzen(id,m,o.mw);uebern++}
+      return;
+    }
     seen.add(key);
     const item={i:++max,r:String(o.r),t:String(o.t||''),d:String(o.d),e:String(o.e||''),x:String(o.x||''),g:+o.g||0};
     if(o.n)item.n=String(o.n);
@@ -5453,19 +5469,14 @@ function importWords(arr){
     S.extras.push(item);n++;
     /* Lernstand aus СЕРИА́Л übernehmen: was dort schon sitzt, startet hier nicht bei null */
     const m=Math.min(4,+o.m||0);
-    if(m>0){
-      const b=m>=4?3:m>=2?2:1;
-      const iv=b===3?7:b===2?3:1;
-      S.prog[item.i]={b,iv,ez:2.5,d:addDays(iv),c:m,w:+o.mw||0};
-      mit++;
-    }
+    if(m>0){standSetzen(item.i,m,o.mw);mit++}
   });
   if(n){
     ASPECT=null; /* Aspekt-Index neu aufbauen, falls importierte Verben Paare vervollständigen */
     _twinIdx=null; /* Zwillinge neu suchen: importierte Wörter können neue Verwechslungspaare bilden */
-    save(true);
   }
-  return {n,mit,dop};
+  if(n||uebern)save(true);
+  return {n,mit,dop,uebern};
 }
 $('#impBtn').onclick=()=>{
   const box=$('#impBox'),msg=$('#impMsg');msg.className='msg';
@@ -5506,7 +5517,7 @@ function bridgeHinweis(){
   el.innerHTML='<div class="bridgebox"><b>📥 '+(r.n||0)+' '+(r.n===1?'Wort':'Wörter')+' übernommen</b>'+
     '<p>Aus: '+esc(woher)+
     (r.mit?' · '+r.mit+' davon mit deinem Lernstand von dort – die starten hier nicht bei null.':'')+
-    (r.dop?' · '+r.dop+' kanntest du hier schon.':'')+
+    (r.dop?' · '+r.dop+' kanntest du hier schon'+(r.uebern?', bei '+r.uebern+' davon habe ich deinen Lernstand von drüben übernommen':'')+'.':'')+
     '</p></div>';
 }
 

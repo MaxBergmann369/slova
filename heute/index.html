@@ -268,7 +268,7 @@ function render(){
     '<span class="n"><b>'+dSk+'</b><span>Fragen heute</span></span></a>'+
     '<a class="app a4" href="'+appLink('/slova/serial/','serial-app.html')+'">'+
     '<span class="dot">📺</span><span class="m"><span class="t">'+acc('СЕРИА́Л')+'</span>'+
-    '<span class="s" style="display:block">'+(se?seWords+' Wörter im Training'+(seDue?' · 🔁 '+seDue+' fällig':''):'Noch nicht gestartet – tippe hier!')+'</span></span>'+
+    '<span class="s" style="display:block">'+(se?seWords+' Wörter im Training'+(seDue?' · 📥 '+seDue+' zur Übergabe':''):'Noch nicht gestartet – tippe hier!')+'</span></span>'+
     '<span class="n"><b>'+dSe+'</b><span>Karten heute</span></span></a>';
   /* Wochen-Balken (letzte 7 Tage) */
   const days=[];
@@ -328,14 +328,12 @@ function renderPlan(t,sl,gr,sk,se,seDue){
   /* Der Schritt bleibt stehen, sobald du heute aufgefrischt hast – sonst
      verschwindet er, sobald nichts mehr fällig ist, und die erledigte Arbeit
      zählt nirgends. Genau das ist vorher passiert: 0 von 6 wurde zu 0 von 5. */
-  /* Ab dreissig fälligen Wörtern ist der Rückstand das eigentliche Problem. */
-  const stau=seDue>=30?'gross':seDue>=15?'mittel':'klein';
-  if(seDue||(act.ref||0))steps.push({i:'🔁',t:'Auffrischung in СЕРИА́Л',
-    w:seDue?(seDue+' Wörter sind fällig'+(seDue>20?' – die App teilt sie in Runden zu 20':'')+
-             '. Die stehen genau auf der Kippe zwischen sitzt und weg.'+
-             (stau==='gross'?' Das ist ein Rückstand – heute geht der vor.':''))
-           :'Erledigt – heute ist nichts mehr fällig.',
-    ok:!seDue,href:SER,btn:'Auffrischen'});
+  /* СЕРИА́Л wiederholt nicht mehr selbst – wiederholt wird nur noch in СЛОВА́.
+     Wer noch einen alten Rückstand von dort liegen hat, sieht hier, dass er
+     beim nächsten Öffnen übergeben wird. Danach verschwindet der Schritt. */
+  if(seDue)steps.push({i:'📥',t:'Alte Wiederholungen aus СЕРИА́Л',
+    w:seDue+' Wörter liegen dort noch in der alten Rotation. Öffne СЕРИА́Л einmal – sie wandern samt Lernstand nach СЛОВА́ und kommen ab dann dort dran.',
+    ok:false,href:SER,btn:'СЕРИА́Л öffnen'});
   const seNeu=(se&&se.nt&&se.nt.day===t)?(+se.nt.n||0):0;
   /* Neue Wörter drosseln, solange der Stapel steht. Zwanzig neue auf vierzig
      unerledigte draufzulegen macht den Stapel nur schneller unlernbar. */
