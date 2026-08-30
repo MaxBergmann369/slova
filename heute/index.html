@@ -253,6 +253,10 @@ function render(){
   /* fällige Auffrischungen: Wörter, deren Wiederholungsdatum erreicht ist */
   let seDue=0;
   if(se&&se.prog)Object.keys(se.prog).forEach(k=>{const p=se.prog[k];if(p&&p.rd&&p.rd<=t)seDue++});
+  /* Wiederholt wird in СЛОВА́ – der Stapel, der das Tagespensum drosselt,
+     steht also dort. Fällig ist, wessen Datum erreicht ist. */
+  let slDue=0;
+  if(sl&&sl.prog)Object.keys(sl.prog).forEach(k=>{const p=sl.prog[k];if(p&&p.d&&p.d<=t)slDue++});
   $('#appGrid').innerHTML=
     '<a class="app a1" href="'+appLink('/slova/','russisch-vokabeltrainer.html')+'">'+
     '<span class="dot">📘</span><span class="m"><span class="t">'+acc('СЛОВА́')+'</span>'+
@@ -276,7 +280,7 @@ function render(){
   const max=Math.max(1,...days.map(d=>u[dstr(d)]||0));
   const WD=['So','Mo','Di','Mi','Do','Fr','Sa'];
   renderLevel(sl,gr,sk,se);
-  renderPlan(t,sl,gr,sk,se,seDue);
+  renderPlan(t,sl,gr,sk,se,seDue,slDue);
   $('#weekBars').innerHTML=days.map((d,i)=>{
     const v=u[dstr(d)]||0;
     const h=Math.round(80*v/max);
@@ -315,7 +319,7 @@ function lautFertig(){
   try{localStorage.setItem(LAUT_KEY,dstr(new Date()))}catch(e){}
   render();
 }
-function renderPlan(t,sl,gr,sk,se,seDue){
+function renderPlan(t,sl,gr,sk,se,seDue,slDue){
   const act=(se&&se.act&&se.act[t])||{};
   const actSl=(sl&&sl.act&&sl.act[t])||{};
   const goal=(sl&&sl.set&&sl.set.goal)||30;
@@ -328,6 +332,9 @@ function renderPlan(t,sl,gr,sk,se,seDue){
   /* Der Schritt bleibt stehen, sobald du heute aufgefrischt hast – sonst
      verschwindet er, sobald nichts mehr fällig ist, und die erledigte Arbeit
      zählt nirgends. Genau das ist vorher passiert: 0 von 6 wurde zu 0 von 5. */
+  /* Ab dreissig fälligen Wörtern ist der Rückstand das eigentliche Problem –
+     gezählt wird er in СЛОВА́, weil dort wiederholt wird. */
+  const stau=slDue>=30?'gross':slDue>=15?'mittel':'klein';
   /* СЕРИА́Л wiederholt nicht mehr selbst – wiederholt wird nur noch in СЛОВА́.
      Wer noch einen alten Rückstand von dort liegen hat, sieht hier, dass er
      beim nächsten Öffnen übergeben wird. Danach verschwindet der Schritt. */
@@ -341,7 +348,7 @@ function renderPlan(t,sl,gr,sk,se,seDue){
   const restNeu=Math.max(0,budget-seNeu);
   steps.push({i:'📘',t:'СЛОВА́ · Tagespensum',
     w:(stau==='gross'
-        ?'<b>Heute keine neuen Wörter.</b> Nur Wiederholungen – der Stapel in СЕРИА́Л muss erst runter.'
+        ?'<b>Heute keine neuen Wörter.</b> Nur Wiederholungen – der Stapel in СЛОВА́ muss erst runter.'
         :stau==='mittel'
         ?'Wiederholungen plus höchstens '+restNeu+' neue Wörter – halbes Pensum, bis der Rückstand weg ist.'
         :'Wiederholungen plus bis zu '+restNeu+' neue Wörter.')+
@@ -374,7 +381,10 @@ function renderPlan(t,sl,gr,sk,se,seDue){
      die Woche drei Stunden macht. */
   const minTeile=[
     {n:'10 Karten in СЛОВА́',    ist:dSl,                soll:10},
-    {n:'eine Auffrischrunde',   ist:(act.ref||0),       soll:1},
+    /* Die alte Auffrischrunde in СЕРИА́Л gibt es nicht mehr – act.ref bliebe
+       für immer 0 und die Zeile waere nie erfuellbar. An ihre Stelle tritt das,
+       was СЕРИА́Л jetzt wirklich taeglich leistet: ein Paket durchgehen. */
+    {n:'10 Karten in СЕРИА́Л',   ist:(act.drill||0),     soll:10},
     {n:'10 Grammatik-Aufgaben', ist:dGr,                soll:10},
     {n:'eine Seite lesen',      ist:dSk+(act.story||0), soll:1}
   ];
@@ -393,9 +403,9 @@ function renderPlan(t,sl,gr,sk,se,seDue){
   if(warn){
     warn.style.display=stau==='klein'?'none':'block';
     warn.innerHTML=stau==='gross'
-      ?'<b>⚠ '+seDue+' Wörter warten auf Auffrischung.</b> Heute keine neuen aufnehmen – sonst wächst der Stapel schneller, als du ihn abarbeiten kannst. Zwei Runden auffrischen sind mehr wert als zwanzig neue Wörter.'
+      ?'<b>⚠ '+slDue+' Wörter sind in СЛОВА́ fällig.</b> Heute keine neuen aufnehmen – sonst wächst der Stapel schneller, als du ihn abarbeiten kannst. Zwei Runden Wiederholung sind mehr wert als zwanzig neue Wörter.'
       :stau==='mittel'
-      ?'<b>'+seDue+' Wörter sind fällig.</b> Nimm heute höchstens halb so viele neue auf wie sonst.'
+      ?'<b>'+slDue+' Wörter sind in СЛОВА́ fällig.</b> Nimm heute höchstens halb so viele neue auf wie sonst.'
       :'';
   }
   const fertig=steps.filter(s=>s.ok).length;
