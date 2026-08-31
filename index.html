@@ -95,6 +95,7 @@ nav{position:sticky;top:0;z-index:20;background:var(--paper);padding:12px 0 14px
 .card{background:var(--card);border:1px solid var(--frost);border-radius:var(--radius);padding:26px 22px;box-shadow:0 1px 2px rgba(20,24,31,.04)}
 .badges{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;min-height:22px}
 .chip{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:99px}
+.morphhint{font-size:13px;opacity:.85;margin:6px 0 10px;text-align:center}
 .wurzelkarte{text-align:center;padding:18px 6px}
 .wurzelkarte .wk-top{font-size:13px;letter-spacing:.04em;opacity:.7;text-transform:uppercase}
 .wurzelkarte .wk-w{font-family:var(--serif);font-size:2rem;font-weight:700;margin:6px 0 2px}
@@ -3467,7 +3468,7 @@ function pickMode(w,p,cl){
   }
   return m[Math.floor(Math.random()*m.length)];
 }
-const MODE_LABEL={mc:'Bedeutung wählen',mcRev:'Übersetzen',type:'Schreiben',clozeMC:'Lückentext',clozeType:'Lückentext',audio:'Hören',audioSent:'Satz hören',speech:'Sprechen',syl:'Silben bauen',pic:'Bild erkennen',picSyl:'Bild + Silben'};
+const MODE_LABEL={mc:'Bedeutung wählen',mcRev:'Übersetzen',type:'Schreiben',clozeMC:'Lückentext',clozeType:'Lückentext',audio:'Hören',audioSent:'Satz hören',speech:'Sprechen',syl:'Silben bauen',morph:'Bausteine bauen',pic:'Bild erkennen',picSyl:'Bild + Silben'};
 /* ---- Silben: lange Wörter in sprechbare Häppchen zerlegen ---- */
 const VOWELS='аеёиоуыэюя';
 function isVow(ch){return VOWELS.indexOf(String(ch).toLowerCase().replace(/́/g,''))>=0}
@@ -3573,6 +3574,54 @@ function twinBox(w){
 }
 /* Silben-Puzzle: die richtigen Silben plus ein paar falsche aus anderen Wörtern.
    Ohne falsche Silben löst man das Puzzle durch Ausschluss, ohne das Wort zu können. */
+/* Zerlegt ein Wort in Vorsilbe | Wurzel | Rest. Gibt null zurück, wenn die
+   Wurzel nicht sicher zu finden ist – dann bleibt es bei den Silben. */
+function morphSplit(w){
+  /* Nur einzelne Wörter: bei Wendungen wäre die Zerlegung Unsinn. */
+  if(!w||/[ !?]/.test(String(w.r)))return null;
+  const f=famOf(w.r);
+  if(!f)return null;
+  const orig=String(w.r);
+  /* Betonungszeichen ausblenden, Position aber merken */
+  const chars=[...orig],platt=[],idx=[];
+  chars.forEach((c,i)=>{if(c!=='\u0301'){platt.push(c.toLowerCase());idx.push(i)}});
+  const flach=platt.join('');
+  /* Wurzelvarianten aus dem Familiennamen: '-став- / -ста-' -> ['став','ста'] */
+  const varianten=f.w.split('/').map(x=>x.replace(/[^а-яё]/gi,'').toLowerCase())
+    .filter(x=>x.length>=3).sort((a,b)=>b.length-a.length);
+  for(const v of varianten){
+    const pos=flach.indexOf(v);
+    if(pos<0)continue;
+    /* Zurück auf die Originalzeichen, damit Betonung erhalten bleibt */
+    const von=idx[pos];
+    const bis=(pos+v.length<idx.length)?idx[pos+v.length]:orig.length;
+    const vor=orig.slice(0,von),wurz=orig.slice(von,bis),nach=orig.slice(bis);
+    const teile=[];let wi=0;
+    if(vor){teile.push(vor);wi=1}
+    teile.push(wurz);
+    if(nach)teile.push(nach);
+    /* Nur sinnvoll, wenn wirklich mehr als ein Baustein herauskommt */
+    if(teile.length<2)return null;
+    return {teile,wi,fam:f};
+  }
+  return null;
+}
+/* Ablenker: gängige Vorsilben und Endungen, die nicht im Wort vorkommen. */
+const MORPH_VOR=['вы','при','пере','от','под','раз','за','на','про','до','об','вос','из','с','у'];
+const MORPH_NACH=['ить','ать','ение','ка','ный','ость','ся','ся','ик'];
+function morphTiles(m){
+  const drin=new Set(m.teile.map(t=>t.replace(/\u0301/g,'').toLowerCase()));
+  const zusatz=[];
+  const nimm=(liste,n)=>{
+    for(const x of shuffle(liste.slice())){
+      if(zusatz.length>=n)break;
+      if(drin.has(x))continue;
+      drin.add(x);zusatz.push(x);
+    }
+  };
+  nimm(MORPH_VOR,1);nimm(MORPH_VOR.concat(MORPH_NACH),2);
+  return m.teile.concat(zusatz);
+}
 function sylTiles(w,parts){
   const bad=new Set(parts.map(s=>s.replace(/́/g,'').toLowerCase()));
   const avg=parts.reduce((a,s)=>a+s.replace(/́/g,'').length,0)/parts.length;
@@ -3992,7 +4041,7 @@ function renderCard(forceMode){
      erkennt man die Antwort an ihrer Form, statt sie zu wissen. Neue Wörter
      erst ab dem ersten Treffer – vorher wäre Tippen zu früh. */
   if(!forceMode&&schonDa&&WAHL_MODE[mode]&&(!st||st.done>=1)){
-    mode=(cl&&Math.random()<.4)?'clozeType':((isLongWord(w)&&Math.random()<.5)?'syl':'type');
+    mode=(cl&&Math.random()<.4)?'clozeType':((isLongWord(w)&&Math.random()<.5)?(morphSplit(w)?'morph':'syl'):'type');
   }
   if(st)st.last=mode;
   cur={id,w,p,cl,st,mode,ok:false,answered:false,opts:null,goodIdx:-1,optRu:false};
@@ -4021,6 +4070,17 @@ function renderCard(forceMode){
   }else if(mode==='clozeType'){
     front='<div class="cloze-sent">'+cl.html+'</div><div class="cloze-de">'+esc(w.x||'')+'</div>'+
       '<div class="qlabel">Schreib das fehlende Wort:</div>'+typeHtml();
+  }else if(mode==='morph'){
+    const m=morphSplit(w);
+    const tiles=morphTiles(m);
+    cur.syl={parts:tiles,need:m.teile.length,picked:[],order:shuffle(tiles.map((p,k)=>k))};
+    cur.morphW=m.wi;
+    front='<div class="word-de">'+esc(w.d)+'</div>'+
+      '<div class="qlabel">Bau das Wort aus seinen Bausteinen – nicht alle gehören dazu:</div>'+
+      '<div class="morphhint">🌱 Wurzel <b>'+acc(esc(m.fam.w))+'</b> – '+esc(m.fam.b)+'</div>'+
+      '<div class="sylbuilt" id="sylBuilt"></div>'+
+      '<div class="syltiles" id="sylTiles">'+cur.syl.order.map(k=>'<button class="syltile" data-k="'+k+'">'+acc(esc(tiles[k]))+'</button>').join('')+'</div>'+
+      '<div class="grade on grade1" style="margin-top:12px"><button class="g-k" id="sylCheck">Prüfen</button></div>';
   }else if(mode==='syl'){
     const sy=syllables(w.r);
     const tiles=sylTiles(w,sy);
@@ -4103,7 +4163,7 @@ function renderCard(forceMode){
     $('#checkBtn').onclick=checkTyped;
     $('#typeInp').addEventListener('keydown',e=>{if(e.key==='Enter')checkTyped()});
   }
-  if(mode==='syl'||mode==='picSyl')wireSyl();
+  if(mode==='syl'||mode==='picSyl'||mode==='morph')wireSyl();
   if(mode==='audio')setTimeout(()=>speak(w.r),300);
   else if(mode==='audioSent')setTimeout(()=>speak(w.e),300);
 }
@@ -4113,7 +4173,7 @@ function wireSyl(){
     if(!b)return;
     b.innerHTML=cur.syl.picked.length
       ?cur.syl.picked.map((k,pi)=>'<button class="syltile on" data-pi="'+pi+'">'+acc(esc(cur.syl.parts[k]))+'</button>').join('')
-      :'<span class="sylhint">Tippe die Silben in der richtigen Reihenfolge an …</span>';
+      :'<span class="sylhint">Tippe die '+(cur.mode==='morph'?'Bausteine':'Silben')+' in der richtigen Reihenfolge an …</span>';
     document.querySelectorAll('#sylBuilt .syltile').forEach(x=>x.onclick=()=>{
       if(cur.answered)return;
       const k=cur.syl.picked.splice(+x.dataset.pi,1)[0];
@@ -5350,10 +5410,113 @@ function startGame(host,ids){
   game={host:h,ws,left:shuffle(ws.map(w=>w.i)),right:shuffle(ws.map(w=>w.i)),doneIds:new Set(),errs:0,t0:null,timerIv:null};
   renderGameBoard();
 }
-function startSessGame(){ /* kurze Spielpause mitten in der Lern-Session mit 5 Session-Wörtern */
-  sess.sinceGame=0;
-  startGame('lernen',Array.from(sess.done));
+/* ---- Pausen: drei Formate im Wechsel ------------------------------------
+   Immer dasselbe Spiel ist nach der dritten Runde keine Pause mehr. Welches
+   Format drankommt, hängt davon ab, wofür gerade Material da ist. */
+function pauseTwinPaar(){
+  /* Zwei Wörter, die man leicht verwechselt – beide aus dieser Session. */
+  const ids=Array.from(sess.done).concat(Object.keys(sess.words||{}).map(Number));
+  for(const id of shuffle(ids.slice())){
+    const w=byId(id);if(!w)continue;
+    const zw=(twinIndex()[w.i]||[])[0];
+    if(zw)return{a:w,b:zw};
+  }
+  return null;
 }
+function pauseSatzWort(){
+  /* Ein Satz zu einem Wort, das gerade hakt – Problemwörter zuerst. */
+  const ids=Array.from(sess.done).concat(Object.keys(sess.words||{}).map(Number));
+  const tauglich=id=>{const w=byId(id);
+    return w&&w.e&&w.x&&w.e.split(/\s+/).length>=4&&w.e.split(/\s+/).length<=9?w:null};
+  const prob=shuffle(ids.slice()).map(tauglich).filter(w=>w&&isProblem(S.prog[w.i]));
+  if(prob.length)return prob[0];
+  const rest=shuffle(ids.slice()).map(tauglich).filter(Boolean);
+  return rest.length?rest[0]:null;
+}
+function startSessGame(){
+  sess.sinceGame=0;
+  sess.pauseN=(sess.pauseN||0)+1;
+  /* Reihum, aber nur was gerade möglich ist. */
+  const kandidaten=[];
+  const tw=pauseTwinPaar();      if(tw)kandidaten.push(()=>pauseTwin(tw));
+  const sw=pauseSatzWort();      if(sw)kandidaten.push(()=>pauseSatz(sw));
+  kandidaten.push(()=>startGame('lernen',Array.from(sess.done)));
+  kandidaten[(sess.pauseN-1)%kandidaten.length]();
+}
+function pauseKopf(t,u){
+  return '<div class="cogintro" style="text-align:center"><b>'+t+'</b> '+u+'</div>';
+}
+/* --- Format 1: Verwechslungspaar --- */
+function pauseTwin(pair){
+  const erst=Math.random()<.5?pair.a:pair.b;
+  const zweit=erst===pair.a?pair.b:pair.a;
+  const opts=shuffle([erst,zweit]);
+  $('#view-lernen').innerHTML=
+    pauseKopf('🔀 Kurze Pause: verwechselbar','Zwei Wörter, die sich fast gleich schreiben. Welches ist gemeint?')+
+    '<div class="card" style="text-align:center">'+
+    '<div class="word-de">'+esc(erst.d)+'</div>'+
+    '<div class="opts" id="twOpts">'+opts.map(o=>
+      '<button class="opt" data-i="'+o.i+'">'+acc(esc(o.r))+'</button>').join('')+'</div>'+
+    '<div id="twMsg"></div></div>';
+  document.querySelectorAll('#twOpts .opt').forEach(b=>b.onclick=()=>{
+    if(document.querySelector('#twMsg').innerHTML)return;
+    const ok=+b.dataset.i===erst.i;
+    document.querySelectorAll('#twOpts .opt').forEach(x=>{
+      x.classList.add(+x.dataset.i===erst.i?'right':'wrong');x.disabled=true;
+    });
+    document.querySelector('#twMsg').innerHTML=
+      '<div class="twinbox" style="margin-top:14px;text-align:left">'+
+      (ok?'<b>Richtig.</b> ':'<b>Knapp daneben.</b> ')+'Der Unterschied:<br>'+
+      '<b>'+acc(esc(erst.r))+'</b> – '+esc(erst.d)+'<br>'+
+      '<b>'+acc(esc(zweit.r))+'</b> – '+esc(zweit.d)+'</div>'+
+      '<button class="btn btn-primary" style="margin-top:14px" onclick="resumeSess()">Weiter lernen</button>';
+  });
+}
+/* --- Format 2: Satz bauen --- */
+function pauseSatz(w){
+  const teile=String(w.e).trim().split(/\s+/);
+  const misch=shuffle(teile.map((t,k)=>({t,k})));
+  sessSatz={w,teile,gewaehlt:[]};
+  $('#view-lernen').innerHTML=
+    pauseKopf('🧱 Kurze Pause: Satz bauen','Setz den russischen Satz aus den Wörtern zusammen.')+
+    '<div class="card" style="text-align:center">'+
+    '<div class="word-de">'+esc(w.x)+'</div>'+
+    '<div class="qlabel">Schlüsselwort: <b>'+acc(esc(w.r))+'</b></div>'+
+    '<div class="sylbuilt" id="stBuilt"></div>'+
+    '<div class="syltiles" id="stTiles">'+misch.map(o=>
+      '<button class="syltile" data-k="'+o.k+'">'+acc(esc(o.t))+'</button>').join('')+'</div>'+
+    '<div id="stMsg"></div>'+
+    '<div class="grade on grade1" style="margin-top:12px"><button class="g-k" id="stCheck">Prüfen</button></div>'+
+    '</div>';
+  const upd=()=>{
+    const b=$('#stBuilt');
+    b.innerHTML=sessSatz.gewaehlt.length
+      ?sessSatz.gewaehlt.map((k,pi)=>'<button class="syltile on" data-pi="'+pi+'">'+acc(esc(sessSatz.teile[k]))+'</button>').join('')
+      :'<span class="sylhint">Tippe die Wörter in der richtigen Reihenfolge an …</span>';
+    document.querySelectorAll('#stBuilt .syltile').forEach(x=>x.onclick=()=>{
+      if($('#stMsg').innerHTML)return;
+      const k=sessSatz.gewaehlt.splice(+x.dataset.pi,1)[0];
+      const t=document.querySelector('#stTiles .syltile[data-k="'+k+'"]');
+      if(t)t.classList.remove('used');
+      upd();
+    });
+  };
+  upd();
+  document.querySelectorAll('#stTiles .syltile').forEach(b=>b.onclick=()=>{
+    if($('#stMsg').innerHTML||b.classList.contains('used'))return;
+    b.classList.add('used');sessSatz.gewaehlt.push(+b.dataset.k);upd();
+  });
+  $('#stCheck').onclick=()=>{
+    if($('#stMsg').innerHTML)return;
+    const gebaut=sessSatz.gewaehlt.map(k=>sessSatz.teile[k]).join(' ');
+    const soll=sessSatz.teile.join(' ');
+    const gleich=normRu(gebaut)===normRu(soll);
+    $('#stMsg').innerHTML='<div class="twinbox" style="margin-top:14px;text-align:left">'+
+      (gleich?'<b>Genau so.</b>':'<b>So lautet der Satz:</b><br>'+acc(esc(soll)))+
+      '</div><button class="btn btn-primary" style="margin-top:14px" onclick="resumeSess()">Weiter lernen</button>';
+  };
+}
+let sessSatz=null;
 function resumeSess(){if(sess)renderCard();else renderGame()}
 function renderGameBoard(){
   const g=game;
