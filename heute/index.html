@@ -93,6 +93,8 @@ header{padding:22px 0 6px}
 /* ---- Tagesplan ---- */
 .planbox{background:var(--card);border:1px solid var(--frost);border-radius:var(--radius);padding:18px}
 .plan-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:4px}
+.plangrund{background:var(--frost,#eef);border-radius:10px;padding:10px 12px;margin:0 0 10px;font-size:14px;line-height:1.5}
+.planhinweis{font-size:12.5px;opacity:.7;margin-top:10px;line-height:1.5}
 .planmin{margin:0 0 14px;padding:11px 14px;border-radius:12px;font-size:.86rem;line-height:1.55;text-align:left}
 .planmin.offen{background:#EEF3FB;border:1px solid #C3D4EC;color:#2B4C6F}
 .planmin.erfuellt{background:#EEF6EC;border:1px solid #BFD9B8;color:#3E5C38}
@@ -153,7 +155,9 @@ header{padding:22px 0 6px}
   <div class="plan-bar"><i id="planBar" style="width:0%"></i></div>
   <div id="planWarn" class="planwarn" style="display:none"></div>
   <div id="planMin"></div>
+  <div id="planGrund" class="plangrund" style="display:none"></div>
   <div id="planSteps"></div>
+  <div id="planHinweis" class="planhinweis"></div>
   <p class="hint">Die Reihenfolge ist nicht beliebig: erst abrufen, was schon da ist, dann Neues, dann Lesen und Grammatik – und Sätze zum Schluss, wenn die Wörter frisch sind. Du musst nicht alles schaffen; von oben nach unten ist mehr wert als quer durch.</p>
 </div>
 
@@ -319,6 +323,33 @@ function lautFertig(){
   try{localStorage.setItem(LAUT_KEY,dstr(new Date()))}catch(e){}
   render();
 }
+/* An wie vielen der letzten sieben Tage war dieser Bereich überhaupt dran?
+   Rohe Kartenzahlen taugen nicht zum Vergleich – zehn Vokabelkarten und eine
+   Geschichte sind beides „ein Tag, an dem es lief". Tage zählen ist ehrlicher. */
+function aktiveTage(obj,tage){
+  if(!obj||!obj.days)return 0;
+  let n=0;
+  for(let i=0;i<tage;i++){
+    const d=new Date();d.setDate(d.getDate()-i);
+    if((obj.days[dstr(d)]||0)>0)n++;
+  }
+  return n;
+}
+/* Der Bereich, der am kürzesten kam, kommt zuerst. Gleichstand entscheidet
+   die bisherige Reihenfolge – so bleibt der Plan bei ausgeglichener Woche
+   genau der, den es vorher gab. */
+function planWaage(sl,gr,sk,se){
+  const T=7;
+  return {
+    slova:aktiveTage(sl,T),
+    gram:aktiveTage(gr,T),
+    lesen:aktiveTage(sk,T),
+    serial:aktiveTage(se,T),
+    sprech:99,   /* kein eigener Zähler – bleibt, wo es steht */
+    sonst:99
+  };
+}
+const BEREICH_NAME={slova:'Vokabeln',gram:'Grammatik',lesen:'Lesen',serial:'СЕРИА́Л'};
 function renderPlan(t,sl,gr,sk,se,seDue,slDue){
   const act=(se&&se.act&&se.act[t])||{};
   const actSl=(sl&&sl.act&&sl.act[t])||{};
@@ -328,7 +359,7 @@ function renderPlan(t,sl,gr,sk,se,seDue,slDue){
   const dGr=(gr&&gr.days&&gr.days[t])||0;
   const dSk=(sk&&sk.days&&sk.days[t])||0;
   const SER=appLink('/slova/serial/','serial-app.html');
-  const steps=[];
+  let steps=[];
   /* Der Schritt bleibt stehen, sobald du heute aufgefrischt hast – sonst
      verschwindet er, sobald nichts mehr fällig ist, und die erledigte Arbeit
      zählt nirgends. Genau das ist vorher passiert: 0 von 6 wurde zu 0 von 5. */
@@ -346,7 +377,7 @@ function renderPlan(t,sl,gr,sk,se,seDue,slDue){
      unerledigte draufzulegen macht den Stapel nur schneller unlernbar. */
   const budget=stau==='gross'?0:stau==='mittel'?Math.round(npd/2):npd;
   const restNeu=Math.max(0,budget-seNeu);
-  steps.push({i:'📘',t:'СЛОВА́ · Tagespensum',
+  steps.push({b:'slova',i:'📘',t:'СЛОВА́ · Tagespensum',
     w:(stau==='gross'
         ?'<b>Heute keine neuen Wörter.</b> Nur Wiederholungen – der Stapel in СЛОВА́ muss erst runter.'
         :stau==='mittel'
@@ -355,24 +386,24 @@ function renderPlan(t,sl,gr,sk,se,seDue,slDue){
       (seNeu?' ('+seNeu+' hast du heute schon in СЕРИА́Л angefangen.)':'')+
       ' Heute: '+dSl+' von '+goal+' Karten.',
     ok:dSl>=goal,href:appLink('/slova/','russisch-vokabeltrainer.html'),btn:'Karten lernen'});
-  steps.push({i:'📖',t:'Eine Geschichte lesen',
+  steps.push({b:'lesen',i:'📖',t:'Eine Geschichte lesen',
     w:'Hier triffst du die Wörter im Zusammenhang wieder – das ist der Schritt, der aus Vokabeln Sprache macht. СКА́ЗКИ oder eine Kurzgeschichte in СЕРИА́Л.',
     ok:dSk>0||(act.story||0)>0,href:appLink('/slova/skazki/','skazki-lese-app.html'),btn:'Lesen'});
-  steps.push({i:'📺',t:'СЕРИА́Л · Vokabeln zur Folge',
+  steps.push({b:'serial',i:'📺',t:'СЕРИА́Л · Vokabeln zur Folge',
     w:'Dein Hauptstoff: die Wörter aus der Folge, die du als Nächstes schaust.',
     ok:(act.drill||0)>=15,href:SER,btn:'Folge üben'});
-  steps.push({i:'🔨',t:'Festigen · schreiben statt anklicken',
+  steps.push({b:'slova',i:'🔨',t:'Festigen · schreiben statt anklicken',
     w:'Wörter anklicken zu können heisst nicht, sie zu kennen. Eine kurze Runde, in der du sie schreiben musst – das deckt auf, was nur nach Wiedererkennen aussah.',
     ok:(actSl.fest||0)>=10,
     href:appLink('/slova/','russisch-vokabeltrainer.html'),btn:'Festigen'});
-  steps.push({i:'✍️',t:'ГРАММА́ТИКА',
+  steps.push({b:'gram',i:'✍️',t:'ГРАММА́ТИКА',
     w:'Ein Thema reicht. Regeln gehen auch dann noch rein, wenn du für neue Wörter schon zu müde bist.',
     ok:dGr>=10,href:appLink('/slova/grammatik/','grammatik-trainer.html'),btn:'Grammatik üben'});
-  steps.push({i:'🗣️',t:'Einmal laut',
+  steps.push({b:'sprech',i:'🗣️',t:'Einmal laut',
     w:'Nimm einen Satz von heute – aus einer Karte, einer Geschichte oder der Folge – und sprich ihn laut nach. Danach sag in einem Satz mit eigenen Worten, worum es ging. Auch holprig, auch mit Fehlern: was du selbst ausgesprochen hast, sitzt anders als was du nur wiedererkannt hast. Ein bis zwei Minuten reichen.',
     ok:lautTag()===t,href:appLink('/slova/','russisch-vokabeltrainer.html'),btn:'Audio-Modus öffnen',
     mark:'lautFertig()'});
-  steps.push({i:'🔍',t:'Sätze entschlüsseln',
+  steps.push({b:'serial',i:'🔍',t:'Sätze entschlüsseln',
     w:'Zum Schluss, wenn die Wörter von heute noch frisch sind: ein ganzer Satz statt einzelner Vokabeln.',
     ok:(act.dec||0)>=5,href:SER,btn:'Satz-Training'});
 
@@ -412,6 +443,26 @@ function renderPlan(t,sl,gr,sk,se,seDue,slDue){
   $('#planZaehler').textContent=fertig+' von '+steps.length+' erledigt';
   $('#planBar').style.width=Math.round(100*fertig/steps.length)+'%';
   const inPause=planPause();
+  /* Erledigtes bleibt hinten, offenes wird nach Vernachlässigung sortiert.
+     Ein blockierender Schritt (alte Übergabe) bleibt oben stehen. */
+  const waage=planWaage(sl,gr,sk,se);
+  steps.forEach((x,k)=>{x._k=k;x._g=waage[x.b||'sonst'];if(x._g===undefined)x._g=99});
+  const fest=steps.filter(x=>!x.b);
+  const rest=steps.filter(x=>x.b);
+  rest.sort((a,b)=>(a.ok?1:0)-(b.ok?1:0)||a._g-b._g||a._k-b._k);
+  steps=fest.concat(rest);
+  /* Woran liegt die neue Reihenfolge? Ein Satz reicht. */
+  const offen=rest.filter(x=>!x.ok&&BEREICH_NAME[x.b]);
+  let grundText='';
+  if(offen.length){
+    const vorn=offen[0];
+    const viel=Object.keys(BEREICH_NAME).filter(k=>waage[k]>=Math.max(4,waage[vorn.b]+2));
+    if(viel.length)grundText='Du warst zuletzt viel bei '+viel.map(k=>BEREICH_NAME[k]).join(' und ')+
+      ' – '+BEREICH_NAME[vorn.b]+' kam an '+waage[vorn.b]+' von 7 Tagen dran. Deshalb steht das heute vorn.';
+    else if(waage[vorn.b]===0)grundText=BEREICH_NAME[vorn.b]+' war die ganze Woche nicht dran – heute wäre ein guter Tag dafür.';
+  }
+  const gEl=$('#planGrund');
+  if(gEl){gEl.style.display=grundText?'block':'none';gEl.textContent=grundText}
   const jetzt=steps.findIndex(s=>!s.ok);
 
   if(jetzt<0){
@@ -427,6 +478,8 @@ function renderPlan(t,sl,gr,sk,se,seDue,slDue){
     return;
   }
   $('#planTitel').textContent=inPause?'Erst Pause zu Ende':'Als Nächstes';
+  const hEl=$('#planHinweis');
+  if(hEl)hEl.textContent='Die Reihenfolge ist ein Vorschlag, keine Vorschrift – such dir aus, worauf du Lust hast. Sie richtet sich danach, was zuletzt zu kurz kam.';
   $('#planSteps').innerHTML=steps.map((s,i)=>{
     const cls=s.ok?'step done':(i===jetzt&&!inPause?'step now':'step');
     return '<div class="'+cls+'"><div class="mk">'+(s.ok?'✓':(i+1))+'</div><div class="bd">'+
