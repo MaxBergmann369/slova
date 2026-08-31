@@ -95,6 +95,14 @@ nav{position:sticky;top:0;z-index:20;background:var(--paper);padding:12px 0 14px
 .card{background:var(--card);border:1px solid var(--frost);border-radius:var(--radius);padding:26px 22px;box-shadow:0 1px 2px rgba(20,24,31,.04)}
 .badges{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;min-height:22px}
 .chip{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:99px}
+.wurzelkarte{text-align:center;padding:18px 6px}
+.wurzelkarte .wk-top{font-size:13px;letter-spacing:.04em;opacity:.7;text-transform:uppercase}
+.wurzelkarte .wk-w{font-family:var(--serif);font-size:2rem;font-weight:700;margin:6px 0 2px}
+.wurzelkarte .wk-b{font-size:1.05rem;opacity:.85;margin-bottom:14px}
+.wurzelkarte .wk-txt{font-size:14px;line-height:1.55;opacity:.8;max-width:34em;margin:0 auto 14px}
+.wurzelkarte .wk-list{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:18px}
+.wurzelkarte .wk-i{background:var(--frost);border-radius:10px;padding:6px 10px;font-size:15px}
+.wurzelkarte .wk-i i{display:block;font-style:normal;font-size:11px;opacity:.7}
 .chip.new{background:var(--gzhel-soft);color:var(--gzhel)}
 .chip.rev{background:#EEF1F6;color:var(--ink-soft)}
 .chip.cog{background:var(--birch-soft);color:var(--birch)}
@@ -2996,12 +3004,47 @@ function newAllowance(){
   return Math.max(0,S.set.npd-S.nt.n-serialNeuHeute());
 }
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a}
+/* Wie viele Verwandte höchstens mit einem neuen Wort zusammen kommen. Drei
+   Zusätzliche reichen, um die Wurzel zu sehen; mehr verschwimmen. */
+const BLOCK_MAX=3;
+/* Alle noch ungelernten Karten zu einer Wurzel, ohne das Wort selbst. */
+function famGeschwister(id){
+  const w=byId(id);
+  if(!w)return[];
+  const f=famOf(w.r);
+  if(!f)return[];
+  const mich=famNorm(w.r);
+  const nachWort={};
+  allWords().forEach(o=>{const k=famNorm(o.r);if(nachWort[k]===undefined)nachWort[k]=o.i});
+  const out=[];
+  f.m.forEach(m=>{
+    const k=famNorm(m[0]);
+    if(k===mich)return;
+    const oid=nachWort[k];
+    if(oid===undefined||S.prog[oid])return;   /* nur was es hier gibt und noch offen ist */
+    out.push(oid);
+  });
+  return out;
+}
 function freshPool(n){
   /* Selbst importierte Wörter (z.B. aus СЕРИА́Л) kommen zuerst – sie sind bewusst gewählt.
      Danach die nächsten ungelernten Frequenzwörter, damit der Schwierigkeitsgrad passt. */
   const mine=S.extras.filter(w=>!S.prog[w.i]).map(w=>w.i);
   const base=VOCAB.filter(w=>!S.prog[w.i]).sort((a,b)=>a.i-b.i).slice(0,n).map(w=>w.i);
-  return shuffle(mine).concat(shuffle(base));
+  const roh=shuffle(mine).concat(shuffle(base));
+  if(!S.set||S.set.block===false)return roh;
+  /* Verwandte direkt hinter das Wort ziehen, das sie aufgerufen hat. */
+  const drin=new Set(),out=[];
+  roh.forEach(id=>{
+    if(drin.has(id))return;
+    drin.add(id);out.push(id);
+    let k=0;
+    famGeschwister(id).forEach(gid=>{
+      if(k>=BLOCK_MAX||drin.has(gid))return;
+      drin.add(gid);out.push(gid);k++;
+    });
+  });
+  return out;
 }
 /* Ein fester Anteil der taeglich neuen Woerter sind Kognaten. Geschenkt sind die
    nicht - Betonung, Schreibweise und Geschlecht muss man trotzdem lernen - aber
@@ -3904,6 +3947,35 @@ function editMnem(id){
 
 let cur=null;
 const WAHL_MODE={mc:1,mcRev:1,clozeMC:1};
+/* Bevor das erste Wort einer Wurzel drankommt, einmal die Wurzel selbst zeigen.
+   Zehn Sekunden, die aus vier Einzelwörtern ein Muster machen. Nur bei neuen
+   Wörtern und nur einmal je Runde. */
+function wurzelKarte(w){
+  const f=famOf(w.r);
+  if(!f)return false;
+  if(!sess.famGezeigt)sess.famGezeigt={};
+  if(sess.famGezeigt[f.w])return false;
+  /* Nur wenn in dieser Runde wirklich mehrere aus der Familie neu sind. */
+  const mich=famNorm(w.r);
+  const inRunde=Object.keys(sess.words||{}).filter(id=>{
+    const o=byId(+id);return o&&famOf(o.r)===f;
+  });
+  if(inRunde.length<2)return false;
+  sess.famGezeigt[f.w]=1;
+  const kommen=inRunde.map(id=>byId(+id)).filter(o=>famNorm(o.r)!==mich);
+  $('#view-lernen').innerHTML=
+    '<div class="card"><div class="wurzelkarte">'+
+    '<div class="wk-top">🌱 Neue Wurzel</div>'+
+    '<div class="wk-w">'+acc(esc(f.w))+'</div>'+
+    '<div class="wk-b">'+esc(f.b)+'</div>'+
+    '<div class="wk-txt">Gleich kommen '+(kommen.length+1)+' Wörter mit dieser Wurzel. '+
+      'Wer sie erkennt, lernt kein neues Wort mehr, sondern eine Variante.</div>'+
+    '<div class="wk-list">'+[w].concat(kommen).map(o=>
+      '<span class="wk-i">'+acc(esc(o.r))+'<i>'+esc(String(o.d).split(/[,;]/)[0])+'</i></span>').join('')+'</div>'+
+    '<button class="btn btn-primary" onclick="renderCard()">Los geht\'s</button>'+
+    '</div></div>';
+  return true;
+}
 function renderCard(forceMode){
   if(!forceMode&&(sess.sinceGame||0)>=9&&sess.done.size>=5){startSessGame();return} /* 🎮 kurze Spielpause */
   const id=sess.q[sess.i],w=byId(id),p=S.prog[id];
@@ -3912,6 +3984,8 @@ function renderCard(forceMode){
   const schonDa=sess.gz[id]>1;
   const cl=clozeFor(w);
   const st=sess.words?sess.words[id]:null; /* Mehrfach-Durchgänge nur für neue Wörter */
+  /* Erstes Wort einer Wurzel: erst die Wurzel zeigen, dann die Karte. */
+  if(!forceMode&&st&&!st.done&&wurzelKarte(w)){sess.gz[id]--;return}
   let mode=forceMode||(st?modeForPass(w,st,cl):pickMode(w,p,cl));
   if(sess.fest&&!forceMode){const fm=festModi(w,p);mode=fm[Math.floor(Math.random()*fm.length)]}
   /* Beim zweiten Mal in derselben Runde nicht wieder anklicken lassen: sonst
