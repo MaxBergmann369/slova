@@ -95,6 +95,10 @@ nav{position:sticky;top:0;z-index:20;background:var(--paper);padding:12px 0 14px
 .card{background:var(--card);border:1px solid var(--frost);border-radius:var(--radius);padding:26px 22px;box-shadow:0 1px 2px rgba(20,24,31,.04)}
 .badges{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;min-height:22px}
 .chip{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:99px}
+.staubox{margin:14px 0 4px}
+.stau-z{font-family:var(--serif);font-size:2rem;font-weight:700;line-height:1.2}
+.stau-z span{opacity:.45;font-size:1.3rem;margin:0 8px}
+.stau-t{font-size:14px;line-height:1.55;opacity:.85;margin-top:4px}
 .morphhint{font-size:13px;opacity:.85;margin:6px 0 10px;text-align:center}
 .wurzelkarte{text-align:center;padding:18px 6px}
 .wurzelkarte .wk-top{font-size:13px;letter-spacing:.04em;opacity:.7;text-transform:uppercase}
@@ -3076,6 +3080,22 @@ function buildQueue(){
   const fresh=pickFresh(newAllowance());
   return{due,fresh};
 }
+/* Wie viele Wörter sind fällig – und wie lange schon? */
+function stauN(){return allWords().filter(w=>isDue(w.i)).length}
+const RUECK_RUNDE=30;   /* mehr als dreissig am Stück baut niemand ab */
+function startRueckstand(){
+  const due=allWords().filter(w=>isDue(w.i));
+  if(!due.length)return;
+  /* Am längsten überfällig zuerst: die sind am nächsten am Vergessen. */
+  due.sort((a,b)=>{
+    const pa=S.prog[a.i],pb=S.prog[b.i];
+    return String(pa.d).localeCompare(String(pb.d));
+  });
+  const ids=due.slice(0,RUECK_RUNDE).map(w=>w.i);
+  sess={q:shuffle(ids),i:0,stats:{right:0,wrong:0},done:new Set(),words:{},
+        knownN:0,learnedN:0,pool:[],rueck:true,stauVor:due.length,rundeIds:ids.slice()};
+  renderCard();
+}
 function startSession(ids){ /* Problemwörter/Wiederholungen: eine Karte pro Wort */
   if(!ids.length)return;
   sess={q:shuffle(ids.slice()),i:0,stats:{right:0,wrong:0},done:new Set(),words:{},knownN:0,learnedN:0,pool:[]};
@@ -3267,7 +3287,8 @@ function finishSession(){
   const st=sess.stats,tot=st.right+st.wrong,accy=tot?Math.round(100*st.right/tot):100;
   $('#view-lernen').innerHTML=
     '<div class="hero"><div class="done-mark">🎉</div>'+
-    '<div class="due-line">Session geschafft!</div>'+
+    '<div class="due-line">'+(sess.rueck?'Rückstand abgebaut!':'Session geschafft!')+'</div>'+
+    (sess.rueck?stauBilanz():'')+
     '<div class="sumgrid">'+
     '<div class="sumbox"><b>'+sess.done.size+'</b><span>Wörter geübt</span></div>'+
     '<div class="sumbox"><b>'+accy+' %</b><span>richtig</span></div>'+
@@ -3280,6 +3301,24 @@ function finishSession(){
     '</div><div class="sub" style="margin-top:12px">'+((S.days[t]||0)>=(S.set.goal||30)?'🎯 Tagesziel erreicht: ':'🎯 Heute: ')+(S.days[t]||0)+' / '+(S.set.goal||30)+' Karten</div>'+
     '<button class="btn btn-primary" onclick="renderHome()">Fertig</button></div>';
   sess=null;
+}
+/* Ehrlich rechnen: falsch beantwortete Wörter bleiben fällig – sie zählen
+   nicht als abgebaut, auch wenn man sie gerade in der Hand hatte. */
+/* Ein falsch beantwortetes Wort kommt in derselben Runde nochmal – wer es dann
+   wusste, hat es abgebaut. Gezaehlt wird deshalb der Endstand, nicht die Fehler. */
+function offenAusRunde(){
+  return (sess.rundeIds||[]).filter(id=>isDue(id)).length;
+}
+function stauBilanz(){
+  const vor=sess.stauVor,jetzt=stauN();
+  const weg=Math.max(0,vor-jetzt);
+  return '<div class="staubox">'+
+    '<div class="stau-z"><b>'+vor+'</b> <span>→</span> <b>'+jetzt+'</b></div>'+
+    '<div class="stau-t">'+weg+' Wörter sind vom Stapel runter.'+
+    (jetzt?' Noch <b>'+jetzt+'</b> fällig'+(jetzt>RUECK_RUNDE?' – das sind rund '+Math.ceil(jetzt/RUECK_RUNDE)+' Runden.':'.'):
+           ' Der Stapel ist leer – ab morgen sind wieder neue Wörter drin.')+
+    (offenAusRunde()?'<br>Noch nicht gesessen: '+offenAusRunde()+' '+(offenAusRunde()===1?'Wort aus dieser Runde bleibt':'Wörter aus dieser Runde bleiben')+' fällig.':'')+
+    '</div></div>';
 }
 function quitSession(){save(true);sess=null;renderHome()}
 
@@ -3299,6 +3338,7 @@ function renderHome(){
     if(festN)inner+='<br><button class="btn btn-primary" onclick="startFest()">🔨 Festigen · schreiben statt anklicken</button>'+
       '<div class="sub" style="font-size:.78rem">Nur Wörter, die du schon kannst – Schreiben, Silben, Lückentext. Kein Multiple Choice, keine neuen Wörter.'+
       (wackelN?' <b>'+wackelN+'</b> Wörter wackeln zurzeit beim Schreiben.':'')+'</div>';
+    if(due.length>=20)inner+='<br><button class="btn-ghost" onclick="startRueckstand()">🧹 Nur Rückstand abbauen ('+Math.min(due.length,RUECK_RUNDE)+' von '+due.length+')</button>';
     inner+='<br><button class="btn-ghost" onclick="renderPaare()">🔍 Minimalpaare · мать ≠ мат</button>';
     inner+='<br><button class="btn-ghost" onclick="renderWurzel()">🌱 Wurzel-Training · woher kommt das Wort?</button>';
     inner+='<br><button class="btn-ghost" onclick="renderNach()">🗣️ Nachsprechen · laut, mit Prüfung</button>';
@@ -3307,8 +3347,10 @@ function renderHome(){
     inner='<div class="due-line"><b>'+due.length+'</b> Wiederholung'+(due.length===1?'':'en')+' · <b>'+fresh.length+'</b> neue Wörter</div>'+
       (offenN()?'<div class="sub" style="color:var(--gzhel);font-weight:600">↩ '+offenN()+' angefangene Wörter warten – die machst du gleich fertig</div>':'')+
       (serialNeuHeute()?'<div class="sub" style="font-size:.78rem">📺 '+serialNeuHeute()+' neue Wörter hast du heute schon in СЕРИА́Л angefangen – die zählen mit, deshalb kommen hier weniger neue.</div>':'')+
+      (due.length>=60?'<div class="sub" style="color:var(--kalina);font-weight:600">Bei so vielen fälligen Wörtern lohnt es sich, erst den Stapel abzubauen – neue oben drauf machen ihn morgen nur größer.</div>':'')+
       '<div class="sub">≈ '+(due.length+fresh.length*3)+' Karten – jedes neue Wort kommt 3× in verschiedenen Formen · etwa '+Math.max(1,Math.round((due.length+fresh.length*3)*0.25))+' Minuten</div>'+goalLine+
       '<button class="btn btn-primary" onclick="startDaily()">Los geht’s</button>';
+    if(due.length>=20)inner+='<br><button class="btn-ghost" onclick="startRueckstand()">🧹 Nur Rückstand abbauen ('+Math.min(due.length,RUECK_RUNDE)+' von '+due.length+')</button>';
     if(probN)inner+='<br><button class="btn-ghost" onclick="startProblems()">Nur Problemwörter üben ('+probN+')</button>';
     if(festN)inner+='<br><button class="btn-ghost" onclick="startFest()">🔨 Festigen · schreiben statt anklicken</button>';
     inner+='<br><button class="btn-ghost" onclick="renderPaare()">🔍 Minimalpaare · мать ≠ мат</button>';
